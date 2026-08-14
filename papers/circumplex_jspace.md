@@ -160,7 +160,8 @@ Prediction 2 is the bridge from geometry to welfare methodology: it would make t
 If the J-space fraction peaks at the eccentricity minimum, emotional geometry enters the workspace where the circumplex is most balanced: balanced emotion is processable emotion, and imbalanced emotion stays ghost. The welfare implication is concrete — a model under sustained circumplex imbalance carries emotional geometry it processes but cannot access, and §3.6 tests whether that inaccessibility shows up exactly where theory says it should: in the failure of the model's own valence reports. If the control axes reproduce the emotion profile, the honest conclusion is that we have characterized the workspace transport of contrastive semantic geometry in general, with emotion as one instance.
 
 ### Limitations
-- n=2 architectures is transfer, not universality; Qwen and Gemma are both dense decoder-only models with similar training paradigms
+- n=2 architectures is transfer, not universality; Qwen3.5-27B is a hybrid (GatedDeltaNet + full-attention interleave, `full_attention_interval=4`), Gemma-3-27B has local/global attention alternation — neither is purely dense, and a dense Qwen3-32B control is included to separate emotional geometry from substrate effects
+- Layer-type annotation on all depth profiles: a period-4 oscillation in the hybrid would indicate substrate confound (pre-registered autocorrelation test at lag 4)
 - Eccentricity measures axis balance, not full circular ordering (would need 8+ categories for angular test)
 - n=20 anchors per category in d=5120 — direction estimates are noisy; cosine with true direction ~0.25. Magnitudes and the sign test are robust to this; per-layer direction claims are not
 - J-lens fitted on base model, applied to distill (Qwen) — mismatch may affect J-space fractions
