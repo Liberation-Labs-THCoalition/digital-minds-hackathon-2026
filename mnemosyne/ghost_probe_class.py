@@ -22,7 +22,10 @@ import jlens
 from jlens.hf import HFLensModel
 from jlens.hooks import ActivationRecorder
 
-from cognitive_snapshot import GhostReading
+try:
+    from .cognitive_snapshot import GhostReading
+except ImportError:
+    from cognitive_snapshot import GhostReading
 
 
 CALIBRATION_PROMPTS = [
