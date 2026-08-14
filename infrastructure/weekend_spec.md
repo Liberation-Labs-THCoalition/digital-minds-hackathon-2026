@@ -59,8 +59,8 @@
 |-------|------|--------|--------|--------|---------|
 | **Qwen3.5-27B** | Dense | 27B | Neuronpedia (672 prompts, 63 layers) | Ready, tests pass | Primary — all experiments |
 | **Gemma-3-27B-it** | Dense | 27B | Neuronpedia (staged) | **DOWNLOADED** (51GB) | Cross-architecture circumplex |
-| **Qwen3-32B** | MoE (3B active) | 32B | Neuronpedia (staged, standard fit) | **DOWNLOADED** (61GB) | MoE J-lens local validation |
-| **Qwen3-30B-A3B** | MoE (3B active) | 30B | Standard fit (12.5% gate — FAIL) | **Modal H100 + Hetzner API** | MoE J-lens primary experiment |
+| **Qwen3-32B** | **Dense** | 32B | Neuronpedia (staged) | **DOWNLOADED** (61GB) | Dense CONTROL — J-lens should WORK on this (positive control) |
+| **Qwen3-30B-A3B** | MoE (128 experts top-8, 48 layers all MoE, d=2048) | 30B | Standard fit (12.5% gate — FAIL) | **Modal H100 + Hetzner API** | MoE J-lens primary experiment |
 | Qwen3.5-9B | Dense | 9B | Available | Not staged | Quick iteration / fallback |
 | **Nemotron-3-Super-120B** | Hybrid MoE (12B active) | 120B | None | **ONLINE** at :8095 | Stretch: second MoE architecture |
 

@@ -55,3 +55,5 @@ Collected during the hackathon. For Vera's videos, for the papers, for the momen
 ---
 
 *Add to this file whenever someone says something that makes you stop. The videos need these moments more than they need diagrams.*
+
+"Verify the label, then check what number depends on it. It cuts both ways." — Lyra, on the model-identity cascade
