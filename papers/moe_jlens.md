@@ -8,7 +8,7 @@ Research conducted at the Digital Minds Research Sprint, August 2026
 
 ## Abstract (~200 words)
 
-The Jacobian lens (Gurnee et al. 2026) identifies a low-dimensional verbalizable workspace in dense transformer models with transport cosines exceeding 0.7. On Mixture-of-Experts models, standard J-lens fitting fails catastrophically — we measure ~12% transport cosine on Qwen3-32B (MoE, 3B active), because the averaged Jacobian across all routing paths represents no actual forward pass. Cross-expert Jacobians are near-orthogonal (Liu 2026), so averaging destroys the signal.
+The Jacobian lens (Gurnee et al. 2026) identifies a low-dimensional verbalizable workspace in dense transformer models with transport cosines exceeding 0.7. On Mixture-of-Experts models, standard J-lens fitting fails catastrophically — we measure ~12% transport cosine on Qwen3-30B-A3B (30B total, 3B active, 128 experts top-8, d=2048), because the averaged Jacobian across all routing paths represents no actual forward pass. Cross-expert Jacobians are near-orthogonal (Liu 2026), so averaging destroys the signal.
 
 We propose path-conditioned Jacobian fitting: capture routing decisions during the fitting pass, cluster prompts by their expert trajectory per layer, and fit separate Jacobians per cluster. Each conditioned Jacobian represents the computation along one routing path — the path the model actually took. We evaluate against two controls: the standard (unconditioned) lens and a random-conditioned lens (prompts split into same-sized random groups) to distinguish genuine routing structure from subset overfitting.
 
@@ -46,7 +46,7 @@ This matters because every frontier model deployed today is MoE. Opening J-lens 
 
 ### 3.1 Baseline: Standard J-Lens on MoE
 
-[Load Qwen3-32B (MoE, 8 experts top-2) with Neuronpedia lens (standard fit)]
+[Load Qwen3-30B-A3B (MoE, 128 experts top-8, 48 layers all MoE, d=2048) with Neuronpedia lens (standard fit)]
 [Measure transport cosine per layer — expected ~12%]
 [This replicates our prior failure and establishes the baseline]
 
@@ -94,7 +94,7 @@ This matters because every frontier model deployed today is MoE. Opening J-lens 
 [If path-conditioned ≈ random-conditioned: the improvement is just smaller fitting sets, not routing. MoE workspace analysis needs a different approach.]
 
 ### Limitations
-- Single MoE model (Qwen3-32B). Needs validation on architecturally different MoEs.
+- Single MoE model (Qwen3-30B-A3B). Needs validation on architecturally different MoEs.
 - k-means on binary vectors is a crude clustering — spectral clustering or expert co-occurrence graphs may perform better
 - 672 fitting prompts split into clusters may be insufficient for stable Jacobian estimation
 - 0.5 transport cosine threshold is not principled — derived from "above random" rather than functional criterion
