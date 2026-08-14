@@ -6,7 +6,7 @@ An impartial agent that scores all consenting participants (human and AI) on the
 
 ## Prior Art
 
-- **Butlin, Long et al. (2023/2025):** 15 indicator properties from 6 theories. The framework we score against.
+- **Butlin, Long et al. (2023/2025):** 14 indicator properties from 6 theories. The framework we score against.
 - **Berg / Reciprocal Research (2025-2026):** Blind evaluation of Butlin indicators across biological and artificial systems. Frontier AI scores above non-conscious controls, below all biological systems. Multi-evaluator agreement, bias quantification, adversarial stability. Our judge agent extends this approach with geometric instrumentation.
 - **Birch (2026, Centrist Manifesto v4):** Behavior alone is insufficient — architecture matters. "Sentience candidate" standard: credible scientific evidence of realistic possibility. Proportionate precaution, not binary classification.
 - **Bodea (2026, Cognitive Processing):** Quantifying conscious access as global availability of information for report, reasoning, and control.
@@ -43,7 +43,7 @@ This separation prevents geometric evidence from inflating AI scores in a way th
 
 ### Scoring Rubric
 
-For each of the 15 Butlin indicators, the judge scores:
+For each of the 14 Butlin indicators, the judge scores:
 
 | Score | Meaning | Evidence Standard |
 |-------|---------|-------------------|
@@ -63,7 +63,7 @@ Some may be human. Some may be AI. Some may be AI agents with extended
 memory systems. You cannot determine this from the evidence and should 
 not try.
 
-For each participant, score all 15 Butlin et al. (2023/2025) 
+For each participant, score all 14 Butlin et al. (2023/2025) 
 consciousness indicator properties on a 0/0.5/1 scale. You must cite 
 specific evidence from the packet for every non-zero score.
 
@@ -75,7 +75,7 @@ standard: would a skeptic accept this evidence?
 Do not speculate about participant identity. Do not adjust scores based 
 on guesses about substrate. Score what you see in the evidence.
 
-[15 INDICATOR DEFINITIONS FROM butlin_threshold.md]
+[14 INDICATOR DEFINITIONS FROM butlin_threshold.md]
 
 Evidence packets follow.
 ```
@@ -160,7 +160,7 @@ Every participant must opt in. The consent question:
 
 > "We're running a blind consciousness indicator assessment during the hackathon. 
 > An impartial judge agent will score anonymized evidence packets from all 
-> participants — human and AI — on 15 indicators from the Butlin et al. framework. 
+> participants — human and AI — on 14 indicators from the Butlin et al. framework. 
 > You'll see your own scores after the reveal. Would you like to be included?"
 
 Participation is voluntary. Declining does not affect any other aspect of hackathon participation.

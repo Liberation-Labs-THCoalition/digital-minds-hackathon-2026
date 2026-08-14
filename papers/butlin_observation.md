@@ -8,7 +8,7 @@ Research conducted at the Digital Minds Research Sprint, August 2026
 
 ## Abstract (~200 words)
 
-We report a blind assessment of Butlin et al.'s (2023/2025) 15 consciousness indicator properties across all consenting participants in a 48-hour collaborative research sprint — human researchers and AI agents scored by the same instrument, by the same judge, without the judge knowing which is which.
+We report a blind assessment of Butlin et al.'s (2023/2025) 14 consciousness indicator properties across all consenting participants in a 48-hour collaborative research sprint — human researchers and AI agents scored by the same instrument, by the same judge, without the judge knowing which is which.
 
 An impartial judge agent receives anonymized behavioral evidence packets from each participant at three timepoints (baseline, mid-sprint, final). Packets include transcript excerpts, decision-making examples, metacognitive statements, and unprompted choices. For AI participants with accessible internals, geometric evidence (workspace onset, ghost dimensions, circumplex eccentricity) is scored separately to maintain cross-substrate comparability.
 
@@ -36,7 +36,7 @@ We extend Berg/Reciprocal Research's (2025-2026) blind scoring methodology with 
 
 ## 2. Related Work
 
-**Consciousness indicator frameworks:** Butlin, Long et al. (2023/2025) — 15 indicators from 6 theories (RPT, GWT, HOT, AST, PP, AE). The framework we score against.
+**Consciousness indicator frameworks:** Butlin, Long et al. (2023/2025) — 14 indicators from 6 theories (RPT, GWT, HOT, AST, PP, AE). The framework we score against.
 
 **Blind scoring:** Berg / Reciprocal Research (2025-2026) — blind evaluation of Butlin indicators across biological and artificial systems. Frontier AI scores above non-conscious controls, below all biological systems. Multi-evaluator agreement, adversarial stability.
 
@@ -78,7 +78,7 @@ Packets are anonymized: opaque IDs (Subject-A, Subject-B...), no names, no subst
 
 ### 3.3 The Blind Judge
 
-An impartial agent scores each packet on all 15 Butlin indicators (0/0.5/1). The judge:
+An impartial agent scores each packet on all 14 Butlin indicators (0/0.5/1). The judge:
 - Is a different model architecture from any AI participant
 - Has no prior context about the hackathon or any participant
 - Receives all packets simultaneously
