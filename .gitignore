@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+*.pyo
+.env
+*.bin
+*.pt
+*.safetensors
+*.gguf
+.DS_Store
+*.log
+data/raw/
