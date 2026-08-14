@@ -50,7 +50,7 @@ Conditioning is performed at three target layers — L12, L24, L36 — spanning 
 
 ### 3.1 Baseline: Standard J-Lens on MoE
 
-The baseline is a standard (unconditioned) J-lens fitted on Qwen3-30B-A3B in a previous run, using the same fitting corpus and the reference `jlens` implementation, with no knowledge of routing. This fit achieves a mean transport cosine of ~12.5% — far below the 0.7+ reported for dense models (Gurnee et al. 2026) and below the sanity gate we apply to dense fits. We load this saved lens unchanged and re-evaluate it on the held-out test prompts under the identical transport-cosine protocol used for the conditioned lenses (§3.6), so all three conditions share one evaluation pipeline. This replicates our prior failure and establishes the number the conditioned lenses must beat.
+The baseline is a standard (unconditioned) J-lens fitted on Qwen3-30B-A3B in a previous run, using 200 WikiText prompts (smaller than the 672 used for conditioned fitting) and the reference `jlens` implementation, with no knowledge of routing. The corpus size difference is a limitation: the conditioned lenses benefit from more fitting data per cluster than the standard lens had in total. We report this asymmetry rather than claiming equivalent conditions. This fit achieves a mean transport cosine of ~12.5% — far below the 0.7+ reported for dense models (Gurnee et al. 2026) and below the sanity gate we apply to dense fits. We load this saved lens unchanged and re-evaluate it on the held-out test prompts under the identical transport-cosine protocol used for the conditioned lenses (§3.6), so all three conditions share one evaluation pipeline. This replicates our prior failure and establishes the number the conditioned lenses must beat.
 
 ### 3.2 Router Hooks
 
