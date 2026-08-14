@@ -19,7 +19,10 @@ import jlens
 from jlens.hf import HFLensModel
 from jlens.hooks import ActivationRecorder
 
-from cognitive_snapshot import CircumplexReading
+try:
+    from .cognitive_snapshot import CircumplexReading
+except ImportError:
+    from cognitive_snapshot import CircumplexReading
 
 
 # Emotion-anchored prompts for valence/arousal extraction

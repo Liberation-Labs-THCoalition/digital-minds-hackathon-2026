@@ -21,13 +21,22 @@ import torch
 import jlens
 from jlens.hf import HFLensModel
 
-from cognitive_snapshot import (
-    CognitiveSnapshot, JSpaceReading, GhostReading,
-    MemoryLoadingResult, CognitiveMemoryStore,
-)
-from workspace_probe import WorkspaceProbe, MemoryProbe
-from circumplex_probe import CircumplexProbe
-from ghost_probe_class import GhostProbe
+try:
+    from .cognitive_snapshot import (
+        CognitiveSnapshot, JSpaceReading, GhostReading,
+        MemoryLoadingResult, CognitiveMemoryStore,
+    )
+    from .workspace_probe import WorkspaceProbe, MemoryProbe
+    from .circumplex_probe import CircumplexProbe
+    from .ghost_probe_class import GhostProbe
+except ImportError:
+    from cognitive_snapshot import (
+        CognitiveSnapshot, JSpaceReading, GhostReading,
+        MemoryLoadingResult, CognitiveMemoryStore,
+    )
+    from workspace_probe import WorkspaceProbe, MemoryProbe
+    from circumplex_probe import CircumplexProbe
+    from ghost_probe_class import GhostProbe
 
 
 class MetacognitiveObserver:

@@ -25,7 +25,15 @@ from .cognitive_snapshot import (
     GhostReading,
     MemoryLoadingResult,
 )
-from .mnemosyne_integration import MetacognitiveObserver
-from .workspace_probe import WorkspaceProbe
-from .circumplex_probe import CircumplexProbe
-from .ghost_probe_class import GhostProbe
+
+# Probes require jlens — import lazily so the package loads without it
+try:
+    from .mnemosyne_integration import MetacognitiveObserver
+    from .workspace_probe import WorkspaceProbe
+    from .circumplex_probe import CircumplexProbe
+    from .ghost_probe_class import GhostProbe
+except ImportError:
+    MetacognitiveObserver = None
+    WorkspaceProbe = None
+    CircumplexProbe = None
+    GhostProbe = None
