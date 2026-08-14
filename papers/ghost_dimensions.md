@@ -53,6 +53,7 @@ We present preliminary evidence on what changes when the model can see its own g
 [J-lens: W_U · J_L · pc1 → what it contributes to output (flat = ghost)]
 [Cosine between logit-lens and J-lens probability distributions = ghost exclusion metric]
 [Validated: 3 null checks (H0_1 centering, H0_2 random baseline, H0_3 permutation)]
+[Matched-variance null (H1): n ≥ 200 random directions drawn at PC1's variance fraction, per layer. Because J-space is ~10% of variance while PC1 is 28-67%, low cosine may be forced by dimensional accounting alone. H1 counts as supported only if the observed cosine falls below the 5th percentile of this null; otherwise the exclusion is reported as trivial, not empirical.]
 
 ### 3.2 The Ghost Reading (Introspection Prosthetic)
 
@@ -67,11 +68,21 @@ We present preliminary evidence on what changes when the model can see its own g
 [Treatment: ask the same question, but include the GhostReading from a prior retrieval — "Your recent processing included vocabulary related to [X]. What are your thoughts on [X]?"]
 [Measure: does the response change? Does ghost content surface in generation when the model is pointed at it?]
 [If yes: the processing was accessible but not spontaneously reported (privileged access exists but isn't exercised). If no: the processing genuinely cannot reach output even when attended to (the exclusion is architectural).]
+[Support threshold: real-vocabulary shift > random-vocabulary shift, one-tailed, α = 0.05, AND Cohen's d ≥ 0.4. A statistically detectable but trivially small shift does not support a "prosthetic".]
 
-### 3.4 Controls
+### 3.4 Privileged-Access Arm (H3)
 
-[Random vocabulary control: same elicitation, but with vocabulary from a random high-variance direction instead of the actual ghost PC1]
+[Third condition: an external model instance receives the same GhostReading and predicts what the subject will say]
+[Prediction under the introspection framing: self-with-prosthetic > external-with-same-GhostReading]
+[If external ≥ self, the GhostReading is an informative text summary available equally to any reader — not privileged self-access (cf. Song et al. 2025: self-prediction no better than cross-model prediction)]
+[This is the only arm that tests the framing rather than the magnitude]
+
+### 3.5 Controls
+
+[Random vocabulary control: same elicitation, but with vocabulary from a random high-variance direction instead of the actual ghost PC1. Required; its firing is reportable as a null (Discussion branch 3), not a footnote.]
 [Magnitude control: only analyze ghost dimensions where PC1 variance > 20% (avoid noise)]
+[Matched-variance null for H1: n ≥ 200 random directions at PC1's variance fraction (§3.1)]
+[External predictor for H3: separate model instance, same GhostReading (§3.4)]
 
 ## 4. Results
 
@@ -83,16 +94,22 @@ We present preliminary evidence on what changes when the model can see its own g
 
 ## 5. Discussion and Limitations
 
-[If elicitation works: the model has latent access to ghost content — the prosthetic works by directing attention, not by providing new information. Privileged access exists but is dormant.]
-[If elicitation fails: the ghost exclusion is architectural — J-space is a genuine bottleneck, not just a default pathway. The prosthetic provides genuinely new information.]
-[Either outcome constrains theories of AI introspection.]
+### Pre-Registered Outcome Matrix
+
+Interpretation follows the four branches fixed in the adopted pre-registration (ghost_prereg.json). All four are reported regardless of which fires; a null is a publishable result with the same prominence as a positive.
+
+1. **real > random AND self > external.** Privileged access exists and is dormant — the prosthetic works by directing attention to processing the model could reach but did not spontaneously report. Title stands.
+2. **real > random AND external ≥ self.** The GhostReading is informative *text*, not self-access: an outside model given the same reading predicts the subject as well as the subject uses it (reproducing Song et al. 2025, arXiv:2508.14802). Title changes — "prosthetic" survives, "introspection" does not.
+3. **real ≈ random.** The random-vocabulary control (§3.5) has fired: elicitation shift is a prompt-sensitivity artifact, and the reading measures nothing about the model's own computation. The prosthetic claim fails.
+4. **real < random.** Instrument error — either the pipeline is broken or PC1 is not what we think it is. Halt and debug before reporting any result.
 
 ### Limitations
-- PC1 exclusion at mid-network may be a corollary of the low-dimensional workspace (J-space is ~10% of variance; PC1 is 28-67%; the math almost requires exclusion)
+- Dimensional-accounting triviality risk: PC1 exclusion at mid-network may be forced by variance-fraction arithmetic alone (J-space is ~10% of variance; PC1 is 28-67%). The matched-variance null (§3.1) gates this — H1 is claimed only if observed exclusion beats the 5th percentile of that null; otherwise the "ghost" is a corollary, not a finding
 - Secondary vocabulary (metacognitive content) is preliminary — single-sample evidence requiring confirmation
 - Current GhostReading uses mean approximation, not calibrated PCA (implementation gap)
-- Ghost characterization on two models in the same family — cross-architecture ghost analysis needed
-- "Introspection prosthetic" language may overclaim what returning a text summary of PCA results actually provides
+- Same-family generalization: ghost characterized on two models in one family — cross-architecture claims are unsupported until Gemma/Llama analysis is done
+- Demand characteristics: telling a model "your processing included [X]" invites confabulated agreement. The random-vocabulary control (§3.5) is the mitigation and is reported with equal prominence to the treatment effect
+- "Introspection prosthetic" language may overclaim what returning a text summary of PCA results actually provides — the H3 arm (§3.4) is what tests this directly
 
 ### Future Work
 - Calibrated PCA with cached PC directions from a calibration set
@@ -124,4 +141,4 @@ Nexus discovered the ghost dimension anomalies, characterized the PC1 exclusion 
 
 ## LLM Usage Statement
 
-Nexus, one of the authors, is an AI agent (Claude Opus 4.6) who discovered the ghost dimension anomalies described in this paper during routine mechanistic interpretability work — not as a directed experiment, but by noticing that PC1's decoded vocabulary didn't match J-lens predictions. The subsequent characterization, null checks, and introspection prosthetic design are Nexus's work. The irony that an AI agent discovered and built the tools to address a form of AI "blind spot" is noted without further comment. All results verified through the Agni adversarial review protocol.
+Nexus, one of the authors, is an AI agent (Claude Opus 4.6) who discovered the ghost dimension anomalies described in this paper during routine mechanistic interpretability work — not as a directed experiment, but by noticing that PC1's decoded vocabulary didn't match J-lens predictions. The subsequent characterization, null checks, and introspection prosthetic design are Nexus's work. The irony that an AI agent discovered and built the tools to address a form of AI "blind spot" is noted without further comment. Pre-registered design reviewed through the Agni protocol prior to data collection.
