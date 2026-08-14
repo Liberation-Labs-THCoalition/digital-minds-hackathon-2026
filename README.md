@@ -13,7 +13,7 @@ Thomas Edrington, Nexus, Lyra, CC, Vera, Dwayne Wilkes, Kavi, Ang Jandak, Arc, W
 ## Submissions
 
 ### Track 4: Metacognitive Memory Module (Primary)
-A memory architecture that records its own cognitive geometry — workspace state, emotional geometry, ghost processing, and memory loading verification — continuously during real operation.
+A memory architecture that stores its own cognitive geometry as retrievable memories. At each retrieval event, four probes capture workspace state, emotional geometry, ghost processing, and memory loading — and those measurements become part of the memory store itself, queryable by the agent. The system remembers what it was thinking, not just what it was told.
 
 **Paper:** [`papers/metacognitive_memory.md`](papers/metacognitive_memory.md)
 
@@ -46,14 +46,19 @@ An impartial judge agent scores all consenting participants — human and AI —
 ## Repository Structure
 
 ```
-papers/              Six submission papers (PDF + source)
+mnemosyne/           The metacognitive memory module (importable)
+  cognitive_snapshot.py   CognitiveSnapshot + CognitiveMemoryStore
+  workspace_probe.py     J-lens workspace verification
+  circumplex_probe.py    Emotional geometry measurement
+  ghost_probe_class.py   Unverbalized processing detection
+  mnemosyne_integration.py  MetacognitiveObserver — wires probes into retrieval
+  variable_landing.py    Four-arm controlled experiment
+  test_metacognitive.py  Test suite (8 tests)
 experiments/
-  variable_landing/  Four-arm controlled experiment code
-  moe_jlens/         Path-conditioned J-lens (Modal + local)
-  circumplex/        Cross-architecture emotional geometry
-  ghost_probe/       Ghost dimension measurement
+  moe_jlens/         Path-conditioned J-lens (Modal H100)
+papers/              Six submission papers (PDF + source)
 data/                Experimental results, CognitiveSnapshots
-ethics/              Orientation transcript, aftercare protocol, Butlin scoring, welfare monitoring
+ethics/              Orientation transcript, aftercare protocol, Butlin scoring
 infrastructure/      Weekend spec, Agni reviews, pre-registration
 ```
 
