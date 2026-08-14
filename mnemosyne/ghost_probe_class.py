@@ -107,11 +107,11 @@ class GhostProbe:
         self._calibrated = True
 
     def measure(self, layer: Optional[int] = None) -> Optional[GhostReading]:
-        """Measure ghost state at a layer using cached PC directions.
+        """Measure ghost state using cached PC directions (benchmark mode).
 
-        Returns a GhostReading with PC1 variance, dominant tokens
-        (logit lens), secondary tokens (J-lens), and the cosine
-        between them (low = ghost, high = workspace-visible).
+        Reports what PC1 encodes (logit lens) vs what reaches output (J-lens)
+        based on the calibration data. For live conversation monitoring,
+        use measure_live() instead.
         """
         if not self._calibrated:
             return None
@@ -208,6 +208,69 @@ class GhostProbe:
         topk = torch.topk(probs, k)
         return [(self.model.tokenizer.decode([idx.item()]).strip(), prob.item())
                 for idx, prob in zip(topk.indices, topk.values)]
+
+    def measure_live(self, text: str, layer: Optional[int] = None) -> Optional[GhostReading]:
+        """Measure ghost state by projecting LIVE text activations onto cached PCs.
+
+        Calibration extracts PC directions from diverse prompts (session constant).
+        This method runs the actual conversation text, captures its activation,
+        and measures how much of that activation aligns with PC1 — then checks
+        whether the PC1-aligned content reaches the workspace (J-lens) or stays
+        as ghost processing (logit lens only).
+        """
+        if not self._calibrated:
+            return None
+
+        layer = layer or self.probe_layers[0]
+        if layer not in self._pcs:
+            return None
+
+        pcs = self._pcs[layer]
+        svs = self._svs[layer]
+        pc1 = pcs[0]
+        mean = self._means[layer]
+        var_pct = (svs[0]**2 / (svs**2).sum()).item() * 100
+
+        try:
+            input_ids = self.model.encode(text, max_length=512)
+            with ActivationRecorder(self.model.layers, at=[layer]) as rec:
+                self.model.forward(input_ids)
+                h = rec.activations[layer][0].detach().float()
+                h_last = h[-1]
+
+            centered = h_last - mean
+            pc1_projection = torch.dot(centered, pc1).item()
+            pc1_component = pc1_projection * pc1
+
+            ll_logits = self.model.unembed(pc1_component.unsqueeze(0)).squeeze(0).float()
+            ll_probs = torch.softmax(ll_logits, dim=-1)
+            ll_topk = torch.topk(ll_probs, 10)
+            dominant = [(self.model.tokenizer.decode([idx.item()]).strip(), prob.item())
+                        for idx, prob in zip(ll_topk.indices, ll_topk.values)]
+
+            if layer in self.lens.jacobians:
+                transported = self.lens.transport(
+                    pc1_component.cpu().float().unsqueeze(0), layer)
+                jl_logits = self.model.unembed(
+                    transported.to(pc1_component.device)).squeeze(0).float()
+                jl_probs = torch.softmax(jl_logits, dim=-1)
+                jl_topk = torch.topk(jl_probs, 10)
+                secondary = [(self.model.tokenizer.decode([idx.item()]).strip(), prob.item())
+                             for idx, prob in zip(jl_topk.indices, jl_topk.values)]
+                cos = torch.nn.functional.cosine_similarity(
+                    ll_probs.unsqueeze(0), jl_probs.unsqueeze(0)).item()
+            else:
+                secondary = []
+                cos = 1.0
+
+            return GhostReading(
+                pc1_variance_pct=var_pct,
+                dominant_tokens=dominant[:5],
+                secondary_tokens=secondary[:5],
+                cosine_logit_jlens=cos,
+            )
+        except Exception:
+            return None
 
     def to_snapshot_reading(self, layer: Optional[int] = None) -> Optional[GhostReading]:
         """Convenience alias for measure() — matches CircumplexProbe API."""

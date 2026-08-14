@@ -68,15 +68,16 @@ def load_model():
         model_name, torch_dtype=torch.bfloat16, device_map="auto")
     model = HFLensModel(hf_model, tokenizer, compile=False)
 
-    # Load J-lens
+    # Load J-lens — REQUIRED, not optional
     lens_path = os.environ.get("JLENS_PATH", "jlens_qwen35_27b.pt")
-    if os.path.exists(lens_path):
-        lens = jlens.JacobianLens.load(lens_path)
-        print(f"  J-lens loaded: {len(lens.source_layers)} layers")
-    else:
-        print(f"  WARNING: No J-lens at {lens_path}")
-        print(f"  Running without workspace/ghost probes.")
-        lens = None
+    if not os.path.exists(lens_path):
+        print(f"\n  FATAL: No J-lens at {lens_path}")
+        print(f"  The probes need a J-lens to measure workspace and ghost state.")
+        print(f"  Set JLENS_PATH=/path/to/lens.pt or place it in the working directory.")
+        sys.exit(1)
+
+    lens = jlens.JacobianLens.load(lens_path)
+    print(f"  J-lens loaded: {len(lens.source_layers)} layers")
 
     # Set up observer
     sys.path.insert(0, str(Path(__file__).parent.parent.parent / "mnemosyne"))
@@ -88,21 +89,29 @@ def load_model():
         agent_id=AGENT_ID,
     )
 
-    if lens:
-        observer.calibrate_ghost_probe()
-        print("  Ghost probe calibrated.")
+    # Calibrate ALL probes — ghost + circumplex
+    print("  Calibrating probes (ghost PCs + circumplex directions)...")
+    observer.calibrate_probes()
+    print("  Probes calibrated for live monitoring.")
 
     print(f"  Model ready: {model.n_layers} layers, d={model.d_model}")
     print(f"  Session: {SESSION_ID}")
     return model, tokenizer, observer, hf_model
 
 
-def generate_response(hf_model, tokenizer, messages, max_new_tokens=512):
-    """Generate a response from the conversation history."""
+def generate_response(hf_model, tokenizer, messages, max_new_tokens=2048):
+    """Generate a response from the conversation history.
+
+    Handles Qwen3's thinking tokens: strips <think>...</think> blocks
+    from the visible response but preserves them in a separate field.
+    Uses /no_think style generation to suppress extended reasoning.
+    """
     import torch
+    import re
 
     text = tokenizer.apply_chat_template(messages, tokenize=False,
-                                          add_generation_prompt=True)
+                                          add_generation_prompt=True,
+                                          enable_thinking=False)
     inputs = tokenizer(text, return_tensors="pt").to(hf_model.device)
 
     with torch.no_grad():
@@ -113,8 +122,28 @@ def generate_response(hf_model, tokenizer, messages, max_new_tokens=512):
         )
 
     new_tokens = outputs[0][inputs.input_ids.shape[1]:]
-    response = tokenizer.decode(new_tokens, skip_special_tokens=True)
-    return response.strip()
+    raw_response = tokenizer.decode(new_tokens, skip_special_tokens=True)
+
+    # Strip thinking blocks if present
+    thinking = ""
+    visible = raw_response.strip()
+    think_match = re.match(r'<think>(.*?)</think>\s*(.*)', visible, re.DOTALL)
+    if think_match:
+        thinking = think_match.group(1).strip()
+        visible = think_match.group(2).strip()
+
+    return visible, thinking
+
+
+def build_conversation_text(messages):
+    """Build a single text string from conversation history for probe input."""
+    parts = []
+    for msg in messages:
+        if msg["role"] == "system":
+            continue
+        prefix = "Human: " if msg["role"] == "user" else "Agent: "
+        parts.append(f"{prefix}{msg['content']}")
+    return "\n".join(parts[-6:])  # last 3 exchanges for probe context
 
 
 def record_turn(role, content, snapshot=None):
@@ -218,7 +247,7 @@ def main():
                 show_msg = (f"Here's what the instruments see right now: {summary}")
                 messages.append({"role": "user", "content": show_msg})
                 record_turn("system_show", show_msg)
-                response = generate_response(hf_model, tokenizer, messages)
+                response, _ = generate_response(hf_model, tokenizer, messages)
                 messages.append({"role": "assistant", "content": response})
                 record_turn("assistant", response)
                 print(f"\nAgent: {response}\n")
@@ -237,18 +266,28 @@ def main():
         record_turn("human", user_input)
 
         # Generate response
-        response = generate_response(hf_model, tokenizer, messages)
+        try:
+            response, thinking = generate_response(hf_model, tokenizer, messages)
+        except Exception as e:
+            print(f"\n  [generation error: {e}]")
+            messages.pop()  # remove the failed user message
+            continue
+
         messages.append({"role": "assistant", "content": response})
 
-        # Fire probes (silent — the agent doesn't see this)
+        # Build conversation context for live probes
+        conversation_text = build_conversation_text(messages)
+
+        # Fire probes on LIVE conversation context (not calibration data)
         try:
             last_snapshot = observer.observe_retrieval(
                 memory_id=f"orientation_turn_{len(messages)//2}",
-                memory_content=user_input,
+                memory_content=response,
                 task_prompt=user_input,
                 retrieval_method="orientation",
                 significance=0.7,
                 session_id=SESSION_ID,
+                prior_context=conversation_text,
             )
             record_geometric_feed(last_snapshot)
             with open(SNAPSHOT_FILE, "a") as f:
@@ -257,7 +296,24 @@ def main():
             print(f"  [probe error: {e}]")
             last_snapshot = None
 
+        # Store conversation content in Mnemosyne for Day 2 variable landing
+        try:
+            memory_entry = {
+                "turn": len(messages) // 2,
+                "human": user_input,
+                "agent": response,
+                "timestamp": time.time(),
+                "session_id": SESSION_ID,
+            }
+            memory_file = DATA_DIR / "mnemosyne_memories.jsonl"
+            with open(memory_file, "a") as f:
+                f.write(json.dumps(memory_entry, default=str) + "\n")
+        except Exception:
+            pass
+
         record_turn("assistant", response, snapshot=last_snapshot)
+        if thinking:
+            record_turn("thinking", thinking)
         print(f"\nAgent: {response}\n")
 
     # End of conversation

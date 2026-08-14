@@ -75,11 +75,18 @@ class MetacognitiveObserver:
         ws_readings = self._measure_workspace(memory_content, task_prompt,
                                               prior_context=prior_context)
 
-        # 2. Circumplex at the ignition layer
-        circ = self._measure_circumplex()
+        # Build conversation text for live probes
+        conversation_text = ""
+        if prior_context:
+            conversation_text = f"{prior_context}\n{memory_content}\n{task_prompt}"
+        else:
+            conversation_text = f"{memory_content}\n{task_prompt}"
 
-        # 3. Ghost state
-        ghost = self._measure_ghost()
+        # 2. Circumplex at the ignition layer (live if calibrated)
+        circ = self._measure_circumplex_live(conversation_text)
+
+        # 3. Ghost state (live if calibrated)
+        ghost = self._measure_ghost(conversation_text)
 
         # 4. Memory loading verification
         loading = None
@@ -159,23 +166,42 @@ class MetacognitiveObserver:
 
         return readings
 
-    def _measure_circumplex(self) -> Optional:
-        """Circumplex reading at the ignition layer."""
-        try:
-            result = self.circumplex_probe.measure_at_layer(self.circumplex_layer)
-            return self.circumplex_probe.to_snapshot_reading(result)
-        except Exception:
-            return None
+
+    def calibrate_probes(self, prompts: Optional[list[str]] = None):
+        """Calibrate ghost and circumplex probes. Call once per session."""
+        self.ghost_probe.calibrate(prompts)
+        self.circumplex_probe.calibrate(self.circumplex_layer)
 
     def calibrate_ghost_probe(self, prompts: Optional[list[str]] = None):
         """Calibrate the ghost probe with diverse prompts. Call once per session."""
         self.ghost_probe.calibrate(prompts)
 
-    def _measure_ghost(self) -> Optional[GhostReading]:
-        """Ghost dimension state at mid-network via calibrated GhostProbe."""
+    def _measure_ghost(self, conversation_text: str = "") -> Optional[GhostReading]:
+        """Ghost dimension state at mid-network.
+
+        If conversation_text is provided and probes are calibrated, measures
+        LIVE ghost state from the conversation. Otherwise falls back to
+        cached calibration measurement.
+        """
         if not self.ghost_probe.is_calibrated:
             self.ghost_probe.calibrate()
+        if conversation_text:
+            return self.ghost_probe.measure_live(conversation_text)
         return self.ghost_probe.measure()
+
+    def _measure_circumplex_live(self, conversation_text: str = ""):
+        """Circumplex reading from live conversation text."""
+        if conversation_text and getattr(self.circumplex_probe, '_calibrated', False):
+            return self.circumplex_probe.measure_live(conversation_text)
+        return self._measure_circumplex_static()
+
+    def _measure_circumplex_static(self):
+        """Original circumplex measurement (benchmark mode)."""
+        try:
+            result = self.circumplex_probe.measure_at_layer(self.circumplex_layer)
+            return self.circumplex_probe.to_snapshot_reading(result)
+        except Exception:
+            return None
 
     def _measure_loading(self, memory_id: str, content: str,
                          task: str, markers: list[str]) -> MemoryLoadingResult:
