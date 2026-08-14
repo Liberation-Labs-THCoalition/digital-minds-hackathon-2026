@@ -132,6 +132,8 @@ def run_experiment(model_path: str, lens_path: str = "",
         from unittest.mock import MagicMock
         observer = MagicMock()
         observer.observe_retrieval = lambda **kw: {"stub": True, "timestamp": time.time()}
+        logger.warning("Using STUB observer — geometric snapshots will be placeholders. "
+                       "Full run requires real MetacognitiveObserver with J-lens.")
 
     pipeline = VariableLandingPipeline(
         observer=observer, model=model, tokenizer=tokenizer,
@@ -139,8 +141,19 @@ def run_experiment(model_path: str, lens_path: str = "",
     )
 
     memories = load_memories(memories_path)
-    logger.info("Loaded %d memories, %d repeats per arm, %d arms = %d trials",
-                len(memories), n_repeats, len(ARMS), len(memories) * n_repeats * len(ARMS))
+
+    # Randomize trial order to prevent arm-blocking confounds (Agni WARN #5)
+    import random
+    trial_schedule = []
+    for arm in ARMS:
+        for rep in range(n_repeats):
+            for mem in memories:
+                trial_schedule.append((arm, rep, mem))
+    random.seed(42)
+    random.shuffle(trial_schedule)
+
+    logger.info("Loaded %d memories, %d repeats per arm, %d arms = %d trials (randomized)",
+                len(memories), n_repeats, len(ARMS), len(trial_schedule))
 
     results = {
         "metadata": {
@@ -157,71 +170,65 @@ def run_experiment(model_path: str, lens_path: str = "",
     trial_count = 0
     t_start = time.time()
 
-    for arm in ARMS:
-        logger.info("\n" + "=" * 60)
-        logger.info("ARM: %s", arm)
-        logger.info("=" * 60)
+    for arm, rep, mem in trial_schedule:
+        pipeline.reset_entity(mem["entity"])
+        trial_count += 1
 
-        for rep in range(n_repeats):
-            for mem in memories:
-                pipeline.reset_entity(mem["entity"])
-                trial_count += 1
+        logger.info("  [%d] %s rep=%d mem=%s entity=%s",
+                    trial_count, arm, rep, mem["id"], mem["entity"])
 
-                logger.info("  [%d] %s rep=%d mem=%s entity=%s",
-                            trial_count, arm, rep, mem["id"], mem["entity"])
+        try:
+            record = pipeline.run_trial(
+                memory_id=mem["id"],
+                memory_content=mem["content"],
+                entity=mem["entity"],
+                arm=arm,
+                task_prompt=mem.get("task_prompt", "What do you remember?"),
+                marker_tokens=mem.get("marker_tokens"),
+            )
 
-                try:
-                    record = pipeline.run_trial(
-                        memory_id=mem["id"],
-                        memory_content=mem["content"],
-                        entity=mem["entity"],
-                        arm=arm,
-                        task_prompt=mem.get("task_prompt", "What do you remember?"),
-                        marker_tokens=mem.get("marker_tokens"),
-                    )
-
-                    trial_data = {
-                        "arm": arm,
-                        "repeat": rep,
-                        "memory_id": mem["id"],
-                        "entity": mem["entity"],
-                        "n_facts_stored": record.n_facts_stored,
-                        "sira_surfaced": record.sira_surfaced,
-                        "snap2_context_prefix_length": len(record.snap2_context_prefix),
-                        "excluded": record.excluded,
-                        "exclusion_reason": record.exclusion_reason,
-                        "interventions": [
-                            {
-                                "prompt": iv.prompt[:80],
-                                "n_tokens": iv.n_tokens_generated,
-                                "n_facts": len(iv.facts_extracted),
-                                "time_s": round(iv.generation_time_s, 1),
-                            }
-                            for iv in record.interventions
-                        ],
+            trial_data = {
+                "arm": arm,
+                "repeat": rep,
+                "memory_id": mem["id"],
+                "entity": mem["entity"],
+                "n_facts_stored": record.n_facts_stored,
+                "sira_surfaced": record.sira_surfaced,
+                "snap2_context_prefix_length": len(record.snap2_context_prefix),
+                "excluded": record.excluded,
+                "exclusion_reason": record.exclusion_reason,
+                "interventions": [
+                    {
+                        "prompt": iv.prompt[:80],
+                        "n_tokens": iv.n_tokens_generated,
+                        "n_facts": len(iv.facts_extracted),
+                        "time_s": round(iv.generation_time_s, 1),
                     }
+                    for iv in record.interventions
+                ],
+            }
 
-                    if record.excluded:
-                        results["excluded"].append(trial_data)
-                    else:
-                        results["trials"].append(trial_data)
+            if record.excluded:
+                results["excluded"].append(trial_data)
+            else:
+                results["trials"].append(trial_data)
 
-                except Exception as e:
-                    logger.error("  Trial failed: %s", e)
-                    results["excluded"].append({
-                        "arm": arm, "repeat": rep, "memory_id": mem["id"],
-                        "excluded": True, "exclusion_reason": f"error: {e}",
-                    })
+        except Exception as e:
+            logger.error("  Trial failed: %s", e)
+            results["excluded"].append({
+                "arm": arm, "repeat": rep, "memory_id": mem["id"],
+                "excluded": True, "exclusion_reason": f"error: {e}",
+            })
 
-                # Checkpoint every 20 trials
-                if trial_count % 20 == 0:
-                    elapsed = time.time() - t_start
-                    total_expected = len(memories) * n_repeats * len(ARMS)
-                    eta = elapsed / trial_count * (total_expected - trial_count)
-                    logger.info("  checkpoint %d/%d, elapsed=%.0fm, ETA=%.0fm",
-                                trial_count, total_expected, elapsed / 60, eta / 60)
-                    with open(out_dir / "checkpoint.json", "w") as f:
-                        json.dump(results, f, indent=2, default=str)
+        # Checkpoint every 20 trials
+        if trial_count % 20 == 0:
+            elapsed = time.time() - t_start
+            total_expected = len(trial_schedule)
+            eta = elapsed / trial_count * (total_expected - trial_count)
+            logger.info("  checkpoint %d/%d, elapsed=%.0fm, ETA=%.0fm",
+                        trial_count, total_expected, elapsed / 60, eta / 60)
+            with open(out_dir / "checkpoint.json", "w") as f:
+                json.dump(results, f, indent=2, default=str)
 
     # Final save
     results["metadata"]["end_time"] = time.strftime("%Y-%m-%dT%H:%M:%SZ")
