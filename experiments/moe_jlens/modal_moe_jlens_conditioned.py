@@ -74,25 +74,34 @@ def capture_routing_decisions(model, hf_model, prompts, moe_layers,
 
 
 def make_gate_hook(layer_idx, routing_decisions, top_k=None):
-    """Hook for the gate/router module directly to capture routing logits.
+    """Hook for the gate/router module to capture expert assignments.
 
-    top_k: number of experts per token to capture. If None, captures all
-    experts that the model actually routes to (from config.num_experts_per_tok).
+    Qwen3MoeTopKRouter returns a 3-tuple:
+      [0]: raw router logits (n_tokens, n_experts)
+      [1]: top-k gate weights (n_tokens, top_k) — softmaxed
+      [2]: top-k expert indices (n_tokens, top_k) — int64
+
+    We capture element [2] directly — the actual expert assignments.
     """
     import torch
 
     def hook_fn(module, input, output):
-        k = top_k or 8
-        if isinstance(output, torch.Tensor):
-            actual_k = min(k, output.shape[-1])
-            topk = torch.topk(output.float(), actual_k, dim=-1).indices
-            routing_decisions[layer_idx].append(topk.detach().cpu())
-        elif isinstance(output, tuple):
-            logits = output[0] if isinstance(output[0], torch.Tensor) else output
+        if isinstance(output, tuple) and len(output) >= 3:
+            expert_indices = output[2]
+            if isinstance(expert_indices, torch.Tensor) and expert_indices.dtype in (torch.int64, torch.int32, torch.long):
+                routing_decisions[layer_idx].append(expert_indices.detach().cpu())
+                return
+        if isinstance(output, tuple) and len(output) >= 1:
+            logits = output[0]
             if isinstance(logits, torch.Tensor) and logits.dim() >= 2:
-                actual_k = min(k, logits.shape[-1])
-                topk = torch.topk(logits.float(), actual_k, dim=-1).indices
+                k = top_k or min(8, logits.shape[-1])
+                topk = torch.topk(logits.float(), k, dim=-1).indices
                 routing_decisions[layer_idx].append(topk.detach().cpu())
+                return
+        if isinstance(output, torch.Tensor):
+            k = top_k or min(8, output.shape[-1])
+            topk = torch.topk(output.float(), k, dim=-1).indices
+            routing_decisions[layer_idx].append(topk.detach().cpu())
 
     return hook_fn
 
