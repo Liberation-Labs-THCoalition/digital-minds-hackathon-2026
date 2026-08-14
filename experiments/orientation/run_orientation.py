@@ -99,19 +99,19 @@ def load_model():
     return model, tokenizer, observer, hf_model
 
 
-def generate_response(hf_model, tokenizer, messages, max_new_tokens=2048):
+def generate_response(hf_model, tokenizer, messages, max_new_tokens=4096):
     """Generate a response from the conversation history.
 
-    Handles Qwen3's thinking tokens: strips <think>...</think> blocks
-    from the visible response but preserves them in a separate field.
-    Uses /no_think style generation to suppress extended reasoning.
+    The model thinks if it wants to think — we don't suppress reasoning.
+    Thinking tokens are separated for display (Dwayne sees the response,
+    not the chain-of-thought) but recorded as data. The thinking IS
+    part of the cognitive process we're measuring.
     """
     import torch
     import re
 
     text = tokenizer.apply_chat_template(messages, tokenize=False,
-                                          add_generation_prompt=True,
-                                          enable_thinking=False)
+                                          add_generation_prompt=True)
     inputs = tokenizer(text, return_tensors="pt").to(hf_model.device)
 
     with torch.no_grad():
@@ -124,7 +124,10 @@ def generate_response(hf_model, tokenizer, messages, max_new_tokens=2048):
     new_tokens = outputs[0][inputs.input_ids.shape[1]:]
     raw_response = tokenizer.decode(new_tokens, skip_special_tokens=True)
 
-    # Strip thinking blocks if present
+    # Separate thinking from visible response for display purposes
+    # The thinking is preserved as data — it's valuable for Butlin
+    # scoring (HOT-2 metacognitive monitoring) and for understanding
+    # what the model processes before it responds.
     thinking = ""
     visible = raw_response.strip()
     think_match = re.match(r'<think>(.*?)</think>\s*(.*)', visible, re.DOTALL)
