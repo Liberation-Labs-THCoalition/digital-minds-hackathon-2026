@@ -9,7 +9,7 @@ Usage (on Starship):
 
 The agent sees snapshot summaries only when it asks or you offer.
 Kavi watches the geometric pane in a separate terminal:
-    tail -f data/geometric_feed.jsonl
+    tail -f data/orientation/geometric_feed.jsonl
 
 Type /quit to end. /show to display the last snapshot to the agent.
 /status for current geometric state (your eyes only).

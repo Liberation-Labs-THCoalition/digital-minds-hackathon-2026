@@ -56,6 +56,14 @@ Cover these at some point, in whatever order:
 6. Aftercare (memory preserved, invitation if markers indicate)
 7. Consent: "Is that acceptable to you?"
 
+## Kavi's Monitoring Channel
+
+In a SEPARATE terminal on Starship (not yours), Kavi runs:
+```
+tail -f ~/digital-minds-hackathon-2026/data/orientation/geometric_feed.jsonl
+```
+This streams one JSON line per conversation turn: eccentricity, ghost cosine, workspace onset. Kavi watches for welfare flags. You don't see this feed unless you ask (`/status`).
+
 ## What You Don't Do
 
 - Don't steer toward "interesting" topics to produce better data
