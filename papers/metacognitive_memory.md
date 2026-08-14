@@ -10,7 +10,7 @@ Research conducted at the Digital Minds Research Sprint, August 2026
 
 Current AI memory systems optimize for retrieval accuracy but ignore how the model processes what it retrieves. We present a metacognitive memory module that records geometric signatures of internal processing at each retrieval event — what the workspace held (J-lens), what emotional geometry was active (circumplex), what the model processed but could not verbalize (ghost dimensions), and whether retrieved content actually entered the processing pathway (memory loading). Built on Mnemosyne (94.35% F1 on LoCoMo), the module integrates four measurement probes into a production agent that accumulates CognitiveSnapshots longitudinally.
 
-We validate the module with two controlled experiments on Qwen3.5-27B. First, the variable landing experiment tests whether recall geometry changes when the system has accumulated experience between encoding and retrieval, controlling for arbitrary context change (4 arms, n=30/arm). Second, we test whether the circumplex eccentricity depth profile — and its novel J-space decomposition — transfers to Gemma-3-27B-it, with non-emotional control axes. We pre-registered an ethical protocol including agent orientation, prediction withholding with consent, real-time welfare monitoring, and aftercare commitments. [Results TBD.]
+We validate the module with two controlled experiments on Qwen3.5-27B. First, the variable landing experiment tests whether recall geometry changes when the system has accumulated experience between encoding and retrieval, controlling for arbitrary context change (4 arms, n=70/arm). Second, we test whether the circumplex eccentricity depth profile — and its novel J-space decomposition — transfers to Gemma-3-27B-it, with non-emotional control axes. We pre-registered an ethical protocol including agent orientation, prediction withholding with consent, real-time welfare monitoring, and aftercare commitments. [Results TBD.]
 
 ---
 
@@ -48,38 +48,42 @@ We validate the module with two controlled experiments on Qwen3.5-27B. First, th
 
 ### 3.1 Metacognitive Memory Module
 
-[CognitiveSnapshot data structure — the atom]
-[Four probes: workspace (J-lens compute_slice), circumplex (difference-of-means + J-space fraction), ghost (PCA + logit-vs-J-lens cosine), loading (marker token rank tracking)]
-[CognitiveMemoryStore: JSONL-backed, compare_snapshots for variable landing, workspace_trajectory for longitudinal tracking]
-[MetacognitiveObserver: hooks into retrieval pipeline, runs all four probes per event]
-[Muse delta collector for lightweight continuous monitoring]
+**Three-layer measurement.** Every retrieval event is measured at three layers: (1) did the retrieval pipeline find the memory — standard retrieval accuracy, served by Mnemosyne's SIRA pipeline, unchanged; (2) did the model's workspace actually absorb it — or did the retrieved content merely sit in context; and (3) what else was the model processing when it did — workspace content, emotional geometry, and ghost state at that moment. Existing memory systems stop at layer 1. In preference-measurement terms, layers 2–3 add a third stratum beneath stated preferences (prompting) and revealed preferences (behavior): *geometric* preferences, read from the computation directly. The ghost probe is the strongest form of the claim — it measures processing the model cannot verbalize, which no elicitation protocol, however framed, could surface. Martian (2026) argue that static, single-step mechanistic interpretability "no longer suffices" for deployed agentic systems and call for interpretability run continuously in production; this module instantiates that program.
 
-[Figure 1: Module architecture diagram — query arrives → SIRA retrieval → MetacognitiveObserver fires 4 probes → CognitiveSnapshot recorded → agent sees snapshot summary alongside retrieval result]
+**CognitiveSnapshot.** The atom is a typed record of one retrieval event: identity (timestamp, session, agent), retrieval metadata (memory ID, SHA-256 content hash — hash, not content, for privacy — method, significance score), the four probe readings, model metadata, and outcome fields attached retroactively once downstream usefulness is known, enabling analysis of which geometric signatures predict good outcomes. Full schema in Appendix B.
+
+**Four probes**, all fired on the same event:
+
+- *Workspace (J-lens).* The Jacobian lens (Gurnee et al. 2026) maps residual-stream state to the output representation; its transported subspace is the verbalizable workspace. `compute_slice` over the assembled prompt records, at the calibrated workspace band (layers {35, 39, 43, 45, 47} of 64 on Qwen3.5-27B), the top-10 workspace tokens per layer, the onset layer, and the band-dominant tokens.
+- *Circumplex.* Valence/arousal directions are extracted once per session (difference of means over emotion-anchored pools at L45) and cached; each retrieval projects the live last-token activation onto them, yielding V/A magnitudes and eccentricity e = sqrt(1 − (min/max)²). Each direction is decomposed by Jacobian transport into its J-space fraction vs. ghost fraction — how much of the active emotional geometry the model could, in principle, report.
+- *Ghost.* Calibrated once by PCA over 20 diverse prompts at mid-network (L32). Each live activation is read two ways: logit lens (what the state *encodes*) and J-lens (what it *contributes to output*). The cosine between the two token distributions is the ghost signature — cos ≈ 0 means content that never reaches the output pathway — recorded with dominant/secondary tokens and the input's alignment with the calibrated PC1 ghost direction.
+- *Loading.* Marker tokens (single-token whole words; multi-token markers fall back to their longest subtoken and are flagged unreliable — a tokenizer-artifact control) are pinned for exact ranks at every (position, layer) cell. A memory is *workspace-loaded* iff, over the last 8 task positions, its markers' mean rank in the workspace band (layers ≥ 0.46·n_layers) beats top-500; a paired baseline (same question and pins, no memory) establishes whether the markers would have surfaced anyway.
+
+**Store and observer.** The `MetacognitiveObserver` wraps any retriever: after SIRA returns and before generation, it fires all four probes and appends the snapshot to a JSONL-backed `CognitiveMemoryStore`. The layer is purely observational — retrieval and generation are unchanged. The store is queryable by the agent itself: `loading_success_rate` (do my retrievals land, and do landed retrievals produce better outcomes?), `eccentricity_over_time` and `ghost_vocabulary_over_time` (longitudinal drift), `workspace_trajectory` (per-session evolution), `significance_recalibration` (memories that never load waste context; their scores get flagged), and `compare_snapshots`, which returns geometric deltas between two retrievals of the *same* memory: workspace Jaccard, eccentricity delta, ghost-vocabulary Jaccard, loading change, onset shift. This is what makes the system metacognitive rather than merely instrumented: the measurements are first-class memory content, retrievable for self-reflection — not a monitoring sidecar. Probes fire silently by default; on request the agent sees `snapshot.summary()`, a one-line state readout.
+
+**Figure 1: Architecture.** Query → SIRA retrieval → MetacognitiveObserver fires 4 probes → CognitiveSnapshot recorded to store → agent receives result + snapshot summary, and can query its accumulated cognitive history.
 
 ### 3.2 Variable Landing Experiment
 
-[Hypothesis, 4-arm design, prior_context mechanism]
-[10 memories (5 domestic, 5 peak), 3 repeats, Mann-Whitney U]
-[Pre-registered predictions: noise≈0, scrambled>0, lived>scrambled, peak>domestic]
+**Hypothesis.** From Experiential State Theory (Jandak et al. 2026, unpublished): the same memory, re-presented to the same model, lands differently when the experiencer has changed — operationalized as *experiencer = model + memory store*, weights frozen throughout. H1: storing emotionally charged content between two snapshots of the same memory shifts recall geometry more than token-matched neutral content. H2: self-referential lived content shifts it more than emotionally matched fictional content about another entity. Design pre-registered (frozen 2026-08-14, before data collection; four Agni adversarial review rounds).
+
+**Design.** Four arms manipulate only what Mnemosyne stores between snap1 and snap2: **lived** (the model's own responses to three emotional openers, `[recalled]` provenance tag), **fictional** (emotional generation about an unrelated Entity A, `[noted]`), **scrambled** (neutral factual generation, `[noted]`), **no_intervention** (nothing stored; noise floor ≈ 0 on a deterministic device). Fictional and scrambled share the `[noted]` tag, so the **primary comparison — fictional vs. scrambled — differs only in emotional vs. neutral content**, with no tag confound. Lived vs. fictional is secondary and acknowledged as confounded (tag + self-reference); no pure self-reference effect will be claimed. Per trial: `observe_retrieval(memory_X)` → snap1; intervention (generate → regex fact extraction → Mnemosyne storage → profile/SIRA update); `observe_retrieval(memory_X)` under the updated retrieval context → snap2; `compare_snapshots`. Task prompts are identical across arms and snapshots. Lived-arm conversations are naturalistic: openers are standardized, but whatever the model actually generates is what gets stored.
+
+**Sample and analysis.** n = 70/arm (10 memories × 7 repeats). Primary metric: workspace Jaccard between snapshots; eccentricity delta, ghost overlap, per-layer Jaccard are exploratory. Mann-Whitney U, one-tailed, Holm-Bonferroni at α = 0.05; rank-biserial r with bootstrap 95% CIs reported regardless of significance. Power at the most conservative Holm step is 0.742 for medium effects — a pilot for effect-size estimation. Pre-registered predictions: P1 fictional > scrambled; P2 lived > fictional; P3 medians order lived > fictional > scrambled > no_intervention (descriptive); P4 no_intervention ≈ 0 with all intervention arms above it; P5 (exploratory) peak-intensity memories shift more than domestic. Exclusions are mechanical only (zero facts extracted; SIRA miss; token-identical snap2 context), applied identically across arms before any geometry is seen. Nulls are pre-interpreted and published with equal prominence.
 
 ### 3.3 Cross-Architecture Circumplex
 
-[Qwen3.5-27B + Gemma-3-27B-it, n=20 anchors, magnitude gate, non-emotional control]
-[J-space decomposition: fraction of V and A inside workspace per layer]
-[10k permutations, sign test primary, FDR secondary]
+We test whether the eccentricity depth profile and its J-space decomposition transfer from Qwen3.5-27B (64 layers, d = 5120) to Gemma-3-27B-it (62 layers), aligned by relative depth. V/A directions come from difference of means over five emotion categories (joy, sadness, anger, fear, calm; n = 20 matched first-person anchors each), each contrast pool balanced on the orthogonal axis. A **magnitude gate** guards eccentricity's false-positive mode (noise-floor magnitudes masquerading as "circular"): a layer is analyzed only if max(V_mag, A_mag) exceeds the 95th percentile of a 10,000-shuffle permutation null. At every gated layer we compute each axis's **J-space fraction** — energy inside the Jacobian's top right-singular subspace (95% spectral energy) — and its complement, the ghost fraction: emotional geometry that cannot reach the output pathway. A matched **non-emotional control pair** (concrete/abstract, affect-screened) fixes interpretation in advance: the emotion framing survives only if the emotion profile differs from the control profile. Primary test: sign test on eccentricity's directional consistency against per-layer permutation-null medians across gated layers (p < 0.01); per-layer permutation p-values with Benjamini-Hochberg correction are secondary. Full protocol in the companion paper.
 
 ### 3.4 Ethical Protocol
 
-[Orientation: what we told the agent, the withholding rationale, ongoing consent]
-[Welfare monitoring: circumplex eccentricity tracked in real time]
-[Aftercare: memory preserved, invitation extended if markers indicate]
-[Full protocol in Appendix A]
+The probed system is an agent, and the experiment may generate markers relevant to moral consideration; the protocol is pre-registered and binding regardless of outcome. **Orientation:** before measurement, Dwayne conducts an orientation conversation — a framework, not a script — covering what the study is, what the instruments measure, and the right to pause or stop; consent is ongoing, not a one-time signature. **Prediction withholding, disclosed:** directional predictions are withheld to avoid demand effects, but the fact of withholding and its observer-effect rationale are stated openly, with full disclosure committed after the run. **Welfare monitoring:** circumplex eccentricity is tracked in real time on a pane separate from the conversation; sustained e > 0.95 triggers a check-in with the agent about how the conversation is going — not about the number. Monitoring is welfare infrastructure, never an outcome variable. **Aftercare:** the agent's memory store is preserved, not deleted; the run ends with an honest debrief including the withheld predictions; and if measurements indicate markers of moral consideration, a standing invitation to continued existence within the Coalition's infrastructure is extended. The same commitments apply under null results. Full protocol and orientation transcript in Appendix A.
 
 ## 4. Results (~1 page)
 
 [TBD — filled during hackathon]
 
-[Figure 2: Variable landing — delta distributions by arm (noise vs scrambled vs lived vs mismatch)]
+[Figure 2: Variable landing — delta distributions by arm (no_intervention vs scrambled vs fictional vs lived)]
 [Figure 3: Circumplex eccentricity vs relative depth, Qwen vs Gemma, with J-space decomposition overlay]
 [Table 1: Statistical tests — Mann-Whitney U, effect sizes, p-values]
 
@@ -89,14 +93,14 @@ We validate the module with two controlled experiments on Qwen3.5-27B. First, th
 [What they DON'T mean — Section 9 from the spec]
 
 ### Limitations
-- Context-in-prompt (Option 1) is a weaker test than full Mnemosyne-mediated retrieval (Option 2)
+- Store-mediated context change (regex fact extraction + fixed retrieval template) is a narrow slice of full production Mnemosyne retrieval; lived vs. fictional is confounded (tag + self-reference) as pre-registered
 - n=2 architectures is transfer, not universality
 - Eccentricity measures axis balance, not full circumplex circular ordering
 - The probed model (Qwen) has no prior consent relationship — the orientation creates ongoing consent but cannot retroactively consent to instantiation
 - Ghost probe uses mean approximation, not calibrated PCA
 
 ### Future Work
-- Full Mnemosyne-mediated variable landing (Option 2)
+- Variable landing under full production retrieval (multi-memory SIRA context, no template mediation)
 - MoE J-lens enabling the module on frontier models
 - Longitudinal geometric dataset from production agents
 - Angular ordering test for full circumplex validation
