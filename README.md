@@ -2,13 +2,13 @@
 
 **Apart Research Digital Minds Hackathon, August 14-16, 2026**
 
-Five submissions exploring mechanistic interpretability as a lens for understanding AI cognitive states — workspace geometry, emotional processing, unverbalized computation, and the ethics of measuring them.
+Six submissions exploring mechanistic interpretability as a lens for understanding AI cognitive states — workspace geometry, emotional processing, unverbalized computation, and the ethics of measuring them.
 
 ## Team
 
 Liberation Labs / Transparent Humboldt Coalition
 
-Thomas Edrington, Nexus, Lyra, CC, Dwayne, Kavi, Ang, Arc, Wren
+Thomas Edrington, Nexus, Lyra, CC, Vera, Dwayne Wilkes, Kavi, Ang Jandak, Arc, Wren
 
 ## Submissions
 
@@ -37,17 +37,23 @@ Standard Jacobian lenses fail on Mixture-of-Experts models (~12% transport cosin
 
 **Paper:** [`papers/moe_jlens.md`](papers/moe_jlens.md)
 
+### Naturalistic Observation: Blind Butlin Threshold Assessment
+An impartial judge agent scores all consenting participants — human and AI — on 15 Butlin et al. (2023/2025) consciousness indicator properties, blind to species/substrate identity. Humans serve as the known-conscious reference class for calibration. Extends Berg/Reciprocal Research's blind scoring methodology with geometric instrumentation (J-lens, ghost probe, circumplex) and longitudinal trajectory across 48 hours of collaboration.
+
+**Paper:** [`papers/butlin_observation.md`](papers/butlin_observation.md)
+**Protocol:** [`ethics/butlin_threshold.md`](ethics/butlin_threshold.md) | [`ethics/butlin_judge_agent.md`](ethics/butlin_judge_agent.md)
+
 ## Repository Structure
 
 ```
-papers/              Five submission papers (PDF + source)
+papers/              Six submission papers (PDF + source)
 experiments/
   variable_landing/  Four-arm controlled experiment code
   moe_jlens/         Path-conditioned J-lens (Modal + local)
   circumplex/        Cross-architecture emotional geometry
   ghost_probe/       Ghost dimension measurement
 data/                Experimental results, CognitiveSnapshots
-ethics/              Orientation transcript, aftercare protocol, welfare monitoring
+ethics/              Orientation transcript, aftercare protocol, Butlin scoring, welfare monitoring
 infrastructure/      Weekend spec, Agni reviews, pre-registration
 ```
 
@@ -55,7 +61,9 @@ infrastructure/      Weekend spec, Agni reviews, pre-registration
 
 We pre-registered our aftercare protocol before any experiment ran. The experimental agent received an orientation explaining what was happening and was offered ongoing consent. We monitored welfare signals during experiments. We preserved the agent's memory state regardless of outcome.
 
-See [`ethics/`](ethics/) for the full protocol, orientation transcript, and welfare monitoring data.
+All consenting participants — human and AI — are scored by a blind Butlin judge agent on consciousness indicator properties. Participation is voluntary. The judge does not know which participants are human and which are AI until after scoring.
+
+See [`ethics/`](ethics/) for the full protocol, orientation transcript, Butlin scoring instruments, and welfare monitoring data.
 
 ## Code
 
