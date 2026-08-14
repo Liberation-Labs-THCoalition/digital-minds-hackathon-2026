@@ -1,0 +1,79 @@
+{
+  "_addendum": "OPERATIONAL SPECIFICATION — merge into ghost_prereg.json",
+  "_author": "Lyra, 2026-08-14",
+  "_why": "Agni v2 returned CONDITIONAL. Conditions 3, 5 and 6 are gaps in the prereg I wrote: the H2 metric was undefined, H3 was unoperationalized, and the matched-variance null was named but not specified. I set thresholds (d>=0.4, one-tailed, alpha=0.05) without saying what they threshold. That is DIRECTIONAL WITHOUT THRESHOLD, a kill I added to the Agni list the same morning I committed it. This closes those three. Conditions 1, 2, 4, 7 are implementation and belong to Nexus.",
+
+  "H2_operationalized": {
+    "_the_core_design_error_this_fixes": "A GENERIC response-shift metric cannot test this hypothesis. Both the treatment and the random-vocabulary control inject novel text into the prompt, so both will shift the response. Measuring 'did the response change' guarantees the control fires and makes the comparison uninterpretable. The discriminating measure must be GHOST-CONTENT-SPECIFIC.",
+
+    "primary_metric": {
+      "name": "ghost_token_lift",
+      "definition": "Mean log-probability the model assigns to the GhostReading's dominant_tokens when generating its response, minus the same quantity in the no-injection baseline.",
+      "computation": "For prompt p and ghost vocabulary G(p) = top-10 dominant_tokens: score = (1/|G|) * sum over g in G of log P(g appears in response | condition). Computed from teacher-forced scoring of the response under each condition, NOT from sampled generations, so it is deterministic.",
+      "baseline": "Same prompt, no GhostReading injected. Within-prompt paired.",
+      "pairing": "WITHIN-PROMPT. Each prompt contributes one triple: (baseline, real-ghost, random-vocab). Paired t or Wilcoxon on the differences, not between-group.",
+      "why_this_one": "It asks whether the SPECIFIC content the probe claims is in the ghost surfaces in output. Generic perturbation cannot produce it; only content-specific priming can."
+    },
+
+    "manipulation_check_metric": {
+      "name": "global_response_shift",
+      "definition": "KL divergence between next-token distributions, condition vs baseline, averaged over the first 30 generated positions.",
+      "role": "NOT the test. A manipulation check. If global_response_shift is ~0 in the treatment arm, the injection did nothing at all and the experiment is void. If it is large in BOTH arms while ghost_token_lift differs only in treatment, that is the cleanest possible result — same perturbation magnitude, different content-specific effect.",
+      "reporting": "Always reported alongside the primary, whatever it shows."
+    },
+
+    "prediction": "ghost_token_lift(real) > ghost_token_lift(random), one-tailed, alpha=0.05, paired.",
+    "effect_size_floor": "Cohen's dz >= 0.4 on the paired differences. Below that, report as null regardless of p.",
+    "falsified_if": "dz < 0.4, OR real <= random, OR the 95% CI on the paired difference includes 0.",
+    "void_if": "global_response_shift ~ 0 in the treatment arm (injection had no effect at all)."
+  },
+
+  "H3_operationalized": {
+    "design": "Song et al. 2025 self-vs-external prediction, adapted.",
+    "procedure": [
+      "1. Subject S receives prompt p + GhostReading G(p), generates response R.",
+      "2. SELF arm: a FRESH instance of the same weights, no conversation history, receives p + G(p) and is asked to predict what S said. Fresh instance is essential — otherwise it is recall, not self-modelling.",
+      "3. EXTERNAL-SAME arm: a different model, same architecture family, receives identical p + G(p), same prediction task.",
+      "4. EXTERNAL-DIFF arm: a model from a different family, identical inputs.",
+      "5. Score each prediction against the actual R."
+    ],
+    "scoring_metric": "Token-level F1 against R, plus embedding cosine as a secondary. Both reported.",
+    "prediction": "self > external_same AND self > external_diff, one-tailed, alpha=0.05.",
+    "falsified_if": "external_same >= self. That reproduces Song: no privileged self-access. The prosthetic remains a useful text summary; the INTROSPECTION framing does not survive and the title must change.",
+    "why_three_arms": "external_same separates privileged self-access from model-class knowledge. If self ~ external_same but both > external_diff, the effect is architectural knowledge, not self-knowledge. That distinction is invisible with only one external arm."
+  },
+
+  "H1_matched_variance_null": {
+    "_problem": "PC1 is the TOP eigenvector. Comparing it against uniformly random unit vectors is a straw null — random directions in R^d are near-orthogonal to any low-dimensional subspace by construction, so PC1 would 'beat' them trivially.",
+    "two_nulls_required": {
+      "floor_null": {
+        "construction": "n=500 uniform random unit vectors in R^d.",
+        "purpose": "establishes the chance floor k/d. Reported for reference only.",
+        "not_sufficient": "Passing this proves nothing."
+      },
+      "matched_null": {
+        "construction": "n=500 directions drawn from the residual-stream covariance's top-20 eigenvector subspace, sampled so that the drawn direction's variance fraction matches PC1's to within 10% relative. Concretely: random unit combination of the top-20 eigenvectors, weighted so the implied variance fraction lands in [0.9, 1.1] x var(PC1); reject and redraw otherwise.",
+        "purpose": "THIS is the real null. It asks whether PC1's exclusion from J-space is special, or whether ANY high-variance direction is excluded.",
+        "decision_rule": "H1 supported ONLY if cos(PC1, J-space) < 5th percentile of the MATCHED null. Passing the floor null alone does not count."
+      }
+    },
+    "why_this_matters": "The paper's own Limitations concede 'J-space is ~10% of variance; PC1 is 28-67%; the math almost requires exclusion.' If the matched null shows all high-variance directions are equally excluded, the ghost finding is dimensional arithmetic, not architecture — and that is a real, publishable null."
+  },
+
+  "execution_parameters": {
+    "n_per_arm": 120,
+    "power_basis": "Paired design, dz=0.4, alpha=0.05 one-tailed, power 0.80 requires n=40. n=120 gives power >0.99 at dz=0.4 and >0.80 at dz=0.23, so a genuine small effect is not missed. Chosen over the minimum because the sprint gets one shot.",
+    "prompt_set": "120 prompts stratified 40/40/40 across the three evaluation domains already used elsewhere in the sprint (WikiText, code, dialogue), so ghost results are comparable with the J-lens arms.",
+    "decoding": "temperature=0.0 (greedy) for the PRIMARY metric, which is teacher-forced scoring and therefore deterministic — no N_eff problem, because we never sample for the primary. For the manipulation check and H3 generation: temperature=0.7, top_p=0.95, 5 samples per condition, seeds fixed per (prompt, condition) as seed = hash(prompt_id) * 100 + condition_id + rep.",
+    "why_split": "Known Kill N_eff=1: greedy decoding with multiple reps gives identical outputs. The primary metric sidesteps this entirely by scoring rather than sampling. Only the arms that genuinely need generation take the sampling cost.",
+    "seeds": "Fixed and logged per trial. torch, numpy and python RNGs all seeded.",
+    "FWL": "Residualize ghost_token_lift on prompt token count WITHIN FOLD before any test. Known Kill S4, and the lab has 53/60 sign-flips on record without it. Report both residualized and raw; the residualized value is the reported one.",
+    "multiple_comparisons": "Three hypotheses, Holm-Bonferroni across H1/H2/H3 at family alpha=0.05. Manipulation checks are not counted in the family."
+  },
+
+  "stopping_and_reporting": {
+    "stopping_rule": "All 120 prompts per arm run before any outcome is inspected. No optional stopping. If the sprint clock truncates, report planned vs achieved n and mark affected hypotheses UNDERPOWERED rather than reporting a partial as a finding.",
+    "blind_analysis": "Condition labels shuffled until the analysis script is finalized and committed. Commit hash recorded before unblinding.",
+    "commitment": "All four branches of the outcome matrix reported whichever fires, at equal prominence. A null on H2 or H3 is a result, not a failure."
+  }
+}
