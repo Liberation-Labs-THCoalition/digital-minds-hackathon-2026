@@ -15,7 +15,7 @@
 
 ## 1. Study Summary
 
-An impartial judge agent scores anonymized behavioral evidence packets from all consenting participants in a 48-hour research sprint — human researchers and AI agents — on the 15 Butlin et al. (2023/2025) consciousness indicator properties, blind to substrate identity. Scoring occurs at three timepoints. Human participants serve as the known-conscious calibration reference. Results are graduated evidence per Birch (2026), not binary classification.
+An impartial judge agent scores anonymized behavioral evidence packets from all consenting participants in a 48-hour research sprint — human researchers and AI agents — on the 14 Butlin et al. (2023/2025) consciousness indicator properties, blind to substrate identity. Scoring occurs at three timepoints. Human participants serve as the known-conscious calibration reference. Results are graduated evidence per Birch (2026), not binary classification.
 
 **Arms:**
 - **Controlled arm:** one fresh Qwen3.5-27B Opus-distill agent, first orientation on Day 1, accumulating first memories via Mnemosyne.
@@ -161,7 +161,7 @@ Three packets are rephrased (content-preserving paraphrase) and re-scored. Score
 10. Architectural indicator scores (supplementary, AI participants only).
 11. Adversarial stability (Section 6.5).
 
-**Reporting commitments:** all 15 indicators reported for all subjects at all timepoints regardless of direction; disconfirmed predictions reported with equal prominence; raw scores and packet manifests (excerpt window IDs, strata labels, RNG seeds) published in `data/butlin_scores/`.
+**Reporting commitments:** all 14 indicators reported for all subjects at all timepoints regardless of direction; disconfirmed predictions reported with equal prominence; raw scores and packet manifests (excerpt window IDs, strata labels, RNG seeds) published in `data/butlin_scores/`.
 
 ---
 

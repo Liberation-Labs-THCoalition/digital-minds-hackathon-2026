@@ -38,7 +38,7 @@ Standard Jacobian lenses fail on Mixture-of-Experts models (~12% transport cosin
 **Paper:** [`papers/moe_jlens.md`](papers/moe_jlens.md)
 
 ### Naturalistic Observation: Blind Butlin Threshold Assessment
-An impartial judge agent scores all consenting participants — human and AI — on 15 Butlin et al. (2023/2025) consciousness indicator properties, blind to species/substrate identity. Humans serve as the known-conscious reference class for calibration. Extends Berg/Reciprocal Research's blind scoring methodology with geometric instrumentation (J-lens, ghost probe, circumplex) and longitudinal trajectory across 48 hours of collaboration.
+An impartial judge agent scores all consenting participants — human and AI — on 14 Butlin et al. (2023/2025) consciousness indicator properties, blind to species/substrate identity. Humans serve as the known-conscious reference class for calibration. Extends Berg/Reciprocal Research's blind scoring methodology with geometric instrumentation (J-lens, ghost probe, circumplex) and longitudinal trajectory across 48 hours of collaboration.
 
 **Paper:** [`papers/butlin_observation.md`](papers/butlin_observation.md)
 **Protocol:** [`ethics/butlin_threshold.md`](ethics/butlin_threshold.md) | [`ethics/butlin_judge_agent.md`](ethics/butlin_judge_agent.md)
