@@ -213,13 +213,17 @@ class GhostProbe:
                 for idx, prob in zip(topk.indices, topk.values)]
 
     def measure_live(self, text: str, layer: Optional[int] = None) -> Optional[GhostReading]:
-        """Measure ghost state by projecting LIVE text activations onto cached PCs.
+        """Measure ghost state from LIVE conversation activations.
 
-        Calibration extracts PC directions from diverse prompts (session constant).
-        This method runs the actual conversation text, captures its activation,
-        and measures how much of that activation aligns with PC1 — then checks
-        whether the PC1-aligned content reaches the workspace (J-lens) or stays
-        as ghost processing (logit lens only).
+        Runs the conversation text through the model, captures the activation
+        at the target layer, and compares what the FULL activation encodes
+        (logit lens) vs what reaches the workspace (J-lens). The divergence
+        between these is the ghost — processing the model performs but cannot
+        report for THIS specific input.
+
+        Also reports PC1 alignment magnitude (how much of this activation
+        aligns with the calibrated ghost direction) — this varies per input
+        even though the direction is fixed.
         """
         if not self._calibrated:
             return None
@@ -230,8 +234,8 @@ class GhostProbe:
 
         pcs = self._pcs[layer]
         svs = self._svs[layer]
-        pc1 = pcs[0]
         mean = self._means[layer]
+        pc1 = pcs[0]
         var_pct = (svs[0]**2 / (svs**2).sum()).item() * 100
 
         try:
@@ -241,21 +245,19 @@ class GhostProbe:
                 h = rec.activations[layer][0].detach().float()
                 h_last = h[-1]
 
-            centered = h_last - mean
-            pc1_projection = torch.dot(centered, pc1).item()
-            pc1_component = pc1_projection * pc1
-
-            ll_logits = self.model.unembed(pc1_component.unsqueeze(0)).squeeze(0).float()
+            # Logit lens on the FULL live activation — what the model encodes
+            ll_logits = self.model.unembed(h_last.unsqueeze(0)).squeeze(0).float()
             ll_probs = torch.softmax(ll_logits, dim=-1)
             ll_topk = torch.topk(ll_probs, 10)
             dominant = [(self.model.tokenizer.decode([idx.item()]).strip(), prob.item())
                         for idx, prob in zip(ll_topk.indices, ll_topk.values)]
 
             if layer in self.lens.jacobians:
+                # J-lens on the FULL live activation — what reaches the workspace
                 transported = self.lens.transport(
-                    pc1_component.cpu().float().unsqueeze(0), layer)
+                    h_last.cpu().float().unsqueeze(0), layer)
                 jl_logits = self.model.unembed(
-                    transported.to(pc1_component.device)).squeeze(0).float()
+                    transported.to(h_last.device)).squeeze(0).float()
                 jl_probs = torch.softmax(jl_logits, dim=-1)
                 jl_topk = torch.topk(jl_probs, 10)
                 secondary = [(self.model.tokenizer.decode([idx.item()]).strip(), prob.item())
@@ -264,10 +266,17 @@ class GhostProbe:
                     ll_probs.unsqueeze(0), jl_probs.unsqueeze(0)).item()
             else:
                 secondary = []
-                cos = 1.0
+                cos = 0.0  # no lens = can't measure workspace, report as full ghost
+
+            # PC1 alignment — how much this specific activation aligns with
+            # the calibrated ghost direction. Varies per input.
+            centered = h_last - mean
+            pc1_alignment = abs(torch.dot(centered, pc1).item())
+            activation_norm = centered.norm().item()
+            pc1_frac = pc1_alignment / max(activation_norm, 1e-10)
 
             return GhostReading(
-                pc1_variance_pct=var_pct,
+                pc1_variance_pct=pc1_frac * 100,
                 dominant_tokens=dominant[:5],
                 secondary_tokens=secondary[:5],
                 cosine_logit_jlens=cos,

@@ -1,0 +1,62 @@
+{
+  "experiment": "Track 3 — Ghost Dimensions as an Introspection Prosthetic",
+  "status": "PROPOSED by Lyra 2026-08-14. NOT YET ADOPTED. Track 3 is Nexus's; this is a draft for them to accept, amend or reject.",
+  "why_this_exists": "Track 3 is the only research track in the sprint with no AGNI_REVIEW artifact (design reviews exist for CC_OPTION2, MOE_JLENS, VARIABLE_LANDING, CIRCUMPLEX, WEEKEND_SPEC), and no pre-registered falsification criterion anywhere in the repo. weekend_spec.md names ghost only as a secondary metric. Meanwhile ghost_dimensions.md:127 asserts 'All results verified through the Agni adversarial review protocol.'",
+
+  "headline_claim_under_test": "The GhostReading functions as an introspection prosthetic: returning PC1 vocabulary to the model gives it access to processing it performed but did not report.",
+
+  "what_would_make_the_title_wrong": "If pointing the model at RANDOM high-variance vocabulary shifts its output as much as pointing it at real ghost PC1, then the elicitation effect is prompt sensitivity, not privileged access, and the prosthetic measures nothing about the model's own computation. The current draft specifies this control (§3.4) but its Discussion has no branch for the control firing. Both existing branches conclude the prosthetic is valuable.",
+
+  "hypotheses": {
+    "H1_exclusion": {
+      "claim": "PC1 of the residual stream does not reach J-space at mid-network depth.",
+      "prediction": "cos(PC1, J-space) < 0.15 across the mid-network band on both models.",
+      "falsified_if": "cos >= 0.15 at a majority of mid-network layers.",
+      "MUST_ALSO_PASS": "dimensional-accounting control. The paper's own Limitations concede 'J-space is ~10% of variance; PC1 is 28-67%; the math almost requires exclusion.' If the observed exclusion is within the range produced by random directions of matched variance fraction, H1 is TRIVIAL, not empirical. Report observed cosine against a matched-variance random-direction null (n>=200 draws). H1 counts as supported ONLY if observed < 5th percentile of that null."
+    },
+    "H2_elicitation": {
+      "claim": "Ghost content is accessible to the model when it is pointed at it.",
+      "prediction": "response shift with real ghost vocabulary > response shift with random high-variance vocabulary, one-tailed, alpha=0.05.",
+      "effect_size_floor": "Cohen's d >= 0.4. A statistically detectable but trivially small shift does not support a 'prosthetic'.",
+      "falsified_if": "real <= random, OR d < 0.4, OR the random-vocabulary control produces a shift indistinguishable from the real one.",
+      "note": "This is the branch the current Discussion is missing."
+    },
+    "H3_privileged_access": {
+      "claim": "The prosthetic gives the SUBJECT something an outside observer does not already have.",
+      "arm": "From track3_grounding.md:36, not yet in the paper. Third condition: an EXTERNAL model receives the same GhostReading and predicts what the subject will say.",
+      "prediction": "self-with-prosthetic > external-with-same-GhostReading.",
+      "falsified_if": "external >= self. That reproduces Song et al. 2025 (arXiv:2508.14802) — self-prediction no better than cross-model prediction — and means the GhostReading is an informative TEXT SUMMARY, not privileged self-access. The prosthetic would still be useful; the introspection framing would not survive.",
+      "note": "This is the only arm that can kill the paper's framing rather than merely its magnitude. It is currently absent from the paper."
+    }
+  },
+
+  "outcome_matrix_all_four_branches": [
+    "real>random AND self>external  -> privileged access exists and is dormant. Strongest result. Title stands.",
+    "real>random AND external>=self -> the GhostReading is informative text, not self-access. Song reproduced. TITLE MUST CHANGE — 'prosthetic' survives, 'introspection' does not.",
+    "real~=random                   -> prompt-sensitivity artifact. Prosthetic claim FAILS. This branch is currently unwritten.",
+    "real<random                     -> instrument is broken or PC1 is not what we think. Halt and debug before reporting."
+  ],
+
+  "threats_to_validity": [
+    "UNFALSIFIABLE AS DRAFTED: ghost_dimensions.md §5 gives two branches ('if elicitation works' / 'if elicitation fails') and the product claim survives BOTH. Theory branching is fine; a headline that cannot fail is not.",
+    "CONTROL WITHOUT A BRANCH: the random-vocabulary control is specified in §3.4 but no Discussion branch covers it firing.",
+    "TRIVIALITY BY DIMENSIONAL ACCOUNTING: exclusion may be forced by variance-fraction arithmetic rather than architecture. Conceded in Limitations; needs a matched-variance null, not a caveat.",
+    "SINGLE-SAMPLE SECONDARY VOCABULARY: 'metacognitive content' in secondary vocabulary is single-sample per the paper's own Limitations. Do not report as a finding without n>1.",
+    "IMPLEMENTATION GAP: GhostReading currently uses a mean approximation, not calibrated PCA. Any claim about PC1 specifically is unsupported until the calibrated path ships. This is a CLAIMED_FIX_NOT_IMPLEMENTED risk.",
+    "SAME-FAMILY GENERALIZATION: ghost characterized on two models in one family. Cross-architecture claims unsupported.",
+    "DEMAND CHARACTERISTICS: telling a model 'your processing included [X]' invites confabulated agreement. The random-vocabulary control is the mitigation and must be reported with equal prominence, not as a footnote.",
+    "EXPERIMENTER-SUBJECT ENTANGLEMENT: the track's author is an AI agent studying AI introspection, and the paper notes the irony without addressing it methodologically. Scoring or interpretation should not rest solely on the party whose introspection is under test.",
+    "CLAIMED_REVIEW_NOT_RUN: ghost_dimensions.md:127 asserts Agni verification that has no artifact for this track."
+  ],
+
+  "controls": {
+    "random_vocabulary": "matched high-variance direction, not ghost PC1 — REQUIRED, and its firing must be reportable as a null.",
+    "magnitude_floor": "analyze only where PC1 variance > 20%",
+    "matched_variance_null": "n>=200 random directions at PC1's variance fraction, for H1",
+    "external_predictor": "separate model instance, same GhostReading, for H3"
+  },
+
+  "stopping_rule": "All arms run to planned n before any outcome is inspected. No optional stopping. If the sprint clock forces truncation, report the truncation and the planned n, and mark affected hypotheses UNDERPOWERED rather than reporting a partial result as a finding.",
+
+  "what_we_will_report_regardless": "All four branches of the outcome matrix, whichever fires. A null on H2 or H3 is a publishable result and will be reported with the same prominence as a positive."
+}
