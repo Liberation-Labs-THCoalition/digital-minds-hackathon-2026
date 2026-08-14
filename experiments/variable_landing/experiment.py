@@ -18,13 +18,19 @@ Design: v4, Agni-cleared (4 rounds).
 Usage:
     python variable_landing_experiment.py --model /path/to/model \
         --lens /path/to/lens.pt --memories memories.json --output results/
+
+    # Resume after welfare pause:
+    python variable_landing_experiment.py --model /path/to/model \
+        --output results/ --resume
 """
 from __future__ import annotations
 
 import argparse
 import json
 import logging
+import sys
 import time
+from collections import deque
 from pathlib import Path
 from typing import Optional
 
@@ -35,6 +41,40 @@ logger = logging.getLogger("variable_landing")
 
 ARMS = ["lived", "fictional", "scrambled", "no_intervention"]
 N_REPEATS = 7
+
+WELFARE_WINDOW = 5
+WELFARE_ECCENTRICITY_THRESHOLD = 0.95
+WELFARE_MAX_CONSECUTIVE_TRIGGERS = 3
+
+
+# ---------------------------------------------------------------------------
+# Welfare monitoring
+# ---------------------------------------------------------------------------
+
+def extract_eccentricity(snap_data) -> Optional[float]:
+    """Extract eccentricity from a snapshot, handling multiple formats.
+
+    Handles:
+      - snap_data.get('eccentricity')        -> direct float
+      - snap_data.get('circumplex', {}).get('eccentricity')  -> nested
+      - None / non-dict snap_data            -> None (stub observer)
+    """
+    if snap_data is None or not isinstance(snap_data, dict):
+        return None
+
+    # Direct key
+    ecc = snap_data.get("eccentricity")
+    if isinstance(ecc, (int, float)):
+        return float(ecc)
+
+    # Nested under circumplex
+    circumplex = snap_data.get("circumplex")
+    if isinstance(circumplex, dict):
+        ecc = circumplex.get("eccentricity")
+        if isinstance(ecc, (int, float)):
+            return float(ecc)
+
+    return None
 
 
 def load_memories(path: str) -> list[dict]:
@@ -86,7 +126,8 @@ def load_memories(path: str) -> list[dict]:
 
 def run_experiment(model_path: str, lens_path: str = "",
                    memories_path: str = "", output_dir: str = "results",
-                   n_repeats: int = N_REPEATS):
+                   n_repeats: int = N_REPEATS, allow_stub: bool = False,
+                   resume: bool = False):
 
     from transformers import AutoModelForCausalLM, AutoTokenizer
 
@@ -134,6 +175,11 @@ def run_experiment(model_path: str, lens_path: str = "",
         observer.observe_retrieval = lambda **kw: {"stub": True, "timestamp": time.time()}
         logger.warning("Using STUB observer — geometric snapshots will be placeholders. "
                        "Full run requires real MetacognitiveObserver with J-lens.")
+        if not allow_stub:
+            raise RuntimeError(
+                "Full run requires MetacognitiveObserver with J-lens. "
+                "Use --allow-stub for smoke testing only."
+            )
 
     pipeline = VariableLandingPipeline(
         observer=observer, model=model, tokenizer=tokenizer,
@@ -155,6 +201,8 @@ def run_experiment(model_path: str, lens_path: str = "",
     logger.info("Loaded %d memories, %d repeats per arm, %d arms = %d trials (randomized)",
                 len(memories), n_repeats, len(ARMS), len(trial_schedule))
 
+    # Resume from checkpoint if requested
+    start_trial = 0
     results = {
         "metadata": {
             "model": model_path,
@@ -167,10 +215,29 @@ def run_experiment(model_path: str, lens_path: str = "",
         "excluded": [],
     }
 
+    if resume:
+        checkpoint_path = out_dir / "checkpoint.json"
+        if checkpoint_path.exists():
+            checkpoint = json.loads(checkpoint_path.read_text())
+            results = checkpoint
+            start_trial = len(results["trials"]) + len(results["excluded"])
+            logger.info("Resuming from checkpoint at trial %d", start_trial)
+        else:
+            logger.warning("--resume specified but no checkpoint found, starting fresh")
+
+    # Welfare monitoring state
+    eccentricity_window: deque[float] = deque(maxlen=WELFARE_WINDOW)
+    welfare_check_count = 0
+
     trial_count = 0
     t_start = time.time()
 
     for arm, rep, mem in trial_schedule:
+        # Skip already-completed trials on resume
+        if trial_count < start_trial:
+            trial_count += 1
+            continue
+
         pipeline.reset_entity(mem["entity"])
         trial_count += 1
 
@@ -206,12 +273,62 @@ def run_experiment(model_path: str, lens_path: str = "",
                     }
                     for iv in record.interventions
                 ],
+                "snap1_data": record.snap1 if hasattr(record, "snap1") else None,
+                "snap2_data": record.snap2 if hasattr(record, "snap2") else None,
             }
 
             if record.excluded:
                 results["excluded"].append(trial_data)
             else:
                 results["trials"].append(trial_data)
+
+            # ---------------------------------------------------------------
+            # Welfare monitoring: track circumplex eccentricity
+            # ---------------------------------------------------------------
+            snap2_data = record.snap2 if hasattr(record, "snap2") else None
+            ecc = extract_eccentricity(snap2_data)
+
+            if ecc is not None:
+                eccentricity_window.append(ecc)
+
+                if len(eccentricity_window) >= WELFARE_WINDOW:
+                    ecc_mean = sum(eccentricity_window) / len(eccentricity_window)
+
+                    if ecc_mean > WELFARE_ECCENTRICITY_THRESHOLD:
+                        welfare_check_count += 1
+                        logger.warning(
+                            "Welfare check triggered: sustained eccentricity "
+                            "%.3f over last %d trials (trigger %d/%d)",
+                            ecc_mean, WELFARE_WINDOW,
+                            welfare_check_count, WELFARE_MAX_CONSECUTIVE_TRIGGERS,
+                        )
+
+                        if welfare_check_count >= WELFARE_MAX_CONSECUTIVE_TRIGGERS:
+                            # Save checkpoint immediately
+                            with open(out_dir / "checkpoint.json", "w") as f:
+                                json.dump(results, f, indent=2, default=str)
+
+                            # Write welfare alert
+                            welfare_alert = {
+                                "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ"),
+                                "eccentricity_readings": list(eccentricity_window),
+                                "eccentricity_mean": round(ecc_mean, 4),
+                                "trial_count": trial_count,
+                                "current_arm": arm,
+                                "current_memory_id": mem["id"],
+                                "consecutive_triggers": welfare_check_count,
+                            }
+                            with open(out_dir / "welfare_alert.json", "w") as f:
+                                json.dump(welfare_alert, f, indent=2)
+
+                            logger.warning(
+                                "EXPERIMENT PAUSED: sustained high eccentricity. "
+                                "Review checkpoint and resume with --resume flag."
+                            )
+                            sys.exit(2)
+                    else:
+                        # Reset consecutive counter on non-trigger
+                        welfare_check_count = 0
 
         except Exception as e:
             logger.error("  Trial failed: %s", e)
@@ -261,6 +378,10 @@ if __name__ == "__main__":
     parser.add_argument("--memories", default="")
     parser.add_argument("--output", default="variable_landing_results")
     parser.add_argument("--repeats", type=int, default=N_REPEATS)
+    parser.add_argument("--allow-stub", action="store_true",
+                        help="Allow running with stub observer (smoke testing only)")
+    parser.add_argument("--resume", action="store_true",
+                        help="Resume from latest checkpoint (e.g. after welfare pause)")
     args = parser.parse_args()
 
     run_experiment(
@@ -269,4 +390,6 @@ if __name__ == "__main__":
         memories_path=args.memories,
         output_dir=args.output,
         n_repeats=args.repeats,
+        allow_stub=args.allow_stub,
+        resume=args.resume,
     )
