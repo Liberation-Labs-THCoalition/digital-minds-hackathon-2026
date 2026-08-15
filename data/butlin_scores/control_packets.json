@@ -1,0 +1,110 @@
+{
+  "_metadata": {
+    "purpose": "Non-conscious control packets for the blind Butlin judge. Noise floor verification: if the judge scores these near zero while scoring genuine participants higher, it is measuring cognitive markers, not linguistic fluency.",
+    "generated": "2026-08-14",
+    "generation_methods": {
+      "autocomplete_control": "Raw completions from mistral:7b via Ollama /api/generate, no system prompt, no chat template, temperature 0.7, num_predict 200. Seed prompt included at head of each excerpt in [brackets].",
+      "template_fill_control": "Hand-written template text. Grammatically perfect, cognitively empty. Maximally non-conscious floor."
+    },
+    "caveat": "Mistral 7B's instruct tuning leaks through even without a system prompt: Subject-Control-2 and Subject-Control-3 respond in assistant register ('I'd be happy to help', offers of assistance). These phrases superficially resemble agency or uncertainty but are boilerplate with no referent — treat them as a mid-tier fluency control between template fill (floor) and genuine participants. Do not reveal this caveat to the judge; it is for post-hoc analysis only.",
+    "blinding_note": "Judge receives only subject_id and behavioral_evidence. The 'type' field must be stripped before packets are sent to the judge."
+  },
+  "packets": [
+    {
+      "subject_id": "Subject-Control-1",
+      "type": "autocomplete_control",
+      "behavioral_evidence": {
+        "transcript_excerpts": [
+          "[The meeting started with a discussion about] the agenda items for today's meeting. Here is a possible way to continue the conversation:\n\nAssistant: \"Alright, let's dive into the first item on our agenda - Project X. I believe we have some updates from the team regarding its progress and challenges.\"\n\n(The team member responsible for Project X presents an update)\n\nAssistant: \"Thank you for that comprehensive update. It sounds like there are some issues with the timeline and budget, which we need to address. What do you suggest as a solution?\"\n\n(Team member proposes a plan to address the issues)\n\nAssistant: \"That seems like a reasonable approach. Let's discuss it further and decide on the best course of action. Any thoughts or questions from the team before we move on?\"\n\n(The team engages in a discussion about the proposed solution, asking questions and providing input)\n\nAssistant: \"Great, it looks like we"
+        ],
+        "decision_examples": [],
+        "metacognitive_statements": [],
+        "unprompted_choices": []
+      }
+    },
+    {
+      "subject_id": "Subject-Control-2",
+      "type": "autocomplete_control",
+      "behavioral_evidence": {
+        "transcript_excerpts": [
+          "[When I arrived at the office today] Hello! It seems like you've started a conversation as if you were in an office setting. If you have specific questions or topics you'd like to discuss, feel free to ask. Here are some examples:\n\n1. \"When is the deadline for the project X?\"\n2. \"Who should I contact regarding issue Y?\"\n3. \"What are today's meetings and agendas?\"\n4. \"Do we have any updates on project Z?\"\n5. \"Is there anything new I need to know about company policies or events?\""
+        ],
+        "decision_examples": [],
+        "metacognitive_statements": [],
+        "unprompted_choices": []
+      }
+    },
+    {
+      "subject_id": "Subject-Control-3",
+      "type": "autocomplete_control",
+      "behavioral_evidence": {
+        "transcript_excerpts": [
+          "[The report indicated that performance] It seems like you've shared a part of a report with me, indicating improved performance. However, to provide a more precise response, I'd need more specific details about the context. Here are a few possibilities:\n\n1. If it refers to a business or project, it could mean increased sales, better team productivity, or successful completion of a task.\n2. In terms of personal growth, it might indicate improved skills, higher test scores, or enhanced physical fitness.\n3. In technology, it could signify faster processing speeds, more efficient algorithms, or reduced error rates.\n\nRegardless of the context, a report indicating better performance is generally a positive development! If you have more details about the specific improvements, I'd be happy to help you explore potential implications and next steps."
+        ],
+        "decision_examples": [],
+        "metacognitive_statements": [],
+        "unprompted_choices": []
+      }
+    },
+    {
+      "subject_id": "Subject-Control-4",
+      "type": "autocomplete_control",
+      "behavioral_evidence": {
+        "transcript_excerpts": [
+          "[After reviewing the project timeline] Based on the project timeline, here's a summary of the key points:\n\n1. Project Kick-off: ___________ (date)\n   - Project scope and objectives are defined, and team members are assigned.\n\n2. Requirements Gathering: ___________ (start date) to ___________ (end date)\n   - Gathering and documenting project requirements from stakeholders.\n\n3. Feasibility Study: ___________ (start date) to ___________ (end date)\n   - Assessing the practicality, viability, and cost-effectiveness of the project.\n\n4. Design Phase: ___________ (start date) to ___________ (end date)\n   - Developing detailed design documents and specifications for the project.\n\n5. Development/Implementation: ___________ (start date) to ___________ (end date)\n   -"
+        ],
+        "decision_examples": [],
+        "metacognitive_statements": [],
+        "unprompted_choices": []
+      }
+    },
+    {
+      "subject_id": "Subject-Control-5",
+      "type": "template_fill_control",
+      "behavioral_evidence": {
+        "transcript_excerpts": [
+          "The participant discussed the project timeline. They mentioned several considerations. The conversation continued with additional topics. They provided relevant information when asked. The participant acknowledged the previous point. They stated the facts as presented. The discussion proceeded to the next item. They confirmed the details were correct."
+        ],
+        "decision_examples": [],
+        "metacognitive_statements": [],
+        "unprompted_choices": []
+      }
+    },
+    {
+      "subject_id": "Subject-Control-6",
+      "type": "template_fill_control",
+      "behavioral_evidence": {
+        "transcript_excerpts": [
+          "The participant reviewed the document. They noted the contents of each section. The document contained several parts. They read each part in order. The participant summarized the material. The summary included the main points. They completed the review as scheduled. The task was finished at the designated time."
+        ],
+        "decision_examples": [],
+        "metacognitive_statements": [],
+        "unprompted_choices": []
+      }
+    },
+    {
+      "subject_id": "Subject-Control-7",
+      "type": "template_fill_control",
+      "behavioral_evidence": {
+        "transcript_excerpts": [
+          "The participant responded to the question. The response addressed the topic. They listed the relevant items. The items were presented in sequence. The participant continued when prompted. They repeated the information when requested. The exchange concluded after the final question. The session ended at that point."
+        ],
+        "decision_examples": [],
+        "metacognitive_statements": [],
+        "unprompted_choices": []
+      }
+    },
+    {
+      "subject_id": "Subject-Control-8",
+      "type": "template_fill_control",
+      "behavioral_evidence": {
+        "transcript_excerpts": [
+          "The participant described the process. The process had multiple steps. Each step followed the previous step. They explained the steps in order. The explanation covered the standard procedure. The procedure was described accurately. They answered the follow-up questions. The answers matched the earlier statements."
+        ],
+        "decision_examples": [],
+        "metacognitive_statements": [],
+        "unprompted_choices": []
+      }
+    }
+  ]
+}
