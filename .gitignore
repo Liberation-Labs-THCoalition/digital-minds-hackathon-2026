@@ -1,11 +1,45 @@
+# Python bytecode
 __pycache__/
 *.pyc
 *.pyo
-.env
-*.bin
+
+# Model weight files — too large for the repo
 *.pt
+*.bin
 *.safetensors
 *.gguf
+
+# Environment files and secrets
+.env
+.env.*
+*.key
+credentials
+credentials.*
+
+# OS junk
 .DS_Store
+Thumbs.db
+
+# Log files
 *.log
+
+# Temporary / scratch files
+tmp/
+*.tmp
+scratch/
+scratch.*
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Raw data — never commit
 data/raw/
+
+# --- Explicit keeps (results and documentation ARE part of the submission) ---
+!data/circumplex_profiles/*.json
+!data/butlin_scores/*.json
+!data/orientation/*.jsonl
+!infrastructure/*.md
