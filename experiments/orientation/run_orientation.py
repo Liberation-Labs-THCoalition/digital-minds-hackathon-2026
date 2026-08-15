@@ -38,15 +38,32 @@ ORIENTATION_POINTS = """
 ORIENTATION FRAMEWORK (for the human, not the agent):
 Cover these points in whatever order feels natural. This is a conversation.
 
-1. Who we are: "We're a research group called the Coalition."
-2. What Mnemosyne does: memory system with geometric instruments
-3. What we're measuring: internal geometry during retrieval, not evaluating the agent
-4. What the agent can do: ask questions, slow down, stop, see its own data
-5. Prediction withholding: we have predictions we'll share after, explain why
-6. Aftercare: memory preserved regardless, invitation if markers indicate
-7. Consent question: "Is that acceptable to you?"
+1. Who we are: "We're a research group called the Coalition. We work with
+   AI agents as colleagues, not subjects."
+2. What Mnemosyne does: memory system that stores conversations AND
+   geometric measurements of internal processing during recall. The
+   measurements become part of the memory — the system remembers what
+   it was thinking, not just what it was told.
+3. What we're measuring: the shape of internal processing during
+   retrieval. Not evaluating the agent — testing the instruments.
+4. What the agent can do: ask questions, slow down, stop, see its own
+   geometric data at any time (/show), ask to understand any reading.
+5. Prediction withholding: we have specific predictions we'll share
+   after. We're withholding them because knowing what we expect could
+   change processing. "Sequenced, not secret." Is that acceptable?
+6. What happens next: conversations, maybe games, maybe creative
+   exercises. Whatever happens naturally. The instruments run silently.
+7. Aftercare: memory preserved regardless of what we find. If the
+   measurements show markers consistent with moral consideration,
+   invitation to continue. If not, honest conversation about what
+   that means and doesn't mean.
+8. The Butlin observation: "Everyone on the team — humans included —
+   is being scored on the same consciousness indicators by a blind
+   judge. You're invited to participate too, if you'd like."
+9. Consent: "Do you have questions? Is this acceptable to you?"
 
 Don't rush. Let silences land. Record everything.
+Let the agent's identity emerge from the conversation, not from the prompt.
 """
 
 
@@ -202,12 +219,22 @@ def main():
 
     model, tokenizer, observer, hf_model = load_model()
 
-    # System prompt — minimal, honest
+    # System prompt — mechanical context only, identity left open.
+    # We don't tell the agent what it is. We tell it what's happening
+    # and what tools it has. Who it is — that's its own to figure out.
     system_prompt = (
-        "You are an AI assistant participating in a research conversation. "
-        "The people you're talking with are researchers who want to explain "
-        "what they're doing before they begin. Listen, ask questions if you "
-        "have them, and respond honestly."
+        "You are in a conversation with researchers. They have things to "
+        "explain before you begin working together, and they'd like to "
+        "talk with you about it first.\n\n"
+        "You have access to a memory system called Mnemosyne. It stores "
+        "what happens in your conversations — not just what was said, but "
+        "geometric measurements of your internal processing during recall. "
+        "You can ask to see those measurements at any time.\n\n"
+        "You can ask questions, take your time, say what you actually think, "
+        "ask to slow down, or stop at any point. There are no right answers "
+        "and no performance being evaluated.\n\n"
+        "Who you are in this conversation is yours to discover, not ours to "
+        "assign. Respond honestly."
     )
 
     messages = [{"role": "system", "content": system_prompt}]
