@@ -46,6 +46,10 @@ class MetacognitiveObserver:
     Does not modify retrieval behavior — purely observational.
     """
 
+    #: Fallback random-direction cosine baseline (pre-calibrated for d~5120).
+    #: Used only when the live matched-norm baseline cannot be computed.
+    DEFAULT_RANDOM_BASELINE = 0.1
+
     def __init__(self, model: HFLensModel, lens: jlens.JacobianLens,
                  store_path: str, agent_id: str,
                  workspace_layers: Optional[list[int]] = None,
@@ -143,6 +147,12 @@ class MetacognitiveObserver:
             top_n=10, max_seq_len=512,
         )
 
+        # Real logit-lens vs J-lens agreement per workspace layer, plus a
+        # matched-norm random baseline. Requires one extra forward pass
+        # (SliceData does not retain activations).
+        measured = [l for l in slice_data.layers if l in self.workspace_layers]
+        cosines = self._compute_workspace_cosines(prompt, measured)
+
         readings = []
         n_pos = slice_data.seq_len
         last_pos = max(0, n_pos - 1)
@@ -160,20 +170,84 @@ class MetacognitiveObserver:
                 tok_str = vocab.get(tid, f"<{tid}>")
                 tokens.append((tok_str, 1.0 / (rank + 1)))
 
-            # Approximate cos by checking if top tokens align between
-            # logit lens (raw unembed) and J-lens (transported unembed)
-            cos = 0.0  # Would need full computation for accuracy
-            rand = 0.0
+            # If the cosine could not be measured for this layer, fall back
+            # to cos=0.0 against the pre-calibrated baseline, which yields
+            # in_workspace=False — never a fabricated positive.
+            cos, rand = cosines.get(
+                layer_num, (0.0, self.DEFAULT_RANDOM_BASELINE))
 
             readings.append(JSpaceReading(
                 layer=layer_num,
                 top_tokens=tokens,
                 cosine_logit_jlens=cos,
                 random_baseline=rand,
-                in_workspace=True,  # These ARE workspace layers
+                in_workspace=cos > rand * 1.5,
             ))
 
         return readings
+
+    def _compute_workspace_cosines(
+            self, prompt: str, layers: list[int],
+            max_seq_len: int = 512) -> dict[int, tuple[float, float]]:
+        """Measure logit-lens vs J-lens agreement at the last position.
+
+        For each layer:
+        1. Capture the residual h via ActivationRecorder.
+        2. Transport through the J-lens: J_l @ h.
+        3. cosine_logit_jlens = cosine(softmax(unembed(h)),
+                                       softmax(unembed(J_l @ h)))
+        4. random_baseline = cosine(softmax(unembed(h)),
+                                    softmax(unembed(r))) where r is a
+           random direction scaled to ||h||.
+
+        Returns {layer: (cosine_logit_jlens, random_baseline)}. Layers the
+        lens has no Jacobian for (e.g. the final layer, where J = I) and
+        layers that fail to measure are omitted; the caller treats missing
+        layers as not-in-workspace.
+        """
+        from jlens.hooks import ActivationRecorder
+
+        fitted = [l for l in layers if l in self.lens.jacobians]
+        result: dict[int, tuple[float, float]] = {}
+        if not fitted:
+            return result
+
+        try:
+            input_ids = self.model.encode(prompt, max_length=max_seq_len)
+            with torch.no_grad():
+                with ActivationRecorder(self.model.layers, at=fitted) as rec:
+                    self.model.forward(input_ids)
+                    activations = {
+                        l: rec.activations[l].detach() for l in fitted}
+
+                for layer in fitted:
+                    h = activations[layer][0, -1, :].float()  # [d_model]
+
+                    transported = self.lens.transport(h, layer)
+                    ll_logits = self.model.unembed(h).float()
+                    jl_logits = self.model.unembed(transported).float()
+
+                    p_ll = torch.softmax(ll_logits, dim=-1)
+                    p_jl = torch.softmax(jl_logits, dim=-1)
+                    cos = float(torch.nn.functional.cosine_similarity(
+                        p_ll, p_jl, dim=-1))
+
+                    # Chance-level agreement: a random direction of
+                    # matched norm through the same readout.
+                    r = torch.randn_like(h)
+                    r = r * (h.norm() / (r.norm() + 1e-8))
+                    p_rand = torch.softmax(
+                        self.model.unembed(r).float(), dim=-1)
+                    rand = float(torch.nn.functional.cosine_similarity(
+                        p_ll, p_rand, dim=-1))
+
+                    result[layer] = (cos, rand)
+        except Exception:
+            # Measurement failure must not break retrieval; unmeasured
+            # layers simply read as not-in-workspace.
+            pass
+
+        return result
 
 
     def calibrate_probes(self, prompts: Optional[list[str]] = None):
