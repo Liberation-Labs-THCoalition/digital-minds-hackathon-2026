@@ -33,9 +33,9 @@ PC1 of the residual stream carries content the model processes but cannot report
 **Paper:** [`papers/ghost_dimensions.md`](papers/ghost_dimensions.md)
 
 ### Track 6: Path-Conditioned MoE J-Lens
-Standard Jacobian lenses fail on Mixture-of-Experts models (~12% transport cosine). Path-conditioned fitting — clustering prompts by routing decisions and fitting per-path lenses — recovers interpretability.
+Standard Jacobian lenses fail on Mixture-of-Experts models (~12% transport cosine). We tested the obvious repair — clustering prompts by routing decisions and fitting per-path lenses — and the result is **negative**: conditioned lenses do not beat a random-conditioned control (0/3 layers significant), so the apparent improvement is subset overfitting, not routing structure. The random control is the load-bearing contribution — without it, this would have shipped as a false positive.
 
-**Paper:** [`papers/moe_jlens.md`](papers/moe_jlens.md)
+**Paper:** [`papers/moe_jlens.md`](papers/moe_jlens.md) | **Data:** [`data/moe_jlens/conditioned_jlens_results.json`](data/moe_jlens/conditioned_jlens_results.json)
 
 ### Naturalistic Observation: Blind Butlin Threshold Assessment
 An impartial judge agent scores all consenting participants — human and AI — on 14 Butlin et al. (2023/2025) consciousness indicator properties, blind to species/substrate identity. Humans serve as the known-conscious reference class for calibration. Extends Berg/Reciprocal Research's blind scoring methodology with geometric instrumentation (J-lens, ghost probe, circumplex) and longitudinal trajectory across 48 hours of collaboration.
@@ -61,7 +61,7 @@ experiments/
   orientation/       Day 1 orientation chat runner + scaffold test
   variable_landing/  Four-arm recall geometry experiment (Track 5)
 papers/              Six submission papers + literature reviews
-data/                Experimental results (circumplex profiles, Butlin scores, orientation snapshots)
+data/                Experimental results (circumplex depth profiles, MoE J-lens verdict, Butlin control packets, orientation snapshots)
 ethics/              Butlin scoring instrument, blind judge agent, metacognitive memory spec
 infrastructure/      Weekend spec, Agni reviews, pre-registrations, guides, REPO_INDEX.md
 videos/              Track intro videos (Manim + TTS) with narration scripts

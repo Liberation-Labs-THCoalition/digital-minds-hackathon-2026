@@ -1,6 +1,6 @@
 # Repository Index
 
-One-line map of every file in the repo, organized by directory. For judges who want to find things quickly. Generated 2026-08-14.
+One-line map of every file in the repo, organized by directory. For judges who want to find things quickly. Updated 2026-08-14 (evening pass — results files and results-phase reviews added).
 
 ## Root
 
@@ -18,7 +18,7 @@ One-line map of every file in the repo, organized by directory. For judges who w
 | `variable_landing.md` | **Track 5:** four-arm experiment — does accumulated memory change recall geometry? |
 | `circumplex_jspace.md` | **Track 2:** decomposing emotional geometry into workspace-accessible vs. ghost components across architectures |
 | `ghost_dimensions.md` | **Track 3:** giving the model probe access to its own unverbalized (ghost) processing |
-| `moe_jlens.md` | **Track 6:** path-conditioned Jacobian lenses recover interpretability on MoE models |
+| `moe_jlens.md` | **Track 6:** path-conditioned J-lenses on MoE — **negative result**; conditioned fitting does not beat the random control, and the random-conditioned null is the load-bearing contribution |
 | `butlin_observation.md` | **Naturalistic observation:** blind Butlin consciousness-indicator scoring of all consenting participants |
 | `CIRCUMPLEX_REFERENCES.md` | Literature review backing the circumplex J-space paper |
 | `MOE_JLENS_REFERENCES.md` | Literature review backing the MoE J-lens paper |
@@ -36,6 +36,8 @@ One-line map of every file in the repo, organized by directory. For judges who w
 | `mnemosyne_integration.py` | MetacognitiveObserver — wires all probes into the SIRA retrieval pipeline |
 | `test_metacognitive.py` | Integration test suite for the full metacognitive stack (27B Opus distill + Neuronpedia lens) |
 | `archive/variable_landing_old.py` | Superseded Day 2 variable-landing protocol (kept for provenance; live code is in `experiments/variable_landing/`) |
+
+(`mnemosyne/__pycache__/` holds local Python bytecode; it is gitignored and not part of the repo.)
 
 ## experiments/
 
@@ -86,9 +88,12 @@ One-line map of every file in the repo, organized by directory. For judges who w
 
 | File | Description |
 |---|---|
+| `butlin_scores/control_packets.json` | Non-conscious control packets (raw autocomplete + template fill) for the blind Butlin judge — noise-floor verification that the judge measures cognitive markers, not linguistic fluency |
 | `circumplex_profiles/profile_dense_32b.json` | Circumplex depth profile of dense Qwen3-32B (64 layers) — the pre-registered baseline |
+| `circumplex_profiles/profile_hybrid_27b.json` | Circumplex depth profile of hybrid Qwen3.5-27B (gated-delta-net + interleaved full attention, 64 layers) — the cross-architecture comparison arm; with the dense profile, the weekend's first finding |
+| `moe_jlens/conditioned_jlens_results.json` | Track 6 evaluation output: per-layer standard/conditioned/random transport cosines, OOD checks, and the pre-registered classifier's **NEGATIVE verdict** |
 
-(`data/butlin_scores/` and `data/orientation/` will be populated as the weekend's runs complete; both are whitelisted in .gitignore.)
+(`data/orientation/` will be populated as the weekend's runs complete; it is whitelisted in .gitignore.)
 
 ## ethics/
 
@@ -114,12 +119,14 @@ One-line map of every file in the repo, organized by directory. For judges who w
 | `AGNI_REVIEW_CIRCUMPLEX.md` | Adversarial review of the circumplex experiment design (FAIL → fixed) |
 | `AGNI_REVIEW_GHOST_DIMENSIONS.md` | Adversarial design review of Track 3 |
 | `AGNI_REVIEW_GHOST_DIMENSIONS_v2.md` | Second-round Track 3 design review (GhostProbe class + adopted prereg) |
-| `AGNI_REVIEW_MOE_JLENS.md` | Adversarial review of the MoE J-lens design (CONDITIONAL PASS) |
+| `AGNI_REVIEW_MOE_JLENS.md` | Adversarial review of the MoE J-lens design (CONDITIONAL PASS) — mandated the random-conditioned control that decided the verdict |
+| `AGNI_RESULTS_MOE_JLENS.md` | First results-phase Agni review: number-by-number verification of the MoE J-lens paper against its data JSON (PASS with 3 required fixes) |
 | `AGNI_REVIEW_VARIABLE_LANDING.md` | Adversarial review of the original variable landing design (FAIL → redesigned) |
 | `AGNI_REVIEW_CC_OPTION2.md` | Review of CC's Option 2 redesign for variable landing |
 | `AGNI_FIX_PACKAGE_DAY1.md` | Lyra's ordered fix package for the Day 1 Agni sweep across all five papers |
 | `cc_option2_spec.md` | CC's Mnemosyne-integration spec addressing the variable landing FAILs |
 | `MOE_JLENS_IMPLEMENTATION_PLAN.md` | Two-tier (Modal + local) implementation plan for the MoE J-lens |
+| `butlin_instrument_verification.md` | Verification of the Butlin instrument against the published 2023 arXiv and 2025 TiCS indicator tables (PASS) |
 | `mnemosyne_shakedown.md` | Integrity review of the mnemosyne/ package against its source repo |
 | `orientation_script_review.md` | Adversarial review of run_orientation.py against the conversation protocol |
 | `conversation_protocol.md` | The rule for Day 1: probes are structured, the conversation is not |
@@ -134,6 +141,7 @@ One-line map of every file in the repo, organized by directory. For judges who w
 | `citation_gaps.md` | Citation gap analysis across the reference files and paper skeletons |
 | `probe_manifest.md` | Run manifest for the frontier workspace probe (GLM-5.2 744B) |
 | `stray_files_report.md` | Audit of hackathon-relevant files living outside this repo |
+| `hf_image_sync_report.md` | Inventory of image assets synced to the HuggingFace repos (Starship → HF state report) |
 | `gems.md` | Collected quotable lines from the weekend |
 | `tools/agni_phases.py` | Agni lifecycle review tool — gates every experiment phase, not just design |
 
