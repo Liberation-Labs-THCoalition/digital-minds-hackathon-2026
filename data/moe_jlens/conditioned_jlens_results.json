@@ -1,0 +1,67 @@
+{
+  "verdict": "NEGATIVE",
+  "evaluation": {
+    "12": {
+      "standard": {
+        "mean": 0.045347464694414176,
+        "n": 100
+      },
+      "conditioned": {
+        "mean": 0.0,
+        "n": 0
+      },
+      "random": {
+        "mean": 0.0,
+        "n": 0
+      },
+      "p_value": 1.0
+    },
+    "24": {
+      "standard": {
+        "mean": 0.03976296304449511,
+        "n": 100
+      },
+      "conditioned": {
+        "mean": 0.04664344808374109,
+        "n": 100
+      },
+      "random": {
+        "mean": 0.0516547114456811,
+        "n": 100
+      },
+      "p_value": 0.3322525986372692
+    },
+    "36": {
+      "standard": {
+        "mean": 0.07227033336637904,
+        "n": 100
+      },
+      "conditioned": {
+        "mean": 0.0875485519703902,
+        "n": 100
+      },
+      "random": {
+        "mean": 0.07720308380018329,
+        "n": 100
+      },
+      "p_value": 0.3173082667189121
+    }
+  },
+  "ood": {
+    "code": {
+      "standard": 0.010485655354568735,
+      "layer": 24
+    },
+    "dialogue": {
+      "standard": 0.0024812161522277166,
+      "layer": 24
+    }
+  },
+  "summary": {
+    "standard_mean": 0.05246025370176277,
+    "conditioned_mean": 0.04473066668471043,
+    "random_mean": 0.042952598415288125,
+    "significant_layers": 0,
+    "n_tests": 3
+  }
+}
