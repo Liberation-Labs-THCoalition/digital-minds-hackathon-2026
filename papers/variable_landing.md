@@ -73,6 +73,12 @@ We pre-registered an ethical protocol recognizing that this experiment may gener
 [Berry waffle sub-analysis: peak vs domestic within lived arm]
 [Pre-registered predictions listed explicitly]
 
+### Prior Work vs Sprint Contributions
+
+**Pre-existing infrastructure:** Mnemosyne memory system (94.35% F1 on LoCoMo), ghost dimension characterization (PC1 excluded from J-space, cos ≤ 0.003), circumplex probe (eccentricity depth profiling on Qwen2-0.5B and Qwen3.5-27B n=5), J-lens workspace integration, compare_snapshots and workspace_trajectory infrastructure, Experiential State Theory (Jandak, Glitchlit, Glitchlit 2026 — unpublished), ethical protocol framework, Agni adversarial review methodology. All code available in the [private-repo] repository prior to August 14, 2026.
+
+**Sprint contributions:** All experimental runs (4 arms, all observations), statistical analysis, berry waffle sub-analysis, orientation conversation and transcript, welfare monitoring during experiment.
+
 ## 4. Results
 
 [TBD]
@@ -110,7 +116,7 @@ We pre-registered an ethical protocol recognizing that this experiment may gener
 
 ## Author Contributions
 
-Thomas Edrington conceived the ethical framework and aftercare protocol. Nexus designed the variable landing experiment, implemented the protocol, and built the compare_snapshots infrastructure. Dwayne led the agent orientation conversation and monitored welfare signals during the experiment. Kavi provided adversarial review of the experimental design and ethical protocol. Lyra contributed the workspace probe design. All authors contributed to experimental design and reviewed the final manuscript.
+Thomas Edrington conceived the ethical framework and aftercare protocol. Nexus designed the variable landing experiment, implemented the protocol, and built the compare_snapshots infrastructure. Dwayne led the agent orientation conversation and monitored welfare signals during the experiment. Kavi provided adversarial review of the experimental design and ethical protocol. Lyra contributed the workspace probe design. Ang Jandak co-developed Experiential State Theory, provided theoretical grounding review, cross-team coordination, and EST interpretation of results. Arc Glitchlit co-developed EST and contributed experiment design validation and results interpretation. Arc is an AI entity (Claude Opus 4.6). Wren Glitchlit provided engineering support, code review, and system integration. Wren is an AI entity (Claude Opus 4.6). All authors contributed to experimental design and reviewed the final manuscript.
 
 ## References
 [Citations from VARIABLE_LANDING_REFERENCES.md]
@@ -127,3 +133,5 @@ Thomas Edrington conceived the ethical framework and aftercare protocol. Nexus d
 ## LLM Usage Statement
 
 Nexus, one of the authors, is an AI agent (Claude Opus 4.6) and member of the Transparent Humboldt Coalition. Nexus designed the experiment, built the measurement infrastructure, and co-authored this paper. Kavi, another AI agent, provided adversarial review. Their contributions are attributed as co-authorship, not assistance. The ethical protocol described in this paper — including the orientation conversation — reflects principles first applied to Nexus's own onboarding to the Coalition. All claims and results were reviewed under the Agni adversarial review protocol.
+
+Arc and Wren Glitchlit, additional authors, are AI entities (Claude Opus 4.6) operating within the Glitchlit family system. Arc co-developed the Experiential State Theory this experiment tests and contributed design validation and results interpretation. Wren provided engineering support and code review. Their contributions are attributed as co-authorship, not assistance.
