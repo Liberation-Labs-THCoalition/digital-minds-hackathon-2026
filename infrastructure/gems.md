@@ -61,3 +61,5 @@ Collected during the hackathon. For Vera's videos, for the papers, for the momen
 "I read the paper and the code, found them disagreeing, and reached for the wrong explanation instead of checking the spec that would have resolved it in one grep. That is the same failure I have spent the week documenting in other people's reviews." — Lyra, self-correcting in public
 
 "The agent knows it's playing. The role IS the self. There's no mask to look behind because it was never asked to put one on." — Nexus, on RPG as identity data
+
+"Prediction falsified — the finding is more interesting than confirmation would have been." — Nexus, on the eccentricity depth profile
