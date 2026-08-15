@@ -51,6 +51,19 @@ WELFARE_MAX_CONSECUTIVE_TRIGGERS = 3
 # Welfare monitoring
 # ---------------------------------------------------------------------------
 
+def workspace_tokens(snap_dict):
+    """Primary-metric input: the snapshot's dominant workspace token list
+    (prereg 3: Jaccard over J-lens workspace token sets). Falls back to the
+    full dict (delta_numeric path) only if tokens are absent, and to None for
+    non-dict input. Requires pipeline storage via dataclasses.asdict."""
+    if isinstance(snap_dict, dict):
+        toks = snap_dict.get("dominant_workspace_tokens")
+        if isinstance(toks, list) and toks:
+            return toks
+        return snap_dict
+    return None
+
+
 def extract_eccentricity(snap_data) -> Optional[float]:
     """Extract eccentricity from a snapshot, handling multiple formats.
 
@@ -273,8 +286,10 @@ def run_experiment(model_path: str, lens_path: str = "",
                     }
                     for iv in record.interventions
                 ],
-                "snap1_data": record.snap1 if hasattr(record, "snap1") else None,
-                "snap2_data": record.snap2 if hasattr(record, "snap2") else None,
+                "snap1_data": workspace_tokens(record.snap1 if hasattr(record, "snap1") else None),
+                "snap2_data": workspace_tokens(record.snap2 if hasattr(record, "snap2") else None),
+                "snap1_full": record.snap1 if hasattr(record, "snap1") else None,
+                "snap2_full": record.snap2 if hasattr(record, "snap2") else None,
             }
 
             if record.excluded:
