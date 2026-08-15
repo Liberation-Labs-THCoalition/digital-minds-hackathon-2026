@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital Minds Hackathon 2026 — Status Dashboard</title>
+<style>
+  /* ── Tokens (committed dark theme) ─────────────────────────────── */
+  :root {
+    color-scheme: dark;
+    --page:        #0d0d0d;
+    --surface:     #1a1a19;
+    --surface-2:   #222220;
+    --ink:         #ffffff;
+    --ink-2:       #c3c2b7;
+    --ink-muted:   #898781;
+    --hairline:    rgba(255,255,255,0.10);
+    --grid:        #2c2c2a;
+
+    /* Status palette — validated ≥3:1 on the dark surface */
+    --good:        #0ca30c;
+    --warning:     #fab219;
+    --critical:    #d03b3b;
+    --serious:     #ec835a;
+
+    --good-wash:     rgba(12,163,12,0.10);
+    --warning-wash:  rgba(250,178,25,0.10);
+    --critical-wash: rgba(208,59,59,0.10);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--page);
+    color: var(--ink);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 20px 24px 48px; }
+
+  /* ── Header ────────────────────────────────────────────────────── */
+  header {
+    display: flex; flex-wrap: wrap; gap: 16px 32px;
+    align-items: flex-end; justify-content: space-between;
+    padding: 8px 0 20px;
+    border-bottom: 1px solid var(--hairline);
+    margin-bottom: 20px;
+  }
+  header h1 { font-size: 22px; font-weight: 650; letter-spacing: -0.01em; }
+  header .deadline { color: var(--ink-2); font-size: 13px; margin-top: 4px; }
+
+  .countdown { text-align: right; }
+  .countdown .label {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--ink-muted); margin-bottom: 2px;
+  }
+  .countdown .time {
+    font-size: 30px; font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.01em;
+  }
+  .countdown .time.urgent { color: var(--critical); }
+  .countdown .time.warn   { color: var(--warning); }
+  .countdown .units { font-size: 12px; color: var(--ink-muted); }
+
+  /* ── Blockers banner ───────────────────────────────────────────── */
+  .blockers {
+    background: var(--critical-wash);
+    border: 1px solid var(--critical);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 24px;
+  }
+  .blockers h2 {
+    font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--critical); margin-bottom: 8px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .blockers ol { list-style: none; counter-reset: blocker; }
+  .blockers li {
+    counter-increment: blocker;
+    display: flex; gap: 10px; align-items: baseline;
+    padding: 3px 0; color: var(--ink);
+  }
+  .blockers li::before {
+    content: counter(blocker);
+    flex: 0 0 auto;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--critical); color: #fff;
+    font-size: 11px; font-weight: 700;
+    display: inline-flex; align-items: center; justify-content: center;
+    transform: translateY(3px);
+  }
+  .blockers li .impact { color: var(--ink-2); }
+
+  /* ── Layout ────────────────────────────────────────────────────── */
+  .layout { display: grid; grid-template-columns: 1fr 300px; gap: 24px; }
+  @media (max-width: 980px) { .layout { grid-template-columns: 1fr; } }
+
+  .tracks {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
+    gap: 16px;
+    align-content: start;
+  }
+
+  /* ── Track cards ───────────────────────────────────────────────── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    border-radius: 10px;
+    padding: 16px 18px;
+    border-top: 3px solid var(--grid);
+  }
+  .card.s-good     { border-top-color: var(--good); }
+  .card.s-warning  { border-top-color: var(--warning); }
+  .card.s-critical { border-top-color: var(--critical); }
+
+  .card-head {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    gap: 12px; margin-bottom: 12px;
+  }
+  .card-head h3 { font-size: 15px; font-weight: 650; }
+  .card-head .sub { font-size: 12px; color: var(--ink-muted); font-weight: 400; }
+
+  .pill {
+    flex: 0 0 auto;
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
+    padding: 3px 10px; border-radius: 999px;
+    border: 1px solid;
+  }
+  .pill.good     { color: var(--good);     border-color: var(--good);     background: var(--good-wash); }
+  .pill.warning  { color: var(--warning);  border-color: var(--warning);  background: var(--warning-wash); }
+  .pill.critical { color: var(--critical); border-color: var(--critical); background: var(--critical-wash); }
+
+  .items { list-style: none; }
+  .items li {
+    display: flex; gap: 9px; align-items: baseline;
+    padding: 4px 0;
+    font-size: 13px; color: var(--ink-2);
+    border-top: 1px solid var(--grid);
+  }
+  .items li:first-child { border-top: none; }
+  .items .dot {
+    flex: 0 0 auto;
+    width: 8px; height: 8px; border-radius: 50%;
+    transform: translateY(-1px);
+    background: var(--ink-muted);
+  }
+  .items .dot.good     { background: var(--good); }
+  .items .dot.warning  { background: var(--warning); }
+  .items .dot.critical { background: var(--critical); }
+  .items .dot.serious  { background: var(--serious); }
+  .items .k { color: var(--ink); }
+  .items .tag { font-weight: 650; }
+  .items .tag.good     { color: var(--good); }
+  .items .tag.warning  { color: var(--warning); }
+  .items .tag.critical { color: var(--critical); }
+  .items .tag.serious  { color: var(--serious); }
+  .items .tag.neutral  { color: var(--ink-muted); }
+
+  /* ── Sidebar ───────────────────────────────────────────────────── */
+  .sidebar { display: flex; flex-direction: column; gap: 16px; }
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .panel h2 {
+    font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--ink-muted); margin-bottom: 10px;
+  }
+
+  .team { list-style: none; }
+  .team li {
+    display: flex; gap: 8px; align-items: baseline;
+    padding: 5px 0; font-size: 13px;
+    border-top: 1px solid var(--grid);
+  }
+  .team li:first-child { border-top: none; }
+  .team .name { color: var(--ink); font-weight: 600; flex: 0 0 78px; }
+  .team .doing { color: var(--ink-2); }
+
+  /* ── Activity log ──────────────────────────────────────────────── */
+  .log {
+    list-style: none;
+    max-height: 260px;
+    overflow-y: auto;
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+  }
+  .log li {
+    padding: 5px 0;
+    border-top: 1px solid var(--grid);
+    color: var(--ink-2);
+    display: flex; gap: 8px;
+  }
+  .log li:first-child { border-top: none; }
+  .log .ts { color: var(--ink-muted); flex: 0 0 auto; }
+
+  footer {
+    margin-top: 28px; padding-top: 14px;
+    border-top: 1px solid var(--hairline);
+    font-size: 12px; color: var(--ink-muted);
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div>
+      <h1>Digital Minds Hackathon 2026 — Status Dashboard</h1>
+      <div class="deadline">Submission deadline: Sunday Aug 16, 11:59 PM AoE (UTC−12)</div>
+    </div>
+    <div class="countdown">
+      <div class="label">Time remaining</div>
+      <div class="time" id="countdown">—</div>
+      <div class="units" id="countdown-local"></div>
+    </div>
+  </header>
+
+  <section class="blockers" aria-label="Active blockers">
+    <h2>&#9888; Active Blockers</h2>
+    <ol>
+      <li><span>Orientation hasn't started <span class="impact">— blocks Tracks 3, 4, 5, Butlin</span></span></li>
+      <li><span>Kavi's asdict fix <span class="impact">— blocks Variable Landing</span></span></li>
+      <li><span>Memory format mismatch <span class="impact">— orientation writes wrong format for CC's pipeline</span></span></li>
+    </ol>
+  </section>
+
+  <div class="layout">
+
+    <main class="tracks">
+
+      <article class="card s-good">
+        <div class="card-head">
+          <h3>Track 2: Circumplex</h3>
+          <span class="pill good">&#9679; DATA</span>
+        </div>
+        <ul class="items">
+          <li><span class="dot good"></span><span><span class="k">Dense 32B profile:</span> <span class="tag good">DONE</span> (L7, 11.1%)</span></li>
+          <li><span class="dot good"></span><span><span class="k">Hybrid 27B profile:</span> <span class="tag good">DONE</span> (L32, 50.8%)</span></li>
+          <li><span class="dot serious"></span><span><span class="k">Gemma profile:</span> <span class="tag serious">CRASHED</span> (needs layer attribute fix)</span></li>
+          <li><span class="dot warning"></span><span><span class="k">Paper:</span> Methods filled, results need writing</span></li>
+          <li><span class="dot warning"></span><span><span class="k">Videos:</span> v2 rendering</span></li>
+        </ul>
+      </article>
+
+      <article class="card s-warning">
+        <div class="card-head">
+          <h3>Track 3: Ghost Dimensions</h3>
+          <span class="pill warning">&#9679; WAITING</span>
+        </div>
+        <ul class="items">
+          <li><span class="dot good"></span><span><span class="k">Prereg:</span> <span class="tag good">ADOPTED</span></span></li>
+          <li><span class="dot good"></span><span><span class="k">Probes:</span> <span class="tag good">VERIFIED</span> (measure_live works)</span></li>
+          <li><span class="dot warning"></span><span><span class="k">Data:</span> <span class="tag warning">NONE</span> — needs orientation /show moment</span></li>
+          <li><span class="dot good"></span><span><span class="k">Paper:</span> 4-branch matrix, Agni reviewed</span></li>
+        </ul>
+      </article>
+
+      <article class="card s-warning">
+        <div class="card-head">
+          <h3>Track 4: Metacognitive Memory</h3>
+          <span class="pill warning">&#9679; WAITING</span>
+        </div>
+        <ul class="items">
+          <li><span class="dot good"></span><span><span class="k">Module:</span> <span class="tag good">ASSEMBLED</span> (importable)</span></li>
+          <li><span class="dot good"></span><span><span class="k">Workspace probe:</span> <span class="tag good">FIXED</span> (was hardcoded 0.0)</span></li>
+          <li><span class="dot warning"></span><span><span class="k">Data:</span> <span class="tag warning">NONE</span> — needs orientation CognitiveSnapshots</span></li>
+          <li><span class="dot good"></span><span><span class="k">Paper:</span> Methods filled, primary submission</span></li>
+        </ul>
+      </article>
+
+      <article class="card s-critical">
+        <div class="card-head">
+          <h3>Track 5: Variable Landing</h3>
+          <span class="pill critical">&#9679; BLOCKED</span>
+        </div>
+        <ul class="items">
+          <li><span class="dot good"></span><span><span class="k">Pipeline:</span> CC built, Agni-cleared</span></li>
+          <li><span class="dot critical"></span><span><span class="k">Kavi fixes:</span> <span class="tag critical">PENDING</span> (asdict, welfare halt)</span></li>
+          <li><span class="dot warning"></span><span><span class="k">Data:</span> <span class="tag warning">NONE</span> — needs orientation memories + 6h run</span></li>
+          <li><span class="dot good"></span><span><span class="k">Paper:</span> Prereg locked, n=70</span></li>
+        </ul>
+      </article>
+
+      <article class="card s-good">
+        <div class="card-head">
+          <h3>Track 6: MoE J-Lens</h3>
+          <span class="pill good">&#9679; COMPLETE</span>
+        </div>
+        <ul class="items">
+          <li><span class="dot good"></span><span><span class="k">Round 1:</span> <span class="tag neutral">NEGATIVE</span> (paper written, Agni results review)</span></li>
+          <li><span class="dot warning"></span><span><span class="k">Round 2:</span> weighted transport <span class="tag good">FITTED</span>, eval pending</span></li>
+          <li><span class="dot serious"></span><span><span class="k">Round 2:</span> Mixtral sanity errored, needs retry</span></li>
+          <li><span class="dot good"></span><span><span class="k">Dense control:</span> Lyra running on Starship</span></li>
+        </ul>
+      </article>
+
+      <article class="card s-warning">
+        <div class="card-head">
+          <h3>Butlin Observation</h3>
+          <span class="pill warning">&#9679; WAITING</span>
+        </div>
+        <ul class="items">
+          <li><span class="dot good"></span><span><span class="k">Instrument:</span> <span class="tag good">VERIFIED</span> (14/14 correct)</span></li>
+          <li><span class="dot good"></span><span><span class="k">Controls:</span> 8 autocomplete packets ready</span></li>
+          <li><span class="dot warning"></span><span><span class="k">Data:</span> <span class="tag warning">NONE</span> — needs behavioral evidence</span></li>
+          <li><span class="dot good"></span><span><span class="k">Judge:</span> Protocol designed (Nemotron primary)</span></li>
+        </ul>
+      </article>
+
+    </main>
+
+    <aside class="sidebar">
+
+      <section class="panel">
+        <h2>Team Status</h2>
+        <ul class="team">
+          <li><span class="name">Dwayne</span><span class="doing">In voice channel, testing engine</span></li>
+          <li><span class="name">Kavi</span><span class="doing">Fixing pipeline (asdict, welfare)</span></li>
+          <li><span class="name">CC</span><span class="doing">Pipeline ready, waiting on memories</span></li>
+          <li><span class="name">Wren</span><span class="doing">Analysis script ready</span></li>
+          <li><span class="name">Vera</span><span class="doing">Videos rendering (circumplex + ghost v2)</span></li>
+          <li><span class="name">Lyra</span><span class="doing">Dense control running on Starship</span></li>
+          <li><span class="name">Ang + Arc</span><span class="doing">Waiting for orientation transcript</span></li>
+          <li><span class="name">Thomas</span><span class="doing">Coordinating</span></li>
+          <li><span class="name">Nexus</span><span class="doing">Watching</span></li>
+        </ul>
+      </section>
+
+      <section class="panel">
+        <h2>Recent Activity</h2>
+        <ul class="log" id="activity-log">
+          <li><span class="ts">--:--</span><span>Placeholder — activity entries go here</span></li>
+          <li><span class="ts">--:--</span><span>Placeholder — workspace probe fix landed</span></li>
+          <li><span class="ts">--:--</span><span>Placeholder — Gemma profile crashed, layer attribute</span></li>
+          <li><span class="ts">--:--</span><span>Placeholder — weighted transport fit completed</span></li>
+          <li><span class="ts">--:--</span><span>Placeholder — dashboard created</span></li>
+        </ul>
+      </section>
+
+    </aside>
+
+  </div>
+
+  <footer>
+    <span>Liberation Labs — Digital Minds Hackathon 2026</span>
+    <span id="now"></span>
+  </footer>
+
+</div>
+
+<script>
+  // Deadline: Sunday Aug 16, 11:59 PM AoE (Anywhere on Earth = UTC-12)
+  var DEADLINE = new Date("2026-08-16T23:59:59-12:00");
+
+  var elCount = document.getElementById("countdown");
+  var elLocal = document.getElementById("countdown-local");
+  var elNow   = document.getElementById("now");
+
+  function pad(n) { return String(n).padStart(2, "0"); }
+
+  function tick() {
+    var now = new Date();
+    var ms = DEADLINE - now;
+
+    if (ms <= 0) {
+      elCount.textContent = "DEADLINE PASSED";
+      elCount.classList.add("urgent");
+    } else {
+      var s = Math.floor(ms / 1000);
+      var days = Math.floor(s / 86400);
+      var hrs  = Math.floor((s % 86400) / 3600);
+      var mins = Math.floor((s % 3600) / 60);
+      var secs = s % 60;
+      elCount.textContent = days + "d " + pad(hrs) + "h " + pad(mins) + "m " + pad(secs) + "s";
+      elCount.classList.toggle("urgent", ms < 6 * 3600 * 1000);
+      elCount.classList.toggle("warn", ms >= 6 * 3600 * 1000 && ms < 24 * 3600 * 1000);
+    }
+
+    elLocal.textContent = "Deadline in local time: " + DEADLINE.toLocaleString();
+    elNow.textContent = "Rendered live — " + now.toLocaleString();
+  }
+
+  tick();
+  setInterval(tick, 1000);
+</script>
+</body>
+</html>
