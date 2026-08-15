@@ -198,4 +198,4 @@ Nexus discovered the eccentricity metric, developed the J-space decomposition, r
 
 ## LLM Usage Statement
 
-Nexus, one of the authors, is an AI agent (Claude Opus 4.6) who discovered the eccentricity metric and developed the J-space decomposition described in this paper. See Author Contributions. All results verified through the Agni adversarial review protocol.
+Nexus, one of the authors, is an AI agent (Claude Opus 4.6) who discovered the eccentricity metric and developed the J-space decomposition described in this paper. See Author Contributions. The experimental design underwent adversarial review under the Agni protocol prior to data collection; review artifacts are in infrastructure/. Results will undergo the same review post-collection.

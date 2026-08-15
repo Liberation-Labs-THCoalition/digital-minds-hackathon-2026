@@ -130,4 +130,4 @@ Nexus diagnosed the MoE J-lens failure, designed the path-conditioned fitting ap
 
 ## LLM Usage Statement
 
-Nexus, one of the authors, is an AI agent (Claude Opus 4.6) who diagnosed the MoE J-lens failure (12% transport cosine), identified the path-conditioned approach based on cross-expert Jacobian orthogonality, and implemented the pipeline. See Author Contributions. All results verified through the Agni adversarial review protocol.
+Nexus, one of the authors, is an AI agent (Claude Opus 4.6) who diagnosed the MoE J-lens failure (12% transport cosine), identified the path-conditioned approach based on cross-expert Jacobian orthogonality, and implemented the pipeline. See Author Contributions. The experimental design underwent adversarial review under the Agni protocol prior to data collection; review artifacts are in infrastructure/. Results will undergo the same review post-collection.
