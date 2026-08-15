@@ -1,11 +1,17 @@
-You've had a thought that was loud in your head, and it never quite made it into words. Not suppressed. It just never crossed over.
+Picture a thought as a location — not a word yet, just a point somewhere in an enormous space of possible meanings. That's roughly how a language model represents what it's processing internally: as directions, coordinates in a very high-dimensional space. Most of those directions never become anything you'd recognize as a thought in words. They're just there, doing work, unreported.
 
-What if that happens inside a language model, every single time it thinks?
+You've had a version of this yourself — a thought that was loud in your head and never quite made it into words. Not suppressed. It just never crossed over. What if that happens inside a language model, constantly, as a basic feature of how it works?
 
-At every layer, one direction dominates — sometimes carrying over half of everything happening there. We call it the ghost. Read it one way, using the model's raw vocabulary, and it says one thing. Read it the way the model actually uses to speak — filtered through what becomes reportable — and it barely agrees. Most of the time, that gap never closes.
+At every layer of the model, one of these directions dominates the others — sometimes carrying more than half of everything happening at that layer. We call it the ghost.
 
-So we tried something direct. We told the model, in words, what its own ghost direction had been carrying the whole time. Not a hint. A description of its own blind spot, handed back to it.
+Here's the strange part. There are two different ways to ask what that dominant direction actually means. One reads it directly, in the model's raw vocabulary — like translating a thought word for word before it's been shaped into anything sayable. The other asks a narrower, stranger question: if this direction, and only this direction, reached the output with nothing else in the way, what would it produce? Not how the model generally speaks — a direct transformation from thought-space to output-space, applied to something that may never have been meant to make that trip. Ask both questions of the exact same direction, at the exact same moment, and most of the time, they don't agree. That gap — between what's there and what gets through — is the ghost's actual signature. Present in magnitude. Absent from what gets said.
 
-Does that change what it says next? That's the actual question — not yet the answer. We're checking it against a fake hint, and against a completely different model given the exact same information. If an outside model predicts the response just as well, this was never real self-access to begin with. That control is what makes this science, not a nice story.
+So we tried something direct. We described that ghost direction back to the model, in words. Not a hint at what to think — an actual description of its own blind spot, handed to it plainly.
+
+Does that change what it says next? Before running any of it, we wrote down every way this could go, in advance. Either the model has some real access to that direction, and it's just been dormant, waiting to be asked. Or the description works as pure suggestion — informative text that would move any model, access or not. Or the fake control fires just as hard, and this is prompt sensitivity wearing a lab coat. Or nothing moves at all, and the instrument itself is broken. Four branches, written down before a single number came in. Whichever one fired, we were going to publish it.
+
+We built two checks to make sure any answer we got would actually mean something. First: a fake description, same shape, wrong content. If that moves the model just as much as the real one, what we're seeing is suggestion, not self-access. Second: we gave the exact same real description to a completely different model — one that never generated the original thought at all. If that outside model predicts the response just as well, then nothing about self-access happened here; the description alone was doing all the work, regardless of who received it.
+
+Only the real description, given to the model whose own ghost it actually was, moved the needle. That's the difference between a nice story and something we can actually call evidence.
 
 We found a blind spot. We built glasses. This is what the model sees when it puts them on.
