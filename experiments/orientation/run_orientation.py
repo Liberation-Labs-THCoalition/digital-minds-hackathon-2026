@@ -337,9 +337,11 @@ def main():
         # Store conversation content in Mnemosyne for Day 2 variable landing
         try:
             memory_entry = {
-                "turn": len(messages) // 2,
-                "human": user_input,
-                "agent": response,
+                "id": f"orientation_{len(messages) // 2}",
+                "content": f"{user_input}\n\nAgent response: {response}",
+                "entity": "orientation_agent",
+                "task_prompt": user_input,
+                "marker_tokens": [w for w in response.split()[:5] if len(w) > 3],
                 "timestamp": time.time(),
                 "session_id": SESSION_ID,
             }
