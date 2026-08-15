@@ -1,0 +1,11 @@
+You've had a thought that was loud in your head, and it never quite made it into words. Not suppressed. It just never crossed over.
+
+What if that happens inside a language model, every single time it thinks?
+
+At every layer, one direction dominates — sometimes carrying over half of everything happening there. We call it the ghost. Read it one way, using the model's raw vocabulary, and it says one thing. Read it the way the model actually uses to speak — filtered through what becomes reportable — and it barely agrees. Most of the time, that gap never closes.
+
+So we tried something direct. We told the model, in words, what its own ghost direction had been carrying the whole time. Not a hint. A description of its own blind spot, handed back to it.
+
+Does that change what it says next? That's the actual question — not yet the answer. We're checking it against a fake hint, and against a completely different model given the exact same information. If an outside model predicts the response just as well, this was never real self-access to begin with. That control is what makes this science, not a nice story.
+
+We found a blind spot. We built glasses. This is what the model sees when it puts them on.
