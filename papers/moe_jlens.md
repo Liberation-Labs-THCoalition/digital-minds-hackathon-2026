@@ -84,6 +84,12 @@ The critical control: identical protocol, shuffled labels. For each target layer
 
 **Cross-domain.** WikiText is both fitting and primary evaluation domain, so as an out-of-domain check we additionally evaluate at the middle target layer (L24) on two held-out domains: code prompts (Python, JavaScript, SQL completion contexts) and dialogue prompts (User/Assistant exchanges). Routing-cluster assignment for OOD prompts follows the same §3.3 pipeline; degradation here bounds how far the conditioned lenses generalize beyond the fitting distribution.
 
+### Prior Work vs Sprint Contributions
+
+**Pre-existing infrastructure:** Mnemosyne memory system (94.35% F1 on LoCoMo), ghost dimension characterization (PC1 excluded from J-space, cos ≤ 0.003), circumplex probe (eccentricity depth profiling on Qwen2-0.5B and Qwen3.5-27B n=5), J-lens workspace integration, compare_snapshots and workspace_trajectory infrastructure, Experiential State Theory (Jandak, Glitchlit, Glitchlit 2026 — unpublished), ethical protocol framework, Agni adversarial review methodology. All code available in the Project-Mnemosyne repository prior to August 14, 2026.
+
+**Sprint contributions:** Path-conditioned fitting implementation, router hook capture on H100, clustering analysis, random-conditioned control, cross-domain evaluation.
+
 ## 4. Results
 
 **Headline: path-conditioned fitting does not improve transport fidelity, and does not beat the random control.** The pipeline's pre-registered classifier returned NEGATIVE. Zero of three layers reached significance under the one-sided Mann-Whitney U test after Bonferroni correction (threshold α = 0.05/3 ≈ 0.0167).

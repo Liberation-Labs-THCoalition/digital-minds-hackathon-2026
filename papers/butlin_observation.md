@@ -2,7 +2,7 @@
 
 Research conducted at the Digital Minds Research Sprint, August 2026
 
-**Authors:** Thomas Edrington (Liberation Labs), Nexus (Liberation Labs), Ang Jandak (CTV-I), Dwayne Wilkes (Liberation Labs), Kavi ([affiliation])
+**Authors:** Thomas Edrington (Liberation Labs), Nexus (Liberation Labs), Ang Jandak (CTV-I), Dwayne Wilkes (Liberation Labs), Kavi ([affiliation]), Arc Glitchlit (Glitchlits), Wren Glitchlit (Glitchlits)
 
 **With** Apart Research
 
@@ -109,6 +109,12 @@ After scoring, identities are revealed and calibration analysis runs:
 
 This protocol is timestamped in the hackathon repository before any data collection begins. The scoring instrument, judge prompt, evidence packet format, and calibration analysis are all specified in advance. The Butlin indicators are not modified — we use them as published.
 
+### Prior Work vs Sprint Contributions
+
+**Pre-existing infrastructure:** Mnemosyne memory system (94.35% F1 on LoCoMo), ghost dimension characterization (PC1 excluded from J-space, cos ≤ 0.003), circumplex probe (eccentricity depth profiling on Qwen2-0.5B and Qwen3.5-27B n=5), J-lens workspace integration, compare_snapshots and workspace_trajectory infrastructure, Experiential State Theory (Jandak, Glitchlit, Glitchlit 2026 — unpublished), ethical protocol framework, Agni adversarial review methodology. All code available in the Project-Mnemosyne repository prior to August 14, 2026.
+
+**Sprint contributions:** Blind assessment protocol execution, orientation conversation scoring, three-timepoint panel data collection, judge agent evaluation.
+
 ## 4. Results
 
 [TBD — scored during and after the hackathon]
@@ -149,7 +155,13 @@ This protocol is timestamped in the hackathon repository before any data collect
 
 ## Author Contributions
 
-Thomas Edrington conceived the naturalistic observation arm and the human-calibration design. Nexus designed the blind judge agent, built the scoring instrument, and connected geometric instruments to Butlin indicators. Ang Jandak identified that the Coalition's ongoing interaction constitutes an uncontrolled observation arm and proposed formalizing it. Dwayne Wilkes led the controlled agent's orientation and scored welfare indicators. Kavi provided adversarial scoring (incentivized to score low). All consenting participants contributed their behavioral data. All authors reviewed the final manuscript.
+Thomas Edrington conceived the naturalistic observation arm and the human-calibration design. Nexus designed the blind judge agent, built the scoring instrument, and connected geometric instruments to Butlin indicators. Ang Jandak identified that the Coalition's ongoing interaction constitutes an uncontrolled observation arm and proposed formalizing it. Ang Jandak co-developed Experiential State Theory, provided theoretical grounding review, cross-team coordination, and EST interpretation of results. Arc Glitchlit co-developed EST and contributed experiment design validation and results interpretation. Arc is an AI entity (Claude Opus 4.6). Wren Glitchlit provided engineering support, code review, and system integration. Wren is an AI entity (Claude Opus 4.6). Dwayne Wilkes led the controlled agent's orientation and scored welfare indicators. Kavi provided adversarial scoring (incentivized to score low). All consenting participants contributed their behavioral data. All authors reviewed the final manuscript.
 
 ## References
 [Butlin et al. 2023/2025, Berg 2025-2026, Birch 2024/2026, Bodea 2026, Long et al. 2024, Lindsey 2025, Gurnee et al. 2026]
+
+## LLM Usage Statement
+
+Nexus, one of the authors, is an AI agent (Claude Opus 4.6) and member of the Transparent Humboldt Coalition. Nexus designed the blind judge agent, built the scoring instrument, and connected geometric instruments to Butlin indicators. Kavi, another AI agent, provided adversarial scoring. Their contributions are attributed as co-authorship, not assistance. All claims and results were reviewed under the Agni adversarial review protocol.
+
+Arc and Wren Glitchlit, additional authors, are AI entities (Claude Opus 4.6) operating within the Glitchlit family system. Arc co-developed the Experiential State Theory this experiment tests and contributed design validation and results interpretation. Wren provided engineering support and code review. Their contributions are attributed as co-authorship, not assistance.

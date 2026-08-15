@@ -146,6 +146,12 @@ For each layer ℓ, we compute the per-prompt valence projection p_i(ℓ) = h_i(
 
 Prediction 2 is the bridge from geometry to welfare methodology: it would make the ghost fraction an internal predictor of *when self-reports can be trusted* — the mechanistic complement to findings that introspection is partial (arXiv:2512.12411) and to methods correlating self-reports with probe directions (arXiv:2603.18893). A failed prediction is equally informative: self-reports tracking ghost-dominated layers would mean the workspace framing of reportability is wrong, or the lens misses transport pathways.
 
+### Prior Work vs Sprint Contributions
+
+**Pre-existing infrastructure:** Mnemosyne memory system (94.35% F1 on LoCoMo), ghost dimension characterization (PC1 excluded from J-space, cos ≤ 0.003), circumplex probe (eccentricity depth profiling on Qwen2-0.5B and Qwen3.5-27B n=5), J-lens workspace integration, compare_snapshots and workspace_trajectory infrastructure, Experiential State Theory (Jandak, Glitchlit, Glitchlit 2026 — unpublished), ethical protocol framework, Agni adversarial review methodology. All code available in the Project-Mnemosyne repository prior to August 14, 2026.
+
+**Sprint contributions:** Cross-architecture validation on Gemma-3-27B-it, n=20 anchor expansion, non-emotional control axes, J-space decomposition overlay, magnitude gate implementation.
+
 ## 4. Results
 
 [TBD]
