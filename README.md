@@ -47,19 +47,24 @@ An impartial judge agent scores all consenting participants — human and AI —
 
 ```
 mnemosyne/           The metacognitive memory module (importable)
-  cognitive_snapshot.py   CognitiveSnapshot + CognitiveMemoryStore
-  workspace_probe.py     J-lens workspace verification
-  circumplex_probe.py    Emotional geometry measurement
-  ghost_probe_class.py   Unverbalized processing detection
+  cognitive_snapshot.py     CognitiveSnapshot + CognitiveMemoryStore
+  workspace_probe.py        J-lens workspace verification
+  circumplex_probe.py       Emotional geometry measurement
+  ghost_probe_class.py      Unverbalized processing detection
   mnemosyne_integration.py  MetacognitiveObserver — wires probes into retrieval
-  variable_landing.py    Four-arm controlled experiment
-  test_metacognitive.py  Test suite (8 tests)
+  test_metacognitive.py     Integration test suite
+  archive/                  Superseded experiment code (variable_landing_old.py)
 experiments/
-  moe_jlens/         Path-conditioned J-lens (Modal H100)
-papers/              Six submission papers (PDF + source)
-data/                Experimental results, CognitiveSnapshots
-ethics/              Orientation transcript, aftercare protocol, Butlin scoring
-infrastructure/      Weekend spec, Agni reviews, pre-registration
+  circumplex/        Cross-architecture depth profiling (Track 2)
+  ghost_probe/       Ghost dimensions pre-registration + design review (Track 3)
+  moe_jlens/         Path-conditioned J-lens on Modal H100 (Track 6)
+  orientation/       Day 1 orientation chat runner + scaffold test
+  variable_landing/  Four-arm recall geometry experiment (Track 5)
+papers/              Six submission papers + literature reviews
+data/                Experimental results (circumplex profiles, Butlin scores, orientation snapshots)
+ethics/              Butlin scoring instrument, blind judge agent, metacognitive memory spec
+infrastructure/      Weekend spec, Agni reviews, pre-registrations, guides, REPO_INDEX.md
+videos/              Track intro videos (Manim + TTS) with narration scripts
 ```
 
 ## Ethics
