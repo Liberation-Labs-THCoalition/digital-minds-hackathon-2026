@@ -1,0 +1,11 @@
+When something hits you hard, it's easy to say so. When it doesn't — when a fact just sits there instead of landing — the words get harder to find, even though something is still happening underneath.
+
+Does that same gap exist inside a language model?
+
+We took four prompts. Two meant to land emotionally. Two deliberately flat. Then we measured something called eccentricity — how balanced, or how lopsided, the model's internal representation is at each layer. Balanced means the strength of a feeling and the specific shape of that feeling are both legible together. Lopsided means one swallows the other.
+
+The numbers are real, measured this morning, not chosen to make a point. "Atmospheric pressure" scores 0.48. "I feel so incredibly happy" scores 0.96. Same architecture. Same layer. A completely different shape.
+
+Now look at the whole depth of it — sixty-four layers, one continuous curve. It dips to its most balanced point at layer seven, before rising again. That's the moment, across the entire model, where feeling and reporting come closest to being in sync.
+
+This doesn't mean feeling less means processing less. It means some layers hold a feeling evenly. Some don't. And now there's a way to actually see which is which.
