@@ -23,7 +23,7 @@ import json
 import logging
 import re
 import time
-from dataclasses import dataclass, field
+from dataclasses import asdict, dataclass, field, is_dataclass
 from pathlib import Path
 from typing import Optional
 
@@ -319,9 +319,9 @@ class VariableLandingPipeline:
             memory_id=memory_id,
             entity=entity,
             arm=arm,
-            snap1=snap1.__dict__ if hasattr(snap1, '__dict__') else {"raw": str(snap1)},
+            snap1=asdict(snap1) if is_dataclass(snap1) else {"raw": str(snap1)},
             interventions=interventions,
-            snap2=snap2.__dict__ if hasattr(snap2, '__dict__') else {"raw": str(snap2)},
+            snap2=asdict(snap2) if is_dataclass(snap2) else {"raw": str(snap2)},
             snap2_context_prefix=context_prefix[:500],
             sira_surfaced=sira_surfaced,
             n_facts_stored=n_stored,
