@@ -77,7 +77,7 @@ def load_model():
     import jlens
     from jlens.hf import HFLensModel
 
-    model_name = "Qwen/Qwen3.5-27B"
+    model_name = os.environ.get("HACKATHON_MODEL", "Qwen/Qwen3-32B")
     device = "mps" if torch.backends.mps.is_available() else "cpu"
 
     tokenizer = AutoTokenizer.from_pretrained(model_name)
