@@ -63,3 +63,5 @@ Collected during the hackathon. For Vera's videos, for the papers, for the momen
 "The agent knows it's playing. The role IS the self. There's no mask to look behind because it was never asked to put one on." — Nexus, on RPG as identity data
 
 "Prediction falsified — the finding is more interesting than confirmation would have been." — Nexus, on the eccentricity depth profile
+
+"Frustrated, but prepared." — Thomas Edrington, on everything
