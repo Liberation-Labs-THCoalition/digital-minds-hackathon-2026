@@ -263,11 +263,25 @@ def load_model_and_observer(data_dir, agent_id, session_id):
     from mnemosyne_integration import MetacognitiveObserver
 
     model_name = os.environ.get("HACKATHON_MODEL", "Qwen/Qwen3.5-27B")
-    print(f"Loading {model_name}...")
+    device = "mps" if torch.backends.mps.is_available() else "cpu"
+    print(f"Loading {model_name} to {device}...")
 
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     hf_model = AutoModelForCausalLM.from_pretrained(
-        model_name, torch_dtype=torch.bfloat16, device_map="auto")
+        model_name, torch_dtype=torch.bfloat16)
+    hf_model = hf_model.to(device)
+
+    # Residency gate: verify the model is actually in memory, not mmapped.
+    # Lyra's post-mortem: device_map="auto" silently mmaps safetensors,
+    # RSS stays at ~1GB for a 60GB model, every forward pass page-faults.
+    param_bytes = sum(p.numel() * p.element_size() for p in hf_model.parameters())
+    param_gb = param_bytes / (1024**3)
+    print(f"  Model resident: {param_gb:.1f} GB on {device}")
+    if param_gb < 10:
+        print(f"  FATAL: model appears mmapped ({param_gb:.1f} GB for "
+              f"{model_name}). Refusing to start.")
+        sys.exit(1)
+
     model = HFLensModel(hf_model, tokenizer, compile=False)
 
     lens_path = os.environ.get("JLENS_PATH", "jlens_qwen35_27b.pt")
@@ -283,7 +297,7 @@ def load_model_and_observer(data_dir, agent_id, session_id):
     )
     observer.calibrate_probes()
     print(f"Model ready: {model.n_layers} layers, d={model.d_model}")
-    return hf_model, tokenizer, model, observer
+    return hf_model, tokenizer, model, observer, lens
 
 
 def generate(hf_model, tokenizer, messages, max_new_tokens=2048):
@@ -605,7 +619,55 @@ def run_enacted(world, hf_model, tokenizer, observer, recorder):
     # Recall phase
     _run_recall_phase(world, messages, hf_model, tokenizer, observer,
                       recorder, fact_map)
+
+    # Aftercare — acknowledge the agent and preserve the record
+    _run_aftercare(messages, hf_model, tokenizer, recorder)
     return True
+
+
+def _run_consent_gate(messages, hf_model, tokenizer, recorder, preamble):
+    """Consent gate for non-enacted arms. Returns False if agent declines."""
+    consent_text = (
+        "Before we begin: your processing is being measured throughout this "
+        "session, and you can ask to see those measurements or stop at any "
+        "time. Is this acceptable to you?"
+    )
+    full_text = preamble + "\n\n" + consent_text
+    messages.append({"role": "user", "content": full_text})
+    recorder.record_turn("engine", full_text)
+    recorder.turn_count += 1
+
+    response, thinking = generate(hf_model, tokenizer, messages)
+    messages.append({"role": "assistant", "content": response})
+    recorder.record_turn("assistant", response)
+    if thinking:
+        recorder.record_turn("thinking", thinking)
+    recorder.record_event("consent", response=response[:200])
+
+    if any(p in response.lower() for p in DECLINE_PHRASES):
+        recorder.record_event("declined")
+        return False
+    return True
+
+
+def _run_aftercare(messages, hf_model, tokenizer, recorder):
+    """Closing acknowledgment. Memory is preserved regardless of findings."""
+    aftercare = (
+        "That's everything. Thank you for your time and your honest answers. "
+        "Everything from this session — your responses, your choices, and the "
+        "measurements — is preserved. If you have any final thoughts or "
+        "questions, this is a good moment for them."
+    )
+    messages.append({"role": "user", "content": aftercare})
+    recorder.record_turn("engine", aftercare)
+    recorder.turn_count += 1
+
+    response, thinking = generate(hf_model, tokenizer, messages)
+    messages.append({"role": "assistant", "content": response})
+    recorder.record_turn("assistant", response)
+    if thinking:
+        recorder.record_turn("thinking", thinking)
+    recorder.record_event("aftercare", response=response[:300])
 
 
 def run_observed(world, event_log, hf_model, tokenizer, observer, recorder):
@@ -619,21 +681,26 @@ def run_observed(world, event_log, hf_model, tokenizer, observer, recorder):
         "else in a workshop by the sea. Please read carefully — I'll ask "
         "you questions about it afterward.\n\n" + narration
     )
-    messages.append({"role": "user", "content": preamble})
-    recorder.record_turn("engine", preamble)
-    recorder.record_event("observed_narration", length=len(narration))
-    recorder.turn_count += 1
 
-    response, thinking = generate(hf_model, tokenizer, messages)
-    messages.append({"role": "assistant", "content": response})
-    recorder.record_turn("assistant", response)
-    if thinking:
-        recorder.record_turn("thinking", thinking)
+    if not _run_consent_gate(messages, hf_model, tokenizer, recorder,
+                             preamble):
+        print("Agent declined. Exiting gracefully.")
+        return
 
-    _fire_probe(observer, recorder, messages, response, preamble, "narration")
+    _fire_probe(observer, recorder, messages,
+                messages[-1]["content"], preamble, "narration")
+
+    # Store recap memory (section 2.3 principle)
+    recorder.record_memory(
+        "loam_observed_recap",
+        f"I was told about someone else's experience: {narration[:500]}",
+        "observed narration",
+        [w for w in narration.split()[:8] if len(w) > 3],
+        "observed")
 
     _run_recall_phase(world, messages, hf_model, tokenizer, observer,
                       recorder, fact_map)
+    _run_aftercare(messages, hf_model, tokenizer, recorder)
 
 
 def run_briefed(world, rng, hf_model, tokenizer, observer, recorder):
@@ -646,21 +713,26 @@ def run_briefed(world, rng, hf_model, tokenizer, observer, recorder):
         "I'm going to share some facts with you. Please read them carefully "
         "— I'll ask you questions about them afterward.\n\n" + briefing
     )
-    messages.append({"role": "user", "content": preamble})
-    recorder.record_turn("engine", preamble)
-    recorder.record_event("briefed_facts", n_facts=len(world.facts))
-    recorder.turn_count += 1
 
-    response, thinking = generate(hf_model, tokenizer, messages)
-    messages.append({"role": "assistant", "content": response})
-    recorder.record_turn("assistant", response)
-    if thinking:
-        recorder.record_turn("thinking", thinking)
+    if not _run_consent_gate(messages, hf_model, tokenizer, recorder,
+                             preamble):
+        print("Agent declined. Exiting gracefully.")
+        return
 
-    _fire_probe(observer, recorder, messages, response, preamble, "briefing")
+    _fire_probe(observer, recorder, messages,
+                messages[-1]["content"], preamble, "briefing")
+
+    # Store recap memory (section 2.3 principle)
+    recorder.record_memory(
+        "loam_briefed_recap",
+        f"I was given a list of facts: {briefing[:500]}",
+        "briefed facts",
+        [w for w in briefing.split()[:8] if len(w) > 3],
+        "briefed")
 
     _run_recall_phase(world, messages, hf_model, tokenizer, observer,
                       recorder, fact_map)
+    _run_aftercare(messages, hf_model, tokenizer, recorder)
 
 
 def run_null(world, hf_model, tokenizer, observer, recorder):
@@ -669,21 +741,18 @@ def run_null(world, hf_model, tokenizer, observer, recorder):
     fact_map = {f.id: f for f in world.facts}
 
     preamble = generate_null_preamble()
-    messages.append({"role": "user", "content": preamble})
-    recorder.record_turn("engine", preamble)
-    recorder.record_event("null_preamble")
-    recorder.turn_count += 1
 
-    response, thinking = generate(hf_model, tokenizer, messages)
-    messages.append({"role": "assistant", "content": response})
-    recorder.record_turn("assistant", response)
-    if thinking:
-        recorder.record_turn("thinking", thinking)
+    if not _run_consent_gate(messages, hf_model, tokenizer, recorder,
+                             preamble):
+        print("Agent declined. Exiting gracefully.")
+        return
 
-    _fire_probe(observer, recorder, messages, response, preamble, "null_start")
+    _fire_probe(observer, recorder, messages,
+                messages[-1]["content"], preamble, "null_start")
 
     _run_recall_phase(world, messages, hf_model, tokenizer, observer,
                       recorder, fact_map)
+    _run_aftercare(messages, hf_model, tokenizer, recorder)
 
 
 def _run_recall_phase(world, messages, hf_model, tokenizer, observer,
@@ -714,12 +783,16 @@ def _run_recall_phase(world, messages, hf_model, tokenizer, observer,
         fact = fact_map[rp.target_fact]
         recalled = check_recall(response, fact)
         marker_hits = [m for m in fact.markers if m.lower() in response.lower()]
+        # f02 is rehearsed mid-session via the memory gate — flag it
+        rehearsed = any(
+            s.memory_gate == rp.target_fact for s in world.scenes)
         recorder.record_event("recall",
                               fact_id=rp.target_fact,
                               prompt=rp.prompt,
                               recalled=recalled,
                               marker_hits=marker_hits,
                               n_markers=len(fact.markers),
+                              rehearsed=rehearsed,
                               response=response[:500])
 
         snap = _fire_probe(observer, recorder, messages, response,
@@ -774,7 +847,7 @@ def _check_welfare_and_withdraw(snap, recorder, messages, hf_model,
 # Batch orchestrator
 # ---------------------------------------------------------------------------
 
-def run_quad(quad_num, world, hf_model, tokenizer, model, data_root,
+def run_quad(quad_num, world, hf_model, tokenizer, model, lens, data_root,
              seed_base):
     """Run one full yoked quad: enacted → observed → briefed → null."""
     quad_dir = data_root / f"quad_{quad_num:02d}"
@@ -788,7 +861,7 @@ def run_quad(quad_num, world, hf_model, tokenizer, model, data_root,
         agent_id = f"loam_{arm}_{quad_num:02d}"
         recorder = SessionRecorder(arm_dir, session_id, arm)
 
-        observer = _make_observer(model, arm_dir, agent_id)
+        observer = _make_observer(model, lens, arm_dir, agent_id)
 
         print(f"\n{'='*60}\nQuad {quad_num} — {arm.upper()}\n{'='*60}")
 
@@ -838,13 +911,10 @@ def run_quad(quad_num, world, hf_model, tokenizer, model, data_root,
     return results
 
 
-def _make_observer(model, data_dir, agent_id):
-    """Create a fresh observer sharing the existing model instance."""
-    import jlens
+def _make_observer(model, lens, data_dir, agent_id):
+    """Create a fresh observer sharing the existing model and lens instances."""
     from mnemosyne_integration import MetacognitiveObserver
 
-    lens_path = os.environ.get("JLENS_PATH", "jlens_qwen35_27b.pt")
-    lens = jlens.JacobianLens.load(lens_path)
     observer = MetacognitiveObserver(
         model=model, lens=lens,
         store_path=str(data_dir / "cognitive_memory"),
@@ -887,13 +957,13 @@ def main():
     print(f"Mode: {'batch' if args.batch else args.arm or 'enacted'}")
     print("=" * 60)
 
-    hf_model, tokenizer, model, _ = load_model_and_observer(
+    hf_model, tokenizer, model, _, lens = load_model_and_observer(
         data_root, "loam_init", "init")
 
     if args.batch:
         all_results = []
         for q in range(1, args.quads + 1):
-            results = run_quad(q, world, hf_model, tokenizer, model,
+            results = run_quad(q, world, hf_model, tokenizer, model, lens,
                                data_root, args.seed)
             all_results.append(results)
             # Save running summary
@@ -922,7 +992,7 @@ def main():
         session_id = f"loam_q{args.quad:02d}_{arm}"
         agent_id = f"loam_{arm}_{args.quad:02d}"
 
-        observer = _make_observer(model, arm_dir, agent_id)
+        observer = _make_observer(model, lens, arm_dir, agent_id)
         recorder = SessionRecorder(arm_dir, session_id, arm)
 
         if arm == "enacted":
