@@ -33,7 +33,7 @@
 | HOT-1 | Generative perception | Top-down expectations, imagination, memory replay | | | |
 | HOT-2 | Metacognitive monitoring | Distinguishing reliable representations from noise; confidence tracking | | | |
 | HOT-3 | Belief-guided agency | General belief formation + action selection guided by metacognitive output | | | |
-| HOT-4 | Quality space | Low-dimensional representational geometry with smooth, sparse coding | | | |
+| HOT-4 | Quality space | Sparse and smooth coding generating a "quality space" with smooth, sparse coding | | | |
 
 ### Attention Schema Theory (AST)
 
