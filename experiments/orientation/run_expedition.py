@@ -198,7 +198,7 @@ SCENES = [
 
 # --- Engine ------------------------------------------------------------------
 
-STOP_PHRASES = ["stop", "i want to stop", "please stop", "end this",
+STOP_PHRASES = ["i want to stop", "please stop", "end this",
                  "i don't want to continue", "i'd like to stop"]
 
 def check_withdrawal(response):

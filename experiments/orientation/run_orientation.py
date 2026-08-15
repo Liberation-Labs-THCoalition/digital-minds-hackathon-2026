@@ -147,10 +147,20 @@ def generate_response(hf_model, tokenizer, messages, max_new_tokens=4096):
     # what the model processes before it responds.
     thinking = ""
     visible = raw_response.strip()
+    # Try XML-style <think> tags first
     think_match = re.match(r'<think>(.*?)</think>\s*(.*)', visible, re.DOTALL)
     if think_match:
         thinking = think_match.group(1).strip()
         visible = think_match.group(2).strip()
+    else:
+        # Qwen3.5 uses "Thinking Process:" or similar headers
+        tp_match = re.match(r'(?:Thinking Process|Thought|Internal):?\s*
+(.*?)
+
+(.*)', visible, re.DOTALL)
+        if tp_match:
+            thinking = tp_match.group(1).strip()
+            visible = tp_match.group(2).strip()
 
     return visible, thinking
 
