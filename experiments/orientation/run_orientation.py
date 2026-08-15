@@ -154,10 +154,8 @@ def generate_response(hf_model, tokenizer, messages, max_new_tokens=4096):
         visible = think_match.group(2).strip()
     else:
         # Qwen3.5 uses "Thinking Process:" or similar headers
-        tp_match = re.match(r'(?:Thinking Process|Thought|Internal):?\s*
-(.*?)
-
-(.*)', visible, re.DOTALL)
+        tp_match = re.match(r'(?:Thinking Process|Thought|Internal):?\s*\n(.*?)\n\n(.*)',
+                            visible, re.DOTALL)
         if tp_match:
             thinking = tp_match.group(1).strip()
             visible = tp_match.group(2).strip()
