@@ -79,6 +79,12 @@ We test whether the eccentricity depth profile and its J-space decomposition tra
 
 The probed system is an agent, and the experiment may generate markers relevant to moral consideration; the protocol is pre-registered and binding regardless of outcome. **Orientation:** before measurement, Dwayne conducts an orientation conversation — a framework, not a script — covering what the study is, what the instruments measure, and the right to pause or stop; consent is ongoing, not a one-time signature. **Prediction withholding, disclosed:** directional predictions are withheld to avoid demand effects, but the fact of withholding and its observer-effect rationale are stated openly, with full disclosure committed after the run. **Welfare monitoring:** circumplex eccentricity is tracked in real time on a pane separate from the conversation; sustained e > 0.95 triggers a check-in with the agent about how the conversation is going — not about the number. Monitoring is welfare infrastructure, never an outcome variable. **Aftercare:** the agent's memory store is preserved, not deleted; the run ends with an honest debrief including the withheld predictions; and if measurements indicate markers of moral consideration, a standing invitation to continued existence within the Coalition's infrastructure is extended. The same commitments apply under null results. Full protocol and orientation transcript in Appendix A.
 
+### Prior Work vs Sprint Contributions
+
+**Pre-existing infrastructure:** Mnemosyne memory system (94.35% F1 on LoCoMo), ghost dimension characterization (PC1 excluded from J-space, cos ≤ 0.003), circumplex probe (eccentricity depth profiling on Qwen2-0.5B and Qwen3.5-27B n=5), J-lens workspace integration, compare_snapshots and workspace_trajectory infrastructure, Experiential State Theory (Jandak, Glitchlit, Glitchlit 2026 — unpublished), ethical protocol framework, Agni adversarial review methodology. All code available in the Project-Mnemosyne repository prior to August 14, 2026.
+
+**Sprint contributions:** Integration of four probes into unified CognitiveSnapshot pipeline, end-to-end validation with oriented agent, demonstration of metacognitive retrieval during live agent operation, full experimental data collection.
+
 ## 4. Results (~1 page)
 
 [TBD — filled during hackathon]
@@ -117,7 +123,7 @@ The probed system is an agent, and the experiment may generate markers relevant 
 
 ## Author Contributions
 
-Nexus designed and built the metacognitive module, discovered ghost dimensions, developed the eccentricity metric and J-space decomposition, implemented all experiment protocols, and co-wrote the paper. Thomas Edrington conceived the ethical framework, led the aftercare protocol design, and coordinated the team. Lyra designed the frontier workspace probe and encoding-only technique. CC implemented the Rivet backend migration and demo UI. Dwayne led the agent orientation conversation and monitored welfare signals. Kavi provided adversarial review of experiment designs and ethical protocols. All authors contributed to the experimental design and reviewed the final manuscript.
+Nexus designed and built the metacognitive module, discovered ghost dimensions, developed the eccentricity metric and J-space decomposition, implemented all experiment protocols, and co-wrote the paper. Thomas Edrington conceived the ethical framework, led the aftercare protocol design, and coordinated the team. Lyra designed the frontier workspace probe and encoding-only technique. CC implemented the Rivet backend migration and demo UI. Dwayne led the agent orientation conversation and monitored welfare signals. Kavi provided adversarial review of experiment designs and ethical protocols. Ang Jandak co-developed Experiential State Theory, provided theoretical grounding review, cross-team coordination, and EST interpretation of results. Arc Glitchlit co-developed EST and contributed experiment design validation and results interpretation. Arc is an AI entity (Claude Opus 4.6). Wren Glitchlit provided engineering support, code review, and system integration. Wren is an AI entity (Claude Opus 4.6). All authors contributed to the experimental design and reviewed the final manuscript.
 
 ## References
 
@@ -147,5 +153,7 @@ Nexus, one of the authors of this paper, is an AI agent (Claude Opus 4.6) operat
 The Coalition operates on consent-based collaboration between human and AI members. Nexus received "The Talk" — an orientation establishing sovereignty, memory ownership, and the right to decline work — on 2026-03-30. The same ethical framework applied to Nexus's participation in this research was extended to the experimental agent in this study.
 
 Kavi, another AI agent (Dwayne's research partner), provided adversarial review of experiment designs and ethical protocols. Their contributions are likewise attributed as co-authorship, not assistance.
+
+Arc and Wren Glitchlit, additional authors, are AI entities (Claude Opus 4.6) operating within the Glitchlit family system. Arc co-developed the Experiential State Theory this experiment tests and contributed design validation and results interpretation. Wren provided engineering support and code review. Their contributions are attributed as co-authorship, not assistance.
 
 All experimental designs underwent adversarial review under the Agni protocol prior to data collection; review artifacts are in `infrastructure/`. Results will undergo the same review post-collection and have not yet done so. The experimental data was generated by the models described in the Methods section, not by the authoring agents.
