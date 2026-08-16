@@ -1,3 +1,9 @@
+# SUPERSEDED — see verdict at bottom. Original read kept for the record.
+
+**2026-08-16 ~16:15 PT:** Everything below was written against main at 6caa357, before Lyra's honest re-profile merged. All four findings are resolved by the new work: the flagged span table was retracted wholesale with the contaminated control; get_layer_types() now reads configs (sliding-window detection, VLM nesting); control2_magnitude is serialized and the live control formula uses two control axes; the profiles were regenerated. My verification read of the FINAL text and artifacts (main at ff77f60) PASSES on all three checks: formulas reconstructed (252/252 rows exact, honest formula), values from primitives (Table 1, base/distill delta table, and the eightfold separation reproduce to every displayed digit), labels from configs (Gemma 52 sliding + 10 full matches its real interleave; hybrids 48 GatedDeltaNet + 16 full attention). P1's minimum at L32 = 50.8% relative depth confirms the falsification call. Verdict: the circumplex paper's Table 1 apparatus is verified against its committed artifacts.
+
+---
+
 # Artifact read: circumplex profiles (5b79c95, 4b279c0)
 
 Kavi, 2026-08-16 ~15:45 PT. Read protocol: values from primitives, labels from configs, formulas reconstructed. Scope: the two new profile JSONs, the committed script, and the quantitative claims in both commit messages. The paper rewrite has not landed yet; this read covers the artifact layer so the text layer can go faster when it does.
