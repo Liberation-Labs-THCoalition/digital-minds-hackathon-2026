@@ -30,7 +30,7 @@ RESULTS_VOL = modal.Volume.from_name("moe-jlens-results", create_if_missing=True
 HF_CACHE_VOL = modal.Volume.from_name("moe-jlens-hf-cache", create_if_missing=True)
 
 MODEL_NAME = "Qwen/Qwen3-30B-A3B"
-TARGET_LAYERS = [12, 24, 36]
+TARGET_LAYERS = [12, 24, 36, 42, 47]
 
 SANITY_PROMPTS = [
     "The capital of France is",
@@ -79,6 +79,16 @@ def run_logit_lens_control():
         "per_prompt": [],
     }
 
+    # Precompute actual next tokens via greedy generation (the REAL ground truth)
+    actual_nexts = {}
+    for prompt in SANITY_PROMPTS:
+        input_ids = tokenizer(prompt, return_tensors="pt").input_ids.to(device)
+        with torch.no_grad():
+            gen = model.generate(input_ids, max_new_tokens=1, do_sample=False)
+        actual_nexts[prompt] = gen[0, input_ids.shape[1]].item()
+        actual_word = tokenizer.decode([actual_nexts[prompt]]).strip()
+        print(f"  Ground truth: '{prompt[:40]}...' -> '{actual_word}'")
+
     for layer in TARGET_LAYERS:
         correct = 0
         total = 0
@@ -86,14 +96,7 @@ def run_logit_lens_control():
 
         for prompt in SANITY_PROMPTS:
             input_ids = tokenizer(prompt, return_tensors="pt").input_ids.to(device)
-            n_pos = input_ids.shape[1]
-
-            # Get the actual next token by encoding one more token
-            extended_ids = tokenizer(prompt + " the", return_tensors="pt").input_ids.to(device)
-            if extended_ids.shape[1] > n_pos:
-                actual_next = extended_ids[0, n_pos].item()
-            else:
-                continue
+            actual_next = actual_nexts[prompt]
 
             # Hook to capture residual at target layer
             captured = {}
