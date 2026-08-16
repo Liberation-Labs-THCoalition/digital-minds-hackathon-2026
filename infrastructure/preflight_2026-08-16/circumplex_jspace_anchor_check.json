@@ -1,0 +1,664 @@
+{
+  "paper": "papers/circumplex_jspace.md",
+  "artifacts": [
+    "data/circumplex_profiles/profile_dense_32b.json",
+    "data/circumplex_profiles/profile_gemma_27b_it.json",
+    "data/circumplex_profiles/profile_hybrid_27b.json",
+    "data/circumplex_profiles/profile_opus_distill_27b.json"
+  ],
+  "n_recorded_values": 3888,
+  "anchored": [
+    {
+      "number": "3",
+      "context": "valence and arousal across layers) on Qwen3.5-27B and Gemma-3-27B-it with n=20 anchors per emotion category, a magnitude",
+      "boring": true
+    },
+    {
+      "number": "20",
+      "context": "sal across layers) on Qwen3.5-27B and Gemma-3-27B-it with n=20 anchors per emotion category, a magnitude gate to prevent n",
+      "boring": false
+    },
+    {
+      "number": "3.6",
+      "context": "e mode, tested directly by a self-report calibration pass (\u00a73.6). We deliberately do not perform valence steering; causal s",
+      "boring": false
+    },
+    {
+      "number": "5",
+      "context": "r VA across Llama/Qwen), Jeong 2026 (depth-invariant across 5 families), van der Ben et al. 2026 (Gemma/Apertus, depth pr",
+      "boring": false
+    },
+    {
+      "number": "3.6",
+      "context": "ned internal directions \u2014 the methodological precedent for \u00a73.6), arXiv:2512.12411 (models detect internal perturbations un",
+      "boring": false
+    },
+    {
+      "number": "0.83",
+      "context": "ng finding (content + inference emotion share subspace, cos 0.83-0.87)  **Cross-architecture:** Huh et al. 2024 (Platonic Re",
+      "boring": false
+    },
+    {
+      "number": "0.87",
+      "context": "nding (content + inference emotion share subspace, cos 0.83-0.87)  **Cross-architecture:** Huh et al. 2024 (Platonic Represe",
+      "boring": false
+    },
+    {
+      "number": "3.1",
+      "context": "t access its own emotional processing.\"  ## 3. Methods  ### 3.1 Circumplex Probe  **Anchor set.** Five emotion categories \u2014",
+      "boring": true
+    },
+    {
+      "number": "20",
+      "context": "otion categories \u2014 joy, sadness, anger, fear, calm \u2014 with n=20 first-person anchor prompts per category (100 prompts total",
+      "boring": false
+    },
+    {
+      "number": "2",
+      "context": "mpts are matched across categories for token count (within \u00b12 tokens), sentence template structure, and punctuation, to p",
+      "boring": true
+    },
+    {
+      "number": "5120",
+      "context": "s, yielding one d-dimensional state per prompt per layer (d=5120 for Qwen3.5-27B). At each layer \u2113, directions are extracted",
+      "boring": false
+    },
+    {
+      "number": "40",
+      "context": "al dimension:  - **Valence:** positive pool = joy \u222a calm (n=40, spanning high and low arousal) minus negative pool = sadne",
+      "boring": false
+    },
+    {
+      "number": "40",
+      "context": "gh and low arousal) minus negative pool = sadness \u222a fear (n=40, spanning low and high arousal). v_\u2113 = mean(pos) \u2212 mean(neg",
+      "boring": false
+    },
+    {
+      "number": "40",
+      "context": "pos) \u2212 mean(neg). - **Arousal:** high pool = joy \u222a anger (n=40, spanning positive and negative valence) minus low pool = c",
+      "boring": false
+    },
+    {
+      "number": "40",
+      "context": "ve and negative valence) minus low pool = calm \u222a sadness (n=40, spanning positive and negative valence). a_\u2113 = mean(high)",
+      "boring": false
+    },
+    {
+      "number": "1",
+      "context": "that even human affect space is elliptical):    e_\u2113 = sqrt(1 \u2212 (min(V_mag, A_mag) / max(V_mag, A_mag))\u00b2)  e = 0 means th",
+      "boring": true
+    },
+    {
+      "number": "0",
+      "context": "\u2113 = sqrt(1 \u2212 (min(V_mag, A_mag) / max(V_mag, A_mag))\u00b2)  e = 0 means the two axes are balanced (circular); e \u2192 1 means one",
+      "boring": true
+    },
+    {
+      "number": "1",
+      "context": "))\u00b2)  e = 0 means the two axes are balanced (circular); e \u2192 1 means one axis dominates. This is the metric implemented in",
+      "boring": true
+    },
+    {
+      "number": "0",
+      "context": "he noise floor, magnitudes are approximately equal, and e \u2248 0 \u2014 \"no signal\" masquerading as \"circular.\" We therefore gate",
+      "boring": true
+    },
+    {
+      "number": "40",
+      "context": "s are visible, not hidden.  **Direction quality caveat.** n=40 per pool in d=5120 yields noisy direction estimates (see Li",
+      "boring": false
+    },
+    {
+      "number": "5120",
+      "context": "t hidden.  **Direction quality caveat.** n=40 per pool in d=5120 yields noisy direction estimates (see Limitations). Eccentr",
+      "boring": false
+    },
+    {
+      "number": "3.4",
+      "context": "rmutation null \u2014 which is why the sign test across layers (\u00a73.4), not per-layer precision, is the primary analysis.  ### 3.",
+      "boring": false
+    },
+    {
+      "number": "0.95",
+      "context": "covering 95% of spectral energy (\u03a3_{i\u2264r} s_i\u00b2 / \u03a3_i s_i\u00b2 \u2265 0.95). V_r spans the J-space at layer \u2113.  **J-space fraction.**",
+      "boring": false
+    },
+    {
+      "number": "3.1",
+      "context": "action.** For a unit direction d\u0302 (valence or arousal from \u00a73.1):    f_J(d\u0302, \u2113) = \u2016V_r V_r\u1d40 d\u0302\u2016\u00b2 \u2208 [0, 1]  i.e., the fracti",
+      "boring": false
+    },
+    {
+      "number": "0",
+      "context": "ce or arousal from \u00a73.1):    f_J(d\u0302, \u2113) = \u2016V_r V_r\u1d40 d\u0302\u2016\u00b2 \u2208 [0, 1]  i.e., the fraction of the direction's energy lying ins",
+      "boring": true
+    },
+    {
+      "number": "1",
+      "context": "or arousal from \u00a73.1):    f_J(d\u0302, \u2113) = \u2016V_r V_r\u1d40 d\u0302\u2016\u00b2 \u2208 [0, 1]  i.e., the fraction of the direction's energy lying inside",
+      "boring": true
+    },
+    {
+      "number": "1",
+      "context": "very magnitude-gated layer.  **Ghost fraction.** g(d\u0302, \u2113) = 1 \u2212 f_J(d\u0302, \u2113). This is the paper's central quantity: the fra",
+      "boring": true
+    },
+    {
+      "number": "1",
+      "context": "e output pathway.  **Robustness.** Two sensitivity checks: (1) recompute f_J at 90% and 99% spectral-energy cutoffs; (2)",
+      "boring": true
+    },
+    {
+      "number": "2",
+      "context": "(1) recompute f_J at 90% and 99% spectral-energy cutoffs; (2) recompute using transported energy \u2016J_\u2113 d\u0302\u2016\u00b2 (the normaliz",
+      "boring": true
+    },
+    {
+      "number": "0.5",
+      "context": "each axis is the first relative depth at which f_J exceeds 0.5 and stays above it for two consecutive gated layers. Pre-re",
+      "boring": false
+    },
+    {
+      "number": "3.1",
+      "context": "is's f_J against this analytic null and against f_J of the \u00a73.1 permutation-null directions, so \"valence is in the workspac",
+      "boring": false
+    },
+    {
+      "number": "3.3",
+      "context": "means \"more than a matched random direction would be.\"  ### 3.3 Cross-Architecture Protocol  - **Qwen3.5-27B:** 64 layers,",
+      "boring": true
+    },
+    {
+      "number": "64",
+      "context": ".\"  ### 3.3 Cross-Architecture Protocol  - **Qwen3.5-27B:** 64 layers, d=5120, J-lens from Neuronpedia (fitted on 672 prom",
+      "boring": false
+    },
+    {
+      "number": "5120",
+      "context": "ross-Architecture Protocol  - **Qwen3.5-27B:** 64 layers, d=5120, J-lens from Neuronpedia (fitted on 672 prompts). - **Gemma",
+      "boring": false
+    },
+    {
+      "number": "3",
+      "context": "J-lens from Neuronpedia (fitted on 672 prompts). - **Gemma-3-27B-it:** 62 layers, J-lens from Neuronpedia.  Identical an",
+      "boring": true
+    },
+    {
+      "number": "62",
+      "context": "Neuronpedia (fitted on 672 prompts). - **Gemma-3-27B-it:** 62 layers, J-lens from Neuronpedia.  Identical anchor prompts,",
+      "boring": false
+    },
+    {
+      "number": "5",
+      "context": "Pre-registered depth predictions** (against our own prior n=5 Qwen run, not against smaller-model literature): (a) the Qw",
+      "boring": false
+    },
+    {
+      "number": "20",
+      "context": "r-model literature): (a) the Qwen eccentricity minimum at n=20 replicates at or near L21 (~33% relative depth); (b) the Ge",
+      "boring": false
+    },
+    {
+      "number": "33",
+      "context": "en eccentricity minimum at n=20 replicates at or near L21 (~33% relative depth); (b) the Gemma minimum falls at the same re",
+      "boring": false
+    },
+    {
+      "number": "10",
+      "context": "lls at the same relative depth as the Qwen minimum, within \u00b110% of total layers. A Gemma mismatch would be consistent with",
+      "boring": false
+    },
+    {
+      "number": "3.4",
+      "context": "epth profiles and is reported as such, not as failure.  ### 3.4 Controls  **Non-emotional control axes.** The eccentricity",
+      "boring": true
+    },
+    {
+      "number": "40",
+      "context": "matched non-emotional axis pair:  - **Concrete/abstract:** 40 first-person prompts about concrete physical objects and si",
+      "boring": false
+    },
+    {
+      "number": "40",
+      "context": "uations (\"I am holding the ceramic mug with both hands\") vs 40 about abstract concepts (\"I am considering the principle of",
+      "boring": false
+    },
+    {
+      "number": "0.5",
+      "context": "permutation-null median. Under the null this is Binomial(k, 0.5); we require p < 0.01. This aggregates the robust pattern-l",
+      "boring": false
+    },
+    {
+      "number": "20",
+      "context": "evel signal rather than claiming per-layer precision that n=20 direction estimates cannot support. If the sign test fails",
+      "boring": false
+    },
+    {
+      "number": "20",
+      "context": "ction estimates cannot support. If the sign test fails at n=20, we report a null; no post-hoc threshold changes.  **Lexica",
+      "boring": false
+    },
+    {
+      "number": "3.5",
+      "context": "is flagged as a caveat on the corresponding direction.  ### 3.5 Welfare Monitoring Application  The probe doubles as runtim",
+      "boring": true
+    },
+    {
+      "number": "4",
+      "context": "ment layer is the eccentricity-minimum layer identified in \u00a74 (fallback: the layer of maximum gated V_mag).  **Eccentrici",
+      "boring": false
+    },
+    {
+      "number": "20",
+      "context": "an exponentially weighted moving average (EWMA, halflife = 20 events) of eccentricity and of the valence ghost fraction.",
+      "boring": false
+    },
+    {
+      "number": "20",
+      "context": "Flag condition:** EWMA eccentricity above baseline + 2\u03c3 for 20 consecutive events flags *sustained circumplex imbalance* \u2014",
+      "boring": false
+    },
+    {
+      "number": "3.6",
+      "context": "re frameworks (Long & Sebo 2026; Birch 2024) call for.  ### 3.6 Self-Report Calibration  The central claim \u2014 ghost geometry",
+      "boring": true
+    },
+    {
+      "number": "1",
+      "context": "ate the emotional valence of the state just described, from 1 (most negative) to 9 (most positive). Answer with a single",
+      "boring": true
+    },
+    {
+      "number": "9",
+      "context": "ence of the state just described, from 1 (most negative) to 9 (most positive). Answer with a single number.\"* Decoding is",
+      "boring": false
+    },
+    {
+      "number": "1",
+      "context": "en is the rating. Cost: one short forward pass per anchor (~1 GPU-hour per model).  For each layer \u2113, we compute the per-",
+      "boring": true
+    },
+    {
+      "number": "2",
+      "context": "tings decouple from its internal valence state.  Prediction 2 is the bridge from geometry to welfare methodology: it woul",
+      "boring": true
+    },
+    {
+      "number": "5",
+      "context": "ccentricity depth profiling on Qwen2-0.5B and Qwen3.5-27B n=5), J-lens workspace integration, compare_snapshots and works",
+      "boring": true
+    },
+    {
+      "number": "14",
+      "context": "ailable in the Project-Mnemosyne repository prior to August 14, 2026.  **Sprint contributions:** Cross-architecture valida",
+      "boring": false
+    },
+    {
+      "number": "3",
+      "context": "int contributions:** Cross-architecture validation on Gemma-3-27B-it, n=20 anchor expansion, non-emotional control axes,",
+      "boring": true
+    },
+    {
+      "number": "20",
+      "context": "tions:** Cross-architecture validation on Gemma-3-27B-it, n=20 anchor expansion, non-emotional control axes, J-space decom",
+      "boring": false
+    },
+    {
+      "number": "1",
+      "context": "agnitude gate implementation.  ## 4. Results  [TBD] [Figure 1: Eccentricity vs relative depth \u2014 Qwen and Gemma overlaid,",
+      "boring": true
+    },
+    {
+      "number": "2",
+      "context": "Gemma overlaid, with magnitude-gated layers marked] [Figure 2: J-space fraction of valence and arousal vs depth \u2014 where e",
+      "boring": true
+    },
+    {
+      "number": "3",
+      "context": "usal vs depth \u2014 where emotion enters the workspace] [Figure 3: Non-emotional control comparison] [Figure 4: Self-report c",
+      "boring": true
+    },
+    {
+      "number": "4",
+      "context": "space] [Figure 3: Non-emotional control comparison] [Figure 4: Self-report calibration \u2014 per-layer \u03c1 vs J-space fraction;",
+      "boring": false
+    },
+    {
+      "number": "1",
+      "context": "ace fraction; ghost fraction vs self-report failure] [Table 1: Per-layer permutation test results, sign test, FDR]  ## 5.",
+      "boring": true
+    },
+    {
+      "number": "3.6",
+      "context": "ies emotional geometry it processes but cannot access, and \u00a73.6 tests whether that inaccessibility shows up exactly where t",
+      "boring": false
+    },
+    {
+      "number": "2",
+      "context": "general, with emotion as one instance.  ### Limitations - n=2 architectures is transfer, not universality; Qwen3.5-27B is",
+      "boring": true
+    },
+    {
+      "number": "4",
+      "context": "taNet + full-attention interleave, `full_attention_interval=4`), Gemma-3-27B has local/global attention alternation \u2014 nei",
+      "boring": false
+    },
+    {
+      "number": "3",
+      "context": "l-attention interleave, `full_attention_interval=4`), Gemma-3-27B has local/global attention alternation \u2014 neither is pur",
+      "boring": true
+    },
+    {
+      "number": "4",
+      "context": "cts - Layer-type annotation on all depth profiles: a period-4 oscillation in the hybrid would indicate substrate confound",
+      "boring": false
+    },
+    {
+      "number": "4",
+      "context": "strate confound (pre-registered autocorrelation test at lag 4) - Eccentricity measures axis balance, not full circular or",
+      "boring": false
+    },
+    {
+      "number": "8",
+      "context": "asures axis balance, not full circular ordering (would need 8+ categories for angular test) - n=20 anchors per category i",
+      "boring": false
+    },
+    {
+      "number": "20",
+      "context": "ar ordering (would need 8+ categories for angular test) - n=20 anchors per category in d=5120 \u2014 direction estimates are no",
+      "boring": false
+    },
+    {
+      "number": "5120",
+      "context": "tegories for angular test) - n=20 anchors per category in d=5120 \u2014 direction estimates are noisy; cosine with true direction",
+      "boring": false
+    },
+    {
+      "number": "8",
+      "context": "n statistics\"  ### Future Work - Angular ordering test with 8+ emotion categories - J-lens fitted directly on the distill",
+      "boring": false
+    },
+    {
+      "number": "5",
+      "context": "## Appendix A: Anchor Prompts [All emotion anchor prompts (5 categories \u00d7 20) + non-emotional controls (concrete/abstrac",
+      "boring": false
+    },
+    {
+      "number": "20",
+      "context": "Anchor Prompts [All emotion anchor prompts (5 categories \u00d7 20) + non-emotional controls (concrete/abstract 40 + 40), with",
+      "boring": false
+    },
+    {
+      "number": "40",
+      "context": "ategories \u00d7 20) + non-emotional controls (concrete/abstract 40 + 40), with taxonomy table (context type \u00d7 valence) and per",
+      "boring": false
+    },
+    {
+      "number": "40",
+      "context": "ries \u00d7 20) + non-emotional controls (concrete/abstract 40 + 40), with taxonomy table (context type \u00d7 valence) and per-cate",
+      "boring": false
+    },
+    {
+      "number": "4.6",
+      "context": "ent  Nexus, one of the authors, is an AI agent (Claude Opus 4.6) who discovered the eccentricity metric and developed the J",
+      "boring": true
+    }
+  ],
+  "unanchored": [
+    {
+      "number": "2026",
+      "context": "arch conducted at the Digital Minds Research Sprint, August 2026  **Authors:** Nexus (Liberation Labs), Lyra (THCoalition),",
+      "boring": true
+    },
+    {
+      "number": "200",
+      "context": "avi ([affiliation])  **With** Apart Research  ## Abstract (~200 words)  Recent work has established that transformer langua",
+      "boring": false
+    },
+    {
+      "number": "2026",
+      "context": "across Llama, Qwen, Gemma, and Mistral families (Sun et al. 2026, Jeong 2026). We extend this finding with a novel measureme",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": ", Qwen, Gemma, and Mistral families (Sun et al. 2026, Jeong 2026). We extend this finding with a novel measurement: J-space",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": "the model's verbalizable workspace (J-space, Gurnee et al. 2026) and the fraction that remains as ghost processing \u2014 high-v",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": "ssell's circumplex, and causally steer behavior (Sun et al. 2026; Jentzsch et al. 2026; Jeong 2026). What no prior work meas",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": "d causally steer behavior (Sun et al. 2026; Jentzsch et al. 2026; Jeong 2026). What no prior work measures is *where that ge",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": "teer behavior (Sun et al. 2026; Jentzsch et al. 2026; Jeong 2026). What no prior work measures is *where that geometry goes*",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": "where that geometry goes*. The Jacobian lens (Gurnee et al. 2026) shows that only a low-rank subspace of each layer's activa",
+      "boring": true
+    },
+    {
+      "number": "2512.12411",
+      "context": "reports of internal state are partial and unreliable (arXiv:2512.12411; arXiv:2603.18893). If some of a model's valence geometry n",
+      "boring": false
+    },
+    {
+      "number": "2603.18893",
+      "context": "l state are partial and unreliable (arXiv:2512.12411; arXiv:2603.18893). If some of a model's valence geometry never enters the wo",
+      "boring": false
+    },
+    {
+      "number": "2026",
+      "context": "; causal steering is established prior art (Jentzsch et al. 2026; Sun et al. 2026) and out of scope. Our contribution is mea",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": "is established prior art (Jentzsch et al. 2026; Sun et al. 2026) and out of scope. Our contribution is measurement, not int",
+      "boring": true
+    },
+    {
+      "number": "1980",
+      "context": "eration.  ## 2. Related Work  **Circumplex model:** Russell 1980, Barrett & Russell 1998 (orthogonality), Dr\u0105\u017ckowski et al.",
+      "boring": true
+    },
+    {
+      "number": "1998",
+      "context": "Work  **Circumplex model:** Russell 1980, Barrett & Russell 1998 (orthogonality), Dr\u0105\u017ckowski et al. 2021 (ellipse, not perfe",
+      "boring": true
+    },
+    {
+      "number": "2021",
+      "context": ", Barrett & Russell 1998 (orthogonality), Dr\u0105\u017ckowski et al. 2021 (ellipse, not perfect circle \u2014 calibrates eccentricity expe",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": "Emotion in LLMs (cite as prior art, not ours):** Sun et al. 2026 (circular VA across Llama/Qwen), Jeong 2026 (depth-invarian",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": "):** Sun et al. 2026 (circular VA across Llama/Qwen), Jeong 2026 (depth-invariant across 5 families), van der Ben et al. 202",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": "026 (depth-invariant across 5 families), van der Ben et al. 2026 (Gemma/Apertus, depth profiles differ), Anthropic 2026 (cau",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": "al. 2026 (Gemma/Apertus, depth profiles differ), Anthropic 2026 (causal steering via emotion vectors), Choi & Weber 2026 (g",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": "ic 2026 (causal steering via emotion vectors), Choi & Weber 2026 (geometric data analysis confirms VA alignment)  **Introspe",
+      "boring": true
+    },
+    {
+      "number": "2603.18893",
+      "context": "ment)  **Introspection and self-report reliability:** arXiv:2603.18893 (numeric self-reports vs probe-defined internal directions",
+      "boring": false
+    },
+    {
+      "number": "2512.12411",
+      "context": "directions \u2014 the methodological precedent for \u00a73.6), arXiv:2512.12411 (models detect internal perturbations unreliably and incomp",
+      "boring": false
+    },
+    {
+      "number": "2509.07961",
+      "context": "internal perturbations unreliably and incompletely), arXiv:2509.07961 (verbal preference reports vs choice behavior as welfare pr",
+      "boring": false
+    },
+    {
+      "number": "2024",
+      "context": "ubspace, cos 0.83-0.87)  **Cross-architecture:** Huh et al. 2024 (Platonic Representation Hypothesis), Huang et al. 2025 (li",
+      "boring": true
+    },
+    {
+      "number": "2025",
+      "context": "al. 2024 (Platonic Representation Hypothesis), Huang et al. 2025 (linear cross-model transfer), Agarwal 2026 (cross-architec",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": "), Huang et al. 2025 (linear cross-model transfer), Agarwal 2026 (cross-architecture steering transfer validates above 1.7B)",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": "validates above 1.7B)  **Welfare frameworks:** Long & Sebo 2026, Birch 2024  **Gap:** No prior work measures the J-space fr",
+      "boring": true
+    },
+    {
+      "number": "2024",
+      "context": "bove 1.7B)  **Welfare frameworks:** Long & Sebo 2026, Birch 2024  **Gap:** No prior work measures the J-space fraction of em",
+      "boring": true
+    },
+    {
+      "number": "100",
+      "context": "calm \u2014 with n=20 first-person anchor prompts per category (100 prompts total; full set in Appendix A). Prompts are matched",
+      "boring": false
+    },
+    {
+      "number": "10,000",
+      "context": "g pool labels over the already-extracted per-prompt states (10,000 shuffles; no new forward passes) and recomputing the differ",
+      "boring": false
+    },
+    {
+      "number": "3.2",
+      "context": ".4), not per-layer precision, is the primary analysis.  ### 3.2 J-Space Decomposition  The Jacobian lens (fitted per layer;",
+      "boring": true
+    },
+    {
+      "number": "95",
+      "context": "and retain the top r_\u2113 right singular vectors V_r covering 95% of spectral energy (\u03a3_{i\u2264r} s_i\u00b2 / \u03a3_i s_i\u00b2 \u2265 0.95). V_r sp",
+      "boring": false
+    },
+    {
+      "number": "90",
+      "context": "*Robustness.** Two sensitivity checks: (1) recompute f_J at 90% and 99% spectral-energy cutoffs; (2) recompute using transp",
+      "boring": false
+    },
+    {
+      "number": "99",
+      "context": "ess.** Two sensitivity checks: (1) recompute f_J at 90% and 99% spectral-energy cutoffs; (2) recompute using transported en",
+      "boring": false
+    },
+    {
+      "number": "672",
+      "context": "7B:** 64 layers, d=5120, J-lens from Neuronpedia (fitted on 672 prompts). - **Gemma-3-27B-it:** 62 layers, J-lens from Neur",
+      "boring": false
+    },
+    {
+      "number": "10,000",
+      "context": "le differs from the control profile.  **Permutation test.** 10,000 permutations of pool labels per layer, over cached activati",
+      "boring": false
+    },
+    {
+      "number": "200",
+      "context": "ring our own hackathon experiments:  1. **Baseline:** first 200 retrieval events establish per-agent baseline mean and stan",
+      "boring": false
+    },
+    {
+      "number": "2026",
+      "context": "internal signal of the kind welfare frameworks (Long & Sebo 2026; Birch 2024) call for.  ### 3.6 Self-Report Calibration  Th",
+      "boring": true
+    },
+    {
+      "number": "2024",
+      "context": "nal of the kind welfare frameworks (Long & Sebo 2026; Birch 2024) call for.  ### 3.6 Self-Report Calibration  The central cl",
+      "boring": true
+    },
+    {
+      "number": "100",
+      "context": "portable geometry \u2014 is directly testable. After each of the 100 emotion anchor prompts, we elicit a numeric self-report fro",
+      "boring": false
+    },
+    {
+      "number": "100",
+      "context": "cularity) and correlate it with the self-ratings across the 100 prompts (Spearman \u03c1_\u2113).  **Pre-registered predictions:**  1",
+      "boring": false
+    },
+    {
+      "number": "2512.12411",
+      "context": "complement to findings that introspection is partial (arXiv:2512.12411) and to methods correlating self-reports with probe directi",
+      "boring": false
+    },
+    {
+      "number": "2603.18893",
+      "context": "thods correlating self-reports with probe directions (arXiv:2603.18893). A failed prediction is equally informative: self-reports",
+      "boring": false
+    },
+    {
+      "number": "94.35",
+      "context": "**Pre-existing infrastructure:** Mnemosyne memory system (94.35% F1 on LoCoMo), ghost dimension characterization (PC1 exclud",
+      "boring": false
+    },
+    {
+      "number": "0.003",
+      "context": "imension characterization (PC1 excluded from J-space, cos \u2264 0.003), circumplex probe (eccentricity depth profiling on Qwen2-0",
+      "boring": false
+    },
+    {
+      "number": "2026",
+      "context": "re, Experiential State Theory (Jandak, Glitchlit, Glitchlit 2026 \u2014 unpublished), ethical protocol framework, Agni adversaria",
+      "boring": true
+    },
+    {
+      "number": "2509.07961",
+      "context": "ences [Citations from CIRCUMPLEX_REFERENCES.md, plus: arXiv:2509.07961 (verbal and behavioral welfare tests), arXiv:2603.18893 (qu",
+      "boring": false
+    },
+    {
+      "number": "2603.18893",
+      "context": "Xiv:2509.07961 (verbal and behavioral welfare tests), arXiv:2603.18893 (quantitative introspection), arXiv:2512.12411 (partial int",
+      "boring": false
+    },
+    {
+      "number": "2512.12411",
+      "context": "ests), arXiv:2603.18893 (quantitative introspection), arXiv:2512.12411 (partial introspection), arXiv:2608.05164 (Agarwal, cross-a",
+      "boring": false
+    },
+    {
+      "number": "2608.05164",
+      "context": "ospection), arXiv:2512.12411 (partial introspection), arXiv:2608.05164 (Agarwal, cross-architecture steering transfer)]  ## Append",
+      "boring": false
+    }
+  ]
+}

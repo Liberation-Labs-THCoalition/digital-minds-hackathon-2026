@@ -1,0 +1,1278 @@
+{
+  "paper": "papers/moe_jlens.md",
+  "artifacts": [
+    "data/moe_jlens/conditioned_jlens_results.json",
+    "data/moe_jlens/moe_result.json",
+    "experiments/moe_jlens/*.json"
+  ],
+  "n_recorded_values": 54,
+  "anchored": [
+    {
+      "number": "0",
+      "context": "for the random control and 5.6% for the standard lens, with 0 of 3 layers significant after Bonferroni correction. Under",
+      "boring": true
+    },
+    {
+      "number": "3",
+      "context": "he random control and 5.6% for the standard lens, with 0 of 3 layers significant after Bonferroni correction. Under our p",
+      "boring": true
+    },
+    {
+      "number": "3",
+      "context": "es whether workspace-based introspection methods (Tracks 2, 3, 5) can be ported to production MoE models at all.  **Our m",
+      "boring": true
+    },
+    {
+      "number": "1",
+      "context": "size 2048. Per the released config, `decoder_sparse_step = 1` and `mlp_only_layers = []` \u2014 every one of the 48 layers is",
+      "boring": true
+    },
+    {
+      "number": "100",
+      "context": "e fitting corpus is 672 WikiText prompts; a disjoint set of 100 WikiText prompts is held out for evaluation (\u00a73.6). All pro",
+      "boring": false
+    },
+    {
+      "number": "3",
+      "context": "uter`, exposed as each layer's `mlp.gate` module) returns a 3-tuple `(router_logits, routing_weights, expert_indices)`. W",
+      "boring": true
+    },
+    {
+      "number": "3",
+      "context": "d with k-means (`n_init = 10`, fixed seed). We sweep k from 3 to 7, additionally capping k at \u230an/50\u230b so that clusters ave",
+      "boring": true
+    },
+    {
+      "number": "3",
+      "context": "the standing-committee result (Wang et al. 2026), we expect 3\u20135 dominant clusters per layer.  A caveat we flag now rather",
+      "boring": true
+    },
+    {
+      "number": "100",
+      "context": "e.  ### 3.6 Evaluation  **Test-prompt assignment.** For the 100 held-out prompts we capture routing with the same hooks (\u00a73",
+      "boring": false
+    },
+    {
+      "number": "0.05",
+      "context": "n-Whitney U test after Bonferroni correction (threshold \u03b1 = 0.05/3 \u2248 0.0167).  ### 4.0 The standard lens fails a ground-trut",
+      "boring": false
+    },
+    {
+      "number": "3",
+      "context": "tney U test after Bonferroni correction (threshold \u03b1 = 0.05/3 \u2248 0.0167).  ### 4.0 The standard lens fails a ground-truth",
+      "boring": true
+    },
+    {
+      "number": "1",
+      "context": "edictions. The pre-set pass threshold was 20%.  **It scored 1 of 8 \u2014 12.5% \u2014 and failed** (`data/moe_jlens/moe_result.jso",
+      "boring": true
+    },
+    {
+      "number": "1",
+      "context": "his is the stronger and more honest framing of it.  **Table 1: Mean transport cosine on 100 held-out WikiText prompts, pe",
+      "boring": true
+    },
+    {
+      "number": "100",
+      "context": "honest framing of it.  **Table 1: Mean transport cosine on 100 held-out WikiText prompts, per target layer and condition.*",
+      "boring": false
+    },
+    {
+      "number": "0.0453",
+      "context": "---------|--------------------|-------------------| | L12 | 0.0453 (n=100) | \u2014 (n=0) | \u2014 (n=0) | \u2014 | | L24 | 0.0398 (n=100) |",
+      "boring": false
+    },
+    {
+      "number": "100",
+      "context": "--------------------|-------------------| | L12 | 0.0453 (n=100) | \u2014 (n=0) | \u2014 (n=0) | \u2014 | | L24 | 0.0398 (n=100) | 0.0466",
+      "boring": false
+    },
+    {
+      "number": "0",
+      "context": "--------|-------------------| | L12 | 0.0453 (n=100) | \u2014 (n=0) | \u2014 (n=0) | \u2014 | | L24 | 0.0398 (n=100) | 0.0466 (n=100) |",
+      "boring": true
+    },
+    {
+      "number": "0",
+      "context": "------------------| | L12 | 0.0453 (n=100) | \u2014 (n=0) | \u2014 (n=0) | \u2014 | | L24 | 0.0398 (n=100) | 0.0466 (n=100) | 0.0517 (n=",
+      "boring": true
+    },
+    {
+      "number": "0.0398",
+      "context": "-| | L12 | 0.0453 (n=100) | \u2014 (n=0) | \u2014 (n=0) | \u2014 | | L24 | 0.0398 (n=100) | 0.0466 (n=100) | 0.0517 (n=100) | 0.332 | | L36 |",
+      "boring": false
+    },
+    {
+      "number": "100",
+      "context": "0.0453 (n=100) | \u2014 (n=0) | \u2014 (n=0) | \u2014 | | L24 | 0.0398 (n=100) | 0.0466 (n=100) | 0.0517 (n=100) | 0.332 | | L36 | 0.0723",
+      "boring": false
+    },
+    {
+      "number": "0.0466",
+      "context": "(n=100) | \u2014 (n=0) | \u2014 (n=0) | \u2014 | | L24 | 0.0398 (n=100) | 0.0466 (n=100) | 0.0517 (n=100) | 0.332 | | L36 | 0.0723 (n=100) |",
+      "boring": false
+    },
+    {
+      "number": "100",
+      "context": "\u2014 (n=0) | \u2014 (n=0) | \u2014 | | L24 | 0.0398 (n=100) | 0.0466 (n=100) | 0.0517 (n=100) | 0.332 | | L36 | 0.0723 (n=100) | 0.0875",
+      "boring": false
+    },
+    {
+      "number": "0.0517",
+      "context": ") | \u2014 (n=0) | \u2014 | | L24 | 0.0398 (n=100) | 0.0466 (n=100) | 0.0517 (n=100) | 0.332 | | L36 | 0.0723 (n=100) | 0.0875 (n=100) |",
+      "boring": false
+    },
+    {
+      "number": "100",
+      "context": ") | \u2014 | | L24 | 0.0398 (n=100) | 0.0466 (n=100) | 0.0517 (n=100) | 0.332 | | L36 | 0.0723 (n=100) | 0.0875 (n=100) | 0.0772",
+      "boring": false
+    },
+    {
+      "number": "0.332",
+      "context": "| L24 | 0.0398 (n=100) | 0.0466 (n=100) | 0.0517 (n=100) | 0.332 | | L36 | 0.0723 (n=100) | 0.0875 (n=100) | 0.0772 (n=100)",
+      "boring": false
+    },
+    {
+      "number": "0.0723",
+      "context": "(n=100) | 0.0466 (n=100) | 0.0517 (n=100) | 0.332 | | L36 | 0.0723 (n=100) | 0.0875 (n=100) | 0.0772 (n=100) | 0.317 |  Three",
+      "boring": false
+    },
+    {
+      "number": "100",
+      "context": "0.0466 (n=100) | 0.0517 (n=100) | 0.332 | | L36 | 0.0723 (n=100) | 0.0875 (n=100) | 0.0772 (n=100) | 0.317 |  Three observa",
+      "boring": false
+    },
+    {
+      "number": "0.0875",
+      "context": "(n=100) | 0.0517 (n=100) | 0.332 | | L36 | 0.0723 (n=100) | 0.0875 (n=100) | 0.0772 (n=100) | 0.317 |  Three observations befo",
+      "boring": false
+    },
+    {
+      "number": "100",
+      "context": "0.0517 (n=100) | 0.332 | | L36 | 0.0723 (n=100) | 0.0875 (n=100) | 0.0772 (n=100) | 0.317 |  Three observations before any",
+      "boring": false
+    },
+    {
+      "number": "0.0772",
+      "context": "(n=100) | 0.332 | | L36 | 0.0723 (n=100) | 0.0875 (n=100) | 0.0772 (n=100) | 0.317 |  Three observations before any interpreta",
+      "boring": false
+    },
+    {
+      "number": "100",
+      "context": "0.332 | | L36 | 0.0723 (n=100) | 0.0875 (n=100) | 0.0772 (n=100) | 0.317 |  Three observations before any interpretation:",
+      "boring": false
+    },
+    {
+      "number": "0.317",
+      "context": "| L36 | 0.0723 (n=100) | 0.0875 (n=100) | 0.0772 (n=100) | 0.317 |  Three observations before any interpretation:  **L12 pro",
+      "boring": false
+    },
+    {
+      "number": "0",
+      "context": "d no conditioned evaluation.** The results file records n = 0 for both the conditioned and random conditions at L12 \u2014 no",
+      "boring": true
+    },
+    {
+      "number": "0.317",
+      "context": "a 1.5-point gain, but random-conditioned reaches 7.7% (p = 0.317 for conditioned > random). The conditioned\u2013random gap of ~1",
+      "boring": false
+    },
+    {
+      "number": "1",
+      "context": "7 for conditioned > random). The conditioned\u2013random gap of ~1 point on a base of ~8 is noise at n = 100.  **Verdict again",
+      "boring": true
+    },
+    {
+      "number": "0",
+      "context": "ired mean conditioned cosine > 0.5. None of these obtained: 0/3 significant layers, conditioned \u2248 random throughout, and",
+      "boring": true
+    },
+    {
+      "number": "3",
+      "context": "ed mean conditioned cosine > 0.5. None of these obtained: 0/3 significant layers, conditioned \u2248 random throughout, and al",
+      "boring": true
+    },
+    {
+      "number": "1",
+      "context": "one figure reported twice. It fails the text sanity gate at 1 of 8 (\u00a74.0), and separately scores 4.0\u20137.2% transport cosin",
+      "boring": true
+    },
+    {
+      "number": "0.0398",
+      "context": "-----|---------------------------| | WikiText (in-domain) | 0.0398 | | Code | 0.0105 | | Dialogue | 0.0025 |  Even the ~4% in-",
+      "boring": false
+    },
+    {
+      "number": "0.0105",
+      "context": "---------------| | WikiText (in-domain) | 0.0398 | | Code | 0.0105 | | Dialogue | 0.0025 |  Even the ~4% in-domain fidelity co",
+      "boring": false
+    },
+    {
+      "number": "0.0025",
+      "context": "iText (in-domain) | 0.0398 | | Code | 0.0105 | | Dialogue | 0.0025 |  Even the ~4% in-domain fidelity collapses off-distributi",
+      "boring": false
+    },
+    {
+      "number": "0",
+      "context": "ubsets of the same sizes (6.7% vs 6.4% on evaluable layers; 0/3 layers significant), and the whole regime \u2014 standard, con",
+      "boring": true
+    },
+    {
+      "number": "3",
+      "context": "sets of the same sizes (6.7% vs 6.4% on evaluable layers; 0/3 layers significant), and the whole regime \u2014 standard, condi",
+      "boring": true
+    },
+    {
+      "number": "0.317",
+      "context": "the residual conditioned\u2013random gap is nonsignificant (p = 0.317). The design-phase Agni review flagged subset overfitting a",
+      "boring": false
+    },
+    {
+      "number": "1",
+      "context": "carry roughly 5% transport fidelity in-domain, dropping to 1% on code and 0.2% on dialogue. A J-lens at 5% still *returns",
+      "boring": true
+    },
+    {
+      "number": "0",
+      "context": "), where the method could still succeed. - L12 recorded n = 0 for both conditioned and random conditions; the cause (sing",
+      "boring": true
+    },
+    {
+      "number": "0",
+      "context": "etter than lenses fitted on random subsets of matched size (0/3 layers significant; all conditions at 4\u20139% transport cosi",
+      "boring": true
+    },
+    {
+      "number": "3",
+      "context": "ter than lenses fitted on random subsets of matched size (0/3 layers significant; all conditions at 4\u20139% transport cosine",
+      "boring": true
+    },
+    {
+      "number": "1",
+      "context": "diagnosed the MoE J-lens failure (a sanity-gate failure at 1/8, \u00a74.0), identified the path-conditioned approach based on",
+      "boring": true
+    }
+  ],
+  "unanchored": [
+    {
+      "number": "2026",
+      "context": "arch conducted at the Digital Minds Research Sprint, August 2026  **Authors:** Nexus (Liberation Labs), Lyra (THCoalition),",
+      "boring": true
+    },
+    {
+      "number": "200",
+      "context": "n (Liberation Labs)  **With** Apart Research  ## Abstract (~200 words)  The Jacobian lens (Gurnee et al. 2026) identifies a",
+      "boring": false
+    },
+    {
+      "number": "2026",
+      "context": "## Abstract (~200 words)  The Jacobian lens (Gurnee et al. 2026) identifies a low-dimensional verbalizable workspace in den",
+      "boring": true
+    },
+    {
+      "number": "5.2",
+      "context": "ens fitting yields very low transport fidelity \u2014 we measure 5.2% mean transport cosine on Qwen3-30B-A3B (4.0-7.2% per layer,",
+      "boring": false
+    },
+    {
+      "number": "4.0",
+      "context": "y \u2014 we measure 5.2% mean transport cosine on Qwen3-30B-A3B (4.0-7.2% per layer, \u00a74) (30B total, 3B active, 128 experts top-",
+      "boring": false
+    },
+    {
+      "number": "7.2",
+      "context": "we measure 5.2% mean transport cosine on Qwen3-30B-A3B (4.0-7.2% per layer, \u00a74) (30B total, 3B active, 128 experts top-8, d=",
+      "boring": false
+    },
+    {
+      "number": "4",
+      "context": "ean transport cosine on Qwen3-30B-A3B (4.0-7.2% per layer, \u00a74) (30B total, 3B active, 128 experts top-8, d=2048), because",
+      "boring": false
+    },
+    {
+      "number": "128",
+      "context": "en3-30B-A3B (4.0-7.2% per layer, \u00a74) (30B total, 3B active, 128 experts top-8, d=2048), because the averaged Jacobian acros",
+      "boring": false
+    },
+    {
+      "number": "8",
+      "context": "-7.2% per layer, \u00a74) (30B total, 3B active, 128 experts top-8, d=2048), because the averaged Jacobian across all routing",
+      "boring": false
+    },
+    {
+      "number": "2048",
+      "context": "per layer, \u00a74) (30B total, 3B active, 128 experts top-8, d=2048), because the averaged Jacobian across all routing paths re",
+      "boring": false
+    },
+    {
+      "number": "2026",
+      "context": "rward pass. Cross-expert Jacobians are near-orthogonal (Liu 2026), so averaging destroys the signal.  We propose path-condit",
+      "boring": true
+    },
+    {
+      "number": "6.7",
+      "context": "e conditions could be evaluated, conditioned lenses average 6.7% transport cosine against 6.4% for the random control and 5.",
+      "boring": false
+    },
+    {
+      "number": "6.4",
+      "context": "d, conditioned lenses average 6.7% transport cosine against 6.4% for the random control and 5.6% for the standard lens, with",
+      "boring": false
+    },
+    {
+      "number": "5.6",
+      "context": "7% transport cosine against 6.4% for the random control and 5.6% for the standard lens, with 0 of 3 layers significant after",
+      "boring": false
+    },
+    {
+      "number": "7.2",
+      "context": "oad-bearing contribution \u2014 without it, the L36 improvement (7.2% \u2192 8.8%) would have looked like a finding. We report four hy",
+      "boring": false
+    },
+    {
+      "number": "8.8",
+      "context": "ring contribution \u2014 without it, the L36 improvement (7.2% \u2192 8.8%) would have looked like a finding. We report four hypothese",
+      "boring": false
+    },
+    {
+      "number": "5",
+      "context": "ion: standard J-lens readings on this production MoE carry ~5% transport fidelity, and workspace analyses built on them ar",
+      "boring": false
+    },
+    {
+      "number": "2026",
+      "context": "e residual streams to the final unembedding. Gurnee et al. (2026) validate it on dense models by intermediate-concept recove",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": "and because cross-expert Jacobians are near-orthogonal (Liu 2026), the average represents no computation the model actually",
+      "boring": true
+    },
+    {
+      "number": "6",
+      "context": "r should recover per-path fidelity. We submit this to Track 6 as a tooling question whose answer \u2014 positive or negative \u2014",
+      "boring": false
+    },
+    {
+      "number": "2",
+      "context": "mines whether workspace-based introspection methods (Tracks 2, 3, 5) can be ported to production MoE models at all.  **Ou",
+      "boring": true
+    },
+    {
+      "number": "5",
+      "context": "whether workspace-based introspection methods (Tracks 2, 3, 5) can be ported to production MoE models at all.  **Our main",
+      "boring": false
+    },
+    {
+      "number": "5.2",
+      "context": "e near-orthogonal, explaining why averaged fitting fails at 5.2% mean transport cosine on MoE models.  2. Path-conditioned f",
+      "boring": false
+    },
+    {
+      "number": "2026",
+      "context": "# 2. Related Work  **Jacobian-based interp:** Gurnee et al. 2026 (J-lens), nostalgebraist 2020 (logit lens), Belrose et al.",
+      "boring": true
+    },
+    {
+      "number": "2020",
+      "context": "based interp:** Gurnee et al. 2026 (J-lens), nostalgebraist 2020 (logit lens), Belrose et al. 2023 (tuned lens), Fernando &",
+      "boring": true
+    },
+    {
+      "number": "2023",
+      "context": "(J-lens), nostalgebraist 2020 (logit lens), Belrose et al. 2023 (tuned lens), Fernando & Guitchounts 2026 (residual stream",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": "), Belrose et al. 2023 (tuned lens), Fernando & Guitchounts 2026 (residual stream spectral dynamics)  **MoE routing:** Stand",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": "dynamics)  **MoE routing:** Standing Committee (Wang et al. 2026, 2-5 core experts = 70% mass), Ye/Yuan/Sharkey 2026 (polyse",
+      "boring": true
+    },
+    {
+      "number": "2",
+      "context": "cs)  **MoE routing:** Standing Committee (Wang et al. 2026, 2-5 core experts = 70% mass), Ye/Yuan/Sharkey 2026 (polyseman",
+      "boring": true
+    },
+    {
+      "number": "5",
+      "context": ")  **MoE routing:** Standing Committee (Wang et al. 2026, 2-5 core experts = 70% mass), Ye/Yuan/Sharkey 2026 (polysemanti",
+      "boring": false
+    },
+    {
+      "number": "70",
+      "context": "** Standing Committee (Wang et al. 2026, 2-5 core experts = 70% mass), Ye/Yuan/Sharkey 2026 (polysemantic experts, monosema",
+      "boring": false
+    },
+    {
+      "number": "2026",
+      "context": "et al. 2026, 2-5 core experts = 70% mass), Ye/Yuan/Sharkey 2026 (polysemantic experts, monosemantic paths \u2014 the key insight",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": "s \u2014 the key insight), Geometric Routing (Ternovtsii & Bilak 2026), Routers Learn Geometry (Ahrac et al. 2026)  **MoE interpr",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": "novtsii & Bilak 2026), Routers Learn Geometry (Ahrac et al. 2026)  **MoE interpretability:** MoE Lens (Chaudhari et al. 2026",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": "2026)  **MoE interpretability:** MoE Lens (Chaudhari et al. 2026), Expert-Aware Causal Tracing (Lu et al. 2026), Modularity",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": "udhari et al. 2026), Expert-Aware Causal Tracing (Lu et al. 2026), Modularity Dissolves (Salomone et al. 2026)  **The diagno",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": "ing (Lu et al. 2026), Modularity Dissolves (Salomone et al. 2026)  **The diagnosis:** Liu 2026 (Geometric Asymmetry) \u2014 cross",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": "ty Dissolves (Salomone et al. 2026)  **The diagnosis:** Liu 2026 (Geometric Asymmetry) \u2014 cross-expert Jacobian alignment is",
+      "boring": true
+    },
+    {
+      "number": "128",
+      "context": "experiments run on Qwen3-30B-A3B (`model_type: qwen3_moe`): 128 experts with top-8 routing, 48 decoder layers, hidden size",
+      "boring": false
+    },
+    {
+      "number": "8",
+      "context": "en3-30B-A3B (`model_type: qwen3_moe`): 128 experts with top-8 routing, 48 decoder layers, hidden size 2048. Per the relea",
+      "boring": false
+    },
+    {
+      "number": "48",
+      "context": "(`model_type: qwen3_moe`): 128 experts with top-8 routing, 48 decoder layers, hidden size 2048. Per the released config,",
+      "boring": false
+    },
+    {
+      "number": "48",
+      "context": "rse_step = 1` and `mlp_only_layers = []` \u2014 every one of the 48 layers is MoE, with no dense MLP layers to skip. The model",
+      "boring": false
+    },
+    {
+      "number": "672",
+      "context": "failed stage restarts independently. The fitting corpus is 672 WikiText prompts; a disjoint set of 100 WikiText prompts is",
+      "boring": false
+    },
+    {
+      "number": "3.6",
+      "context": "nt set of 100 WikiText prompts is held out for evaluation (\u00a73.6). All prompts are truncated to 128 tokens.  Conditioning is",
+      "boring": false
+    },
+    {
+      "number": "128",
+      "context": "eld out for evaluation (\u00a73.6). All prompts are truncated to 128 tokens.  Conditioning is performed at three target layers \u2014",
+      "boring": false
+    },
+    {
+      "number": "48",
+      "context": "g early, middle, and late depth. Routing is captured at all 48 layers; per-cluster Jacobian fitting is restricted to the t",
+      "boring": false
+    },
+    {
+      "number": "3.1",
+      "context": "s restricted to the three targets for compute reasons.  ### 3.1 Baseline: Standard J-Lens on MoE  The baseline is a standar",
+      "boring": true
+    },
+    {
+      "number": "200",
+      "context": "ed) J-lens fitted on Qwen3-30B-A3B in a previous run, using 200 WikiText prompts (smaller than the 672 used for conditioned",
+      "boring": false
+    },
+    {
+      "number": "672",
+      "context": "previous run, using 200 WikiText prompts (smaller than the 672 used for conditioned fitting) and the reference `jlens` imp",
+      "boring": false
+    },
+    {
+      "number": "4.0",
+      "context": "uivalent conditions. That run failed the text sanity gate (\u00a74.0) and terminated before any transport cosine was computed. T",
+      "boring": false
+    },
+    {
+      "number": "3.6",
+      "context": "transport-cosine protocol used for the conditioned lenses (\u00a73.6), so all three conditions share one evaluation pipeline. Th",
+      "boring": false
+    },
+    {
+      "number": "3.2",
+      "context": "tablishes the number the conditioned lenses must beat.  ### 3.2 Router Hooks  Qwen3-30B-A3B's router (`Qwen3MoeTopKRouter`,",
+      "boring": true
+    },
+    {
+      "number": "8",
+      "context": "` at every MoE layer and record the third element \u2014 the top-8 expert indices per token \u2014 detached to CPU. No model code i",
+      "boring": false
+    },
+    {
+      "number": "50",
+      "context": "ified and no routing logic is reimplemented; the hooks are ~50 lines wrapping the model's own forward pass. MoE layers are",
+      "boring": false
+    },
+    {
+      "number": "48",
+      "context": "`mlp.gate` / `mlp.experts`) rather than hard-coded, and all 48 layers are captured. One forward pass per fitting prompt (n",
+      "boring": false
+    },
+    {
+      "number": "48",
+      "context": "yields the routing tensor R of shape (n_prompts, n_tokens, 48, 8): for each prompt, token, and layer, the 8 experts that",
+      "boring": false
+    },
+    {
+      "number": "8",
+      "context": "lds the routing tensor R of shape (n_prompts, n_tokens, 48, 8): for each prompt, token, and layer, the 8 experts that fir",
+      "boring": false
+    },
+    {
+      "number": "8",
+      "context": "s, n_tokens, 48, 8): for each prompt, token, and layer, the 8 experts that fired. The same hooks are reused verbatim on t",
+      "boring": false
+    },
+    {
+      "number": "3.6",
+      "context": "ks are reused verbatim on test prompts at evaluation time (\u00a73.6).  ### 3.3 Path Clustering  Per target layer, each prompt i",
+      "boring": false
+    },
+    {
+      "number": "3.3",
+      "context": "ed verbatim on test prompts at evaluation time (\u00a73.6).  ### 3.3 Path Clustering  Per target layer, each prompt is summarize",
+      "boring": true
+    },
+    {
+      "number": "128",
+      "context": "lustering  Per target layer, each prompt is summarized as a 128-dimensional routing frequency vector: entry *e* counts how",
+      "boring": false
+    },
+    {
+      "number": "8",
+      "context": "y *e* counts how often expert *e* appeared in a token's top-8 across the prompt, normalized by token count. This is a sof",
+      "boring": false
+    },
+    {
+      "number": "10",
+      "context": "y they fire.  Vectors are clustered with k-means (`n_init = 10`, fixed seed). We sweep k from 3 to 7, additionally capping",
+      "boring": false
+    },
+    {
+      "number": "7",
+      "context": "h k-means (`n_init = 10`, fixed seed). We sweep k from 3 to 7, additionally capping k at \u230an/50\u230b so that clusters average",
+      "boring": false
+    },
+    {
+      "number": "50",
+      "context": "seed). We sweep k from 3 to 7, additionally capping k at \u230an/50\u230b so that clusters average at least 50 prompts, and select k",
+      "boring": false
+    },
+    {
+      "number": "50",
+      "context": "nally capping k at \u230an/50\u230b so that clusters average at least 50 prompts, and select k by silhouette score. If no valid clus",
+      "boring": false
+    },
+    {
+      "number": "2026",
+      "context": "it). Informed by the standing-committee result (Wang et al. 2026), we expect 3\u20135 dominant clusters per layer.  A caveat we f",
+      "boring": true
+    },
+    {
+      "number": "5",
+      "context": "e standing-committee result (Wang et al. 2026), we expect 3\u20135 dominant clusters per layer.  A caveat we flag now rather t",
+      "boring": false
+    },
+    {
+      "number": "128",
+      "context": "layer.  A caveat we flag now rather than in hindsight: with 128 experts and top-8 routing, the per-layer path space is C(12",
+      "boring": false
+    },
+    {
+      "number": "8",
+      "context": "flag now rather than in hindsight: with 128 experts and top-8 routing, the per-layer path space is C(128,8) \u2248 1.4 \u00d7 10\u00b9\u00b2,",
+      "boring": false
+    },
+    {
+      "number": "128",
+      "context": "28 experts and top-8 routing, the per-layer path space is C(128,8) \u2248 1.4 \u00d7 10\u00b9\u00b2, and Euclidean k-means on 128-dimensional f",
+      "boring": false
+    },
+    {
+      "number": "8",
+      "context": "xperts and top-8 routing, the per-layer path space is C(128,8) \u2248 1.4 \u00d7 10\u00b9\u00b2, and Euclidean k-means on 128-dimensional fre",
+      "boring": false
+    },
+    {
+      "number": "1.4",
+      "context": "s and top-8 routing, the per-layer path space is C(128,8) \u2248 1.4 \u00d7 10\u00b9\u00b2, and Euclidean k-means on 128-dimensional frequency",
+      "boring": false
+    },
+    {
+      "number": "128",
+      "context": "th space is C(128,8) \u2248 1.4 \u00d7 10\u00b9\u00b2, and Euclidean k-means on 128-dimensional frequency vectors from 672 prompts is a coarse",
+      "boring": false
+    },
+    {
+      "number": "672",
+      "context": "Euclidean k-means on 128-dimensional frequency vectors from 672 prompts is a coarse instrument. Jaccard or Hamming distance",
+      "boring": false
+    },
+    {
+      "number": "3.5",
+      "context": "thod that could work, with the random-conditioned control (\u00a73.5) guarding against clustering artifacts being mistaken for r",
+      "boring": false
+    },
+    {
+      "number": "3.4",
+      "context": "tering artifacts being mistaken for routing structure.  ### 3.4 Conditioned Fitting  For each cluster at each target layer,",
+      "boring": true
+    },
+    {
+      "number": "4",
+      "context": "ce `jlens.fit` with `source_layers = [layer]` (`dim_batch = 4`, `max_seq_len = 128`). Restricting the fit to a single sou",
+      "boring": false
+    },
+    {
+      "number": "128",
+      "context": "`source_layers = [layer]` (`dim_batch = 4`, `max_seq_len = 128`). Restricting the fit to a single source layer, rather tha",
+      "boring": false
+    },
+    {
+      "number": "47",
+      "context": "stricting the fit to a single source layer, rather than all 47 fittable layers of the standard protocol, reduces per-fit c",
+      "boring": false
+    },
+    {
+      "number": "47",
+      "context": "ayers of the standard protocol, reduces per-fit compute by ~47\u00d7 \u2014 this is what makes fitting one lens per cluster per laye",
+      "boring": false
+    },
+    {
+      "number": "20",
+      "context": "uster actually took at that layer. Clusters with fewer than 20 prompts are excluded from fitting (too few samples for a st",
+      "boring": false
+    },
+    {
+      "number": "2048",
+      "context": "pts are excluded from fitting (too few samples for a stable 2048 \u00d7 2048 \u2248 4.19M-parameter estimate); their prompts are simpl",
+      "boring": false
+    },
+    {
+      "number": "2048",
+      "context": "excluded from fitting (too few samples for a stable 2048 \u00d7 2048 \u2248 4.19M-parameter estimate); their prompts are simply not c",
+      "boring": false
+    },
+    {
+      "number": "3.5",
+      "context": "l-clock times, failures) are checkpointed per cluster.  ### 3.5 Random-Conditioned Control  The critical control: identical",
+      "boring": true
+    },
+    {
+      "number": "672",
+      "context": "ffled labels. For each target layer we randomly permute the 672 fitting prompts (fixed seed) and partition them into groups",
+      "boring": false
+    },
+    {
+      "number": "3.4",
+      "context": "ch random group then goes through the same fitting call as \u00a73.4 \u2014 same `jlens.fit`, same `source_layers = [layer]`, same `d",
+      "boring": false
+    },
+    {
+      "number": "20",
+      "context": "yers = [layer]`, same `dim_batch`, `max_seq_len`, and same <20-prompt exclusion rule. The only difference between conditio",
+      "boring": false
+    },
+    {
+      "number": "3.6",
+      "context": "s subsets \u2014 subset overfitting, not routing structure.  ### 3.6 Evaluation  **Test-prompt assignment.** For the 100 held-ou",
+      "boring": true
+    },
+    {
+      "number": "3.2",
+      "context": "0 held-out prompts we capture routing with the same hooks (\u00a73.2) and build the same 128-d frequency vectors (\u00a73.3). A k-mea",
+      "boring": false
+    },
+    {
+      "number": "128",
+      "context": "pture routing with the same hooks (\u00a73.2) and build the same 128-d frequency vectors (\u00a73.3). A k-means model with the layer'",
+      "boring": false
+    },
+    {
+      "number": "3.3",
+      "context": "e hooks (\u00a73.2) and build the same 128-d frequency vectors (\u00a73.3). A k-means model with the layer's selected k (same seed) i",
+      "boring": false
+    },
+    {
+      "number": "4.0",
+      "context": "Note this metric is distinct from the text sanity gate of \u00a74.0, which scores next-token top-10 accuracy against ground tru",
+      "boring": false
+    },
+    {
+      "number": "10",
+      "context": "m the text sanity gate of \u00a74.0, which scores next-token top-10 accuracy against ground truth rather than distributional si",
+      "boring": false
+    },
+    {
+      "number": "0.5",
+      "context": "Bonferroni-significant layer (and mean conditioned cosine > 0.5 for the full claim); conditioned > standard but \u2248 random is",
+      "boring": false
+    },
+    {
+      "number": "3.3",
+      "context": "outing-cluster assignment for OOD prompts follows the same \u00a73.3 pipeline; degradation here bounds how far the conditioned l",
+      "boring": false
+    },
+    {
+      "number": "94.35",
+      "context": "**Pre-existing infrastructure:** Mnemosyne memory system (94.35% F1 on LoCoMo), ghost dimension characterization (PC1 exclud",
+      "boring": false
+    },
+    {
+      "number": "0.003",
+      "context": "imension characterization (PC1 excluded from J-space, cos \u2264 0.003), circumplex probe (eccentricity depth profiling on Qwen2-0",
+      "boring": false
+    },
+    {
+      "number": "5",
+      "context": "ccentricity depth profiling on Qwen2-0.5B and Qwen3.5-27B n=5), J-lens workspace integration, compare_snapshots and works",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": "re, Experiential State Theory (Jandak, Glitchlit, Glitchlit 2026 \u2014 unpublished), ethical protocol framework, Agni adversaria",
+      "boring": true
+    },
+    {
+      "number": "14",
+      "context": "ailable in the Project-Mnemosyne repository prior to August 14, 2026.  **Sprint contributions:** Path-conditioned fitting",
+      "boring": false
+    },
+    {
+      "number": "0.0167",
+      "context": "U test after Bonferroni correction (threshold \u03b1 = 0.05/3 \u2248 0.0167).  ### 4.0 The standard lens fails a ground-truth sanity ga",
+      "boring": false
+    },
+    {
+      "number": "4.0",
+      "context": "Bonferroni correction (threshold \u03b1 = 0.05/3 \u2248 0.0167).  ### 4.0 The standard lens fails a ground-truth sanity gate  Before",
+      "boring": true
+    },
+    {
+      "number": "20",
+      "context": "lens's top ten predictions. The pre-set pass threshold was 20%.  **It scored 1 of 8 \u2014 12.5% \u2014 and failed** (`data/moe_jle",
+      "boring": false
+    },
+    {
+      "number": "8",
+      "context": "ions. The pre-set pass threshold was 20%.  **It scored 1 of 8 \u2014 12.5% \u2014 and failed** (`data/moe_jlens/moe_result.json`, v",
+      "boring": false
+    },
+    {
+      "number": "12.5",
+      "context": ". The pre-set pass threshold was 20%.  **It scored 1 of 8 \u2014 12.5% \u2014 and failed** (`data/moe_jlens/moe_result.json`, verdict `",
+      "boring": false
+    },
+    {
+      "number": "4",
+      "context": "The finding below \u2014 conditioned \u2248 random \u2248 standard, all at 4\u20139% \u2014 is therefore better read as *the lens does not work on",
+      "boring": false
+    },
+    {
+      "number": "9",
+      "context": "e finding below \u2014 conditioned \u2248 random \u2248 standard, all at 4\u20139% \u2014 is therefore better read as *the lens does not work on th",
+      "boring": false
+    },
+    {
+      "number": "5.2",
+      "context": "12 as zero for the conditioned and random conditions \u2014 read 5.2% standard, 4.5% conditioned, 4.3% random. Restricted to the",
+      "boring": false
+    },
+    {
+      "number": "4.5",
+      "context": "the conditioned and random conditions \u2014 read 5.2% standard, 4.5% conditioned, 4.3% random. Restricted to the two evaluable l",
+      "boring": false
+    },
+    {
+      "number": "4.3",
+      "context": "d random conditions \u2014 read 5.2% standard, 4.5% conditioned, 4.3% random. Restricted to the two evaluable layers, the means a",
+      "boring": false
+    },
+    {
+      "number": "5.6",
+      "context": "ndom. Restricted to the two evaluable layers, the means are 5.6% standard, 6.7% conditioned, 6.4% random. We report both; ne",
+      "boring": false
+    },
+    {
+      "number": "6.7",
+      "context": "d to the two evaluable layers, the means are 5.6% standard, 6.7% conditioned, 6.4% random. We report both; neither ordering",
+      "boring": false
+    },
+    {
+      "number": "6.4",
+      "context": "able layers, the means are 5.6% standard, 6.7% conditioned, 6.4% random. We report both; neither ordering changes the verdic",
+      "boring": false
+    },
+    {
+      "number": "4.7",
+      "context": ", the random control beats path conditioning.** Conditioned 4.7% vs random 5.2%. Whatever the conditioned lenses learned at",
+      "boring": false
+    },
+    {
+      "number": "5.2",
+      "context": "ntrol beats path conditioning.** Conditioned 4.7% vs random 5.2%. Whatever the conditioned lenses learned at L24, random su",
+      "boring": false
+    },
+    {
+      "number": "8.8",
+      "context": "is indistinguishable from subset overfitting.** Conditioned 8.8% vs standard 7.2% looks like a 1.5-point gain, but random-co",
+      "boring": false
+    },
+    {
+      "number": "7.2",
+      "context": "ble from subset overfitting.** Conditioned 8.8% vs standard 7.2% looks like a 1.5-point gain, but random-conditioned reaches",
+      "boring": false
+    },
+    {
+      "number": "1.5",
+      "context": "erfitting.** Conditioned 8.8% vs standard 7.2% looks like a 1.5-point gain, but random-conditioned reaches 7.7% (p = 0.317",
+      "boring": false
+    },
+    {
+      "number": "7.7",
+      "context": "looks like a 1.5-point gain, but random-conditioned reaches 7.7% (p = 0.317 for conditioned > random). The conditioned\u2013rando",
+      "boring": false
+    },
+    {
+      "number": "8",
+      "context": "ndom). The conditioned\u2013random gap of ~1 point on a base of ~8 is noise at n = 100.  **Verdict against pre-registered crit",
+      "boring": false
+    },
+    {
+      "number": "3.6",
+      "context": "se at n = 100.  **Verdict against pre-registered criteria (\u00a73.6).** *Success* required conditioned > random and conditioned",
+      "boring": false
+    },
+    {
+      "number": "4",
+      "context": "itioned \u2248 random throughout, and all conditions sit between 4% and 9% \u2014 an order of magnitude below our own pre-registered",
+      "boring": false
+    },
+    {
+      "number": "9",
+      "context": "\u2248 random throughout, and all conditions sit between 4% and 9% \u2014 an order of magnitude below our own pre-registered 0.5 ba",
+      "boring": false
+    },
+    {
+      "number": "0.5",
+      "context": "and 9% \u2014 an order of magnitude below our own pre-registered 0.5 bar. (That bar was set by this lab; it is not drawn from Gu",
+      "boring": false
+    },
+    {
+      "number": "8",
+      "context": "igure reported twice. It fails the text sanity gate at 1 of 8 (\u00a74.0), and separately scores 4.0\u20137.2% transport cosine per",
+      "boring": false
+    },
+    {
+      "number": "4.0",
+      "context": "e reported twice. It fails the text sanity gate at 1 of 8 (\u00a74.0), and separately scores 4.0\u20137.2% transport cosine per layer",
+      "boring": false
+    },
+    {
+      "number": "4.0",
+      "context": "he text sanity gate at 1 of 8 (\u00a74.0), and separately scores 4.0\u20137.2% transport cosine per layer (5.2% mean) on this study's",
+      "boring": false
+    },
+    {
+      "number": "7.2",
+      "context": "ext sanity gate at 1 of 8 (\u00a74.0), and separately scores 4.0\u20137.2% transport cosine per layer (5.2% mean) on this study's held",
+      "boring": false
+    },
+    {
+      "number": "5.2",
+      "context": "and separately scores 4.0\u20137.2% transport cosine per layer (5.2% mean) on this study's held-out prompts. The gate run termin",
+      "boring": false
+    },
+    {
+      "number": "2",
+      "context": "nd are not comparable to each other.  **Cross-domain (Table 2).** The evaluation output records OOD transport cosines for",
+      "boring": true
+    },
+    {
+      "number": "3.6",
+      "context": "L24 only; conditioned-lens OOD evaluation was specified in \u00a73.6 but is absent from the recorded results \u2014 a deviation we fl",
+      "boring": false
+    },
+    {
+      "number": "4",
+      "context": "0.0398 | | Code | 0.0105 | | Dialogue | 0.0025 |  Even the ~4% in-domain fidelity collapses off-distribution: by 3.8\u00d7 on c",
+      "boring": false
+    },
+    {
+      "number": "3.8",
+      "context": "n the ~4% in-domain fidelity collapses off-distribution: by 3.8\u00d7 on code and 16\u00d7 on dialogue. On dialogue prompts \u2014 the dis",
+      "boring": false
+    },
+    {
+      "number": "16",
+      "context": "in fidelity collapses off-distribution: by 3.8\u00d7 on code and 16\u00d7 on dialogue. On dialogue prompts \u2014 the distribution closes",
+      "boring": false
+    },
+    {
+      "number": "5.1",
+      "context": "the model's outputs.  ## 5. Discussion and Limitations  ### 5.1 The result, stated plainly  Path-conditioned Jacobian fitti",
+      "boring": true
+    },
+    {
+      "number": "128",
+      "context": "refits, does not improve transport cosine on Qwen3-30B-A3B (128 experts, top-8). Conditioned lenses perform on par with len",
+      "boring": false
+    },
+    {
+      "number": "8",
+      "context": "improve transport cosine on Qwen3-30B-A3B (128 experts, top-8). Conditioned lenses perform on par with lenses fitted on r",
+      "boring": false
+    },
+    {
+      "number": "6.7",
+      "context": "nses fitted on randomly assigned subsets of the same sizes (6.7% vs 6.4% on evaluable layers; 0/3 layers significant), and t",
+      "boring": false
+    },
+    {
+      "number": "6.4",
+      "context": "ted on randomly assigned subsets of the same sizes (6.7% vs 6.4% on evaluable layers; 0/3 layers significant), and the whole",
+      "boring": false
+    },
+    {
+      "number": "4",
+      "context": "regime \u2014 standard, conditioned, and random alike \u2014 sits at 4\u20139% transport cosine, which we cannot presently calibrate ag",
+      "boring": false
+    },
+    {
+      "number": "9",
+      "context": "egime \u2014 standard, conditioned, and random alike \u2014 sits at 4\u20139% transport cosine, which we cannot presently calibrate again",
+      "boring": false
+    },
+    {
+      "number": "5.2",
+      "context": "still be correct; the repair, as built, does not work.  ### 5.2 Why it failed: four hypotheses  **H1: The path space is too",
+      "boring": true
+    },
+    {
+      "number": "128",
+      "context": "he path space is too large for prompt-level k-means.** With 128 experts and top-8 routing, a single layer has C(128,8) \u2248 1.",
+      "boring": false
+    },
+    {
+      "number": "8",
+      "context": "large for prompt-level k-means.** With 128 experts and top-8 routing, a single layer has C(128,8) \u2248 1.4 \u00d7 10\u00b9\u00b2 possible",
+      "boring": false
+    },
+    {
+      "number": "128",
+      "context": "** With 128 experts and top-8 routing, a single layer has C(128,8) \u2248 1.4 \u00d7 10\u00b9\u00b2 possible expert combinations per token. Our",
+      "boring": false
+    },
+    {
+      "number": "8",
+      "context": "ith 128 experts and top-8 routing, a single layer has C(128,8) \u2248 1.4 \u00d7 10\u00b9\u00b2 possible expert combinations per token. Our 6",
+      "boring": false
+    },
+    {
+      "number": "1.4",
+      "context": "28 experts and top-8 routing, a single layer has C(128,8) \u2248 1.4 \u00d7 10\u00b9\u00b2 possible expert combinations per token. Our 672 fitt",
+      "boring": false
+    },
+    {
+      "number": "672",
+      "context": "8) \u2248 1.4 \u00d7 10\u00b9\u00b2 possible expert combinations per token. Our 672 fitting prompts, summarized as 128-d frequency vectors, can",
+      "boring": false
+    },
+    {
+      "number": "128",
+      "context": "binations per token. Our 672 fitting prompts, summarized as 128-d frequency vectors, cannot tile this space; k-means found",
+      "boring": false
+    },
+    {
+      "number": "0.115",
+      "context": "space; k-means found only weak structure (silhouette scores 0.115\u20130.209 at the selected k across target layers \u2014 well below t",
+      "boring": false
+    },
+    {
+      "number": "0.209",
+      "context": "k-means found only weak structure (silhouette scores 0.115\u20130.209 at the selected k across target layers \u2014 well below the ~0.",
+      "boring": false
+    },
+    {
+      "number": "0.5",
+      "context": "09 at the selected k across target layers \u2014 well below the ~0.5 that indicates meaningful clusters). If prompts within a \"p",
+      "boring": false
+    },
+    {
+      "number": "48",
+      "context": "nt true transport Jacobians. Conditioning on one layer of a 48-layer trajectory may control a negligible fraction of the v",
+      "boring": false
+    },
+    {
+      "number": "2026",
+      "context": "s dominate; conditioning changes too little.** Wang et al. (2026) show 2\u20135 core experts carry ~70% of routing mass. If most",
+      "boring": true
+    },
+    {
+      "number": "2",
+      "context": "conditioning changes too little.** Wang et al. (2026) show 2\u20135 core experts carry ~70% of routing mass. If most of every",
+      "boring": true
+    },
+    {
+      "number": "5",
+      "context": "onditioning changes too little.** Wang et al. (2026) show 2\u20135 core experts carry ~70% of routing mass. If most of every f",
+      "boring": false
+    },
+    {
+      "number": "70",
+      "context": "o little.** Wang et al. (2026) show 2\u20135 core experts carry ~70% of routing mass. If most of every forward pass flows throug",
+      "boring": false
+    },
+    {
+      "number": "1.5",
+      "context": "it. The observed numbers fit this: conditioned stays within 1.5 points of standard at every evaluable layer, on a scale whe",
+      "boring": false
+    },
+    {
+      "number": "70",
+      "context": "ble layer, on a scale where usable dense-model lenses score 70+.  **H4: A linear map cannot capture piecewise computation,",
+      "boring": false
+    },
+    {
+      "number": "4",
+      "context": "n of a piecewise function varies across pieces. The uniform 4\u20139% ceiling across all three conditions \u2014 including random \u2014",
+      "boring": false
+    },
+    {
+      "number": "9",
+      "context": "of a piecewise function varies across pieces. The uniform 4\u20139% ceiling across all three conditions \u2014 including random \u2014 is",
+      "boring": false
+    },
+    {
+      "number": "5.3",
+      "context": "separate them \u2014 that requires the experiments in \u00a75.4.  ### 5.3 What the random control bought us  Without the random-condi",
+      "boring": true
+    },
+    {
+      "number": "7.2",
+      "context": "kely have shipped a false positive. At L36, standard scored 7.2% and conditioned 8.8% \u2014 a 21% relative improvement, at the l",
+      "boring": false
+    },
+    {
+      "number": "8.8",
+      "context": "alse positive. At L36, standard scored 7.2% and conditioned 8.8% \u2014 a 21% relative improvement, at the layer depth where our",
+      "boring": false
+    },
+    {
+      "number": "21",
+      "context": "tive. At L36, standard scored 7.2% and conditioned 8.8% \u2014 a 21% relative improvement, at the layer depth where our companio",
+      "boring": false
+    },
+    {
+      "number": "7.7",
+      "context": "mber with a ready-made narrative. The random control scored 7.7% on the same prompts: most of the \"improvement\" appears for",
+      "boring": false
+    },
+    {
+      "number": "5.4",
+      "context": "our conditioning labels can be shuffled, shuffle them.  ### 5.4 Future directions  Each targets one hypothesis from \u00a75.2, a",
+      "boring": true
+    },
+    {
+      "number": "5.2",
+      "context": "## 5.4 Future directions  Each targets one hypothesis from \u00a75.2, and each has a concrete falsifier. We state these as open",
+      "boring": false
+    },
+    {
+      "number": "128",
+      "context": "tly rather than approximating it at the prompt level. Cost: 128 per-expert fits per layer; feasibility depends on isolating",
+      "boring": false
+    },
+    {
+      "number": "48",
+      "context": "ajectory clustering (targets H2).** Cluster on the complete 48 \u00d7 8 routing matrix per prompt (or per token) rather than a",
+      "boring": false
+    },
+    {
+      "number": "8",
+      "context": "ory clustering (targets H2).** Cluster on the complete 48 \u00d7 8 routing matrix per prompt (or per token) rather than a sing",
+      "boring": false
+    },
+    {
+      "number": "8",
+      "context": "lity MoE (targets H1 directly).** On Mixtral-style routing (8 experts, top-2), the per-layer path space is C(8,2) = 28 \u2014",
+      "boring": false
+    },
+    {
+      "number": "2",
+      "context": "ts H1 directly).** On Mixtral-style routing (8 experts, top-2), the per-layer path space is C(8,2) = 28 \u2014 small enough to",
+      "boring": true
+    },
+    {
+      "number": "8",
+      "context": "e routing (8 experts, top-2), the per-layer path space is C(8,2) = 28 \u2014 small enough to enumerate exactly, with no cluste",
+      "boring": false
+    },
+    {
+      "number": "2",
+      "context": "routing (8 experts, top-2), the per-layer path space is C(8,2) = 28 \u2014 small enough to enumerate exactly, with no clusteri",
+      "boring": true
+    },
+    {
+      "number": "28",
+      "context": "ng (8 experts, top-2), the per-layer path space is C(8,2) = 28 \u2014 small enough to enumerate exactly, with no clustering app",
+      "boring": false
+    },
+    {
+      "number": "28",
+      "context": "nfirmed and the problem is statistical; if it fails even at 28 enumerable paths, H4 moves to the front and linear lenses o",
+      "boring": false
+    },
+    {
+      "number": "5.5",
+      "context": "ont and linear lenses on MoE are likely unrecoverable.  ### 5.5 Implication for production MoE introspection  This is the f",
+      "boring": true
+    },
+    {
+      "number": "5",
+      "context": "tially every production frontier deployment \u2014 carry roughly 5% transport fidelity in-domain, dropping to 1% on code and 0.",
+      "boring": false
+    },
+    {
+      "number": "0.2",
+      "context": "5% transport fidelity in-domain, dropping to 1% on code and 0.2% on dialogue. A J-lens at 5% still *returns numbers*: layer-",
+      "boring": false
+    },
+    {
+      "number": "5",
+      "context": "n, dropping to 1% on code and 0.2% on dialogue. A J-lens at 5% still *returns numbers*: layer-by-layer token dispositions,",
+      "boring": false
+    },
+    {
+      "number": "3.6",
+      "context": "L36. - Conditioned-lens OOD evaluation was pre-registered (\u00a73.6) but is absent from the recorded results; only the standard",
+      "boring": false
+    },
+    {
+      "number": "200",
+      "context": "ndard condition only. - The standard baseline was fitted on 200 prompts vs 672 for the conditioned corpus (\u00a73.1); this asym",
+      "boring": false
+    },
+    {
+      "number": "672",
+      "context": "only. - The standard baseline was fitted on 200 prompts vs 672 for the conditioned corpus (\u00a73.1); this asymmetry favors th",
+      "boring": false
+    },
+    {
+      "number": "3.1",
+      "context": "s fitted on 200 prompts vs 672 for the conditioned corpus (\u00a73.1); this asymmetry favors the conditioned lenses and so canno",
+      "boring": false
+    },
+    {
+      "number": "128",
+      "context": "comparison is not a controlled one. - Euclidean k-means on 128-d routing frequency vectors is a crude clustering (silhouet",
+      "boring": false
+    },
+    {
+      "number": "0.115",
+      "context": "outing frequency vectors is a crude clustering (silhouettes 0.115\u20130.209 confirm weak structure) \u2014 H1 may reflect the instrume",
+      "boring": false
+    },
+    {
+      "number": "0.209",
+      "context": "frequency vectors is a crude clustering (silhouettes 0.115\u20130.209 confirm weak structure) \u2014 H1 may reflect the instrument as",
+      "boring": false
+    },
+    {
+      "number": "672",
+      "context": "\u2014 H1 may reflect the instrument as much as the territory. - 672 fitting prompts split into clusters may be insufficient for",
+      "boring": false
+    },
+    {
+      "number": "2048",
+      "context": "prompts split into clusters may be insufficient for stable 2048 \u00d7 2048 Jacobian estimation; small-sample noise and subset o",
+      "boring": false
+    },
+    {
+      "number": "2048",
+      "context": "s split into clusters may be insufficient for stable 2048 \u00d7 2048 Jacobian estimation; small-sample noise and subset overfitt",
+      "boring": false
+    },
+    {
+      "number": "0.5",
+      "context": "; small-sample noise and subset overfitting compound. - The 0.5 transport cosine success threshold is not principled. Its m",
+      "boring": false
+    },
+    {
+      "number": "0.7",
+      "context": "nce to a believed dense-model figure of \"transport cosine > 0.7 (Gurnee et al. 2026)\" which does not exist in that source (",
+      "boring": false
+    },
+    {
+      "number": "2026",
+      "context": "ense-model figure of \"transport cosine > 0.7 (Gurnee et al. 2026)\" which does not exist in that source (see Limitations); th",
+      "boring": true
+    },
+    {
+      "number": "358",
+      "context": "hrashed under memory pressure on shared hardware (killed at 358 min, still on the first of three layer fits). Consequently",
+      "boring": false
+    },
+    {
+      "number": "4",
+      "context": ", still on the first of three layer fits). Consequently the 4\u20139% regime reported here is **uncalibrated against dense mod",
+      "boring": false
+    },
+    {
+      "number": "9",
+      "context": "still on the first of three layer fits). Consequently the 4\u20139% regime reported here is **uncalibrated against dense models",
+      "boring": false
+    },
+    {
+      "number": "4",
+      "context": "of matched size (0/3 layers significant; all conditions at 4\u20139% transport cosine, with no published dense-model figure o",
+      "boring": false
+    },
+    {
+      "number": "9",
+      "context": "f matched size (0/3 layers significant; all conditions at 4\u20139% transport cosine, with no published dense-model figure on t",
+      "boring": false
+    },
+    {
+      "number": "5",
+      "context": "surements (standard J-lens fidelity on a production MoE is ~5% in-domain and near-zero off-domain), the random-conditioned",
+      "boring": false
+    },
+    {
+      "number": "4.6",
+      "context": "ent  Nexus, one of the authors, is an AI agent (Claude Opus 4.6) who diagnosed the MoE J-lens failure (a sanity-gate failur",
+      "boring": true
+    },
+    {
+      "number": "8",
+      "context": "iagnosed the MoE J-lens failure (a sanity-gate failure at 1/8, \u00a74.0), identified the path-conditioned approach based on c",
+      "boring": false
+    },
+    {
+      "number": "4.0",
+      "context": "osed the MoE J-lens failure (a sanity-gate failure at 1/8, \u00a74.0), identified the path-conditioned approach based on cross-e",
+      "boring": false
+    }
+  ]
+}
