@@ -225,26 +225,11 @@ def run_gurnee_eval():
         swap_rate = swap_successes / max(swap_total, 1)
         print(f"  Swap success rate: {swap_successes}/{swap_total} = {swap_rate:.3f}")
 
-        # ============================================================
-        # 3. Original gate for comparison
-        # ============================================================
-        gate_correct = 0
-        gate_total = 0
-        for pd in prompt_data[:len(SANITY_PROMPTS)]:
-            prompt = pd["prompt"]
-            input_ids = model.encode(prompt, max_length=64)
-            extended = model.encode(prompt + " the", max_length=66)
-            n_pos = input_ids.shape[1]
-            if extended.shape[1] > n_pos:
-                actual_next = extended[0, n_pos].item()
-                jl_logits = model.unembed(
-                    pd["transported"].to(device)).squeeze(0).float()
-                top10 = torch.topk(jl_logits, 10).indices.tolist()
-                if actual_next in top10:
-                    gate_correct += 1
-                gate_total += 1
-
-        gate_acc = gate_correct / max(gate_total, 1)
+        # NOTE: an `original gate` block stood here. It constructed ground truth as
+        # `prompt + " the"` and read back the appended token, so it scored whether the
+        # token " the" was in the lens top-10 -- a constant, not the model's
+        # continuation. Removed 2026-08-16. Superseded by modal_onset_sweep.py, which
+        # takes ground truth from model.generate(max_new_tokens=1).
 
         lens_result = {
             "lens": lens_name,
@@ -254,12 +239,9 @@ def run_gurnee_eval():
             "swap_success_rate": round(swap_rate, 4),
             "swap_successes": swap_successes,
             "swap_total": swap_total,
-            "original_gate_accuracy": round(gate_acc, 4),
-            "original_gate_pass": gate_acc >= 0.20,
         }
         results["lenses_evaluated"].append(lens_result)
-        print(f"\n  Summary: KL={mean_kl:.4f}, swap={swap_rate:.3f}, "
-              f"gate={gate_acc:.3f}")
+        print(f"\n  Summary: KL={mean_kl:.4f}, swap={swap_rate:.3f}")
 
     # Save results
     out_path = "/results/gurnee_eval_results.json"

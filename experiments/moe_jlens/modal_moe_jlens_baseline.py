@@ -173,6 +173,13 @@ def run_moe_jlens(fit_prompts: int = 50):
     for prompt in test_prompts:
         input_ids = model.encode(prompt, max_length=64)
         n_pos = input_ids.shape[1]
+        # !!! INVALID GATE -- DO NOT REUSE THIS PATTERN. The line below appends a
+        # !!! fixed string and reads the appended token back as "ground truth", so
+        # !!! `actual_next` is ALWAYS the token for " the". Any accuracy computed
+        # !!! from it scores whether " the" is in the top-10. The result this
+        # !!! produced (data/moe_jlens/moe_result.json) is withdrawn -- see
+        # !!! data/moe_jlens/INVALID_moe_result.md. Correct construction:
+        # !!! model.generate(max_new_tokens=1), as in modal_onset_sweep.py.
         extended = model.encode(prompt + " the", max_length=66)
         if extended.shape[1] > n_pos:
             actual_next = extended[0, n_pos].item()
