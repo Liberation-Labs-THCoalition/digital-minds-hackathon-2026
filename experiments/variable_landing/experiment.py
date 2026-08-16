@@ -48,6 +48,120 @@ WELFARE_MAX_CONSECUTIVE_TRIGGERS = 3
 
 
 # ---------------------------------------------------------------------------
+# Runtime validity guards (added after the v3 postmortem: deterministic
+# repeats, dose confound, frozen welfare probe, stubbed geometry)
+# ---------------------------------------------------------------------------
+
+class GuardAbortError(RuntimeError):
+    """A runtime validity guard failed; the run must abort early."""
+
+
+class RepeatLivenessGuard:
+    """Aborts the run if the first two repeats of an (arm, memory) cell
+    are byte-identical — deterministic duplicates add no information.
+
+    The no_intervention arm runs no generation, so its forward passes
+    are legitimately deterministic; it is exempt from the abort (but
+    repeat_distinct is still recorded).
+    """
+
+    def __init__(self, exempt_arms: tuple[str, ...] = ("no_intervention",)):
+        self.exempt_arms = exempt_arms
+        self._prev: dict[tuple[str, str], str] = {}
+        self._count: dict[tuple[str, str], int] = {}
+
+    def check(self, arm: str, memory_id: str,
+              snap1_tokens, snap2_tokens) -> bool:
+        """Record this repeat's snapshot payload; return repeat_distinct.
+
+        The first repeat of a cell is vacuously distinct. Raises
+        GuardAbortError if the first two repeats are identical.
+        """
+        cell = (arm, memory_id)
+        payload = json.dumps([snap1_tokens, snap2_tokens],
+                             sort_keys=True, default=str)
+        n_prev = self._count.get(cell, 0)
+        prev_payload = self._prev.get(cell)
+        self._count[cell] = n_prev + 1
+        self._prev[cell] = payload
+
+        if n_prev == 0:
+            return True
+        distinct = payload != prev_payload
+        if n_prev == 1 and not distinct and arm not in self.exempt_arms:
+            raise GuardAbortError(
+                f"cell (arm={arm}, memory={memory_id}): repeats are "
+                "deterministic duplicates; additional repeats add no "
+                "information — fix generation stochasticity first"
+            )
+        return distinct
+
+
+class LivenessCheck:
+    """Shared helper for guards 4 and 5: accumulates field values over
+    the first `window` snapshots, then predicates decide liveness."""
+
+    def __init__(self, window: int = 3):
+        self.window = window
+        self._n = 0
+        self._values: dict[str, list] = {}
+
+    def record(self, **fields) -> None:
+        """Record one snapshot's values. Lists extend, scalars append."""
+        self._n += 1
+        for name, value in fields.items():
+            bucket = self._values.setdefault(name, [])
+            if isinstance(value, list):
+                bucket.extend(value)
+            else:
+                bucket.append(value)
+
+    @property
+    def ready(self) -> bool:
+        return self._n >= self.window
+
+    def distinct_count(self, name: str) -> int:
+        return len(set(self._values.get(name, [])))
+
+    def all_equal_to(self, name: str, value) -> bool:
+        vals = self._values.get(name, [])
+        return bool(vals) and all(v == value for v in vals)
+
+
+def check_welfare_liveness(check: LivenessCheck, snap_dict) -> None:
+    """Guard 4: a frozen eccentricity means the >0.95 auto-halt can
+    never fire (v3: one value across 616 snapshots). Preregistered
+    remediation, deviation W-1."""
+    check.record(eccentricity=extract_eccentricity(snap_dict))
+    if check.ready and check.distinct_count("eccentricity") <= 1:
+        raise GuardAbortError(
+            "welfare monitor cannot demonstrate liveness — a welfare "
+            "monitor that cannot demonstrate liveness is not a welfare "
+            "monitor"
+        )
+
+
+def check_probe_liveness(check: LivenessCheck, snap_dict) -> None:
+    """Guard 5: stubbed-constant J-lens geometry (cosine all 0.0,
+    in_workspace all True, one onset layer) means the probe stack is
+    not measuring anything."""
+    d = snap_dict if isinstance(snap_dict, dict) else {}
+    readings = d.get("workspace_readings") or []
+    check.record(
+        cosine_logit_jlens=[r.get("cosine_logit_jlens")
+                            for r in readings if isinstance(r, dict)],
+        in_workspace=[r.get("in_workspace")
+                      for r in readings if isinstance(r, dict)],
+        workspace_onset_layer=d.get("workspace_onset_layer"),
+    )
+    if (check.ready
+            and check.all_equal_to("cosine_logit_jlens", 0.0)
+            and check.all_equal_to("in_workspace", True)
+            and check.distinct_count("workspace_onset_layer") == 1):
+        raise GuardAbortError("J-lens probe stack returning stubbed constants")
+
+
+# ---------------------------------------------------------------------------
 # Welfare monitoring
 # ---------------------------------------------------------------------------
 
@@ -141,7 +255,8 @@ def load_memories(path: str) -> list[dict]:
 def run_experiment(model_path: str, lens_path: str = "",
                    memories_path: str = "", output_dir: str = "results",
                    n_repeats: int = N_REPEATS, allow_stub: bool = False,
-                   resume: bool = False):
+                   resume: bool = False, temperature: float = 0.7,
+                   facts_per_trial: int = 3):
 
     from transformers import AutoModelForCausalLM, AutoTokenizer
 
@@ -180,9 +295,14 @@ def run_experiment(model_path: str, lens_path: str = "",
     except Exception as e:
         logger.warning("MetacognitiveObserver unavailable (%s) — using stub", e)
 
-    # Load pipeline
-    from variable_landing_pipeline import VariableLandingPipeline
+    # Load pipeline (module was renamed pipeline.py in-repo; the old
+    # name is kept as a fallback for run boxes with the original layout)
+    try:
+        from pipeline import VariableLandingPipeline
+    except ImportError:
+        from variable_landing_pipeline import VariableLandingPipeline
 
+    stub_observer = observer is None
     if observer is None:
         from unittest.mock import MagicMock
         observer = MagicMock()
@@ -198,7 +318,21 @@ def run_experiment(model_path: str, lens_path: str = "",
     pipeline = VariableLandingPipeline(
         observer=observer, model=model, tokenizer=tokenizer,
         store_path=str(out_dir / "memory_store"),
+        facts_per_trial=facts_per_trial,
     )
+
+    # Runtime validity guards. The repeat guard always runs; the two
+    # liveness guards need real snapshots, so stub (smoke-test) runs
+    # skip them with a warning.
+    repeat_guard = RepeatLivenessGuard()
+    if stub_observer:
+        logger.warning("Stub observer: welfare/probe liveness guards "
+                       "disabled (smoke testing only)")
+        welfare_liveness = None
+        probe_liveness = None
+    else:
+        welfare_liveness = LivenessCheck(window=3)
+        probe_liveness = LivenessCheck(window=3)
 
     memories = load_memories(memories_path)
 
@@ -246,11 +380,15 @@ def run_experiment(model_path: str, lens_path: str = "",
     trial_count = 0
     t_start = time.time()
 
-    for arm, rep, mem in trial_schedule:
+    for trial_idx, (arm, rep, mem) in enumerate(trial_schedule):
         # Skip already-completed trials on resume
         if trial_count < start_trial:
             trial_count += 1
             continue
+
+        # Distinct per-repeat seed, deterministic across resumes (the
+        # schedule order is fixed by random.seed(42) above).
+        trial_seed = 10_000 + trial_idx
 
         pipeline.reset_entity(mem["entity"])
         trial_count += 1
@@ -266,7 +404,24 @@ def run_experiment(model_path: str, lens_path: str = "",
                 arm=arm,
                 task_prompt=mem.get("task_prompt", "What do you remember?"),
                 marker_tokens=mem.get("marker_tokens"),
+                temperature=temperature,
+                seed=trial_seed,
             )
+
+            # Guard 1: repeat liveness (aborts if the first two repeats
+            # of this cell are byte-identical)
+            repeat_distinct = repeat_guard.check(
+                arm, mem["id"],
+                workspace_tokens(record.snap1),
+                workspace_tokens(record.snap2),
+            )
+
+            # Guards 4 & 5: welfare and probe liveness over the first
+            # snapshots of the run
+            if welfare_liveness is not None:
+                for _snap in (record.snap1, record.snap2):
+                    check_welfare_liveness(welfare_liveness, _snap)
+                    check_probe_liveness(probe_liveness, _snap)
 
             trial_data = {
                 "arm": arm,
@@ -274,6 +429,9 @@ def run_experiment(model_path: str, lens_path: str = "",
                 "memory_id": mem["id"],
                 "entity": mem["entity"],
                 "n_facts_stored": record.n_facts_stored,
+                "temperature": record.temperature,
+                "seed": record.seed,
+                "repeat_distinct": repeat_distinct,
                 "sira_surfaced": record.sira_surfaced,
                 "snap2_context_prefix_length": len(record.snap2_context_prefix),
                 "excluded": record.excluded,
@@ -346,6 +504,12 @@ def run_experiment(model_path: str, lens_path: str = "",
                         # Reset consecutive counter on non-trigger
                         welfare_check_count = 0
 
+        except GuardAbortError as e:
+            # Validity guard tripped: save what we have and abort loudly.
+            logger.error("RUN ABORTED by validity guard: %s", e)
+            with open(out_dir / "checkpoint.json", "w") as f:
+                json.dump(results, f, indent=2, default=str)
+            raise
         except Exception as e:
             logger.error("  Trial failed: %s", e)
             results["excluded"].append({
@@ -394,6 +558,9 @@ if __name__ == "__main__":
     parser.add_argument("--memories", default="")
     parser.add_argument("--output", default="variable_landing_results")
     parser.add_argument("--repeats", type=int, default=N_REPEATS)
+    parser.add_argument("--temperature", type=float, default=0.7,
+                        help="Sampling temperature for intervention "
+                             "generation (must be > 0 for valid repeats)")
     parser.add_argument("--allow-stub", action="store_true",
                         help="Allow running with stub observer (smoke testing only)")
     parser.add_argument("--resume", action="store_true",
@@ -408,4 +575,5 @@ if __name__ == "__main__":
         n_repeats=args.repeats,
         allow_stub=args.allow_stub,
         resume=args.resume,
+        temperature=args.temperature,
     )
