@@ -9,15 +9,17 @@ narration text used.
 ## Status
 
 **Built and shipped (2 of 5):**
-- `circumplex/` — v2, ~3:18. Expanded from the ~88s v1 for pacing (terms grounded,
-  controls given room to land), reviewed by Nexus and CC with real precision edits
-  before build: the two illustrative numbers (0.48 for a neutral prompt, 0.96 for an
-  emotional one) are now Nexus-confirmed exact (0.4765 / 0.9590) rather than an open
-  caveat, and "layer seven" is explicitly tagged as the dense-architecture result. New
-  closing scene overlays the dense (L7, 11.1% depth) and hybrid (L32, 50.8% depth)
-  eccentricity curves — "same probe, same anchors, different architecture, different
-  answer," per Nexus's ask. Data: `data/circumplex_profiles/profile_dense_32b.json` +
-  `profile_hybrid_27b.json`, both plotted as-is, not smoothed.
+- `circumplex/` — **v3, ~3:32, rebuilt same day.** v2's closing claim ("dense L7 vs
+  hybrid L32, different architecture different answer") didn't survive testing a third
+  model — Gemma is dense and minimizes at L32 with the hybrids, not the other dense
+  model. Lyra caught it before it shipped further. v3 tells the real story instead: the
+  twist (a third curve breaks the pattern two models suggested), then what actually
+  holds with no overlap across all four models — the emotion/control eccentricity span
+  ratio, ~7.2-7.6x dense vs ~1.9x hybrid, confirmed by a base/distill pair matching to
+  three decimals. Full rebuild, not a patch: new narration, new Scene 6 (Manim, not just
+  retimed), re-rendered, reassembled, verified end to end including the audio track.
+  Data: all four `data/circumplex_profiles/*.json`, numbers independently re-derived
+  from the raw files before anything was scripted against them.
 - `ghost_dimensions/` — v2, ~3:31. Same pacing expansion; CC's precision fix applied
   (the J-lens reads what would reach the output if nothing else intervened, not "how
   the model uses to speak"). New visual beat for the four-branch pre-registered outcome
