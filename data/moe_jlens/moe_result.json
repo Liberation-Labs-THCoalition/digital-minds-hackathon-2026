@@ -1,0 +1,5 @@
+{
+  "verdict": "GATE_FAIL",
+  "accuracy": 0.125,
+  "model": "Qwen/Qwen3-30B-A3B"
+}
