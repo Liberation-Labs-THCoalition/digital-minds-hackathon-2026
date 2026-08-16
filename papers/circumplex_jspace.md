@@ -179,7 +179,7 @@ secondary large/small control axis was also not run.
 
 ### Prior Work vs Sprint Contributions
 
-**Pre-existing infrastructure:** Mnemosyne memory system (94.35% F1 on LoCoMo), ghost dimension characterization (PC1 excluded from J-space, cos ≤ 0.003), circumplex probe (eccentricity depth profiling on Qwen2-0.5B and Qwen3.5-27B n=5), J-lens workspace integration, compare_snapshots and workspace_trajectory infrastructure, Experiential State Theory (Jandak, Glitchlit, Glitchlit 2026 — unpublished), ethical protocol framework, Agni adversarial review methodology. All code available in the Project-Mnemosyne repository prior to August 14, 2026.
+**Pre-existing infrastructure:** Mnemosyne memory system (94.35% F1 on LoCoMo [Maharana et al. 2024]), ghost dimension characterization (PC1 excluded from J-space, cos ≤ 0.003), circumplex probe (eccentricity depth profiling on Qwen2-0.5B and Qwen3.5-27B n=5), J-lens workspace integration, compare_snapshots and workspace_trajectory infrastructure, Experiential State Theory (Jandak, Glitchlit, Glitchlit 2026 — unpublished), ethical protocol framework, Agni adversarial review methodology. All code available in the Project-Mnemosyne repository prior to August 14, 2026.
 
 **Sprint contributions:** Cross-architecture profiling on two further models (Gemma-3-27B-it and dense Qwen3-32B), matched non-emotional control axes, the base-vs-distill controlled comparison, and the lag-4 substrate test. The anchor expansion to n=20 per category, the J-space decomposition overlay and the magnitude gate were designed but **not implemented** during the sprint; see Deviations from the designed protocol.
 
