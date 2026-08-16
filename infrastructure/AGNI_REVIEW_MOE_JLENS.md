@@ -8,7 +8,6 @@
 
 ## 1. Null Swarm: Subset Overfitting — FAIL
 
-<!-- FLAG(0.7-sweep, historical record): statement inherits the unsupported 0.7 reference; document kept as written, annotation only. See papers/CITATION_SWEEP_0.7.md -->
 **The problem:** If you split ANY dataset into k subsets by ANY criterion and fit separate linear models per subset, you get better fits than a single model. This is the bias-variance tradeoff, not a discovery about MoE routing. Path-conditioned fitting could produce transport cosine > 0.5 purely by fitting to smaller, more homogeneous groups — with no MoE-specific mechanism involved.
 
 **Why this is critical:** This is the exact null swarm pattern that killed findings in the trajectory paper (5/5 issues, 2 critical). The metric appears to measure "routing-aware interpretability" but could actually measure "subset-specific overfitting." Liu (2605.16349) shows cross-expert Jacobians are near-orthogonal, which SUPPORTS path conditioning — but the experiment as designed cannot distinguish "routing captures real computational structure" from "smaller groups = better fit."
@@ -70,7 +69,17 @@ If path-conditioned significantly beats random-conditioned (not just standard), 
 
 ## 5. The 0.5 Threshold — WARN
 
-<!-- FLAG(0.7-sweep, historical record): statement inherits the unsupported 0.7 reference; document kept as written, annotation only. See papers/CITATION_SWEEP_0.7.md -->
+> **CORRECTION 2026-08-16 (Lyra).** The "> 0.7" below is unsupported. Verified
+> against the full text of Gurnee et al. 2026 and the reference implementation: no
+> transport-cosine or reconstruction-fidelity figure is reported anywhere, and the
+> repo computes no cosine at all. The paper's only 0.7 is inter-lens vector
+> similarity (§A.6), which it pairs with *low* top-1 agreement. This review is left
+> otherwise intact as the dated record of what was checked on 2026-08-11 — note that
+> line 134 of this same document states the correct reading ("agreement between two
+> projection methods is not causal evidence") and line 77 correctly observes that
+> Gurnee does not identify 0.5 as meaningful. The knowledge was present; it was
+> simply never turned on this paragraph.
+
 **The issue:** Dense models achieve transport cosine > 0.7. Standard MoE gets ~0.12. The spec declares success at > 0.5. Why 0.5?
 
 - It is not a known interpretability boundary.
@@ -78,7 +87,6 @@ If path-conditioned significantly beats random-conditioned (not just standard), 
 - It is not anchored to a downstream task performance threshold.
 - The Gurnee et al. (2026) paper does not identify 0.5 as meaningful.
 
-<!-- FLAG(0.7-sweep, historical record): statement inherits the unsupported 0.7 reference; document kept as written, annotation only. See papers/CITATION_SWEEP_0.7.md -->
 **The risk:** If conditioned cosine lands at 0.45, is that a failure? At 0.52, is that a success? A binary threshold on a continuous metric invites p-hacking adjacent to the boundary.
 
 **Fixes:**
@@ -130,7 +138,6 @@ Breaking down the compute:
 
 **The claim:** "First J-lens that actually works on MoE." (Section 4.2 framing)
 
-<!-- FLAG(0.7-sweep, historical record): statement inherits the unsupported 0.7 reference; document kept as written, annotation only. See papers/CITATION_SWEEP_0.7.md -->
 **What "works" means in the spec:** Transport cosine > 0.5 at workspace-band layers.
 
 **What "works" should mean:** The J-lens produces directions in J-space that are (a) verbalizable (the transported representation decodes to interpretable tokens), (b) causally meaningful (perturbing along J-space directions changes model output predictably), and (c) stable across prompts within a routing path (not noise).
