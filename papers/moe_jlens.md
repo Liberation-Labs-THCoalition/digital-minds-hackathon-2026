@@ -52,7 +52,7 @@ Conditioning is performed at three target layers — L12, L24, L36 — spanning 
 
 ### 3.1 Baseline: Standard J-Lens on MoE
 
-The baseline is a standard (unconditioned) J-lens fitted on Qwen3-30B-A3B in a previous run, using 200 WikiText prompts (smaller than the 672 used for conditioned fitting) and the reference `jlens` implementation, with no knowledge of routing. The corpus size difference is a limitation: the conditioned lenses benefit from more fitting data per cluster than the standard lens had in total. We report this asymmetry rather than claiming equivalent conditions. This fit achieves a mean transport cosine of ~12.5%, far below the sanity gate we apply to our own dense fits. We note that no published transport-cosine figure exists for dense models under this metric, so this number is uncalibrated against external work (see Limitations). We load this saved lens unchanged and re-evaluate it on the held-out test prompts under the identical transport-cosine protocol used for the conditioned lenses (§3.6), so all three conditions share one evaluation pipeline. This replicates our prior failure and establishes the number the conditioned lenses must beat.
+The baseline is a standard (unconditioned) J-lens fitted on Qwen3-30B-A3B in a previous run, using 200 WikiText prompts (smaller than the 672 used for conditioned fitting) and the reference `jlens` implementation, with no knowledge of routing. The corpus size difference is a limitation: the conditioned lenses benefit from more fitting data per cluster than the standard lens had in total. We report this asymmetry rather than claiming equivalent conditions. That run **failed the text sanity gate** (§4.0) and therefore terminated before any transport cosine was computed; the ~12.5% figure associated with it is the gate's next-token accuracy, not a cosine. Its transport cosines were measured separately and are reported in Table 1. We note that no published transport-cosine figure exists for dense models under this metric, so this number is uncalibrated against external work (see Limitations). We load this saved lens unchanged and re-evaluate it on the held-out test prompts under the identical transport-cosine protocol used for the conditioned lenses (§3.6), so all three conditions share one evaluation pipeline. This replicates our prior failure and establishes the number the conditioned lenses must beat.
 
 ### 3.2 Router Hooks
 
@@ -78,7 +78,7 @@ The critical control: identical protocol, shuffled labels. For each target layer
 
 **Test-prompt assignment.** For the 100 held-out prompts we capture routing with the same hooks (§3.2) and build the same 128-d frequency vectors (§3.3). A k-means model with the layer's selected k (same seed) is fitted on the fitting-set vectors and used to assign each test prompt to its nearest routing cluster; the matching conditioned lens is then selected per prompt. For the random condition we mirror this: test prompts are randomly assigned (independent seed) to groups with the same size proportions, and evaluated under the corresponding random-group lens. The standard lens is evaluated on all test prompts.
 
-**Transport cosine.** For each test prompt we record the residual stream at the source layer and at the final layer, transport the source activation through the lens under evaluation, unembed both, and compute the cosine similarity between the softmaxed predicted and actual next-token distributions at the final token position. This matches the metric under which the standard fit scored ~12.5%.
+**Transport cosine.** For each test prompt we record the residual stream at the source layer and at the final layer, transport the source activation through the lens under evaluation, unembed both, and compute the cosine similarity between the softmaxed predicted and actual next-token distributions at the final token position. Note this metric is distinct from the text sanity gate of §4.0, which scores next-token top-10 accuracy against ground truth rather than distributional similarity.
 
 **Statistics.** Per target layer, a one-sided Mann-Whitney U test of conditioned > random-conditioned on per-prompt transport cosines (sample sizes matched by truncation to the smaller condition), with Bonferroni correction across the three layers. Outcome criteria are pre-registered in the pipeline code: *success* requires conditioned > random and conditioned > standard with at least one Bonferroni-significant layer (and mean conditioned cosine > 0.5 for the full claim); conditioned > standard but ≈ random is classified as a null-swarm outcome (subset overfitting); conditioned > standard without significance is inconclusive.
 
@@ -93,6 +93,33 @@ The critical control: identical protocol, shuffled labels. For each target layer
 ## 4. Results
 
 **Headline: path-conditioned fitting does not improve transport fidelity, and does not beat the random control.** The pipeline's pre-registered classifier returned NEGATIVE. Zero of three layers reached significance under the one-sided Mann-Whitney U test after Bonferroni correction (threshold α = 0.05/3 ≈ 0.0167).
+
+### 4.0 The standard lens fails a ground-truth sanity gate
+
+Before any transport-cosine comparison, the standard J-lens fitted on Qwen3-30B-A3B was
+put through a text sanity gate: eight fixed prompts with unambiguous continuations
+("The capital of France is", "The chemical formula for water is", "The largest planet in
+our solar system is", …). For each, the residual at the middle source layer is transported
+through the lens, unembedded, and checked for whether the model's **actual** next token
+appears in the lens's top ten predictions. The pre-set pass threshold was 20%.
+
+**It scored 1 of 8 — 12.5% — and failed** (`data/moe_jlens/moe_result.json`, verdict
+`GATE_FAIL`). The lens could not place the correct continuation of *"The capital of France
+is"* among its top ten candidates.
+
+This result is worth separating from everything that follows, for two reasons.
+
+First, **it requires no external calibration.** Transport cosine under our definition has
+no published dense-model reference (see Limitations), so its absolute scale is
+uninterpretable. The gate has ground truth: the next token either is or is not in the top
+ten. It is the only absolutely interpretable number in this study.
+
+Second, **it changes what the conditioning result means.** A lens that cannot clear a basic
+next-token gate is not a working instrument whose performance conditioning might improve.
+The finding below — conditioned ≈ random ≈ standard, all at 4–9% — is therefore better read
+as *the lens does not work on this model, and path conditioning does not rescue it* than as
+*path conditioning specifically fails to help*. The negative result stands either way; this
+is the stronger and more honest framing of it.
 
 **Table 1: Mean transport cosine on 100 held-out WikiText prompts, per target layer and condition.** p-values are for the pre-registered one-sided test of conditioned > random-conditioned.
 
@@ -112,7 +139,7 @@ Three observations before any interpretation:
 
 **Verdict against pre-registered criteria (§3.6).** *Success* required conditioned > random and conditioned > standard with at least one Bonferroni-significant layer; the full claim additionally required mean conditioned cosine > 0.5. None of these obtained: 0/3 significant layers, conditioned ≈ random throughout, and all conditions sit between 4% and 9% — an order of magnitude below our own pre-registered 0.5 bar. (That bar was set by this lab; it is not drawn from Gurnee et al., who report no such threshold.) Conditioned numerically exceeds standard on the evaluable layers but not the random control: this is exactly the outcome the criteria pre-classify as **null-swarm (subset overfitting)**, i.e., a negative result for the routing-structure hypothesis.
 
-**Baseline note.** The saved standard lens scored ~12.5% mean transport cosine in the run that motivated this project (§3.1). Re-evaluated on this study's held-out prompts under the shared protocol, it scores 4.0–7.2% per layer (5.2% mean). The prior figure came from a different (non-held-out) prompt set; the discrepancy is consistent with the earlier evaluation being partially in-sample. Both figures support the same diagnosis — catastrophic failure relative to dense models — and the lower, held-out figure is the honest one for production implications (§5).
+**Baseline note (corrected 2026-08-16).** An earlier version of this paper reported that the saved standard lens "scored ~12.5% mean transport cosine" and explained the gap to this study's 5.2% as an in-sample versus held-out difference. **That was wrong in a way worth stating plainly: the two numbers were never the same measurement.** The 12.5% is the next-token top-10 accuracy from the text sanity gate (§4.0, 1 of 8); the run that produced it terminated at the gate and computed no transport cosine. The reconciliation offered for the discrepancy was therefore reasoning about a discrepancy that did not exist. The standard lens scores 4.0–7.2% per layer (5.2% mean) on this study's held-out prompts, and that is its only measured transport cosine. Both the gate failure and the transport figures support the same diagnosis — transport fidelity far below our own usability gate — but they are independent lines of evidence and are reported as such.
 
 **Cross-domain (Table 2).** The evaluation output records OOD transport cosines for the standard condition at L24 only; conditioned-lens OOD evaluation was specified in §3.6 but is absent from the recorded results — a deviation we flag rather than paper over. What was recorded makes the in-domain numbers look generous:
 
