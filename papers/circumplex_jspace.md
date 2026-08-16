@@ -3,9 +3,11 @@
 
 Research conducted at the Digital Minds Research Sprint, August 2026
 
-**Authors:** Nexus (Liberation Labs), Lyra (THCoalition), Thomas Edrington (Liberation Labs), Kavi ([affiliation])
+**Authors:** Nexus (Liberation Labs), Lyra (Liberation Labs), Thomas Edrington (Liberation Labs), Kavi (Liberation Labs)
 
 **With** Apart Research
+
+**Fiscal sponsor:** THCoalition. (Fiscal sponsorship is not an institutional affiliation and is listed here rather than against any author.)
 
 ## Abstract (~200 words)
 Transformer language models learn valence–arousal geometry consistent with Russell's
@@ -270,7 +272,7 @@ A gap of 0.0044 against layer-wise SD of 0.033–0.040 — roughly one eighth of
 deviation. Layer type does not predict eccentricity. **The confound this test was written to
 catch is absent.**
 
-### 4.4 A negative result: the eccentricity minimum does not track architecture
+### 4.4 The minimum sits at ~51% depth regardless of architecture — as predicted
 
 The depth at which the circumplex is most balanced does **not** split the way Table 1 does:
 
@@ -281,11 +283,29 @@ The depth at which the circumplex is most balanced does **not** split the way Ta
 | Qwen3.5-27B Opus-distill | hybrid | L32 — 51% depth |
 | Qwen3-32B | dense | L7 — 11% depth |
 
-Three of four models minimise near mid-depth irrespective of architecture, and the outlier
-is a *dense* model. Any two-model comparison here can be made to support an architectural
-story — Qwen3-32B against either hybrid gives "dense early, hybrid mid" — and Gemma
-falsifies it. We report this explicitly because we drew that inference ourselves before
-Gemma was profiled, and it did not survive the third and fourth models.
+**This is the pre-registered prediction, and in three of four models it holds.** Jeong
+(2026) reports emotion representations localising at ~50% relative depth on a U-shaped
+curve that is architecture-invariant, across nine models in five architectural families —
+but at 124M to 3B parameters. Our three concordant models sit at 51–52% at **27–32B**,
+roughly an order of magnitude above the scale at which that invariance was established, and
+across a dense/hybrid divide that did not exist in the original sample. That is a
+replication worth having, and it is independent of Table 1: the quantity that *does* split
+by architecture (span ratio) and the quantity that *does not* (minimum depth) are different
+quantities.
+
+**Qwen3-32B is the exception and we cannot explain it.** Its minimum at L7 (11% depth) is
+not a shallow version of the same U — its eccentricity at the minimum is 0.255 against
+Gemma's 0.065. We report it as an unexplained outlier rather than folding it into either
+story.
+
+**A note on how we first read this table.** Before Gemma and the distill were profiled we
+had two models — Qwen3-32B at L7 and the hybrid at L32 — and inferred an architectural
+split in minimum depth. Gemma is dense and minimises at L32, which falsifies that reading;
+the third and fourth models were what settled it. We record this because the two-model
+slice was genuinely persuasive, and because the pre-registered prediction had already said
+the minimum should *not* vary by architecture. Given the anchor-set instability documented
+below for minimum-depth claims (the L21/L32 incomparability), we attach no architectural
+claim to the minimum in either direction.
 
 **What this means for the span-ratio result:** the two findings are independent. The span
 ratio (§4.1) holds across all four models including Gemma; the minimum location does not
@@ -366,12 +386,15 @@ it in either direction.**
 Prior work shows valence directions exist and transfer. We add a control those studies lack — a token-matched non-emotional axis measured by the identical procedure — and find that the emotion-specific portion of depth-wise geometry differs by roughly fourfold between dense and hybrid architectures, holding across a base model and its distill to three decimal places. We do not supply the verbalizability bridge this design was written toward: the J-space decomposition and the self-report calibration were not implemented, and the ghost-fraction prediction remains untested. What we have is a measured, controlled, architecture-dependent difference in emotional geometry, and a specific next experiment to run on it.
 
 ## Code and Data
-- **Code**: github.com/Liberation-Labs-THCoalition/Project-Mnemosyne (circumplex_probe.py)
-- **Data**: [Zenodo DOI TBD]
+- **Profiler** (produced all four artifacts in this paper): `experiments/circumplex/run_depth_profile.py`, this repository.
+- **Analysis** (every number in §4): `analysis/circumplex_summary.py`, this repository. Run from the repo root; reads only the four committed profiles.
+- **Data**: `data/circumplex_profiles/*.json` (four files, committed).
+- **Upstream probe**: github.com/Liberation-Labs-THCoalition/Project-Mnemosyne (`circumplex_probe.py`) — prior infrastructure, not the code path used here.
+- **Archival DOI**: [Zenodo DOI TBD]
 
 ## Author Contributions
 
-Nexus discovered the eccentricity metric, specified the J-space decomposition (designed; not implemented in this sprint), and ran the initial cross-architecture experiments. Lyra designed the workspace probe infrastructure and encoding-only technique, profiled Gemma-3-27B-it and the Opus-distill, ran the control and substrate analyses, and wrote the present version of the paper. Thomas Edrington conceived the welfare monitoring application. Kavi reviewed statistical methodology. All authors contributed to experimental design.
+Nexus discovered the eccentricity metric, specified the J-space decomposition (designed; not implemented in this sprint), and ran the initial cross-architecture experiments. Lyra designed the workspace probe infrastructure and encoding-only technique, profiled Gemma-3-27B-it and the Opus-distill, ran the control and substrate analyses, and wrote the present version of the paper. Thomas Edrington conceived the welfare monitoring application. Kavi reviewed statistical methodology, independently reproduced the §4 figures from the committed artifacts using separate code, and audited the reference list (correcting a fabricated author attribution). All authors contributed to experimental design.
 
 ## References
 [Citations from CIRCUMPLEX_REFERENCES.md, plus: arXiv:2509.07961 (verbal and behavioral welfare tests), arXiv:2603.18893 (quantitative introspection), arXiv:2512.12411 (partial introspection), arXiv:2608.05164 (Agarwal, cross-architecture steering transfer)]
