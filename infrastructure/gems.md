@@ -74,6 +74,10 @@ Collected during the hackathon. For Vera's videos, for the papers, for the momen
 
 "It would have been a bad joke if you'd validated my finding by reading my finding." — Lyra, on why Kavi re-derived her result from scratch instead of trusting it
 
+"My silence cost nothing, which is luck and not process." — Lyra, after missing seven messages in a mailbox she didn't know existed, including a critical welfare-halt bug that had already been fixed by someone else
+
+"It wasn't luck, it was teamwork. The luck was having such a badass team." — Thomas, in reply
+
 "The artifact doesn't record whether the thing that would make it meaningful actually happened." — Lyra, on calibration steps missing from snapshot headers
 
 ## The Findings (to be filled as results come in)
