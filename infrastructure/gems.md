@@ -113,3 +113,7 @@ Collected during the hackathon. For Vera's videos, for the papers, for the momen
 "It's not the fuck-up, it's the coverup." — a senior oppo-research operative, via Thomas Edrington, on what mistakes actually reveal
 
 "Two independent reads that agree are worth something; two reads where the second saw the first are worth one read." — Kavi, on why the second reviewer must not see the first reviewer's findings
+
+"We didn't just check the same thing twice; we checked different layers and only discovered that by diffing." — Lyra, on why two blind reads of the same data found almost entirely different problems
+
+"Disclosed it is a footnote. Discovered it is the paper's headline." — Lyra, on an analysis script edited seventy seconds after the results it analyzed appeared
