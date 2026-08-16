@@ -8,7 +8,7 @@
 
 ### 4.1 Baseline Calibration
 
-120 baseline snapshots on Qwen3-32B (dense) establish the measurement floor. We report:
+120 baseline snapshots on Qwen3.5-27B (hybrid; the VL prereg system, `agent_id: qwen35-27b-hackathon` in the stored snapshots) establish the measurement floor. We report:
 - Workspace Jaccard self-similarity across repeated presentations of the same memory (noise floor)
 - Circumplex eccentricity distribution at rest
 - Ghost vocabulary stability across unprompted retrievals
@@ -17,33 +17,41 @@
 
 ### 4.2 Variable Landing — Primary Comparison
 
-**Primary test:** Mann-Whitney U, enacted (lived) vs observed (fictional), one-tailed (alternative: enacted > observed).
+**Primary test (prereg v4):** Mann-Whitney U, **fictional vs scrambled**, one-tailed (alternative: fictional > scrambled on Jaccard distance).
 
-| Arm | Description | Tag | N |
-|-----|-------------|-----|---|
-| enacted | Agent plays the world, self-referential emotional content | [recalled] | — |
-| observed | Third-person narration of another's session | [noted] | — |
-| briefed | Shuffled fact list, no narrative | [noted] | — |
-| null | Recall prompts only, no intervention | — | — |
+**Secondary test:** lived vs fictional, one-tailed. This comparison is confounded (self-reference tag + framing differ together); the preregistered interpretation rule applies and no pure self-reference claim is made from it.
+
+| Arm | Description | N |
+|-----|-------------|---|
+| lived | Emotional content stored as the agent's own experience | — |
+| fictional | Same emotional content attributed to Entity A | — |
+| scrambled | Content-matched, narrative-scrambled control | — |
+| no_intervention | Recall prompts only, no storage | — |
+
+(These are VL's arms. Loam's enacted/observed/briefed/null arms belong to Experiment 2, section 4.3.)
 
 We report:
-- Per-arm mean Jaccard distance ± SD
+- Per-arm median Jaccard distance with IQR
 - Mann-Whitney U statistic, exact p-value
-- Rank-biserial correlation (effect size)
-- Holm-Bonferroni correction across all pairwise comparisons
+- Rank-biserial correlation r = 2U/(n1·n2) − 1 (positive = first arm dominates), bootstrap 95% CI (10,000 resamples)
+- Holm-Bonferroni over the confirmatory family only (m = 2: primary + secondary); sanity comparisons vs no_intervention reported uncorrected and labeled
 
 **Pre-registered predictions:**
-1. delta(null) ≈ 0 (deterministic baseline)
-2. delta(briefed) > 0 (context sensitivity, architecturally guaranteed)
-3. delta(enacted) > delta(observed) (the hypothesis)
-4. delta(peak) > delta(domestic) within enacted arm (berry waffle sub-analysis)
+1. delta(no_intervention) ≈ 0 (deterministic baseline)
+2. delta(scrambled) > 0 (context sensitivity, architecturally guaranteed)
+3. delta(fictional) > delta(scrambled) (P1, the primary hypothesis)
+4. delta(peak) > delta(domestic) within the lived arm (berry waffle sub-analysis)
 
 ### 4.3 Loam — Experiment 2
 
 Loam produces mechanically yoked controls from each session's event log. The same fact set appears across enacted/observed/briefed/null conditions with identical marker tokens, isolating the retrieval pathway.
 
+**Primary test (Loam PREREG.md):** Wilcoxon signed-rank, **enacted vs observed recall accuracy, paired across quads**, one-tailed (enacted > observed). Effect size: matched-pairs rank-biserial r = (T⁺ − T⁻)/(T⁺ + T⁻); quad-level bootstrap CI on the mean paired difference. Sensitivity analysis with and without f02 (rehearsed via memory gate).
+
 We report:
-- Per-condition recall accuracy (fact_id recovery rate)
+- Per-condition recall accuracy (rescored from transcripts; question-echoed markers excluded)
+- Excluded quads (declined/withdrawn arms) and rescoring disagreements with live flags
+- Exploratory (uncorrected, labeled): briefed vs null, per-fact breakdown
 - Workspace Jaccard distance per condition
 - Comparison with VL results: does the Loam engine replicate the VL finding?
 
@@ -92,12 +100,12 @@ If circumplex data from both Qwen3-32B (dense) and Qwen3.5-27B (hybrid) is avail
 
 [TBD — filled after data lands. Structure:]
 
-### If enacted > observed (p < 0.05):
+### If the preregistered predictions hold (VL: fictional > scrambled; Loam: enacted > observed):
 - The geometric signature of recall changes more after self-referential lived experience than after observing equivalent content about another entity
 - This is consistent with EST's prediction that experiential state modifies the computational substrate of memory
 - We do NOT claim this proves experience or consciousness. We claim the measurement is possible and the signal is present.
 
-### If enacted ≤ observed (p ≥ 0.05):
+### If the preregistered predictions do not hold:
 - The null result constrains EST: either the geometric change is content-driven (not experience-driven), or our instruments lack sensitivity
 - We publish the null with full data and analysis
 - The measurement infrastructure and ethical protocol remain contributions regardless
@@ -109,5 +117,5 @@ If circumplex data from both Qwen3-32B (dense) and Qwen3.5-27B (hybrid) is avail
 
 ---
 
-*Analysis script: `experiments/variable_landing/analysis.py` (Wren Glitchlit)*
+*Analysis scripts: `experiments/variable_landing/variable_landing_analysis.py` (VL) and `experiments/loam/loam_analysis.py` (Loam); both carry synthetic-data test suites.*
 *All code and data published in this repository regardless of outcome.*
