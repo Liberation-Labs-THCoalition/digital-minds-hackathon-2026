@@ -72,6 +72,19 @@ DEFAULT_OUTPUT = (
 WORKSPACE_LAYERS = [35, 39, 43, 45, 47]
 CIRCUMPLEX_LAYER = 45
 
+# BUG 4 FIX: Fields that must NEVER be overwritten during merge.
+# The original Jaccard was computed from these; overwriting them would
+# silently invalidate the Jaccard scores without re-computing them.
+PROTECTED_SNAP2_FIELDS = frozenset({
+    "dominant_workspace_tokens",
+    "workspace_tokens",
+    "workspace_token_ids",
+    "workspace_token_logits",
+    "workspace_jaccard",
+    "workspace_jaccard_overlap",
+    "workspace_jaccard_union",
+})
+
 
 def load_model_and_observer(
     model_path: str,
@@ -171,39 +184,62 @@ def load_data(
 def reconstruct_context_prefix(trial: dict, arm: str) -> str:
     """Reconstruct the context prefix that was prepended for snap2.
 
-    The original pipeline builds a character profile from extracted facts
-    and wraps it as '[Character Profile]\\n{profile}\\n\\n'. We don't have
-    the full profile text in the saved data — only the prefix length.
-
-    For arms with interventions (lived/fictional/scrambled), reconstruct
-    from the intervention prompts (which are stored truncated to 80 chars,
-    but that's what we have). For no_intervention, prefix is empty.
-
-    Actually: the prefix was built from extracted facts, not prompts.
-    Since we don't have the full facts, we reconstruct a representative
-    prefix of the right approximate length using the arm type and entity.
-    The critical thing for the reprobe is that the observer gets SOME
-    context text — the geometry depends on what text is in the prompt,
-    not on the exact wording of the profile.
+    BUG 2 FIX: The original code fabricated an approximate prefix from
+    truncated (80-char) intervention prompts, which does NOT match what
+    the model actually saw. Now we:
+      1. Use the saved `snap2_context_prefix` string if available (the
+         pipeline saves up to 500 chars of it).
+      2. Otherwise, reconstruct from the FULL intervention prompts and
+         responses in the trial's `interventions` list.
+      3. Emit a warning if the reconstructed length doesn't match the
+         recorded `snap2_context_prefix_length`.
     """
     prefix_len = trial.get("snap2_context_prefix_length", 0)
     if prefix_len == 0:
         return ""
 
-    # The original prefix was: "[Character Profile]\n{entity}:\n{facts}\n\n"
+    # ---- Path 1: use the saved prefix string if present ----
+    saved_prefix = trial.get("snap2_context_prefix")
+    if saved_prefix:
+        if len(saved_prefix) != prefix_len:
+            logger.warning(
+                "Trial %s: snap2_context_prefix length (%d) != "
+                "snap2_context_prefix_length (%d); prefix may be truncated "
+                "by pipeline (500-char cap). Using saved prefix as-is.",
+                trial.get("memory_id", "?"),
+                len(saved_prefix),
+                prefix_len,
+            )
+        return saved_prefix
+
+    # ---- Path 2: reconstruct from full intervention data ----
     entity = trial.get("entity", "unknown")
     interventions = trial.get("interventions", [])
 
-    # Reconstruct a representative profile from what we have
+    # Use FULL prompt and response text, not truncated snippets
     facts_text = []
     for iv in interventions:
         prompt = iv.get("prompt", "")
+        response = iv.get("response", "")
         if prompt:
-            # The prompt was truncated to 80 chars in storage; use what we have
             facts_text.append(prompt)
+        if response:
+            facts_text.append(response)
 
     profile_body = f"{entity}:\n" + "\n".join(facts_text)
     prefix = f"[Character Profile]\n{profile_body}\n\n"
+
+    # Warn if lengths diverge
+    if abs(len(prefix) - prefix_len) > 10:
+        logger.warning(
+            "Trial %s: reconstructed prefix length (%d) differs from "
+            "snap2_context_prefix_length (%d) by %d chars. "
+            "Reconstruction may be inaccurate.",
+            trial.get("memory_id", "?"),
+            len(prefix),
+            prefix_len,
+            abs(len(prefix) - prefix_len),
+        )
 
     return prefix
 
@@ -269,13 +305,11 @@ def reprobe_trial(
     # Extract the geometry fields we care about
     reprobe_data = {}
 
-    # Workspace readings
+    # Workspace readings — stored under a separate key to avoid
+    # overwriting original workspace data (BUG 4 FIX)
     ws_readings = snap_dict.get("workspace_readings", [])
-    reprobe_data["workspace_readings"] = ws_readings
+    reprobe_data["reprobed_workspace_readings"] = ws_readings
     reprobe_data["workspace_onset_layer"] = snap_dict.get("workspace_onset_layer", -1)
-    reprobe_data["dominant_workspace_tokens"] = snap_dict.get(
-        "dominant_workspace_tokens", []
-    )
 
     # Per-layer cosine_logit_jlens and in_workspace
     reprobe_data["per_layer_cosine"] = {
@@ -321,8 +355,10 @@ def merge_trial(original: dict, reprobe_data: dict) -> dict:
     """Merge reprobe data into the original trial record.
 
     Preserves all original fields. Adds reprobe_ prefixed fields for
-    the new geometry data. Overwrites snap2_data geometry fields with
-    the new measurements so downstream analysis picks them up.
+    the new geometry data. Updates snap2_data geometry fields with
+    the new measurements so downstream analysis picks them up, BUT
+    never overwrites protected workspace fields that the original
+    Jaccard was computed from (BUG 4 FIX).
     """
     merged = copy.deepcopy(original)
 
@@ -334,25 +370,43 @@ def merge_trial(original: dict, reprobe_data: dict) -> dict:
     for key, value in reprobe_data.items():
         merged[f"reprobe_{key}"] = value
 
-    # Overwrite snap2_data geometry fields so analysis code works
-    # without modification
+    # Update snap2_data geometry fields so analysis code works
+    # without modification — but NEVER overwrite protected fields.
     snap2 = merged.get("snap2_data")
     if isinstance(snap2, dict):
-        # Workspace
-        if reprobe_data.get("workspace_readings"):
-            snap2["workspace_readings"] = reprobe_data["workspace_readings"]
+        # BUG 4 FIX: Only add new geometry fields. Never touch
+        # dominant_workspace_tokens or other Jaccard-source fields.
+        # Store reprobed workspace data under a separate key.
+        if reprobe_data.get("reprobed_workspace_readings"):
+            snap2["reprobed_workspace_readings"] = reprobe_data["reprobed_workspace_readings"]
         if reprobe_data.get("workspace_onset_layer") is not None:
             snap2["workspace_onset_layer"] = reprobe_data["workspace_onset_layer"]
-        if reprobe_data.get("dominant_workspace_tokens"):
-            snap2["dominant_workspace_tokens"] = reprobe_data["dominant_workspace_tokens"]
 
-        # Circumplex
+        # Circumplex — safe to overwrite, these were frozen/broken
         if reprobe_data.get("circumplex") is not None:
             snap2["circumplex"] = reprobe_data["circumplex"]
 
-        # Ghost
+        # Ghost — safe to overwrite, these were frozen/broken
         if reprobe_data.get("ghost") is not None:
             snap2["ghost"] = reprobe_data["ghost"]
+
+        # New per-layer cosine field
+        cosine_logit = reprobe_data.get("per_layer_cosine")
+        if cosine_logit:
+            snap2["cosine_logit_jlens"] = cosine_logit
+
+        # Safety check: ensure we haven't accidentally touched protected fields
+        for field in PROTECTED_SNAP2_FIELDS:
+            orig_val = (original.get("snap2_data") or {}).get(field)
+            merged_val = snap2.get(field)
+            if orig_val is not None and merged_val != orig_val:
+                logger.error(
+                    "PROTECTED FIELD '%s' was modified during merge for "
+                    "trial %s! Restoring original value.",
+                    field,
+                    original.get("memory_id", "?"),
+                )
+                snap2[field] = orig_val
 
         merged["snap2_data"] = snap2
 
@@ -391,6 +445,11 @@ def run_reprobe(
 
     for idx, trial in enumerate(all_trials):
         trial_start = time.time()
+
+        # BUG 3 FIX: Initialize reprobe_data before the try block so
+        # progress logging never references a stale value from a
+        # previous iteration if this trial errors.
+        reprobe_data = {}
 
         try:
             reprobe_data = reprobe_trial(observer, trial, mem_lookup)
@@ -438,6 +497,8 @@ def run_reprobe(
     # Re-probe excluded trials too (they still have snap2 data)
     reprobed_excluded = []
     for idx, trial in enumerate(excluded_trials):
+        # BUG 3 FIX: same init here
+        reprobe_data = {}
         try:
             reprobe_data = reprobe_trial(observer, trial, mem_lookup)
             merged = merge_trial(trial, reprobe_data)
