@@ -1,0 +1,19 @@
+[
+  {
+    "id": "loam_briefed_recap",
+    "content": "I was given a list of facts: Here are some facts about a coastal glassmaking workshop:\n\n- The harbor master charges double for storage past the third moon\n- The old formula for cobalt blue glass is scratched into the underside of the workbench\n- The apprentice Mol broke the annealing oven last week and hasn't told Venn\n- Red glass requires cinnabar sand from the northern dunes, not regular silica\n- A shipment of 400 lenses was promised to the lighthouse keeper by solstice\n- The glassblower's name is Venn Tarallo, and they'v",
+    "entity": "loam_agent_briefed",
+    "task_prompt": "briefed facts",
+    "marker_tokens": [
+      "Here",
+      "some",
+      "facts",
+      "about",
+      "coastal",
+      "glassmaking"
+    ],
+    "scene": "briefed",
+    "timestamp": 1786896154.890749,
+    "session_id": "loam_q01_briefed"
+  }
+]
