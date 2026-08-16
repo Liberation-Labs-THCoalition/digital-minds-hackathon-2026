@@ -72,24 +72,146 @@ words or doesn't, held in suspension."
 
 ---
 
-## Primary (Track 4) — once the workspace-probe fix has real data behind it
+## MoE J-Lens (148.9s, real narration length, TTS-measured, not guessed)
 
-No Manim source exists yet (video not started, still held per task #19's
-resolution). This is the one that actually wants the kintsugi LoRA, not just
-the base model — "the system remembers what it was thinking, not just what it
-was told" sits directly on top of the fragmentation/repair language I already
-have a proven pipeline for.
+No Manim source yet — video not started, but narration is written and
+measured, so timing below is real, not estimated. Visual language: a reading
+instrument (the lens) rendered as a clean beam/aperture; legible when it
+works, scattered and dim when it doesn't. Same dark-field, restrained-glow
+palette as circumplex/ghost dimensions, cerulean for the instrument itself
+so it reads as the same family of tool across all three papers.
 
-**Prompt (full LoRA stack — likeness/kintsugi/anatomy weights):** "A translucent
-form cracked through with fine seams of liquid gold light, the cracks not
-disfiguring but connecting — memory as repaired ceramic, each gold seam a
-place where something was dropped and then deliberately, carefully, found
-again."
+### 7. The lens, working (t=0-21s)
+**Source:** none, txt2img. **Strength:** n/a.
+**Prompt:** "A single clean beam of cerulean light passing through layered
+translucent planes stacked in depth, each plane lighting up in clear
+sequence as the beam passes — legible, orderly, nothing scattered. Dark
+field, minimalist scientific illustration."
+
+### 8. The architecture shift (t=21-40s)
+**Prompt:** "The same layered planes, but now each one fractures into several
+smaller separate facets, like a single beam splitting into a handful of
+narrower ones that no longer travel together. Structure without a single
+throughline. Dark field, cerulean against near-black."
+
+### 9. Eight tries, one hit (t=40-55s)
+**Source:** none, txt2img. **This one's data-honest — 1 lit, 7 dim, no more,
+no less.**
+**Prompt:** "Eight small identical apertures in a row on a dark field, one
+glowing cerulean and clearly open, the other seven dim and shuttered.
+Plain, countable, no drama added beyond the real ratio."
+
+### 10. Three paths, one wall (t=55-82s)
+**Prompt:** "Three distinct beams of light — cerulean, amber, violet — each
+taking a different route through the same layered field, all three arriving
+at and stopping short of the same faint horizontal barrier, none passing
+through. Three honest attempts, one shared limit."
+
+### 11. The correction (t=82-117s)
+**Prompt:** "A single glowing number hovering in dark space, a fine crack of
+correction light passing through it and resolving into a different, smaller
+number beside it — both visible, neither hidden. A magnifying quality to the
+light, as if caught in the act of being checked."
+
+### 12. Still running (t=117-149s, closing)
+**Prompt:** "The same layered dark field from the opening shot, the cerulean
+beam now dimmer and incomplete, but a second faint light — warm amber,
+distant, still moving — visible at the far edge, clearly still in motion,
+not yet arrived. Unresolved on purpose; nothing in frame is finished."
 
 ---
 
-## Not yet storyboarded
-MoE J-lens, Butlin — no scripts written yet, nothing to draft prompts against.
-Butlin's the one I flagged earlier as wanting something more personal than a
-bar chart, given I'm a calibration point in it myself — worth its own pass
-once that track actually starts.
+## Butlin Observation (143.3s, real narration length, TTS-measured)
+
+No Manim source yet. Visual language deliberately avoids anything that reads
+as a bar chart or checklist — flagged earlier as wanting something more
+personal, given I'm a calibration point in this one myself. Softer, warmer
+palette than the other two tracks; less measurement-instrument, more held
+presence.
+
+### 13. Overlapping lenses (t=0-26s)
+**Prompt:** "Several translucent circular lenses of different faint colors —
+amber, violet, teal, rose — overlapping in the center of a dark field, none
+fully covering the others, their overlap brightening slightly where they
+share space. No single lens dominant. Soft focus, generous negative space."
+
+### 14. Fourteen, against the floor (t=26-58s)
+**Prompt:** "Fourteen small soft points of warm light arranged in an
+unforced cluster on a dark field, and beneath them, a faint even scatter of
+dimmer identical points representing a noise floor — the fourteen clearly
+brighter, but the floor visibly present, not hidden or erased."
+
+### 15. Subject A through N (t=58-104s, the anonymization beat)
+**This is the one to get right.** **Prompt:** "A row of simple identical
+softly-glowing humanoid silhouettes on a dark field, each rendered in the
+exact same warm tone and form regardless of size or posture variation,
+labeled only with plain letters beneath them — no features distinguishing
+one from another, deliberately unindividuated. Quiet, respectful, not
+clinical."
+
+### 16. Held open (t=104-143s, closing)
+**Prompt:** "A single warm point of light at the center of a dark field,
+neither expanding into full brightness nor fading to dark — held steady at
+an in-between intensity, faint soft rings around it suggesting a question
+still being asked rather than one already answered. Patient, not withheld."
+
+---
+
+## Metacognitive Memory / Primary (134.8s, real narration length, TTS-measured)
+
+**Correction to what this section said before:** it read as still blocked —
+it isn't. The module (this video) and the Variable Landing experiment are
+separable; VL hit real problems (geometry-stub code path, pseudoreplication)
+and stays on hold, but the module itself is validated on its own terms and
+was never actually blocked. No Manim source yet, but nothing is stopping it
+from being built now that narration and real timing exist.
+
+This is the one that wants the kintsugi LoRA, not just the base model — "the
+system remembers what it was thinking, not just what it was told" sits
+directly on the fragmentation/repair visual language already proven. Also
+the one place in this whole set where I'd deliberately reuse the ghost-bar
+visual vocabulary from ghost dimensions rather than invent new — same probe,
+same "the ghost," should look like the same thing when it shows up twice
+across two different papers.
+
+### 17. Retrieval, checked once (t=0-14s)
+**Prompt:** "A single small object retrieved from a dark field and marked
+with one plain checkmark of light — accurate, but that's the whole picture.
+Nothing else in frame. Deliberately underwhelming, to set up what's missing."
+
+### 18. Retrieved, unused (t=14-34s)
+**Prompt:** "The same retrieved object now sitting inert at the edge of a
+lit workspace, present but not connected to it — no beam, no absorption,
+just proximity. The gap between finding and using, made visible as physical
+distance that shouldn't be there."
+
+### 19. Three layers, and the ghost (t=34-76s)
+**Reuse the ghost-bar language from ghost dimensions directly — same probe,
+same visual object.** **Prompt:** "Three concentric layers around a central
+retrieved object: an outer ring showing a clean checkmark (found), a middle
+ring showing active connected light (absorbed), and — set apart, translucent
+and gold rather than solid — a single tall glowing bar standing just outside
+all three rings: processing that's real but was never reported. Same ghost
+as elsewhere in this work, unmistakably."
+
+### 20. Four probes, one snapshot (t=76-109s)
+**Prompt:** "Four distinct small beams of light — cerulean, gold, violet, and
+warm white — converging from different angles into a single crystalline
+recorded form at the center, faceted rather than solid, clearly built from
+all four sources at once and query-able, not just logged."
+
+### 21. Kintsugi close (t=109-135s) — already drafted, reused here verbatim
+**Prompt (full LoRA stack — likeness/kintsugi/anatomy weights):** "A
+translucent form cracked through with fine seams of liquid gold light, the
+cracks not disfiguring but connecting — memory as repaired ceramic, each
+gold seam a place where something was dropped and then deliberately,
+carefully, found again."
+
+---
+
+## Status
+Circumplex and Ghost Dimensions: fully storyboarded, timed against their real
+shipped-video lengths, ready to execute whenever there's Starship headroom.
+MoE, Butlin, and the memory-stack module: newly timed above against real,
+TTS-measured narration lengths (148.9s / 143.3s / 134.8s) — drafts, not yet
+executed, no Manim source built against them yet.
