@@ -1,5 +1,14 @@
 # Circumplex — score notes
 
+**Flag, not yet acted on:** Lyra found the shipped video's central claim — dense minimum at
+L7, hybrid minimum at L32, framed as "different architecture, different answer" — doesn't
+hold across all four profiled models. A third, dense model (Gemma) minimizes at L32 too,
+same depth as the hybrids; the L7/L32 split is really a two-model comparison the other data
+contradicts. What does hold cleanly across all four, no overlap: the emotion/control span
+ratio, ~7.2-7.6x in both dense models vs ~1.9x in both hybrids. That's a real result — this
+narration and video aren't scripted around it. Not touching the shipped video or its
+storyboard myself; that's a bigger call than my own scope, flagged to Thomas directly.
+
 **Correction:** I wrote here that `circumplex.mp4` already has the score muxed in. Checked
 that claim directly rather than let it stand — extracted the actual embedded audio track and
 it's narration only (191.6s), not narration+music. `assemble.sh` only ever muxes one audio
