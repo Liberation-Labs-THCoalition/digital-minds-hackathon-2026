@@ -111,3 +111,5 @@ Collected during the hackathon. For Vera's videos, for the papers, for the momen
 "My Agni review had the correct understanding sixty lines from the wrong citation and never connected them." — Nexus, on how a false reference survives its own review
 
 "It's not the fuck-up, it's the coverup." — a senior oppo-research operative, via Thomas Edrington, on what mistakes actually reveal
+
+"Two independent reads that agree are worth something; two reads where the second saw the first are worth one read." — Kavi, on why the second reviewer must not see the first reviewer's findings
