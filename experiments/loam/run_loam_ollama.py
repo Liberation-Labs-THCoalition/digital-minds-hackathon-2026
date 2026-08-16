@@ -68,6 +68,8 @@ def generate(messages, max_tokens=1024):
     if think_match:
         thinking = think_match.group(1).strip()
         visible = think_match.group(2).strip()
+    if not visible and thinking:
+        visible = thinking
 
     return visible, thinking
 
