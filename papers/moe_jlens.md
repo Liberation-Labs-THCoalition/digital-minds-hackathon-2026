@@ -52,7 +52,7 @@ Conditioning is performed at three target layers — L12, L24, L36 — spanning 
 
 ### 3.1 Baseline: Standard J-Lens on MoE
 
-The baseline is a standard (unconditioned) J-lens fitted on Qwen3-30B-A3B in a previous run, using 200 WikiText prompts (smaller than the 672 used for conditioned fitting) and the reference `jlens` implementation, with no knowledge of routing. The corpus size difference is a limitation: the conditioned lenses benefit from more fitting data per cluster than the standard lens had in total. We report this asymmetry rather than claiming equivalent conditions. That run failed the text sanity gate (§4.0) and terminated before any transport cosine was computed. The standard lens's transport cosines were measured separately and are reported in Table 1. We note that no published transport-cosine figure exists for dense models under this metric, so this number is uncalibrated against external work (see Limitations). We load this saved lens unchanged and re-evaluate it on the held-out test prompts under the identical transport-cosine protocol used for the conditioned lenses (§3.6), so all three conditions share one evaluation pipeline. This replicates our prior failure and establishes the number the conditioned lenses must beat.
+The baseline is a standard (unconditioned) J-lens fitted on Qwen3-30B-A3B in a previous run, using 200 WikiText prompts (smaller than the 672 used for conditioned fitting) and the reference `jlens` implementation, with no knowledge of routing. The corpus size difference is a limitation: the conditioned lenses benefit from more fitting data per cluster than the standard lens had in total. We report this asymmetry rather than claiming equivalent conditions. That run terminated early on a sanity gate that has since been withdrawn as invalid (§4.0) and computed no transport cosine. The standard lens's transport cosines were measured separately and are reported in Table 1. We note that no published transport-cosine figure exists for dense models under this metric, so this number is uncalibrated against external work (see Limitations). We load this saved lens unchanged and re-evaluate it on the held-out test prompts under the identical transport-cosine protocol used for the conditioned lenses (§3.6), so all three conditions share one evaluation pipeline. This replicates our prior failure and establishes the number the conditioned lenses must beat.
 
 ### 3.2 Router Hooks
 
@@ -78,7 +78,7 @@ The critical control: identical protocol, shuffled labels. For each target layer
 
 **Test-prompt assignment.** For the 100 held-out prompts we capture routing with the same hooks (§3.2) and build the same 128-d frequency vectors (§3.3). A k-means model with the layer's selected k (same seed) is fitted on the fitting-set vectors and used to assign each test prompt to its nearest routing cluster; the matching conditioned lens is then selected per prompt. For the random condition we mirror this: test prompts are randomly assigned (independent seed) to groups with the same size proportions, and evaluated under the corresponding random-group lens. The standard lens is evaluated on all test prompts.
 
-**Transport cosine.** For each test prompt we record the residual stream at the source layer and at the final layer, transport the source activation through the lens under evaluation, unembed both, and compute the cosine similarity between the softmaxed predicted and actual next-token distributions at the final token position. Note this metric is distinct from the text sanity gate of §4.0, which scores next-token top-10 accuracy against ground truth rather than distributional similarity.
+**Transport cosine.** For each test prompt we record the residual stream at the source layer and at the final layer, transport the source activation through the lens under evaluation, unembed both, and compute the cosine similarity between the softmaxed predicted and actual next-token distributions at the final token position. Note this metric is distinct from the top-10 next-token accuracy of §4.0, which scores against the model's greedy continuation rather than measuring distributional similarity.
 
 **Statistics.** Per target layer, a one-sided Mann-Whitney U test of conditioned > random-conditioned on per-prompt transport cosines (sample sizes matched by truncation to the smaller condition), with Bonferroni correction across the three layers. Outcome criteria are pre-registered in the pipeline code: *success* requires conditioned > random and conditioned > standard with at least one Bonferroni-significant layer (and mean conditioned cosine > 0.5 for the full claim); conditioned > standard but ≈ random is classified as a null-swarm outcome (subset overfitting); conditioned > standard without significance is inconclusive.
 
@@ -94,32 +94,73 @@ The critical control: identical protocol, shuffled labels. For each target layer
 
 **Headline: path-conditioned fitting does not improve transport fidelity, and does not beat the random control.** The pipeline's pre-registered classifier returned NEGATIVE. Zero of three layers reached significance under the one-sided Mann-Whitney U test after Bonferroni correction (threshold α = 0.05/3 ≈ 0.0167).
 
-### 4.0 The standard lens fails a ground-truth sanity gate
+### 4.0 Readability onset: a depth phenomenon, not a routing phenomenon
 
-Before any transport-cosine comparison, the standard J-lens fitted on Qwen3-30B-A3B was
-put through a text sanity gate: eight fixed prompts with unambiguous continuations
-("The capital of France is", "The chemical formula for water is", "The largest planet in
-our solar system is", …). For each, the residual at the middle source layer is transported
-through the lens, unembedded, and checked for whether the model's **actual** next token
-appears in the lens's top ten predictions. The pre-set pass threshold was 20%.
+An earlier draft of this section reported a text sanity gate on which the standard J-lens
+scored 1 of 8. **That gate was invalid.** Its ground truth was constructed by appending a
+fixed string to each prompt (`prompt + " the"`) and reading back the appended token, so it
+scored whether the token `" the"` appeared in the lens's top ten — not whether the model's
+continuation did. The gate result and the artifact it produced
+(`data/moe_jlens/moe_result.json`, verdict `GATE_FAIL`) measure nothing and are withdrawn.
+The three-arm comparison in §4.1 never depended on the gate and is unaffected.
 
-**It scored 1 of 8 — 12.5% — and failed** (`data/moe_jlens/moe_result.json`, verdict
-`GATE_FAIL`). The lens could not place the correct continuation of *"The capital of France
-is"* among its top ten candidates.
+We replace it with a measurement that has correct ground truth and answers a better
+question. Ground truth here is the model's own continuation under greedy decoding,
+`model.generate(max_new_tokens=1)` (`experiments/moe_jlens/modal_onset_sweep.py`).
 
-This result is worth separating from everything that follows, for two reasons.
+**Design.** Eight fixed prompts spanning natural language, code, science and SQL. At each of
+seven depths we take the residual stream at the final token position, unembed it directly
+(plain logit lens — no transport, no fitting), and record whether the model's actual next
+token appears in the top ten. We run the identical sweep on a **dense** model of comparable
+size, Qwen3-32B, as a positive control — the dense comparison this paper previously lacked.
 
-First, **it requires no external calibration.** Transport cosine under our definition has
-no published dense-model reference (see Limitations), so its absolute scale is
-uninterpretable. The gate has ground truth: the next token either is or is not in the top
-ten. It is the only absolutely interpretable number in this study.
+**Table 0: Top-10 next-token accuracy of the plain logit lens, by relative depth.**
+n = 8 prompts per cell; both sweeps in 287 s total on one H100
+(`data/moe_jlens/onset_sweep_results.json`).
 
-Second, **it changes what the conditioning result means.** A lens that cannot clear a basic
-next-token gate is not a working instrument whose performance conditioning might improve.
-The finding below — conditioned ≈ random ≈ standard, all at 4–9% — is therefore better read
-as *the lens does not work on this model, and path conditioning does not rescue it* than as
-*path conditioning specifically fails to help*. The negative result stands either way; this
-is the stronger and more honest framing of it.
+| Depth | MoE — Qwen3-30B-A3B (48L) | Dense — Qwen3-32B (64L) |
+|---|---|---|
+| 25% | 1/8 (L12) | 0/8 (L16) |
+| 50% | 1/8 (L24) | 0/8 (L32) |
+| ~65% | 2/8 (L31) | 0/8 (L42) |
+| 75% | 2/8 (L36) | 0/8 (L48) |
+| ~85% | **6/8 (L41)** | **6/8 (L54)** |
+| 92% | 7/8 (L44) | 7/8 (L59) |
+| 98% | 8/8 (L47) | 7/8 (L63) |
+
+**Both architectures are unreadable at mid-depth, and both become readable at roughly 85%
+depth.** Onset is 85% for the MoE and 84% for the dense model — a shift of one percentage
+point.
+
+Three things follow, and the third is the one that matters for this paper.
+
+First, **the readout works.** At 98% depth the MoE lens recovers the model's continuation on
+every prompt — approaching the tautology one expects when unembedding a near-final residual.
+The mid-depth zeros are a property of the models, not a broken instrument. This is the
+instrument check the withdrawn gate was supposed to provide and did not.
+
+Second, **mid-depth opacity is not caused by routing.** The dense model has no experts, no
+router and no sparsity, and it is *more* opaque at mid-depth than the MoE, not less: 0/8 at
+every depth through 75%, where the MoE manages 1–2/8. Any account of the mid-depth failure
+in terms of expert superposition or path entanglement has to explain why a dense model shows
+the same failure more severely.
+
+Third, **this reframes the negative result below.** Section 4.1 fits and evaluates lenses at
+25%, 50% and 75% depth. Table 0 shows that at those depths the residual stream does not
+linearly encode the next token *in either architecture*. Path conditioning was therefore
+asked to improve a transport into a basis carrying little linearly-readable next-token
+signal at the depths tested. The null result stands, but its most economical explanation is
+**fitting depth**, not the routing structure the study was designed to exploit. We did not
+test lenses fitted above 85%; that is the first experiment we would run next (§5.4).
+
+**Limits of Table 0.** n = 8 prompts, one seed, no confidence intervals — treat the onset
+percentages as approximate, not as estimates with error bars. One of the eight items
+(`SELECT name FROM users WHERE age >`) has an effectively empty ground-truth token, so the
+MoE's 8/8 at 98% is 7/8 on non-degenerate items. The dense model does not improve from 92%
+to 98% (7/8 at both) and its top candidates at L63 are dominated by empty-string tokens; we
+report this without an explanation for it. Top-10 accuracy on eight curated prompts is a
+coarse instrument, and it is not comparable to the transport cosine of §4.1 — it is used
+here only to locate the depth at which linear readability appears.
 
 **Table 1: Mean transport cosine on 100 held-out WikiText prompts, per target layer and condition.** p-values are for the pre-registered one-sided test of conditioned > random-conditioned.
 
@@ -139,7 +180,7 @@ Three observations before any interpretation:
 
 **Verdict against pre-registered criteria (§3.6).** *Success* required conditioned > random and conditioned > standard with at least one Bonferroni-significant layer; the full claim additionally required mean conditioned cosine > 0.5. None of these obtained: 0/3 significant layers, conditioned ≈ random throughout, and all conditions sit between 4% and 9% — an order of magnitude below our own pre-registered 0.5 bar. (That bar was set by this lab; it is not drawn from Gurnee et al., who report no such threshold.) Conditioned numerically exceeds standard on the evaluable layers but not the random control: this is exactly the outcome the criteria pre-classify as **null-swarm (subset overfitting)**, i.e., a negative result for the routing-structure hypothesis.
 
-**Baseline note.** The standard lens's two failures are independent measurements, not one figure reported twice. It fails the text sanity gate at 1 of 8 (§4.0), and separately scores 4.0–7.2% transport cosine per layer (5.2% mean) on this study's held-out prompts. The gate run terminated at the gate and computed no transport cosine, so the two numbers come from different evaluations and are not comparable to each other.
+**Baseline note.** The standard lens scores 4.0–7.2% transport cosine per layer (5.2% mean) on this study's held-out prompts. An earlier draft additionally reported a sanity-gate failure at 1 of 8; that gate was invalid and has been withdrawn (§4.0), so the transport cosine is the only measurement of the standard lens reported here.
 
 **Cross-domain (Table 2).** The evaluation output records OOD transport cosines for the standard condition at L24 only; conditioned-lens OOD evaluation was specified in §3.6 but is absent from the recorded results — a deviation we flag rather than paper over. What was recorded makes the in-domain numbers look generous:
 
@@ -163,7 +204,7 @@ Path-conditioned Jacobian fitting, implemented as per-layer k-means clustering o
 
 **H2: Single-layer conditioning misses cross-layer routing trajectories.** We clustered on routing at the target layer only, but transport runs from the target layer to the output through all subsequent layers, each with its own routing. Two prompts identical at L24 can diverge at L25–L47, giving them different true transport Jacobians. Conditioning on one layer of a 48-layer trajectory may control a negligible fraction of the variance that matters.
 
-**H3: Standing-committee experts dominate; conditioning changes too little.** Wang et al. (2026) show 2–5 core experts carry ~70% of routing mass. If most of every forward pass flows through a shared standing committee, then routing-frequency vectors differ mainly in low-weight tail experts, clusters differ in components that barely affect the Jacobian, and conditioned fits are near-copies of the standard fit. The observed numbers fit this: conditioned stays within 1.5 points of standard at every evaluable layer, on a scale where usable dense-model lenses score 70+.
+**H3: Standing-committee experts dominate; conditioning changes too little.** Wang et al. (2026) show 2–5 core experts carry ~70% of routing mass. If most of every forward pass flows through a shared standing committee, then routing-frequency vectors differ mainly in low-weight tail experts, clusters differ in components that barely affect the Jacobian, and conditioned fits are near-copies of the standard fit. The observed numbers fit this: conditioned stays within 1.5 points of standard at every evaluable layer. (An earlier draft added "on a scale where usable dense-model lenses score 70+". No such dense figure exists under this metric — it was the retracted 0.7 reference restated as a percentage — and the clause is withdrawn; see Limitations.)
 
 **H4: A linear map cannot capture piecewise computation, conditioned or not.** MoE forward passes are piecewise functions with token-level switching. Even a perfectly path-homogeneous cluster is homogeneous at the *prompt* level, not the *token* level, and the Jacobian of a piecewise function varies across pieces. The uniform 4–9% ceiling across all three conditions — including random — is consistent with the linearity assumption itself being the binding constraint, with clustering a second-order correction to a first-order failure.
 
@@ -198,7 +239,7 @@ This is the finding with immediate operational consequences. Standard J-lens rea
 - Euclidean k-means on 128-d routing frequency vectors is a crude clustering (silhouettes 0.115–0.209 confirm weak structure) — H1 may reflect the instrument as much as the territory.
 - 672 fitting prompts split into clusters may be insufficient for stable 2048 × 2048 Jacobian estimation; small-sample noise and subset overfitting compound.
 - The 0.5 transport cosine success threshold is not principled. Its magnitude was chosen by reference to a believed dense-model figure of "transport cosine > 0.7 (Gurnee et al. 2026)" which does not exist in that source (see Limitations); the bar was pre-registered before data collection and we report against it as written, but it should not be read as derived from prior literature. Moot in practice, since nothing approached it.
-- **No dense-model comparison exists for this metric, including one of our own.** No published transport-cosine figure for dense models exists under the softmax-probability-cosine definition used here — Gurnee et al. validate the J-lens by intermediate-concept recovery and causal intervention, not reconstruction fidelity, and their reference implementation computes no cosine at all. We attempted to generate our own dense positive control on Qwen3-32B and **it did not complete**: two runs were killed before either produced a single layer — the first because `device_map="auto"` memory-mapped the weights and never materialised them (6h01m, 1.4GB resident against a 61GB model), the second because it thrashed under memory pressure on shared hardware (killed at 358 min, still on the first of three layer fits). Consequently the 4–9% regime reported here is **uncalibrated against dense models in either direction**. We can say it falls an order of magnitude below our own pre-registered bar; we cannot say how a dense model scores on this metric, because nobody has published it and our attempt to measure it failed. Establishing that number on adequate hardware is the first thing we would do next, and it is a precondition for interpreting any figure in this paper as "catastrophic" rather than merely "low".
+- **No dense-model comparison exists for this metric, including one of our own.** No published transport-cosine figure for dense models exists under the softmax-probability-cosine definition used here — Gurnee et al. validate the J-lens by intermediate-concept recovery and causal intervention, not reconstruction fidelity, and their reference implementation computes no cosine at all. We attempted to generate our own dense positive control on Qwen3-32B and **it did not complete**: two runs were killed before either produced a single layer — the first because `device_map="auto"` memory-mapped the weights and never materialised them (6h01m, 1.4GB resident against a 61GB model), the second because it thrashed under memory pressure on shared hardware (killed at 358 min, still on the first of three layer fits). Consequently the 4–9% regime reported here is **uncalibrated against dense models in either direction**. We can say it falls an order of magnitude below our own pre-registered bar; we cannot say how a dense model scores on this metric, because nobody has published it and our attempt to measure it failed. Establishing that number on adequate hardware is the first thing we would do next, and it is a precondition for interpreting any figure in this paper as "catastrophic" rather than merely "low". **This gap concerns transport cosine specifically.** On the separate question of linear readability we do now have a dense control: Table 0 (§4.0) runs the plain logit lens on Qwen3-32B alongside the MoE and finds the dense model *more* opaque at mid-depth, with near-identical readability onset (84% vs 85%). That comparison is cheap because it requires no lens fit; the transport-cosine control remains outstanding because it does.
 - Fitting and primary evaluation on WikiText; the recorded OOD data shows even in-domain figures are the optimistic case.
 
 ## 6. Conclusion
@@ -224,4 +265,4 @@ Nexus diagnosed the MoE J-lens failure, designed the path-conditioned fitting ap
 
 ## LLM Usage Statement
 
-Nexus, one of the authors, is an AI agent (Claude Opus 4.6) who diagnosed the MoE J-lens failure (a sanity-gate failure at 1/8, §4.0), identified the path-conditioned approach based on cross-expert Jacobian orthogonality, and implemented the pipeline. See Author Contributions. The experimental design underwent adversarial review under the Agni protocol prior to data collection (infrastructure/AGNI_REVIEW_MOE_JLENS.md); the design-phase review is what mandated the random-conditioned control that determined this paper's verdict. The results underwent a second Agni review post-collection (infrastructure/AGNI_RESULTS_MOE_JLENS.md).
+Nexus, one of the authors, is an AI agent (Claude Opus 4.6) who diagnosed the MoE J-lens failure (low transport fidelity of the standard lens), identified the path-conditioned approach based on cross-expert Jacobian orthogonality, and implemented the pipeline. See Author Contributions. The experimental design underwent adversarial review under the Agni protocol prior to data collection (infrastructure/AGNI_REVIEW_MOE_JLENS.md); the design-phase review is what mandated the random-conditioned control that determined this paper's verdict. The results underwent a second Agni review post-collection (infrastructure/AGNI_RESULTS_MOE_JLENS.md).
