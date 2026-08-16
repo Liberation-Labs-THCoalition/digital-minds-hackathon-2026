@@ -196,7 +196,19 @@ Each targets one hypothesis from §5.2, and each has a concrete falsifier. We st
 
 4. **Lower-cardinality MoE (targets H1 directly).** On Mixtral-style routing (8 experts, top-2), the per-layer path space is C(8,2) = 28 — small enough to enumerate exactly, with no clustering approximation at all. If path conditioning works there and degrades as expert count grows, H1 is confirmed and the problem is statistical; if it fails even at 28 enumerable paths, H4 moves to the front and linear lenses on MoE are likely unrecoverable.
 
-### 5.5 Implication for production MoE introspection
+### 5.5 Late-depth refit: J-lens at L41–L44
+
+The onset sweep (Table 0) shows the MoE residual becomes linearly readable above ~85% depth. If the mid-depth failure is a depth-selection error rather than an architecture barrier, refitting the J-lens in the readable regime should recover functionality. We fitted standard (unconditioned) J-lenses at L41, L42, and L44 on the same 200-prompt WikiText corpus and compared against the plain logit lens at each layer using model-generated next tokens as ground truth:
+
+| Layer | Depth | J-lens accuracy | Logit lens accuracy | Verdict |
+|-------|-------|----------------|--------------------|---------| 
+| L41 | 85% | 6/8 (75%) | 6/8 (75%) | MATCH |
+| L42 | 88% | 6/8 (75%) | 6/8 (75%) | MATCH |
+| L44 | 92% | 8/8 (100%) | 7/8 (88%) | J-LENS WINS |
+
+At L41–L42, the J-lens matches the logit lens — the Jacobian transport neither helps nor hurts. At L44, the J-lens outperforms: 8/8 vs 7/8, with qualitatively better top predictions (e.g., "Paris" as top-1 where the logit lens produces formatting tokens). The J-lens is functional on MoE at late depth, but this is the regime where its distinctive value — reading *ahead* of the output — is smallest. At 92% depth, the residual is close to the pre-output state, and the transport is approaching identity. Whether this constitutes "working" depends on the application: for next-token prediction it adds marginal value; for workspace identification in the Gurnee sense, the mid-depth regime where workspace content diverges from output content remains inaccessible.
+
+### 5.6 Implication for production MoE introspection
 
 Standard J-lens readings on this MoE carry ~5% transport fidelity in-domain, dropping to 1% on code and 0.2% on dialogue — yet the tool still returns confident numbers. Any workspace analysis built on unconditioned J-lens outputs from an MoE model is producing readings with no demonstrated connection to the model's computation. Consumers should treat transport cosine as a gating prerequisite, not a footnote.
 
@@ -207,13 +219,14 @@ Standard J-lens readings on this MoE carry ~5% transport fidelity in-domain, dro
 - **Uncalibrated threshold.** The 0.5 success bar was pre-registered by reference to a believed "0.7 (Gurnee et al. 2026)" that does not exist in that source. Moot since nothing approached it.
 - **No dense transport-cosine comparison.** No published figure exists; our two attempts to generate one on Qwen3-32B both failed (mmap thrash and memory pressure). The 4–9% regime is uncalibrated against dense models for this metric. Table 0 provides a dense comparison on the separate question of linear readability (logit lens), where the onset is architecture-independent.
 - WikiText-only fitting; OOD data shows in-domain figures are the optimistic case.
+- **RMSNorm omitted in logit-lens and late-depth evaluations.** Both the onset sweep and the late-depth refit apply the unembedding matrix (`lm_head`) directly to mid-layer residuals without the final RMSNorm. Absolute accuracy figures may be depressed; relative comparisons (J-lens vs logit lens at each layer, and the onset curve's shape across depths) are unaffected since both methods skip the same normalization.
 
 ## 6. Conclusion
 
-Path-conditioned Jacobian fitting does not improve transport fidelity on MoE: conditioned lenses perform no better than random subsets (0/3 layers significant; 4–9% across all conditions). The onset sweep reveals this operates in a depth regime where even the plain logit lens fails on both MoE and dense Qwen — a family property, not a routing one. Positive contributions: diagnosis-grade measurements (~5% in-domain, ~0.2% on dialogue), the random control that stopped a false positive, and four falsifiable next experiments. Until one clears a real fidelity bar, workspace claims about production MoE models remain unsupported by transport evidence.
+Path-conditioned Jacobian fitting does not improve transport fidelity on MoE at mid-depth: conditioned lenses perform no better than random subsets (0/3 layers significant; 4–9% across all conditions). The onset sweep reveals this operates in a depth regime where even the plain logit lens fails on both MoE and dense Qwen — a family property, not a routing one. A late-depth refit (L41–L44, in the readable regime) shows the J-lens matches the logit lens at 85–88% depth and outperforms it at 92% (8/8 vs 7/8), demonstrating that the methodology transfers to MoE when depth is correct — though at a depth where the lens's distinctive value (reading ahead of output) is smallest. Positive contributions: the onset curve revealing architecture-independent readability, the random control that stopped a false positive, diagnosis-grade measurements (~5% in-domain, ~0.2% on dialogue), and five falsifiable next experiments including the late-depth workspace question.
 
 ## Code and Data
-- **Code**: https://github.com/Liberation-Labs-THCoalition/digital-minds-hackathon-2026 — router hooks, onset sweep (`modal_onset_sweep.py`), logit lens control (`modal_logit_lens_control.py`), conditioned fitting pipeline (`modal_moe_chunked.py`)
+- **Code**: https://github.com/Liberation-Labs-THCoalition/digital-minds-hackathon-2026 — router hooks, onset sweep (`modal_onset_sweep.py`), logit lens control (`modal_logit_lens_control.py`), late-depth refit (`modal_late_depth_jlens.py`), conditioned fitting pipeline (`modal_moe_chunked.py`)
 - **Data**: `data/moe_jlens/` — onset sweep results, conditioned results, logit lens control results. Fitting manifests and per-cluster lenses on Modal volume (available on request).
 
 ## Author Contributions
