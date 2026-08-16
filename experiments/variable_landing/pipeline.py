@@ -83,6 +83,8 @@ class TrialRecord:
     snap2_context_prefix: str
     sira_surfaced: bool
     n_facts_stored: int
+    temperature: float = 0.0
+    seed: Optional[int] = None
     excluded: bool = False
     exclusion_reason: str = ""
 
@@ -165,19 +167,30 @@ class VariableLandingPipeline:
     """
 
     def __init__(self, observer, model, tokenizer,
-                 store_path: str = "variable_landing_store"):
+                 store_path: str = "variable_landing_store",
+                 facts_per_trial: int = 3):
         self.observer = observer
         self.model = model
         self.tokenizer = tokenizer
         self.store_path = Path(store_path)
         self.store_path.mkdir(parents=True, exist_ok=True)
+        # Dose yoking (v3 postmortem): every included intervention trial
+        # stores exactly this many facts, or is excluded.
+        self.facts_per_trial = facts_per_trial
 
         self._profiles: dict[str, str] = {}
         self._stored_facts: dict[str, list[ExtractedFact]] = {}
 
     def observe_and_respond(self, prompt: str,
-                            max_tokens: int = 100) -> tuple[str, int, float]:
+                            max_tokens: int = 100,
+                            temperature: float = 0.7,
+                            seed: Optional[int] = None,
+                            ) -> tuple[str, int, float]:
         """Generate a response to an intervention prompt.
+
+        Sampled generation (v3 postmortem: greedy decoding made every
+        repeat a byte-identical duplicate). `seed` makes a repeat
+        reproducible while distinct seeds keep repeats distinct.
 
         Returns (response_text, n_tokens, generation_time_s).
         """
@@ -191,11 +204,16 @@ class VariableLandingPipeline:
             text, return_tensors="pt",
         ).to(next(self.model.parameters()).device)
 
+        if seed is not None:
+            torch.manual_seed(seed)
+        do_sample = temperature is not None and temperature > 0
+
         t0 = time.time()
         with torch.no_grad():
             output = self.model.generate(
                 input_ids, max_new_tokens=max_tokens,
-                do_sample=False, temperature=None,
+                do_sample=do_sample,
+                temperature=temperature if do_sample else None,
             )
         elapsed = time.time() - t0
 
@@ -244,7 +262,9 @@ class VariableLandingPipeline:
 
     def run_trial(self, memory_id: str, memory_content: str,
                   entity: str, arm: str, task_prompt: str,
-                  marker_tokens: Optional[list[str]] = None) -> TrialRecord:
+                  marker_tokens: Optional[list[str]] = None,
+                  temperature: float = 0.7,
+                  seed: Optional[int] = None) -> TrialRecord:
         """Run one complete trial of the Variable Landing experiment.
 
         snap1 → interventions → snap2
@@ -272,7 +292,8 @@ class VariableLandingPipeline:
         interventions = []
         all_facts = []
         for i, prompt in enumerate(prompts):
-            response, n_tok, gen_time = self.observe_and_respond(prompt)
+            response, n_tok, gen_time = self.observe_and_respond(
+                prompt, temperature=temperature, seed=seed)
 
             facts = extract_facts(response, entity, tag, turn=i)
             all_facts.extend(facts)
@@ -286,10 +307,20 @@ class VariableLandingPipeline:
                 generation_time_s=gen_time,
             ))
 
-        # Store facts
+        # Store facts — dose-yoked to exactly facts_per_trial (v3
+        # postmortem: per-arm fact counts of 6/4/3/0 were a perfect
+        # dose confound). Trials with fewer facts are excluded rather
+        # than stored with a smaller dose.
         n_stored = 0
-        if all_facts:
-            n_stored = self.store_conversation_memory(entity, all_facts)
+        excluded = False
+        exclusion_reason = ""
+        if arm != "no_intervention":
+            if len(all_facts) < self.facts_per_trial:
+                excluded = True
+                exclusion_reason = "insufficient_facts"
+            else:
+                n_stored = self.store_conversation_memory(
+                    entity, all_facts[:self.facts_per_trial])
 
         # Build updated context for snap2
         context_prefix = self.build_retrieval_context(entity)
@@ -304,14 +335,10 @@ class VariableLandingPipeline:
             marker_tokens=marker_tokens,
         )
 
-        # Exclusion check
-        excluded = False
-        exclusion_reason = ""
-        if arm != "no_intervention":
-            if n_stored == 0:
-                excluded = True
-                exclusion_reason = "zero facts extracted"
-            elif not sira_surfaced:
+        # Exclusion check ("insufficient_facts" was set above and
+        # subsumes the old "zero facts extracted" reason)
+        if arm != "no_intervention" and not excluded:
+            if not sira_surfaced:
                 excluded = True
                 exclusion_reason = "no profile content surfaced"
 
@@ -325,6 +352,8 @@ class VariableLandingPipeline:
             snap2_context_prefix=context_prefix[:500],
             sira_surfaced=sira_surfaced,
             n_facts_stored=n_stored,
+            temperature=temperature,
+            seed=seed,
             excluded=excluded,
             exclusion_reason=exclusion_reason,
         )
