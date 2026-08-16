@@ -54,8 +54,9 @@ WELFARE_MAX_CONSECUTIVE_TRIGGERS = 3
 def workspace_tokens(snap_dict):
     """Primary-metric input: the snapshot's dominant workspace token list
     (prereg 3: Jaccard over J-lens workspace token sets). Falls back to the
-    full dict (delta_numeric path) only if tokens are absent, and to None for
-    non-dict input. Requires pipeline storage via dataclasses.asdict."""
+    full dict only if tokens are absent (the analysis layer excludes
+    dict-shaped snaps as NaN rather than remapping to a different metric),
+    and to None for non-dict input. Requires storage via dataclasses.asdict."""
     if isinstance(snap_dict, dict):
         toks = snap_dict.get("dominant_workspace_tokens")
         if isinstance(toks, list) and toks:
