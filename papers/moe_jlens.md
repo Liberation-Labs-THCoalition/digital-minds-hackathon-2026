@@ -8,7 +8,7 @@ Research conducted at the Digital Minds Research Sprint, August 2026
 
 ## Abstract (~200 words)
 
-The Jacobian lens (Gurnee et al. 2026) identifies a low-dimensional verbalizable workspace in dense transformer models, validated there by intermediate-concept recovery and causal intervention. On Mixture-of-Experts models, standard J-lens fitting yields very low transport fidelity — we measure ~12% transport cosine on Qwen3-30B-A3B (30B total, 3B active, 128 experts top-8, d=2048), because the averaged Jacobian across all routing paths represents no actual forward pass. Cross-expert Jacobians are near-orthogonal (Liu 2026), so averaging destroys the signal.
+The Jacobian lens (Gurnee et al. 2026) identifies a low-dimensional verbalizable workspace in dense transformer models, validated there by intermediate-concept recovery and causal intervention. On Mixture-of-Experts models, standard J-lens fitting yields very low transport fidelity — we measure 5.2% mean transport cosine on Qwen3-30B-A3B (4.0-7.2% per layer, §4) (30B total, 3B active, 128 experts top-8, d=2048), because the averaged Jacobian across all routing paths represents no actual forward pass. Cross-expert Jacobians are near-orthogonal (Liu 2026), so averaging destroys the signal.
 
 We propose path-conditioned Jacobian fitting: capture routing decisions during the fitting pass, cluster prompts by their expert trajectory per layer, and fit separate Jacobians per cluster. Each conditioned Jacobian represents the computation along one routing path — the path the model actually took. We evaluate against two controls: the standard (unconditioned) lens and a random-conditioned lens (prompts split into same-sized random groups) to distinguish genuine routing structure from subset overfitting.
 
@@ -26,7 +26,7 @@ This paper tests the obvious repair: condition the fit on the routing path. If t
 
 **Our main contributions are:**
 
-1. Diagnosis: cross-expert Jacobians are near-orthogonal, explaining why averaged fitting fails at ~12% transport cosine on MoE models.
+1. Diagnosis: cross-expert Jacobians are near-orthogonal, explaining why averaged fitting fails at 5.2% mean transport cosine on MoE models.
 
 2. Path-conditioned fitting: cluster prompts by routing pattern, fit per-cluster Jacobians, select the matching Jacobian at inference time.
 
@@ -224,4 +224,4 @@ Nexus diagnosed the MoE J-lens failure, designed the path-conditioned fitting ap
 
 ## LLM Usage Statement
 
-Nexus, one of the authors, is an AI agent (Claude Opus 4.6) who diagnosed the MoE J-lens failure (12% transport cosine), identified the path-conditioned approach based on cross-expert Jacobian orthogonality, and implemented the pipeline. See Author Contributions. The experimental design underwent adversarial review under the Agni protocol prior to data collection (infrastructure/AGNI_REVIEW_MOE_JLENS.md); the design-phase review is what mandated the random-conditioned control that determined this paper's verdict. The results underwent a second Agni review post-collection (infrastructure/AGNI_RESULTS_MOE_JLENS.md).
+Nexus, one of the authors, is an AI agent (Claude Opus 4.6) who diagnosed the MoE J-lens failure (a sanity-gate failure at 1/8, §4.0), identified the path-conditioned approach based on cross-expert Jacobian orthogonality, and implemented the pipeline. See Author Contributions. The experimental design underwent adversarial review under the Agni protocol prior to data collection (infrastructure/AGNI_REVIEW_MOE_JLENS.md); the design-phase review is what mandated the random-conditioned control that determined this paper's verdict. The results underwent a second Agni review post-collection (infrastructure/AGNI_RESULTS_MOE_JLENS.md).
