@@ -170,7 +170,14 @@ def chat(messages):
     }
     resp = requests.post(OLLAMA_URL, json=payload, timeout=300)
     resp.raise_for_status()
-    return resp.json()["message"]["content"]
+    raw = resp.json()["message"]["content"].strip()
+    import re as _re
+    think_match = _re.match(r'<think>(.*?)</think>\s*(.*)', raw, _re.DOTALL)
+    if think_match:
+        thinking = think_match.group(1).strip()
+        visible = think_match.group(2).strip()
+        return visible if visible else thinking
+    return raw
 
 
 def record(role, content, turn_num):

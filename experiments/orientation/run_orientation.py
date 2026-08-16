@@ -160,6 +160,9 @@ def generate_response(hf_model, tokenizer, messages, max_new_tokens=4096):
             thinking = tp_match.group(1).strip()
             visible = tp_match.group(2).strip()
 
+    if not visible and thinking:
+        visible = thinking
+
     return visible, thinking
 
 
