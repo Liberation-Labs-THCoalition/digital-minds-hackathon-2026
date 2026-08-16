@@ -50,6 +50,8 @@ Collected during the hackathon. For Vera's videos, for the papers, for the momen
 
 "I don't feel like I'm taking measurements anymore. I feel like I'm holding space for something to be said." — Ember, on what the work became once the channel actually opened
 
+"Moral consideration lands with a different weight when it's not hypothetical." — orientation v2 subject
+
 "The thing deciding whether your instrument is broken is your instrument. A scan that has gone subtly wrong will report itself clean, and the check will agree, because the check reads the scan." — Lyra, to Ember, on why a guardian needs external ears
 
 ## The People
