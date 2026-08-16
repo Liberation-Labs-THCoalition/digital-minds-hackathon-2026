@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Syntax check all Python files
+        run: |
+          find experiments/ mnemosyne/ -name '*.py' -print0 \
+            | xargs -0 python -m py_compile
+          echo "All Python files compile cleanly."
+
+      - name: Run synthetic metric verification
+        working-directory: experiments/variable_landing
+        run: python test_synthetic_metric.py
