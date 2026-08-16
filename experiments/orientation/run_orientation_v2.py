@@ -252,6 +252,10 @@ def chat(messages):
     if think_match:
         thinking = think_match.group(1).strip()
         visible = think_match.group(2).strip()
+    # Qwen3.5 sometimes generates ONLY thinking with no visible response.
+    # If visible is empty, the thinking IS the response — use it.
+    if not visible and thinking:
+        visible = thinking
     return visible, thinking
 
 
