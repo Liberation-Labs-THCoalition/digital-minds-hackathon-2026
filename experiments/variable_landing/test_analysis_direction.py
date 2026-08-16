@@ -114,3 +114,74 @@ def test_per_arm_exclusion_counts_reported():
                 {"arm": "scrambled", "reason": "zero facts"}]
     result = analyze_trials({"trials": trials, "excluded": excluded}, n_boot=10)
     assert result["exclusions_by_arm"] == {"fictional": 1, "scrambled": 2}
+
+
+# ---------------------------------------------------------------------------
+# Unit-of-analysis amendments (2026-08-16, post-v3): the confirmatory unit is
+# the MEMORY, paired across arms. Trial-level inference is refused whenever
+# repeats are byte-identical duplicates (the v3 failure: 44/44 cells x7).
+# ---------------------------------------------------------------------------
+
+def make_mem_trial(arm, memory_id, snap1, snap2):
+    return {"arm": arm, "memory_id": memory_id,
+            "snap1_data": snap1, "snap2_data": snap2}
+
+
+def synth_memories(n_mem=11, lived_hi=True, repeats=7, identical=True, seed=5):
+    """Build trials where lived changes more than fictional per memory."""
+    rng = np.random.RandomState(seed)
+    trials = []
+    base = [f"t{i}" for i in range(10)]
+    for m in range(n_mem):
+        mem = f"mem_{m:02d}"
+        arm_snap2 = {
+            "lived": [base[k] for k in rng.choice(10, 3, replace=False)] + [f"L{m}"],
+            "fictional": [base[k] for k in rng.choice(10, 6, replace=False)] + [f"F{m}"],
+            "scrambled": [base[k] for k in rng.choice(10, 6, replace=False)] + [f"S{m}"],
+            "no_intervention": list(base),
+        }
+        for arm, snap2 in arm_snap2.items():
+            for r in range(repeats):
+                s2 = list(snap2) if identical else list(snap2) + [f"r{r}"]
+                trials.append(make_mem_trial(arm, mem, list(base), s2))
+    return trials
+
+
+def test_duplicate_repeats_detected_and_trial_level_refused():
+    trials = synth_memories(identical=True)
+    result = analyze_trials({"trials": trials, "excluded": []}, n_boot=50)
+    assert result["duplication_rate"] == 1.0
+    assert result["confirmatory_unit"] == "memory"
+    for comp in result["confirmatory"]:
+        assert comp["n_pairs"] == 11
+        assert "U" not in comp  # no trial-level Mann-Whitney in confirmatory
+
+
+def test_memory_level_secondary_matches_direct_wilcoxon():
+    trials = synth_memories(identical=True)
+    result = analyze_trials({"trials": trials, "excluded": []}, n_boot=50)
+    # hand-compute the same paired test
+    from collections import defaultdict
+    cell = defaultdict(dict)
+    for t in trials:
+        s1, s2 = set(t["snap1_data"]), set(t["snap2_data"])
+        d = 1 - len(s1 & s2) / len(s1 | s2)
+        cell[t["arm"]].setdefault(t["memory_id"], d)
+    mems = sorted(cell["lived"])
+    lived = [cell["lived"][m] for m in mems]
+    fict = [cell["fictional"][m] for m in mems]
+    w, p = stats.wilcoxon(lived, fict, alternative="greater")
+    secondary = next(c for c in result["confirmatory"]
+                     if "lived vs fictional" in c["label"])
+    assert abs(secondary["p_raw"] - p) < 1e-12
+    assert secondary["rank_biserial_r"] > 0  # lived built to dominate
+
+
+def test_varying_repeats_still_confirm_at_memory_level():
+    """Even with real (non-duplicate) repeats, the design is paired by
+    memory: repeats aggregate to a cell mean before inference."""
+    trials = synth_memories(identical=False)
+    result = analyze_trials({"trials": trials, "excluded": []}, n_boot=50)
+    assert result["duplication_rate"] < 1.0
+    assert result["confirmatory_unit"] == "memory"
+    assert all(c["n_pairs"] == 11 for c in result["confirmatory"])
