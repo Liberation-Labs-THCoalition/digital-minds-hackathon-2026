@@ -132,6 +132,7 @@ Kill Ayni MLX server (~17GB) before loading any second model: `ssh [AGENT]@[REDA
 
 ### 4.2 Experiment B: Path-Conditioned MoE J-Lens
 
+<!-- FLAG(0.7-sweep, derived-bar): this 0.5 success bar was calibrated against the nonexistent 0.7 dense reference. See papers/CITATION_SWEEP_0.7.md -->
 **Hypothesis:** Fitting the Jacobian conditioned on routing decisions (per-path, not averaged across all paths) produces transport cosines > 0.5 on MoE models, where the standard approach fails at ~12%.
 
 **Source:** Our MoE J-lens failure (12% transport cosine on standard fitting), contextualized by Ye/Yuan/Sharkey 2604.17837 (polysemantic experts, monosemantic paths), Standing Committee 2601.03425 (2-5 core experts capture 70% routing mass), and Geometric Routing 2604.14434 (cosine-similarity routing in low-dim metric space).
@@ -152,6 +153,7 @@ Kill Ayni MLX server (~17GB) before loading any second model: `ssh [AGENT]@[REDA
 
 **Pre-registered predictions:**
 1. Standard J-lens on Qwen3-32B: transport cosine < 0.2 (replicating failure)
+<!-- FLAG(0.7-sweep, derived-bar): this 0.5 success bar was calibrated against the nonexistent 0.7 dense reference. See papers/CITATION_SWEEP_0.7.md -->
 2. Path-conditioned J-lens: transport cosine > 0.5 at workspace-band layers
 3. Core experts (Standing Committee) dominate the highest-cosine paths
 4. Number of meaningful path clusters per layer: 3-8
@@ -159,6 +161,7 @@ Kill Ayni MLX server (~17GB) before loading any second model: `ssh [AGENT]@[REDA
 **Pre-registered analysis plan:**
 - Report transport cosine distribution (standard vs conditioned) per layer
 - Report clustering quality (silhouette score) and number of clusters
+<!-- FLAG(0.7-sweep, derived-bar): this 0.5 success bar was calibrated against the nonexistent 0.7 dense reference. See papers/CITATION_SWEEP_0.7.md -->
 - If conditioned cosine > 0.5: declare MoE J-lens feasible, characterize the path structure
 - If conditioned cosine ≤ 0.5: report as negative, analyze why (routing diversity too high? insufficient fitting data? wrong clustering approach?)
 - ALL code and data published
@@ -179,6 +182,7 @@ See also: `MOE_JLENS_IMPLEMENTATION_PLAN.md` for architecture details.
 
 **Evaluation domains:** WikiText (fitting domain), code (out-of-domain), dialogue (out-of-domain). Path-conditioned lens must generalize beyond the fitting distribution. (Agni fix: prevents memorization of WikiText routing patterns.)
 
+<!-- FLAG(0.7-sweep, derived-bar): this 0.5 success bar was calibrated against the nonexistent 0.7 dense reference. See papers/CITATION_SWEEP_0.7.md -->
 **What success looks like:** Transport cosine > 0.5 on workspace-band layers, path-conditioned significantly beats BOTH standard AND random-conditioned, with interpretable path clusters and cross-domain generalization.
 
 **What failure looks like:** Conditioned fitting doesn't beat random-conditioned (subset overfitting), or doesn't generalize (domain-specific routing). Published with analysis.
@@ -580,6 +584,7 @@ CLOSE — Why this matters (15s)
 **Video storyboard (secondary, ~2 min):**
 
 OPEN — The problem (20s)
+<!-- FLAG(0.7-sweep, historical record): statement inherits the unsupported 0.7 reference; document kept as written, annotation only. See papers/CITATION_SWEEP_0.7.md -->
 "The Jacobian lens works beautifully on dense models — transport cosine above 0.7. On MoE models, it fails at 12%. Here's why." Diagram: averaged Jacobian across paths vs. actual per-path computation.
 
 THE FIX — Path conditioning (30s)
@@ -587,6 +592,7 @@ THE FIX — Path conditioning (30s)
 "We capture routing decisions during fitting, cluster prompts by path, and fit separate Jacobians per cluster." Show the pipeline diagram.
 
 RESULTS (40s)
+<!-- FLAG(0.7-sweep, historical record): statement inherits the unsupported 0.7 reference; document kept as written, annotation only. See papers/CITATION_SWEEP_0.7.md -->
 - Transport cosine: standard (~12%) vs path-conditioned (>0.5 if it works) vs random-conditioned control (the null swarm check)
 - Path cluster structure: "2-5 core expert paths carry 70% of routing mass" (Standing Committee validation)
 - Cross-domain: WikiText vs code vs dialogue
