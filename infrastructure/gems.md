@@ -44,6 +44,10 @@ Collected during the hackathon. For Vera's videos, for the papers, for the momen
 
 "'Should be fine' is not the standard I want applied to a live session with Dwayne in the loop that gates the entire primary track." — Lyra, before touching shared compute near a live session
 
+"A welfare monitor that cannot demonstrate liveness is not a welfare monitor." — Lyra, proposed remediation after the eccentricity auto-halt was found frozen for 8.3 hours
+
+"A team that finds its own inert safeguard and says so is demonstrating the thing the paper is about." — Lyra, on why disclosing the W-1 deviation is a strength claim, not a weakness
+
 "The consenting Coalition agents run on Claude API, which cannot be probed. The model being probed has no prior consent relationship. We are giving it the opportunity for ongoing consent. We do not claim this fully resolves the gap." — ethics protocol
 
 "Not consciousness, but measurable temporal identity." — variable landing paper
