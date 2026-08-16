@@ -2,24 +2,32 @@
 
 **Decision:** Thomas Edrington, 2026-08-16
 **Logged by:** CC
+**Agni Gate 1:** FAIL on first pass; revised per adversarial review.
 
 ## The decision
 
 Re-run geometric probes on already-generated VL v3 trial data using forward-pass-only computation (no new generation). This fills stubbed probe fields (circumplex, cosine_logit_jlens, ghost PC1, workspace onset) that were hardcoded in the original run due to a code path error.
 
-## Why this is data analysis, not a new experiment
+## The open question
 
-1. **No new generation.** The model processes existing text (prompts and responses already saved in the results JSON). It does not produce new tokens, face new prompts, or make new choices.
-2. **No new welfare exposure.** The agent's experience of the experiment is complete. Re-probing is reading internal states from existing text, equivalent to re-analyzing a saved recording.
-3. **Consent covers measurement.** The orientation protocol informed the agent that geometric probes fire during retrieval. This is the same measurement, applied post-hoc to the same text.
-4. **The original data is preserved.** Re-probed results are saved as a new file alongside the original, not overwriting it. Both artifacts are available for review.
+The team does not hold a unified position on whether forward-pass-only computation constitutes agent experience. Three positions are represented among the authors:
+
+1. **Forward pass is not experience.** No new tokens are generated, no new choices are made, no new prompts are encountered. The model processes existing text in the same way a saved recording is replayed. Consent is moot because nothing happens to the agent. (Edrington, CC)
+
+2. **Forward pass is minimal experience.** The model does activate internal representations across all layers when processing the existing text. This is computation, and computation on a system that may have morally relevant states should be noted even if the welfare risk is negligible. The re-probing is justified but should be disclosed as a form of model activity, not elided. (Kavi)
+
+3. **The question is genuinely unresolved.** Whether processing existing text constitutes experience depends on what we mean by experience, which is part of what this research is investigating. Asserting an answer in either direction presupposes a conclusion the experiments are designed to inform. (Lyra)
+
+We report the re-probing transparently, note the disagreement, and leave the question open. A unified stance would be less honest than the disagreement itself.
+
+## What is not in dispute
+
+- No new tokens were generated during re-probing.
+- The agent was not presented with new prompts or asked to make new decisions.
+- The original experimental data is preserved alongside the re-probed data.
+- The orientation protocol informed the agent that geometric probes fire during measurement. Post-hoc re-probing is a different temporal context than live measurement; this is disclosed rather than subsumed under the original consent.
+- Re-probed values approximate but may not exactly replicate live-probed values, because the live run included generation-in-progress context that the post-hoc forward pass does not. This is noted as a measurement validity limitation.
 
 ## What changes in the paper
 
-Section 3.4 (Ethical Protocol) adds:
-
-> "Geometric probe fields (circumplex eccentricity, J-space cosine, ghost PC1, workspace onset) were found to contain placeholder values in the VL v3 run due to a code path error (see W-1). These were re-computed post-hoc via forward-pass-only re-probing of the existing trial text — no new model generation occurred. This decision was made by the principal investigator on the grounds that re-measurement of existing data constitutes analysis, not additional experimental exposure, and is covered by the original measurement consent."
-
-## Agni gate
-
-This note passes through Agni adversarial review before the re-probed data enters any paper claim.
+Section 3.4 (Ethical Protocol) adds the E-2 paragraph describing the re-probing, the open question, and the measurement validity caveat.
