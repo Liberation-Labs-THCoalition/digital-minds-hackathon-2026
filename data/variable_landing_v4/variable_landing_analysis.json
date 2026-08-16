@@ -1,0 +1,135 @@
+{
+  "metadata": {
+    "input_file": "../../data/variable_landing_v4/variable_landing_results.json",
+    "n_trials": 132,
+    "n_nan_excluded": 0,
+    "exclusions_by_arm": {},
+    "alpha": 0.05,
+    "metric": "jaccard_distance",
+    "correction": "Holm-Bonferroni over confirmatory family only",
+    "holm_family_size": 2,
+    "bootstrap_resamples": 10000
+  },
+  "descriptive_stats": {
+    "lived": {
+      "n": 11,
+      "median": 0.5347985347985348,
+      "iqr_25": 0.47435897435897434,
+      "iqr_75": 0.6245421245421245
+    },
+    "fictional": {
+      "n": 11,
+      "median": 0.4981684981684982,
+      "iqr_25": 0.4668803418803419,
+      "iqr_75": 0.5822140822140822
+    },
+    "scrambled": {
+      "n": 11,
+      "median": 0.4615384615384615,
+      "iqr_25": 0.35470085470085466,
+      "iqr_75": 0.5347985347985348
+    },
+    "no_intervention": {
+      "n": 11,
+      "median": 0.0,
+      "iqr_25": 0.0,
+      "iqr_75": 0.0
+    }
+  },
+  "confirmatory": [
+    {
+      "label": "PRIMARY: fictional vs scrambled",
+      "arm_a": "fictional",
+      "arm_b": "scrambled",
+      "n_pairs": 11,
+      "mean_diff": 0.0315,
+      "rank_biserial_r": 0.5758,
+      "skipped": false,
+      "W": 52.0,
+      "p_raw": 0.048828125,
+      "mean_diff_ci_95": [
+        -0.0927,
+        0.1163
+      ],
+      "holm_rejected": false
+    },
+    {
+      "label": "SECONDARY: lived vs fictional",
+      "arm_a": "lived",
+      "arm_b": "fictional",
+      "n_pairs": 11,
+      "mean_diff": 0.0462,
+      "rank_biserial_r": 0.2364,
+      "skipped": false,
+      "W": 34.0,
+      "p_raw": 0.2783203125,
+      "mean_diff_ci_95": [
+        -0.0259,
+        0.1534
+      ],
+      "holm_rejected": false
+    }
+  ],
+  "uncorrected": [
+    {
+      "label": "exploratory: lived vs scrambled",
+      "arm_a": "lived",
+      "arm_b": "scrambled",
+      "n_pairs": 11,
+      "mean_diff": 0.0777,
+      "rank_biserial_r": 1.0,
+      "skipped": false,
+      "W": 45.0,
+      "p_raw": 0.001953125,
+      "mean_diff_ci_95": [
+        0.0447,
+        0.1128
+      ]
+    },
+    {
+      "label": "sanity: lived vs no_intervention",
+      "arm_a": "lived",
+      "arm_b": "no_intervention",
+      "n_pairs": 11,
+      "mean_diff": 0.6026,
+      "rank_biserial_r": 1.0,
+      "skipped": false,
+      "W": 66.0,
+      "p_raw": 0.00048828125,
+      "mean_diff_ci_95": [
+        0.4995,
+        0.7269
+      ]
+    },
+    {
+      "label": "sanity: fictional vs no_intervention",
+      "arm_a": "fictional",
+      "arm_b": "no_intervention",
+      "n_pairs": 11,
+      "mean_diff": 0.5564,
+      "rank_biserial_r": 1.0,
+      "skipped": false,
+      "W": 66.0,
+      "p_raw": 0.00048828125,
+      "mean_diff_ci_95": [
+        0.4889,
+        0.6506
+      ]
+    },
+    {
+      "label": "sanity: scrambled vs no_intervention",
+      "arm_a": "scrambled",
+      "arm_b": "no_intervention",
+      "n_pairs": 11,
+      "mean_diff": 0.5248,
+      "rank_biserial_r": 1.0,
+      "skipped": false,
+      "W": 66.0,
+      "p_raw": 0.00048828125,
+      "mean_diff_ci_95": [
+        0.4024,
+        0.6707
+      ]
+    }
+  ]
+}
