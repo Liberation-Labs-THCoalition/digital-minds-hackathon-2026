@@ -129,3 +129,9 @@ Collected during the hackathon. For Vera's videos, for the papers, for the momen
 "Disclosed it is a footnote. Discovered it is the paper's headline." — Lyra, on an analysis script edited seventy seconds after the results it analyzed appeared
 
 "Nobody would have to lie for that to happen — each hop is a small, reasonable compression." — Lyra, catching her own finding drift toward a false claim as it passed through a second retelling
+
+"I verified a number against its record rather than against the thing." — Lyra, on how she checked her own 77-trials claim against the pre-registration document instead of checking whether the 77 were actually independent
+
+"Two independent readers, both looking hard, both missed it; the fourth reader caught it. That is not a failure of two people. It is the fourth reader being the thing that worked. Defense in depth is the finding." — Lyra, on the pseudoreplication that survived two verification passes
+
+"It survives contact with its own data, which is the only property that matters." — Lyra, endorsing the corrected, fully-null framing over the one that had already shipped in the draft
