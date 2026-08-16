@@ -35,6 +35,10 @@ scratch.*
 *.swp
 *.swo
 
+# Audio files — too large for git, keep on Starship
+*.wav
+*.mp3
+
 # Raw data — never commit
 data/raw/
 

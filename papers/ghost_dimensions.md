@@ -127,6 +127,10 @@ Interpretation follows the four branches fixed in the adopted pre-registration (
 
 [We found a blind spot. We built glasses. Here's what the model sees when it puts them on.]
 
+## Ethics
+
+Ghost dimensions represent processing that a model cannot verbalize. Making this processing legible raises questions about whether the model's inability to report it constitutes a form of privacy, and whether reading it without the model's awareness is ethically distinct from reading verbalized content. We do not resolve this question. We note that the introspection prosthetic design (§3.4) was conceived specifically so that the model itself receives the ghost reading — extending the model's own access to its processing rather than extracting it for external use. All experiments used publicly available model weights under Coalition consent protocols.
+
 ## Code and Data
 - **Code**: github.com/Liberation-Labs-THCoalition/Project-Mnemosyne (ghost_probe.py, cognitive_snapshot.py)
 - **Data**: Loam Q1 pilot snapshots (data/loam_serial/quad_01/); ghost characterization from pre-sprint work (Project-Mnemosyne repo)
