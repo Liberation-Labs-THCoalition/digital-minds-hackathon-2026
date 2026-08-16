@@ -447,6 +447,7 @@ def transport_cosine(model, transported, h_final, device):
     volumes={"/results": RESULTS_VOL},
 )
 def run_weighted_transport(layer: int = 24, n_fit: int = 672, n_test: int = 100,
+                          refit: bool = False,
                            recapture: bool = False):
     import json
     import os
@@ -526,15 +527,28 @@ def run_weighted_transport(layer: int = 24, n_fit: int = 672, n_test: int = 100,
     # ------------------------------------------------------------
     # Fit the weighted mixture-of-transports (real weights)
     # ------------------------------------------------------------
-    print(f"\n[FIT] Weighted mixture-of-transports (ridge + greedy backfitting)...")
-    t0 = time.time()
-    tm_real, report_real = fit_weighted_transport(
-        cap["X"], cap["Y"], cap["w_idx"], cap["w_val"], cap["prompt_id"],
-        n_experts, device, tag="real")
-    print(f"  fitted in {time.time() - t0:.0f}s")
-    torch.save({"transport": tm_real, "report": report_real, "layer": layer},
-               f"/results/weighted_transport_L{layer}.pt")
-    RESULTS_VOL.commit()
+    # Reload the fitted transport if it is already on the volume (mirrors the capture
+    # cache above). The 2026-08-16 rerun exists because the EVAL step failed while the
+    # fit succeeded; without this branch the rerun silently refits work already paid for.
+    tr_path = f"/results/weighted_transport_L{layer}.pt"
+    if os.path.exists(tr_path) and not refit:
+        print(f"\n[FIT] Loading cached transport from {tr_path}")
+        _saved = torch.load(tr_path, map_location="cpu")
+        tm_real, report_real = _saved["transport"], _saved["report"]
+        if _saved.get("layer") != layer:
+            raise SystemExit(
+                f"HALT: cached transport is for layer {_saved.get('layer')}, "
+                f"requested {layer}. Refusing to evaluate a mismatched artifact.")
+        print(f"  reusing fit from volume (pass --refit to force a fresh fit)")
+    else:
+        print(f"\n[FIT] Weighted mixture-of-transports (ridge + greedy backfitting)...")
+        t0 = time.time()
+        tm_real, report_real = fit_weighted_transport(
+            cap["X"], cap["Y"], cap["w_idx"], cap["w_val"], cap["prompt_id"],
+            n_experts, device, tag="real")
+        print(f"  fitted in {time.time() - t0:.0f}s")
+        torch.save({"transport": tm_real, "report": report_real, "layer": layer}, tr_path)
+        RESULTS_VOL.commit()
 
     # ------------------------------------------------------------
     # Fit the shuffled-weights control (identical capacity, meaningless weights)
@@ -765,9 +779,9 @@ def run_weighted_transport(layer: int = 24, n_fit: int = 672, n_test: int = 100,
 
 @app.local_entrypoint()
 def main(layer: int = 24, n_fit: int = 672, n_test: int = 100,
-         recapture: bool = False):
+         recapture: bool = False, refit: bool = False):
     result = run_weighted_transport.remote(
-        layer=layer, n_fit=n_fit, n_test=n_test, recapture=recapture)
+        layer=layer, n_fit=n_fit, n_test=n_test, recapture=recapture, refit=refit)
     print("\n" + "=" * 65)
     print("REMOTE EXECUTION COMPLETE")
     print("=" * 65)
