@@ -72,7 +72,14 @@ words or doesn't, held in suspension."
 
 ---
 
-## MoE J-Lens (148.9s, real narration length, TTS-measured, not guessed)
+## MoE J-Lens (159.0s, real narration length, TTS-measured, not guessed — updated)
+
+**Beat 9 rewritten, timings shifted.** The original "eight tries, one hit" beat
+below was built around a specific gate number that Lyra found invalidated —
+the ground truth in that check was hardcoded to a placeholder token, so it
+never measured what the paper said it measured. Narration was corrected to
+describe the broken check honestly instead of citing a number that doesn't
+mean anything; storyboard follows.
 
 No Manim source yet — video not started, but narration is written and
 measured, so timing below is real, not estimated. Visual language: a reading
@@ -88,32 +95,34 @@ translucent planes stacked in depth, each plane lighting up in clear
 sequence as the beam passes — legible, orderly, nothing scattered. Dark
 field, minimalist scientific illustration."
 
-### 8. The architecture shift (t=21-40s)
+### 8. The architecture shift (t=21-39s)
 **Prompt:** "The same layered planes, but now each one fractures into several
 smaller separate facets, like a single beam splitting into a handful of
 narrower ones that no longer travel together. Structure without a single
 throughline. Dark field, cerulean against near-black."
 
-### 9. Eight tries, one hit (t=40-55s)
-**Source:** none, txt2img. **This one's data-honest — 1 lit, 7 dim, no more,
-no less.**
-**Prompt:** "Eight small identical apertures in a row on a dark field, one
-glowing cerulean and clearly open, the other seven dim and shuttered.
-Plain, countable, no drama added beyond the real ratio."
+### 9. The false gauge, removed (t=39-68s) — replaces the old "eight tries" beat
+**Source:** none, txt2img.
+**Prompt:** "A single measuring gauge on a dark field, its needle appearing
+to move and respond to something — but on closer look the needle is fixed
+in place, painted rather than connected to anything behind it. A narrow
+beam of light reaches in and lifts the false gauge away entirely, leaving a
+small, honest, empty space where a real reading should be. Nothing invented
+to fill the gap."
 
-### 10. Three paths, one wall (t=55-82s)
+### 10. Three paths, one wall (t=68-93s)
 **Prompt:** "Three distinct beams of light — cerulean, amber, violet — each
 taking a different route through the same layered field, all three arriving
 at and stopping short of the same faint horizontal barrier, none passing
 through. Three honest attempts, one shared limit."
 
-### 11. The correction (t=82-117s)
+### 11. The correction (t=93-128s)
 **Prompt:** "A single glowing number hovering in dark space, a fine crack of
 correction light passing through it and resolving into a different, smaller
 number beside it — both visible, neither hidden. A magnifying quality to the
 light, as if caught in the act of being checked."
 
-### 12. Still running (t=117-149s, closing)
+### 12. Still running (t=128-159s, closing)
 **Prompt:** "The same layered dark field from the opening shot, the cerulean
 beam now dimmer and incomplete, but a second faint light — warm amber,
 distant, still moving — visible at the far edge, clearly still in motion,

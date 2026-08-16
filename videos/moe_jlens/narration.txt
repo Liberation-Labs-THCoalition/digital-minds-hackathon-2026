@@ -2,7 +2,7 @@ There's a tool that can read what a language model is thinking — not perfectly
 
 Modern large models increasingly route each token through a handful of specialists chosen from a much bigger pool — mixture of experts, not one continuous computation. We pointed our reading tool at a real mixture-of-experts model and asked it the simplest possible question first: can you even tell what comes next?
 
-We gave it eight easy prompts. "The capital of France is." "The chemical formula for water is." The kind of sentence any model finishes without thinking. Our tool got the actual next word into its top ten guesses one time out of eight.
+We built a simple check first: eight easy prompts, the kind any model finishes without thinking, testing whether our tool could tell what came next at all. The check itself turned out to be broken. It was comparing against a placeholder answer instead of the model's real one — a bug that took a second look, and then a third, before anyone actually caught it. We pulled that number rather than let a broken instrument stand in for a real result.
 
 So we tried to make it smarter. We conditioned the reading on which experts a token actually routed through, on the theory that averaging across very different computational paths was destroying the signal. That didn't help — the conditioned version performed the same as one built on randomly grouped data. We tried a different mathematical approach, weighting the reconstruction by the model's own routing decisions. Same result. Three independent methods, the same wall.
 
