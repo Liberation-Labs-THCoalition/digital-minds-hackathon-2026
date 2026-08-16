@@ -1,12 +1,16 @@
 #!/usr/bin/env python3
-"""Loam via Ollama — lightweight backend for when transformers won't load.
+"""Loam via Ollama — decoupled generation + probing.
 
-Same experiment, same world, same yoked design. Uses Ollama API instead
-of transformers + J-lens. No geometric probes (those need transformers),
-but the primary outcome (recall accuracy) doesn't need them.
+Generation runs through Ollama (fast, 17GB quantized, proven stable).
+After each session, a separate probe-only pass runs each response through
+transformers + J-lens to capture CognitiveSnapshots. One forward pass per
+response, no autoregressive generation — much less memory pressure.
 
 Usage on Starship:
     python3 experiments/loam/run_loam_ollama.py --batch --quads 20
+
+Probe-only pass (after generation):
+    python3 experiments/loam/run_loam_ollama.py --probe-only --data-dir data/loam
 """
 
 import argparse
@@ -350,6 +354,86 @@ def run_quad(quad_num, world, data_root, seed_base):
     return results
 
 
+def run_probe_pass(data_root):
+    """Probe-only pass: load transformers + J-lens, run one forward pass
+    per transcript response to capture CognitiveSnapshots.
+
+    No autoregressive generation — just activation capture. Much less
+    memory pressure than full generation.
+    """
+    import torch
+    import jlens
+    from jlens.hf import HFLensModel
+    from transformers import AutoModelForCausalLM, AutoTokenizer
+    from mnemosyne_integration import MetacognitiveObserver
+
+    model_name = os.environ.get("HACKATHON_MODEL", "Qwen/Qwen3.5-27B")
+    print(f"Loading {model_name} for probe-only pass...")
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    hf_model = AutoModelForCausalLM.from_pretrained(
+        model_name, torch_dtype=torch.bfloat16, device_map="auto")
+    model = HFLensModel(hf_model, tokenizer, compile=False)
+
+    lens_path = os.environ.get("JLENS_PATH", "jlens_qwen35_27b.pt")
+    lens = jlens.JacobianLens.load(lens_path)
+    observer = MetacognitiveObserver(
+        model=model, lens=lens,
+        store_path=str(data_root / "probe_memory"),
+        agent_id="loam_probe",
+    )
+    observer.calibrate_probes()
+    print("Probes calibrated. Scanning transcripts...")
+
+    total = 0
+    for quad_dir in sorted(data_root.glob("quad_*")):
+        for arm_dir in sorted(quad_dir.glob("*")):
+            transcript = arm_dir / "transcript.jsonl"
+            if not transcript.exists():
+                continue
+
+            snapshot_file = arm_dir / "cognitive_snapshots.jsonl"
+            if snapshot_file.exists() and snapshot_file.stat().st_size > 0:
+                print(f"  {arm_dir.name}: already probed, skipping")
+                continue
+
+            turns = []
+            with open(transcript) as f:
+                for line in f:
+                    turns.append(json.loads(line))
+
+            # Build conversation context and probe each agent response
+            context_parts = []
+            for turn in turns:
+                role = turn.get("role", "")
+                content = turn.get("content", "")
+
+                if role == "engine":
+                    context_parts.append(f"Human: {content}")
+                elif role == "assistant":
+                    context_parts.append(f"Agent: {content}")
+                    # Probe this response
+                    context = "\n".join(context_parts[-6:])
+                    try:
+                        snap = observer.observe_retrieval(
+                            memory_id=f"probe_{arm_dir.parent.name}_{arm_dir.name}_{total}",
+                            memory_content=content,
+                            task_prompt=context_parts[-2] if len(context_parts) >= 2 else "",
+                            retrieval_method="loam_probe",
+                            significance=0.7,
+                            session_id=f"{quad_dir.name}_{arm_dir.name}",
+                            prior_context=context,
+                        )
+                        with open(snapshot_file, "a") as sf:
+                            sf.write(json.dumps(snap.to_dict(), default=str) + "\n")
+                        total += 1
+                    except Exception as e:
+                        print(f"  [probe error: {e}]")
+
+            print(f"  {quad_dir.name}/{arm_dir.name}: probed")
+
+    print(f"\nProbe pass complete: {total} snapshots captured")
+
+
 def main():
     parser = argparse.ArgumentParser(description="Loam via Ollama")
     parser.add_argument("--batch", action="store_true")
@@ -358,11 +442,17 @@ def main():
     parser.add_argument("--arm", choices=["enacted", "observed", "briefed", "null"])
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--data-dir", type=str, default=None)
+    parser.add_argument("--probe-only", action="store_true",
+                        help="Skip generation; run probe pass on existing transcripts")
     args = parser.parse_args()
 
     data_root = Path(args.data_dir) if args.data_dir else BASE / "data" / "loam"
     data_root.mkdir(parents=True, exist_ok=True)
     world = GLASSWORKS
+
+    if args.probe_only:
+        run_probe_pass(data_root)
+        return
 
     # Verify Ollama is reachable
     try:
