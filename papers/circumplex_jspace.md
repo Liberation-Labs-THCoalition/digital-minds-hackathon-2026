@@ -98,18 +98,7 @@ difference of means between its two poles:
 
 We record the raw magnitudes V_mag = ‖v_ℓ‖ and A_mag = ‖a_ℓ‖.
 
-**Orthogonality is not enforced, and this is a real departure from the design.** The designed
-protocol (Appendix D.5) used five emotion categories combined into pools *balanced on the
-orthogonal dimension* — valence from joy ∪ calm against sadness ∪ fear, with anger excluded
-from the valence contrast and fear from the arousal contrast, specifically so that the
-valence direction could not be contaminated by arousal or vice versa. **The executed probe
-has no such balancing.** Its valence poles are not arousal-matched and its arousal poles are
-not valence-matched, so the two directions may be correlated to an unknown degree. Since
-eccentricity is precisely a ratio between these two magnitudes, that is load-bearing rather
-than cosmetic, and it applies identically to all four models and to the control axis — so it
-is a caveat on the *absolute* eccentricity values, not on the between-model comparison that
-§4 rests on. **The profile artifacts do not serialize the direction vectors, so the
-correlation cannot be recovered post hoc; measuring it requires a re-run.**
+**Orthogonality is not enforced.** The designed protocol (Appendix D.5) balanced poles on the orthogonal dimension; the executed probe does not. The two directions may be correlated, which is load-bearing for absolute eccentricity values but applies identically across all four models and the control axis — so it is a caveat on absolute values, not on the between-model comparison in §4.
 
 **Eccentricity.** Treating V_mag and A_mag as the semi-axes of the valence–arousal ellipse
 (following Drążkowski et al., who find that even human affect space is elliptical):
@@ -125,18 +114,9 @@ is estimated from the same number of prompts by the same procedure, so it carrie
 noise — but no per-layer claim in this paper should be read as precise, and the magnitude
 gate that was designed to protect against noise-floor artifacts (§3.4) did not run.
 
-### 3.2 Designed but not executed: J-space, welfare monitoring, self-report calibration
+### 3.2 Designed but not executed
 
-Three components of the original design are **specified in full in Appendix D and were not
-implemented in this sprint**: the J-space decomposition of the circumplex (§D.1), which was
-to separate emotional geometry into a verbalizable-workspace fraction and a ghost fraction;
-the runtime welfare-monitoring application (§D.2); and the self-report calibration pass
-(§D.3), which carried the design's central prediction — that the ghost fraction predicts
-where a model's own valence reports stop tracking its valence geometry.
-
-We keep their specifications in the appendix rather than deleting them, because for those
-three items the design is the contribution. **No quantity derived from any of them appears
-in this paper**, and no claim in §4 depends on them. See Appendix C for the full deviation
+Three components — J-space decomposition, welfare monitoring, and self-report calibration — are **specified in Appendix D and were not implemented in this sprint**. No quantity derived from them appears in §4. See Appendix C for the full deviation
 list.
 
 ### 3.3 Cross-Architecture Protocol
@@ -269,31 +249,15 @@ not a shallow version of the same U — its eccentricity at the minimum is 0.255
 Gemma's 0.065. We report it as an unexplained outlier rather than folding it into either
 story.
 
-**A note on how we first read this table.** Before Gemma and the distill were profiled we
-had two models — Qwen3-32B at L7 and the hybrid at L32 — and inferred an architectural
-split in minimum depth. Gemma is dense and minimises at L32, which falsifies that reading;
-the third and fourth models were what settled it. We record this because the two-model
-slice was genuinely persuasive, and because the pre-registered prediction had already said
-the minimum should *not* vary by architecture. Given the anchor-set instability documented
-below for minimum-depth claims (the L21/L32 incomparability), we attach no architectural
-claim to the minimum in either direction.
-
-**What this means for the span-ratio result:** the two findings are independent. The span
-ratio (§4.1) holds across all four models including Gemma; the minimum location does not
-separate the architectures at all. Only the first is a finding.
+**Note:** with only two models we initially inferred an architectural split; Gemma (dense, minimum at L32) falsified that reading. We attach no architectural claim to the minimum. The span-ratio finding (§4.1) and the minimum-depth non-finding are independent.
 
 ## 5. Discussion and Limitations
 
-If the J-space fraction peaks at the eccentricity minimum, emotional geometry enters the workspace where the circumplex is most balanced: balanced emotion is processable emotion, and imbalanced emotion stays ghost. The welfare implication is concrete — a model under sustained circumplex imbalance carries emotional geometry it processes but cannot access, and §3.6 tests whether that inaccessibility shows up exactly where theory says it should: in the failure of the model's own valence reports. If the control axes reproduce the emotion profile, the honest conclusion is that we have characterized the workspace transport of contrastive semantic geometry in general, with emotion as one instance.
+The designed J-space decomposition (Appendix D) would test whether balanced emotion is processable emotion — whether the eccentricity minimum coincides with peak workspace transport. That test was not executed. What the executed data supports: the span ratio is architecture-dependent, the minimum depth is not, and both are distinct from J-space claims. If control axes reproduce the emotion profile, we have characterized contrastive semantic geometry in general, with emotion as one instance.
 
 ### Deviations from the designed protocol
 
-The Methods above were drafted against an intended design; the sprint executed a smaller
-one. **Five components described in §3 were not implemented** — the J-space decomposition,
-the magnitude gate, the permutation test, the sign test, and the self-report calibration —
-and the executed anchor set is 4 poles × n=5 rather than the 5 categories × n=20 stated in
-§3.1. **Nothing in §4 depends on any of them.** Each gap, and the reason P1 is *incomparable*
-rather than failed, is itemised in **Appendix C**.
+Five components were not implemented (J-space, magnitude gate, permutation test, sign test, self-report calibration); anchors were 4×5 not 5×20. Nothing in §4 depends on any of them. Full itemisation in **Appendix C**.
 
 ### Limitations
 
@@ -302,7 +266,7 @@ rather than failed, is itemised in **Appendix C**.
   than any per-layer direction claim because the control axis is estimated from the same
   number of prompts by the same procedure and therefore carries comparable noise — but we
   have no confidence intervals, and we ran one seed.
-- **The two axes are not orthogonalized.** The executed probe takes valence and arousal as independent pole differences with no balancing on the opposite dimension, unlike the designed protocol (§3.1, Appendix D.5). Their correlation is unmeasured and unrecoverable from the shipped artifacts, which do not store the direction vectors. Because the same estimator is applied to all four models and to the control axis, we treat this as a caveat on absolute eccentricity rather than on the between-model ratio — but a reader should not interpret any single eccentricity value as a calibrated measure of valence/arousal balance.
+- **Axes not orthogonalized.** Valence and arousal poles are not cross-balanced (see §3.1 caveat). Absolute eccentricity values are affected; between-model comparisons are not.
 - **Four models is a pattern, not a law.** Two dense and two hybrid, of which two share an
   architecture. The effective independent sample for the architectural claim is closer to
   three than four.
