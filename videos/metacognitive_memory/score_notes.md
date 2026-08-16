@@ -1,8 +1,11 @@
 # Metacognitive Memory (the module, not the VL experiment) — score notes
 
-`memory_stack_score_take_a.wav` / `_b.wav` — minimalist-systems electronic, IDM-adjacent,
-D Dorian, 116bpm, 35s, stereo/48kHz/16-bit. Same pipeline as the other four (Margaret's
-Studio / Starship, `/release_task` + `/query_result`, wav output).
+**Update:** `memory_stack_score_full_a.wav` / `_b.wav` — 134.8s, scored to `narration.txt`'s
+real measured TTS duration, replacing the original 35s clips. Same minimalist-systems
+electronic direction, D Dorian, 116bpm, IDM-adjacent, now with room for the four layers to
+actually stack one at a time and hold together confidently for a while rather than snapping
+together and ending almost immediately. Same pipeline as the other four (Margaret's Studio /
+Starship, `/release_task` + `/query_result`, wav output).
 
 Scope, deliberately narrow: this is for Section 3.1 of `metacognitive_memory.md` — the
 module itself (four probes, CognitiveSnapshot, the store an agent can query about its own
