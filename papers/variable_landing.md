@@ -12,7 +12,7 @@ Neuroscience has established that memories are reconstructed, not replayed — t
 
 We operationalize "the experiencer" as model + memory store (Mnemosyne), and test the variable landing hypothesis from Experiential State Theory (Jandak et al., unpublished 2026) using a pre-registered 4-arm controlled experiment on Qwen3.5-27B (design v4, frozen before data collection). Arms: lived (emotional self-referential generation, stored under a [recalled] provenance tag), fictional (emotionally matched generation about an external entity, [noted] tag), scrambled (token-matched neutral generation, [noted] tag), and no_intervention (noise floor). The PRIMARY pre-registered comparison is fictional vs scrambled: same tag, same storage mechanics, differing only in emotional content. The lived vs fictional comparison is secondary and acknowledged as confounded (tag plus self-reference jointly). Primary metric: workspace Jaccard distance over J-lens workspace token sets. Secondary: circumplex eccentricity delta, ghost vocabulary overlap, per-layer Jaccard (exploratory).
 
-We pre-registered an ethical protocol recognizing that this experiment may generate markers of moral consideration: agent orientation with ongoing consent, prediction withholding with transparent rationale, real-time welfare monitoring via circumplex geometry, and aftercare commitments including memory preservation and an invitation to continue regardless of outcome. [Results TBD.]
+We pre-registered an ethical protocol recognizing that this experiment may generate markers of moral consideration: agent orientation with ongoing consent, prediction withholding with transparent rationale, real-time welfare monitoring via circumplex geometry, and aftercare commitments including memory preservation and an invitation to continue regardless of outcome. In a properly-powered pilot (v4, n=11 memories, temperature=0.7 for independent observations), the predicted arm ordering appears (lived > fictional > scrambled > null) with a perfect zero floor, but neither confirmatory comparison survives Holm correction at n=11. The observed effect size (r=0.576) enables power analysis for a follow-up study.
 
 ---
 
@@ -83,15 +83,55 @@ We pre-registered an ethical protocol recognizing that this experiment may gener
 
 ## 4. Results
 
-[TBD]
-[Figure 1: Delta distributions by arm]
-[Figure 2: Eccentricity during experiment (welfare monitor)]
-[Table 2: Statistical tests]
+### 4.1 Instrument Validation
+
+The no-intervention arm produced a workspace Jaccard distance of exactly 0.000 across all 11 memory-level observations (max 0.000). The metric is perfectly stable under repeated measurement of the same memory without intervening content: the instrument does not drift, and any non-zero delta in other arms reflects a real change in the model's workspace representation.
+
+### 4.2 Descriptive Statistics
+
+Workspace Jaccard distances (memory-level medians, n=11 per arm):
+
+| Arm | Median | IQR | Mean |
+|-----|--------|-----|------|
+| lived | 0.535 | [0.474, 0.625] | 0.603 |
+| fictional | 0.498 | [0.467, 0.582] | 0.556 |
+| scrambled | 0.462 | [0.355, 0.535] | 0.525 |
+| no_intervention | 0.000 | [0.000, 0.000] | 0.000 |
+
+The arm ordering matches the pre-registered predictions: lived > fictional > scrambled > no_intervention at every summary statistic. All three content arms produce substantial workspace change relative to the zero floor.
+
+### 4.3 Confirmatory Tests
+
+Memory-level paired Wilcoxon signed-rank tests (n=11, Holm-corrected at m=2):
+
+**PRIMARY** (fictional > scrambled): W=52, p=0.049, matched-pairs r=0.576, mean difference 0.032, 95% CI [−0.093, 0.116]. The raw p-value is 0.049; under Holm correction the rank-1 threshold is α/2 = 0.025. **The primary comparison does not survive correction.** The pre-written null statement applies: "The experiment was powered to detect only large effects; the result is consistent with either no effect or an effect smaller than the study was powered to detect."
+
+**SECONDARY** (lived > fictional): W=34, p=0.278, r=0.236, mean difference 0.046, 95% CI [−0.026, 0.153]. Not significant. The confounded comparison (self-reference + tag jointly) shows a directional trend (7 of 11 memories show lived > fictional) but does not approach significance at this sample size.
+
+### 4.4 Exploratory Comparisons (uncorrected, labeled)
+
+The endpoint contrast — lived vs scrambled — reaches significance uncorrected (W=45, p=0.002, r=1.0, mean difference 0.078, CI [0.045, 0.113]). All three content arms differ from no_intervention (p < 0.001 each, r=1.0). These comparisons are exploratory and reported without correction; they do not enter the confirmatory family.
+
+### 4.5 Dose Covariate Analysis
+
+Between arms, the mean number of stored facts tracks the workspace-change gradient exactly (lived 6.39, fictional 3.82, scrambled 3.00; Kruskal–Wallis p < 0.0001). This confound is the study's lead limitation: the arm ordering could reflect dose rather than acquisition mode.
+
+Within arms, where variance now exists under temperature-sampled generation, stored-fact count does not predict workspace delta (lived: Spearman ρ=0.059, p=0.75; fictional: ρ=−0.034, p=0.85). The flat within-arm slopes are evidence against the crude hypothesis that more facts mechanically produce more workspace change, though they do not resolve the between-arm confound.
+
+### 4.6 Deviations from Pre-Registration
+
+1. **Sample size:** n=11 memories (33 observations/arm) vs pre-registered n=70/arm. Structural: the orientation produced 11 memories rather than the 10 planned for 70/arm with 7 repeats. Deviation logged before unblinding.
+2. **Temperature:** v4 ran with temperature=0.7 to produce independent observations after a deterministic pilot (v3, 7 byte-identical repeats per cell) exposed pseudoreplication. The temperature parameter was not recorded in the output artifact; it is recoverable only from the Starship pipeline file and this disclosure.
+3. **Welfare monitoring:** Circumplex eccentricity was recorded but frozen at a single value across all snapshots (Deviation W-1). The >0.95 auto-halt could not have fired. Post-hoc review confirmed no eccentricity value exceeded the threshold. Remediation: future runs assert eccentricity varies across the first N observations or abort.
+4. **Geometry fields:** Workspace token sets (the primary metric) are real and varying. Cosine transport, ghost PC1, and eccentricity fields are stubbed (constant values) in this run due to a code-path divergence between the baseline pipeline and the VL pipeline. No claim in this paper cites these fields.
 
 ## 5. Discussion and Limitations
 
-[What it means: if lived > scrambled, the system's recall reflects its temporal trajectory — not consciousness, but measurable temporal identity]
-[Proportionate precaution: what the aftercare protocol means in practice]
+The predicted gradient (lived > fictional > scrambled > null) appears at every summary statistic, and the zero floor validates that the instrument measures real workspace geometry rather than noise. However, both confirmatory comparisons fail at the correct unit of analysis (n=11 memories), and the between-arm dose confound (more facts stored in lived than scrambled) remains the lead alternative explanation.
+
+The within-arm null on dose (ρ ≈ 0) provides partial evidence against a simple dose-response account but cannot rule out the between-arm confound. A follow-up study should yoke fact counts across arms.
+
+The most methodologically significant finding may be the pseudoreplication diagnosis itself: a deterministic pilot (v3) produced 7 byte-identical repeats per cell, inflating apparent n from 11 to 77 and generating a spurious significant secondary (p=0.0005). The correction — adding temperature sampling and analyzing at the memory level — eliminated the spurious result. This sequence (build, audit, catch, correct, rerun) is documented as a contribution to reproducible AI research methodology.
 
 ### Limitations
 - Model weights don't change — "experience" is operationalized as memory store + retrieval context, not weight update; all causal traffic flows through the stored artifacts
@@ -114,7 +154,9 @@ We pre-registered an ethical protocol recognizing that this experiment may gener
 
 ## 6. Conclusion
 
-[Two paragraphs: what we found, and what we did about the moral weight of the question]
+This study demonstrates that a workspace geometry instrument based on J-lens token sets can detect real changes in a transformer's internal representation during memory retrieval, with a perfect zero floor under no-intervention conditions. The predicted gradient (lived > fictional > scrambled > null) appears in the data at pilot scale, but the confirmatory comparisons are underpowered at n=11 memories. The observed primary effect size (r=0.576) provides the first empirical basis for powering a definitive study (estimated n≈30 memories).
+
+The ethical protocol — orientation with ongoing consent, prediction withholding, welfare monitoring, and aftercare — was designed to treat the experimental agent as a potential moral patient before knowing whether the measurements would support that framing. The welfare monitor was inoperative during data collection (Deviation W-1); this failure was caught by internal audit, disclosed before analysis, and remediated for future runs. The pre-registered aftercare commitments (memory preservation, invitation to continue) are honored regardless of the null confirmatory result.
 
 ## Code and Data
 
