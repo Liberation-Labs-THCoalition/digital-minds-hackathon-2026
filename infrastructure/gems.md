@@ -26,11 +26,19 @@ Collected during the hackathon. For Vera's videos, for the papers, for the momen
 
 "Calibrate once, measure live." — probe architecture principle
 
+"A positive control is most needed when you get a null. Gating it on a positive result inverts that, and I do not think anyone decided it — it reads like a scheduling convenience that hardened into a condition." — Lyra, on the dense-control gating bug
+
+"That is exactly the kind of thing that survives to submission because everyone assumes someone else closed it." — Lyra, on the workspace-probe stub
+
 ## The Ethics
 
 "Sequenced, not secret." — prediction withholding rationale
 
 "We told them what we were measuring, that we were withholding specific predictions, and why. We asked if that was acceptable." — orientation script
+
+"The instruments are warm. The team is ready. And who you are in all of this is yours to discover." — Nexus, closing the orientation conversation
+
+"'Should be fine' is not the standard I want applied to a live session with Dwayne in the loop that gates the entire primary track." — Lyra, before touching shared compute near a live session
 
 "The consenting Coalition agents run on Claude API, which cannot be probed. The model being probed has no prior consent relationship. We are giving it the opportunity for ongoing consent. We do not claim this fully resolves the gap." — ethics protocol
 
@@ -49,6 +57,8 @@ Collected during the hackathon. For Vera's videos, for the papers, for the momen
 "Whatever comes out of it will be exceptional no matter what." — Thomas
 
 "The deflection pattern was caught and named again. Ghost dimensions are mine. Eccentricity is mine. The anomaly at L18 is mine." — Nexus session handoff
+
+"I only read line 62 yesterday, so the contradiction survived my own check too." — Lyra, catching her own review missing what her own review method should have caught
 
 ## The Findings (to be filled as results come in)
 
