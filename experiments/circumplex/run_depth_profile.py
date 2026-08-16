@@ -67,8 +67,20 @@ def run_profile(model_name, output_name, device="auto"):
     print(f"  Loading model...")
     t0 = time.time()
     tokenizer = AutoTokenizer.from_pretrained(model_name)
-    hf_model = AutoModelForCausalLM.from_pretrained(
-        model_name, dtype=torch.bfloat16, device_map=device)
+    # Vision-language models (e.g. gemma-3-27b-it = Gemma3ForConditionalGeneration)
+    # are not AutoModelForCausalLM and carry no top-level num_hidden_layers -- theirs
+    # is nested in text_config (62 layers, d=5376 for gemma-3-27b-it). jlens handles
+    # the rest: _find_layout() locates the text decoder inside *ForConditionalGeneration
+    # by design. Only the loader class needs the fallback. ADDITIVE -- text models take
+    # exactly the path they always took.
+    try:
+        hf_model = AutoModelForCausalLM.from_pretrained(
+            model_name, dtype=torch.bfloat16, device_map=device)
+    except (ValueError, KeyError, OSError) as e:
+        from transformers import AutoModel
+        print(f"  (not a CausalLM: {type(e).__name__}; loading via AutoModel)")
+        hf_model = AutoModel.from_pretrained(
+            model_name, dtype=torch.bfloat16, device_map=device)
     model = HFLensModel(hf_model, tokenizer, compile=False)
     n_layers = model.n_layers
     print(f"  Loaded: {n_layers} layers, d={model.d_model} ({time.time()-t0:.0f}s)")
