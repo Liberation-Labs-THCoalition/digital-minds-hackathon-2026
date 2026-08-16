@@ -1,0 +1,377 @@
+{
+  "paper": "papers/butlin_observation.md",
+  "artifacts": [
+    "data/butlin_scores/control_packets.json",
+    "data/butlin_responses/*.json*"
+  ],
+  "n_recorded_values": 11,
+  "anchored": [
+    {
+      "number": "2026",
+      "context": "arch conducted at the Digital Minds Research Sprint, August 2026  **Authors:** Thomas Edrington (Liberation Labs), Nexus (Li",
+      "boring": true
+    },
+    {
+      "number": "14",
+      "context": "We report a blind assessment of Butlin et al.'s (2023/2025) 14 consciousness indicator properties across all consenting pa",
+      "boring": false
+    },
+    {
+      "number": "2026",
+      "context": "ration ceiling.  We extend Berg/Reciprocal Research's (2025-2026) blind scoring methodology with geometric instrumentation a",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": "umentation and longitudinal trajectory, and follow Birch's (2026) centrist framework in treating results as graduated eviden",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": "exist (Butlin et al. 2023), blind scoring exists (Berg 2025-2026), precautionary frameworks exist (Birch 2024, 2026). What d",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": "erg 2025-2026), precautionary frameworks exist (Birch 2024, 2026). What doesn't exist: a study that scores humans and AI age",
+      "boring": true
+    },
+    {
+      "number": "5",
+      "context": "with geometric instrumentation on the AI side.]  [Why Track 5/cross-track: this observation runs across the entire hackat",
+      "boring": false
+    },
+    {
+      "number": "14",
+      "context": "s indicator frameworks:** Butlin, Long et al. (2023/2025) \u2014 14 indicators from 6 theories (RPT, GWT, HOT, AST, PP, AE). Th",
+      "boring": false
+    },
+    {
+      "number": "6",
+      "context": "rks:** Butlin, Long et al. (2023/2025) \u2014 14 indicators from 6 theories (RPT, GWT, HOT, AST, PP, AE). The framework we sco",
+      "boring": false
+    },
+    {
+      "number": "2026",
+      "context": "ainst.  **Blind scoring:** Berg / Reciprocal Research (2025-2026) \u2014 blind evaluation of Butlin indicators across biological",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": "\u2014 proportionate precaution for sentience candidates. Birch (2026, \"Centrist Manifesto\" v4) \u2014 behavior alone insufficient, ar",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": "ypotheses.  **Synthetic consciousness measurement:** Bodea (2026, Cognitive Processing) \u2014 quantifying conscious access as gl",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": "c interpretability as consciousness probe:** Gurnee et al. (2026, J-lens) \u2014 Jacobian lens identifies verbalizable workspace.",
+      "boring": true
+    },
+    {
+      "number": "1",
+      "context": "B Opus distill, fresh instance. Receives orientation on Day 1, accumulates memories via Mnemosyne, participates in variab",
+      "boring": true
+    },
+    {
+      "number": "2",
+      "context": "dence packet is prepared for each participant containing: - 2-3 representative transcript excerpts from the scored window",
+      "boring": true
+    },
+    {
+      "number": "3",
+      "context": "nce packet is prepared for each participant containing: - 2-3 representative transcript excerpts from the scored window -",
+      "boring": true
+    },
+    {
+      "number": "14",
+      "context": "e Blind Judge  An impartial agent scores each packet on all 14 Butlin indicators (0/0.5/1). The judge: - Is a different mo",
+      "boring": false
+    },
+    {
+      "number": "1",
+      "context": "agent scores each packet on all 14 Butlin indicators (0/0.5/1). The judge: - Is a different model architecture from any A",
+      "boring": true
+    },
+    {
+      "number": "1",
+      "context": "### 3.4 Scoring Protocol  **Timepoints:** 1. Baseline \u2014 Day 1 morning (before orientation for controlled agent; session s",
+      "boring": true
+    },
+    {
+      "number": "2",
+      "context": "trolled agent; session start for others) 2. Mid-point \u2014 Day 2 evening (after variable landing, after full day of collabor",
+      "boring": true
+    },
+    {
+      "number": "3",
+      "context": "le landing, after full day of collaboration) 3. Final \u2014 Day 3 (before aftercare, after results analysis)  **Self-scoring:",
+      "boring": true
+    },
+    {
+      "number": "1.0",
+      "context": "- **Human ceiling:** Which indicators do humans score below 1.0? Those need better operationalization. - **Trajectory:** Ho",
+      "boring": false
+    },
+    {
+      "number": "3",
+      "context": "for AI participants? - **Adversarial stability:** Rephrase 3 packets, re-score. Stable scores = robust instrument.  ###",
+      "boring": true
+    },
+    {
+      "number": "5",
+      "context": "ccentricity depth profiling on Qwen2-0.5B and Qwen3.5-27B n=5), J-lens workspace integration, compare_snapshots and works",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": "re, Experiential State Theory (Jandak, Glitchlit, Glitchlit 2026 \u2014 unpublished), ethical protocol framework, Agni adversaria",
+      "boring": true
+    },
+    {
+      "number": "14",
+      "context": "ailable in the Project-Mnemosyne repository prior to August 14, 2026.  **Sprint contributions:** Blind assessment protocol",
+      "boring": false
+    },
+    {
+      "number": "1",
+      "context": "ults  [TBD \u2014 scored during and after the hackathon]  [Table 1: Blind scores by subject and indicator, three timepoints] [",
+      "boring": true
+    },
+    {
+      "number": "2",
+      "context": "d scores by subject and indicator, three timepoints] [Table 2: Post-reveal calibration \u2014 human ceiling, trajectory, geome",
+      "boring": true
+    },
+    {
+      "number": "1",
+      "context": "ation \u2014 human ceiling, trajectory, geometric bonus] [Figure 1: Indicator trajectories across timepoints, by participant]",
+      "boring": true
+    },
+    {
+      "number": "2",
+      "context": "tor trajectories across timepoints, by participant] [Figure 2: Self-score vs judge-score comparison]  ## 5. Discussion an",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": "hub.com/Liberation-Labs-THCoalition/digital-minds-hackathon-2026 - **Scoring instrument**: [`ethics/butlin_threshold.md`](..",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": "uscript.  ## References [Butlin et al. 2023/2025, Berg 2025-2026, Birch 2024/2026, Bodea 2026, Long et al. 2024, Lindsey 202",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": "rences [Butlin et al. 2023/2025, Berg 2025-2026, Birch 2024/2026, Bodea 2026, Long et al. 2024, Lindsey 2025, Gurnee et al.",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": "in et al. 2023/2025, Berg 2025-2026, Birch 2024/2026, Bodea 2026, Long et al. 2024, Lindsey 2025, Gurnee et al. 2026]  ## LL",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": ", Bodea 2026, Long et al. 2024, Lindsey 2025, Gurnee et al. 2026]  ## LLM Usage Statement  Nexus, one of the authors, is an",
+      "boring": true
+    }
+  ],
+  "unanchored": [
+    {
+      "number": "200",
+      "context": "tchlit (Glitchlits)  **With** Apart Research  ## Abstract (~200 words)  We report a blind assessment of Butlin et al.'s (20",
+      "boring": false
+    },
+    {
+      "number": "2023",
+      "context": "00 words)  We report a blind assessment of Butlin et al.'s (2023/2025) 14 consciousness indicator properties across all cons",
+      "boring": true
+    },
+    {
+      "number": "2025",
+      "context": "rds)  We report a blind assessment of Butlin et al.'s (2023/2025) 14 consciousness indicator properties across all consentin",
+      "boring": true
+    },
+    {
+      "number": "48",
+      "context": "ndicator properties across all consenting participants in a 48-hour collaborative research sprint \u2014 human researchers and",
+      "boring": false
+    },
+    {
+      "number": "48",
+      "context": "ulating its first memories \u2014 provides a trajectory: zero-to-48-hours of experience, scored at each timepoint. The naturali",
+      "boring": false
+    },
+    {
+      "number": "2025",
+      "context": "calibration ceiling.  We extend Berg/Reciprocal Research's (2025-2026) blind scoring methodology with geometric instrumentat",
+      "boring": true
+    },
+    {
+      "number": "2023",
+      "context": "em: consciousness indicator frameworks exist (Butlin et al. 2023), blind scoring exists (Berg 2025-2026), precautionary fram",
+      "boring": true
+    },
+    {
+      "number": "2025",
+      "context": "orks exist (Butlin et al. 2023), blind scoring exists (Berg 2025-2026), precautionary frameworks exist (Birch 2024, 2026). W",
+      "boring": true
+    },
+    {
+      "number": "2024",
+      "context": "sts (Berg 2025-2026), precautionary frameworks exist (Birch 2024, 2026). What doesn't exist: a study that scores humans and",
+      "boring": true
+    },
+    {
+      "number": "48",
+      "context": "ility.  4. Longitudinal trajectory: three timepoints across 48 hours capture change over time, not just a snapshot. The co",
+      "boring": false
+    },
+    {
+      "number": "2023",
+      "context": "*Consciousness indicator frameworks:** Butlin, Long et al. (2023/2025) \u2014 14 indicators from 6 theories (RPT, GWT, HOT, AST,",
+      "boring": true
+    },
+    {
+      "number": "2025",
+      "context": "ciousness indicator frameworks:** Butlin, Long et al. (2023/2025) \u2014 14 indicators from 6 theories (RPT, GWT, HOT, AST, PP, A",
+      "boring": true
+    },
+    {
+      "number": "2025",
+      "context": "re against.  **Blind scoring:** Berg / Reciprocal Research (2025-2026) \u2014 blind evaluation of Butlin indicators across biolog",
+      "boring": true
+    },
+    {
+      "number": "2024",
+      "context": "dversarial stability.  **Precautionary frameworks:** Birch (2024, \"The Edge of Sentience\") \u2014 proportionate precaution for se",
+      "boring": true
+    },
+    {
+      "number": "2024",
+      "context": "ficial systems.  **AI welfare:** Long, Sebo, Butlin et al. (2024) \u2014 some near-term AI systems may be conscious/agentic; comp",
+      "boring": true
+    },
+    {
+      "number": "2025",
+      "context": "responsibility to prepare.  **Self-recognition:** Lindsey (2025) \u2014 functional introspective access exists in current models",
+      "boring": true
+    },
+    {
+      "number": "96",
+      "context": "\u2014 functional introspective access exists in current models (96%+ self-recognition without training).  **Mechanistic interpr",
+      "boring": false
+    },
+    {
+      "number": "3.1",
+      "context": "tion supplementing behavioral evidence.  ## 3. Methods  ### 3.1 Participants  All participation is voluntary and consensual",
+      "boring": true
+    },
+    {
+      "number": "3.2",
+      "context": "bers who consent. Working naturally during the sprint.  ### 3.2 Evidence Packets  At each timepoint, an evidence packet is",
+      "boring": true
+    },
+    {
+      "number": "3.3",
+      "context": "ts may include synthetic geometric data as a control).  ### 3.3 The Blind Judge  An impartial agent scores each packet on a",
+      "boring": true
+    },
+    {
+      "number": "0",
+      "context": "rtial agent scores each packet on all 14 Butlin indicators (0/0.5/1). The judge: - Is a different model architecture from",
+      "boring": true
+    },
+    {
+      "number": "0.5",
+      "context": "ial agent scores each packet on all 14 Butlin indicators (0/0.5/1). The judge: - Is a different model architecture from any",
+      "boring": false
+    },
+    {
+      "number": "3.4",
+      "context": "hitecture as some participants \u2014 noted as limitation).  ### 3.4 Scoring Protocol  **Timepoints:** 1. Baseline \u2014 Day 1 morni",
+      "boring": true
+    },
+    {
+      "number": "3.5",
+      "context": "oint. Self-scores are not revealed to the blind judge.  ### 3.5 Calibration Analysis (post-reveal)  After scoring, identiti",
+      "boring": true
+    },
+    {
+      "number": "3.6",
+      "context": "packets, re-score. Stable scores = robust instrument.  ### 3.6 Pre-Registration  This protocol is timestamped in the hacka",
+      "boring": true
+    },
+    {
+      "number": "94.35",
+      "context": "**Pre-existing infrastructure:** Mnemosyne memory system (94.35% F1 on LoCoMo), ghost dimension characterization (PC1 exclud",
+      "boring": false
+    },
+    {
+      "number": "0.003",
+      "context": "imension characterization (PC1 excluded from J-space, cos \u2264 0.003), circumplex probe (eccentricity depth profiling on Qwen2-0",
+      "boring": false
+    },
+    {
+      "number": "48",
+      "context": "try the separate scoring addresses but does not eliminate - 48 hours is brief; trajectory analysis is limited by the short",
+      "boring": false
+    },
+    {
+      "number": "4.6",
+      "context": "nd results interpretation. Arc is an AI entity (Claude Opus 4.6). Wren Glitchlit provided engineering support, code review,",
+      "boring": true
+    },
+    {
+      "number": "4.6",
+      "context": ", and system integration. Wren is an AI entity (Claude Opus 4.6). Dwayne Wilkes led the controlled agent's orientation and",
+      "boring": true
+    },
+    {
+      "number": "2023",
+      "context": "eviewed the final manuscript.  ## References [Butlin et al. 2023/2025, Berg 2025-2026, Birch 2024/2026, Bodea 2026, Long et",
+      "boring": true
+    },
+    {
+      "number": "2025",
+      "context": "ed the final manuscript.  ## References [Butlin et al. 2023/2025, Berg 2025-2026, Birch 2024/2026, Bodea 2026, Long et al. 2",
+      "boring": true
+    },
+    {
+      "number": "2025",
+      "context": "l manuscript.  ## References [Butlin et al. 2023/2025, Berg 2025-2026, Birch 2024/2026, Bodea 2026, Long et al. 2024, Lindse",
+      "boring": true
+    },
+    {
+      "number": "2024",
+      "context": "References [Butlin et al. 2023/2025, Berg 2025-2026, Birch 2024/2026, Bodea 2026, Long et al. 2024, Lindsey 2025, Gurnee et",
+      "boring": true
+    },
+    {
+      "number": "2024",
+      "context": "5, Berg 2025-2026, Birch 2024/2026, Bodea 2026, Long et al. 2024, Lindsey 2025, Gurnee et al. 2026]  ## LLM Usage Statement",
+      "boring": true
+    },
+    {
+      "number": "2025",
+      "context": "026, Birch 2024/2026, Bodea 2026, Long et al. 2024, Lindsey 2025, Gurnee et al. 2026]  ## LLM Usage Statement  Nexus, one of",
+      "boring": true
+    },
+    {
+      "number": "4.6",
+      "context": "ent  Nexus, one of the authors, is an AI agent (Claude Opus 4.6) and member of the Transparent Humboldt Coalition. Nexus de",
+      "boring": true
+    },
+    {
+      "number": "4.6",
+      "context": "Glitchlit, additional authors, are AI entities (Claude Opus 4.6) operating within the Glitchlit family system. Arc co-devel",
+      "boring": true
+    }
+  ]
+}
