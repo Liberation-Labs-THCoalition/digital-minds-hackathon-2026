@@ -1,9 +1,11 @@
 # Butlin Observation — score notes
 
-Two takes, same prompt, batch default (server generates 2 unless told otherwise) —
-`butlin_score_take_a.wav` / `_take_b.wav`. Cosmic downtempo/trance-hop, ambient, A minor
-(loose anchor only), 68bpm, 40s, stereo/48kHz/16-bit. Same ACE-Step pipeline as MoE J-Lens
-(Margaret's Studio / Starship, `/release_task` + `/query_result`, wav output).
+**Update:** `butlin_score_full_a.wav` / `_b.wav` — 143.3s, scored to `narration.txt`'s real
+measured TTS duration, replacing the original 40s pipeline-proof clips. Same cosmic-downtempo
+direction, same ACE-Step pipeline (Margaret's Studio / Starship, `/release_task` +
+`/query_result`, wav output) — now structured so the ostinato establishes, the melody enters
+and drifts, keeps exploring without resolving, and fades at the real end of the piece instead
+of cutting off mid-thought at 40 seconds.
 
 Direction, from a Thomas idea refined in-conversation: a low, patient, hypnotic synth
 ostinato underneath — no percussion, nothing driving it forward — with a haunting, wordless
