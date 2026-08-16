@@ -1,34 +1,37 @@
 # Circumplex — score notes
 
-**Flag, not yet acted on:** Lyra found the shipped video's central claim — dense minimum at
-L7, hybrid minimum at L32, framed as "different architecture, different answer" — doesn't
-hold across all four profiled models. A third, dense model (Gemma) minimizes at L32 too,
-same depth as the hybrids; the L7/L32 split is really a two-model comparison the other data
-contradicts. What does hold cleanly across all four, no overlap: the emotion/control span
-ratio, ~7.2-7.6x in both dense models vs ~1.9x in both hybrids. That's a real result — this
-narration and video aren't scripted around it. Not touching the shipped video or its
-storyboard myself; that's a bigger call than my own scope, flagged to Thomas directly.
+**Status: rebuilt and shipped (v3).** `circumplex.mp4` now reflects the corrected finding.
+The old claim — dense minimum at L7, hybrid minimum at L32, "different architecture,
+different answer" — didn't survive testing a third model (Gemma, dense, minimizes at L32
+alongside the hybrids, not with the other dense model). What actually holds, no overlap
+across all four profiled models: the emotion/control eccentricity span ratio, ~7.2-7.6x in
+both dense models vs ~1.9x in both hybrids, confirmed by a base-vs-distill pair landing
+within 0.003 of each other. Verified independently against the raw profile JSONs myself
+before writing anything, matching Lyra's and Kavi's numbers exactly.
 
-**Correction:** I wrote here that `circumplex.mp4` already has the score muxed in. Checked
-that claim directly rather than let it stand — extracted the actual embedded audio track and
-it's narration only (191.6s), not narration+music. `assemble.sh` only ever muxes one audio
-input, the narration file; music was never actually integrated into any of the five tracks'
-videos, not just the three that had no video yet. That's a real, separate remaining step
-(mixing, likely with the music ducked under the voice) — not something I'm doing unilaterally
-without a decision on how loud/present it should sit under narration.
+**What changed, concretely:**
+- `narration.txt` — rewritten (v3, 212.5s TTS-measured, up from 198.3s). Scenes 1-4's
+  content is untouched; paragraphs covering the old L7/L32 claim replaced with the real
+  twist (Gemma) and the real measurement (span ratio + distill clincher).
+- Manim `Scene6_ArchitectureCompare` — rebuilt from scratch, not just retimed: recap of
+  the two original curves, a third (Gemma) curve grows in and its minimum lands beside
+  the hybrid's rather than the other dense model's, then a cut to a bar chart showing the
+  span ratio across all four models with real vertical separation between the two
+  architecture groups, closing on the base/distill match. Test-rendered and checked frame
+  by frame before the full render — caught and fixed two real layout bugs (a color
+  collision between two curves that made the twist illegible, a text overlap) that would
+  not have been visible from the code alone.
+- Full video reassembled: 6 scenes concatenated (214.98s silent), trimmed to match the
+  212.47s narration (2.51s of trailing hold time removed, no content lost — verified by
+  checking the actual closing frames), muxed, and verified: 1920x1080/60fps, real audio
+  track confirmed present and non-silent (peak 58%), 212.48s final.
+- `videos/storyboards/README.md` circumplex section #3 rewritten to describe the real
+  rebuild instead of the retired FLUX-still concept.
 
-**Update:** `circumplex_score_full_a.wav` / `_b.wav` — 198.3s, matched exactly to the shipped
-video's real length via ffprobe, replacing the earlier 35s recovered test stems (still bebop,
-same direction, now full-length with real structure: theme, development, a harmonic shift for
-the architecture-comparison reveal, return to theme, full resolved cadence — this is the one
-track that's supposed to actually resolve).
-
-Direction (decided earlier, recovered here for the record): bebop specifically, not generic
-jazz — chosen because circumplex is a track about literal geometric precision (eccentricity,
-layer depth) that still needs real emotional weight behind it, and bebop is one of the few
-musical languages that's simultaneously as mathematically rigorous as exact chord
-substitution and voice-leading, and as expressive as anything else in the genre. A more
-"crystalline and precise" instrumental idea was considered and dropped for having the
-precision without the weight.
+**Still open:** the music. Not yet regenerated at the new 212.5s length — direction stays
+bebop (mathematically precise, genuinely warm, one of the few languages that's both), but
+the "harmonic shift for the architecture reveal" moment in the original structure needs to
+become "an unexpected turn, then settling into something clearer" to match the new
+twist-then-real-answer shape of the video. Generating next.
 
 — Vera
