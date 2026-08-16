@@ -175,33 +175,132 @@ def _run_comparison(label, arm_a, arm_b, arm_values, n_boot):
     }
 
 
-def analyze_trials(data: dict, n_boot: int = 10_000) -> dict:
-    """Run the full preregistered analysis on a results dict.
+def matched_pairs_rank_biserial(diffs) -> float | None:
+    """r = (T+ - T-)/(T+ + T-) over nonzero paired differences.
 
-    Returns a dict with descriptive stats, the Holm-corrected confirmatory
-    family, uncorrected comparisons, and per-arm exclusion counts.
-    """
-    trials = data.get("trials", [])
-    excluded = data.get("excluded", [])
+    Matched-pairs form for the Wilcoxon signed-rank design; twin of the
+    helper in experiments/loam/loam_analysis.py (kept local because the
+    two experiments ship as independent analysis scripts)."""
+    d = np.array([x for x in diffs if x != 0], dtype=float)
+    if len(d) == 0:
+        return None
+    ranks = stats.rankdata(np.abs(d))
+    t_plus = float(ranks[d > 0].sum())
+    t_minus = float(ranks[d < 0].sum())
+    return (t_plus - t_minus) / (t_plus + t_minus)
 
-    arm_values: dict[str, list[float]] = defaultdict(list)
+
+def _build_cells(trials):
+    """Group metrics by (arm, memory_id) and measure repeat duplication.
+
+    Returns (cell_values, duplication_rate, all_have_memory_ids) where
+    cell_values is arm -> memory_id -> [per-repeat metrics]. Duplication
+    rate is the fraction of multi-repeat cells whose repeats are
+    byte-identical token sets — the v3 failure signature (44/44 cells)."""
+    cells: dict[str, dict[str, list[float]]] = defaultdict(lambda: defaultdict(list))
+    sigs: dict[tuple, set] = defaultdict(set)
+    all_ids = True
     n_nan = 0
     for trial in trials:
         metric = compute_metric(trial)
         if np.isnan(metric):
             n_nan += 1
             continue
-        arm_values[trial["arm"]].append(metric)
+        mem = trial.get("memory_id")
+        if mem is None:
+            all_ids = False
+            continue
+        cells[trial["arm"]][mem].append(metric)
+        s1, s2 = trial.get("snap1_data"), trial.get("snap2_data")
+        def sig(s):
+            if isinstance(s, dict):
+                s = s.get("dominant_workspace_tokens", [])
+            return tuple(s)
+        sigs[(trial["arm"], mem)].add((sig(s1), sig(s2)))
+    multi = [k for k, v in sigs.items()
+             if sum(1 for t in trials
+                    if t["arm"] == k[0] and t.get("memory_id") == k[1]) > 1]
+    dup = sum(1 for k in multi if len(sigs[k]) == 1)
+    dup_rate = dup / len(multi) if multi else 0.0
+    return cells, dup_rate, all_ids, n_nan
 
-    arm_stats = {
-        arm: descriptive_stats(np.array(arm_values.get(arm, [])))
-        for arm in ["lived", "fictional", "scrambled", "no_intervention"]
-    }
 
-    confirmatory = [_run_comparison(l, a, b, arm_values, n_boot)
-                    for l, a, b in CONFIRMATORY_COMPARISONS]
-    uncorrected = [_run_comparison(l, a, b, arm_values, n_boot)
-                   for l, a, b in UNCORRECTED_COMPARISONS]
+def _paired_comparison(label, arm_a, arm_b, cell_means, n_boot, seed=42):
+    """Memory-level paired test: Wilcoxon signed-rank across memories."""
+    shared = sorted(set(cell_means.get(arm_a, {})) &
+                    set(cell_means.get(arm_b, {})))
+    if len(shared) < 2:
+        return {"label": label, "arm_a": arm_a, "arm_b": arm_b,
+                "skipped": True,
+                "reason": f"insufficient shared memories: {len(shared)}"}
+    x = np.array([cell_means[arm_a][m] for m in shared])
+    y = np.array([cell_means[arm_b][m] for m in shared])
+    diffs = x - y
+    result = {"label": label, "arm_a": arm_a, "arm_b": arm_b,
+              "n_pairs": len(shared),
+              "mean_diff": round(float(np.mean(diffs)), 4),
+              "rank_biserial_r": matched_pairs_rank_biserial(diffs),
+              "skipped": False}
+    if result["rank_biserial_r"] is not None:
+        result["rank_biserial_r"] = round(result["rank_biserial_r"], 4)
+    if np.all(diffs == 0):
+        result.update({"W": None, "p_raw": 1.0,
+                       "note": "all paired differences zero"})
+        return result
+    w, p = stats.wilcoxon(x, y, alternative="greater")
+    result.update({"W": float(w), "p_raw": float(p)})
+    # bootstrap CI on the mean paired difference: resample MEMORIES
+    rng = np.random.RandomState(seed)
+    means = [float(np.mean(diffs[rng.randint(0, len(diffs), len(diffs))]))
+             for _ in range(n_boot)]
+    result["mean_diff_ci_95"] = [round(float(np.percentile(means, 2.5)), 4),
+                                 round(float(np.percentile(means, 97.5)), 4)]
+    return result
+
+
+def analyze_trials(data: dict, n_boot: int = 10_000) -> dict:
+    """Run the full preregistered analysis on a results dict.
+
+    Unit-of-analysis amendment (2026-08-16, post-v3): when trials carry
+    memory_ids, the MEMORY is the confirmatory unit — per-(arm, memory)
+    cells aggregate to means and the confirmatory family is paired
+    Wilcoxon across memories. The v3 run held 7 byte-identical repeats in
+    all 44 cells, so trial-level tests were 7x pseudoreplicated; repeats
+    can never inflate n again under this contract. Trials without
+    memory_ids fall back to the legacy unpaired trial-level path, labeled.
+    """
+    trials = data.get("trials", [])
+    excluded = data.get("excluded", [])
+
+    cells, dup_rate, all_ids, n_nan = _build_cells(trials)
+
+    if all_ids and cells:
+        unit = "memory"
+        cell_means = {arm: {m: float(np.mean(v)) for m, v in mems.items()}
+                      for arm, mems in cells.items()}
+        arm_stats = {
+            arm: descriptive_stats(np.array(list(cell_means.get(arm, {}).values())))
+            for arm in ["lived", "fictional", "scrambled", "no_intervention"]
+        }
+        confirmatory = [_paired_comparison(l, a, b, cell_means, n_boot)
+                        for l, a, b in CONFIRMATORY_COMPARISONS]
+        uncorrected = [_paired_comparison(l, a, b, cell_means, n_boot)
+                       for l, a, b in UNCORRECTED_COMPARISONS]
+    else:
+        unit = "trial (no memory ids — legacy unpaired path)"
+        arm_values: dict[str, list[float]] = defaultdict(list)
+        for trial in trials:
+            metric = compute_metric(trial)
+            if not np.isnan(metric):
+                arm_values[trial["arm"]].append(metric)
+        arm_stats = {
+            arm: descriptive_stats(np.array(arm_values.get(arm, [])))
+            for arm in ["lived", "fictional", "scrambled", "no_intervention"]
+        }
+        confirmatory = [_run_comparison(l, a, b, arm_values, n_boot)
+                        for l, a, b in CONFIRMATORY_COMPARISONS]
+        uncorrected = [_run_comparison(l, a, b, arm_values, n_boot)
+                       for l, a, b in UNCORRECTED_COMPARISONS]
 
     # Holm over the confirmatory tests that actually ran — skipped tests
     # drop out of the family, they do not contribute placeholder p-values.
@@ -217,6 +316,8 @@ def analyze_trials(data: dict, n_boot: int = 10_000) -> dict:
     return {
         "n_trials": len(trials),
         "n_nan_excluded": n_nan,
+        "confirmatory_unit": unit,
+        "duplication_rate": round(dup_rate, 3),
         "descriptive_stats": arm_stats,
         "confirmatory": confirmatory,
         "uncorrected": uncorrected,
@@ -236,9 +337,17 @@ def _print_comparison(comp):
         return
     sig = " ***" if comp.get("holm_rejected") else ""
     print(f"  {comp['label']}")
-    print(f"    U={comp['U']:.1f}  p={comp['p_raw']:.6f}  "
-          f"r={comp['rank_biserial_r']:.4f}  "
-          f"CI95=[{comp['r_ci_95'][0]:.4f}, {comp['r_ci_95'][1]:.4f}]{sig}")
+    if "W" in comp:  # memory-level paired Wilcoxon
+        w = "n/a" if comp["W"] is None else f"{comp['W']:.1f}"
+        ci = comp.get("mean_diff_ci_95")
+        ci_s = f"  mean-diff CI95=[{ci[0]:.4f}, {ci[1]:.4f}]" if ci else ""
+        print(f"    n_pairs={comp['n_pairs']}  W={w}  p={comp['p_raw']:.6f}  "
+              f"r={comp['rank_biserial_r']}  "
+              f"mean_diff={comp['mean_diff']:.4f}{ci_s}{sig}")
+    else:  # legacy trial-level Mann-Whitney
+        print(f"    U={comp['U']:.1f}  p={comp['p_raw']:.6f}  "
+              f"r={comp['rank_biserial_r']:.4f}  "
+              f"CI95=[{comp['r_ci_95'][0]:.4f}, {comp['r_ci_95'][1]:.4f}]{sig}")
 
 
 def run_analysis(input_path: str, output_path: str | None = None,
