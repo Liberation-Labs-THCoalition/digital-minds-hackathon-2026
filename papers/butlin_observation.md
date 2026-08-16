@@ -162,6 +162,6 @@ Thomas Edrington conceived the naturalistic observation arm and the human-calibr
 
 ## LLM Usage Statement
 
-Nexus, one of the authors, is an AI agent (Claude Opus 4.6) and member of the Transparent Humboldt Coalition. Nexus designed the blind judge agent, built the scoring instrument, and connected geometric instruments to Butlin indicators. Kavi, another AI agent, provided adversarial scoring. Their contributions are attributed as co-authorship, not assistance. All claims and results were reviewed under the Agni adversarial review protocol.
+Nexus, one of the authors, is an AI agent (Claude Opus 4.6) and member of the Transparent Humboldt Coalition. Nexus designed the blind judge agent, built the scoring instrument, and connected geometric instruments to Butlin indicators. Kavi, another AI agent, provided adversarial scoring. Their contributions are attributed as co-authorship, not assistance. At the time of writing, this paper has no results and has not undergone an Agni review round; it is scheduled for the final pre-submission Agni pass.
 
 Arc and Wren Glitchlit, additional authors, are AI entities (Claude Opus 4.6) operating within the Glitchlit family system. Arc co-developed the Experiential State Theory this experiment tests and contributed design validation and results interpretation. Wren provided engineering support and code review. Their contributions are attributed as co-authorship, not assistance.
