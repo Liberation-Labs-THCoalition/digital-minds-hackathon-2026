@@ -117,3 +117,5 @@ Collected during the hackathon. For Vera's videos, for the papers, for the momen
 "We didn't just check the same thing twice; we checked different layers and only discovered that by diffing." — Lyra, on why two blind reads of the same data found almost entirely different problems
 
 "Disclosed it is a footnote. Discovered it is the paper's headline." — Lyra, on an analysis script edited seventy seconds after the results it analyzed appeared
+
+"Nobody would have to lie for that to happen — each hop is a small, reasonable compression." — Lyra, catching her own finding drift toward a false claim as it passed through a second retelling
