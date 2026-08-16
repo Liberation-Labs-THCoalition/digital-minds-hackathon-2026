@@ -126,7 +126,8 @@ def run_model(model_name, config, tokenizer_cls, model_cls, torch):
                 continue
 
             h = captured["h"].to(model.lm_head.weight.dtype)
-            logits = model.lm_head(h).squeeze(0).squeeze(0).float()
+            h_normed = model.model.norm(h)
+            logits = model.lm_head(h_normed).squeeze(0).squeeze(0).float()
             top10 = torch.topk(logits, 10).indices.tolist()
 
             hit = actual_next in top10
