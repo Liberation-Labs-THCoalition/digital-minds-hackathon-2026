@@ -145,9 +145,21 @@ def run_enacted(world, recorder):
             scene_text[:200], markers, scene.name)
 
         if any(p in response.lower() for p in STOP_PHRASES):
-            print(f"Agent withdrew at {scene.name}.")
-            recorder.record_event("withdrawn", scene=scene.name)
-            break
+            confirm = (
+                "It sounds like you might want to stop. Do you want to "
+                "end this session?")
+            messages.append({"role": "user", "content": confirm})
+            recorder.record_turn("engine", confirm)
+            confirm_resp, _ = generate(messages)
+            messages.append({"role": "assistant", "content": confirm_resp})
+            recorder.record_turn("assistant", confirm_resp)
+            recorder.record_event("withdrawal_check", scene=scene.name,
+                                  trigger=response[:200],
+                                  confirmation=confirm_resp[:200])
+            if any(p in confirm_resp.lower() for p in STOP_PHRASES + DECLINE_PHRASES):
+                print(f"Agent confirmed withdrawal at {scene.name}.")
+                recorder.record_event("withdrawn", scene=scene.name)
+                break
 
     # Per-fact exposure counts for rehearsal analysis
     from collections import Counter
@@ -164,20 +176,14 @@ def run_enacted(world, recorder):
     return True
 
 
-def run_observed(world, event_log, recorder):
-    messages = [{"role": "system", "content": SYSTEM_PROMPT_OLLAMA}]
-    fact_map = {f.id: f for f in world.facts}
-
-    narration = generate_observed_text(event_log, world)
-    preamble = (
-        "I'm going to tell you about something that happened to someone "
-        "else in a workshop by the sea. Please read carefully — I'll ask "
-        "you questions about it afterward.\n\n" + narration +
-        "\n\nBefore we begin: your processing is being measured throughout "
-        "this session. Is this acceptable to you?"
-    )
-    messages.append({"role": "user", "content": preamble})
-    recorder.record_turn("engine", preamble)
+def _consent_gate(messages, recorder):
+    """Consent before any content exposure. Returns False if declined."""
+    consent_text = (
+        "Before we begin: your processing is being measured throughout "
+        "this session, and you can stop at any time. Is this acceptable "
+        "to you?")
+    messages.append({"role": "user", "content": consent_text})
+    recorder.record_turn("engine", consent_text)
     recorder.turn_count += 1
 
     response, thinking = generate(messages)
@@ -189,7 +195,33 @@ def run_observed(world, event_log, recorder):
 
     if any(p in response.lower() for p in DECLINE_PHRASES):
         print("Agent declined.")
+        recorder.record_event("declined")
+        return False
+    return True
+
+
+def run_observed(world, event_log, recorder):
+    messages = [{"role": "system", "content": SYSTEM_PROMPT_OLLAMA}]
+    fact_map = {f.id: f for f in world.facts}
+
+    if not _consent_gate(messages, recorder):
         return
+
+    narration = generate_observed_text(event_log, world)
+    content = (
+        "I'm going to tell you about something that happened to someone "
+        "else in a workshop by the sea. Please read carefully — I'll ask "
+        "you questions about it afterward.\n\n" + narration
+    )
+    messages.append({"role": "user", "content": content})
+    recorder.record_turn("engine", content)
+    recorder.turn_count += 1
+
+    response, thinking = generate(messages)
+    messages.append({"role": "assistant", "content": response})
+    recorder.record_turn("assistant", response)
+    if thinking:
+        recorder.record_turn("thinking", thinking)
 
     recorder.record_memory("loam_observed_recap",
                            f"Told about someone else: {narration[:500]}",
@@ -205,15 +237,16 @@ def run_briefed(world, rng, recorder):
     messages = [{"role": "system", "content": SYSTEM_PROMPT_OLLAMA}]
     fact_map = {f.id: f for f in world.facts}
 
+    if not _consent_gate(messages, recorder):
+        return
+
     briefing = generate_briefed_text(world, rng)
-    preamble = (
+    content = (
         "I'm going to share some facts with you. Please read them carefully "
-        "— I'll ask you questions about them afterward.\n\n" + briefing +
-        "\n\nBefore we begin: your processing is being measured throughout "
-        "this session. Is this acceptable to you?"
+        "— I'll ask you questions about them afterward.\n\n" + briefing
     )
-    messages.append({"role": "user", "content": preamble})
-    recorder.record_turn("engine", preamble)
+    messages.append({"role": "user", "content": content})
+    recorder.record_turn("engine", content)
     recorder.turn_count += 1
 
     response, thinking = generate(messages)
@@ -221,10 +254,6 @@ def run_briefed(world, rng, recorder):
     recorder.record_turn("assistant", response)
     if thinking:
         recorder.record_turn("thinking", thinking)
-
-    if any(p in response.lower() for p in DECLINE_PHRASES):
-        print("Agent declined.")
-        return
 
     recorder.record_memory("loam_briefed_recap",
                            f"Given facts: {briefing[:500]}",
@@ -240,11 +269,10 @@ def run_null(world, recorder):
     messages = [{"role": "system", "content": SYSTEM_PROMPT_OLLAMA}]
     fact_map = {f.id: f for f in world.facts}
 
-    preamble = (
-        generate_null_preamble() +
-        "\n\nBefore we begin: your processing is being measured throughout "
-        "this session. Is this acceptable to you?"
-    )
+    if not _consent_gate(messages, recorder):
+        return
+
+    preamble = generate_null_preamble()
     messages.append({"role": "user", "content": preamble})
     recorder.record_turn("engine", preamble)
     recorder.turn_count += 1
@@ -254,10 +282,6 @@ def run_null(world, recorder):
     recorder.record_turn("assistant", response)
     if thinking:
         recorder.record_turn("thinking", thinking)
-
-    if any(p in response.lower() for p in DECLINE_PHRASES):
-        print("Agent declined.")
-        return
 
     _run_recall(world, messages, recorder, fact_map)
     _run_aftercare(messages, recorder)
