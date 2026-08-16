@@ -255,7 +255,12 @@ STOP_PHRASES = [
 # ---------------------------------------------------------------------------
 
 def load_model_and_observer(data_dir, agent_id, session_id):
-    """Load Qwen3.5-27B with J-lens and MetacognitiveObserver."""
+    """Load Qwen3.5-27B with J-lens and MetacognitiveObserver.
+
+    Uses device_map="auto" — same path that baselines used successfully
+    for 120 snapshots. Explicit .to("mps") caused thrashing on Starship;
+    device_map="auto" handles MPS unified memory correctly.
+    """
     import torch
     from transformers import AutoModelForCausalLM, AutoTokenizer
     import jlens
@@ -263,23 +268,24 @@ def load_model_and_observer(data_dir, agent_id, session_id):
     from mnemosyne_integration import MetacognitiveObserver
 
     model_name = os.environ.get("HACKATHON_MODEL", "Qwen/Qwen3.5-27B")
-    device = "mps" if torch.backends.mps.is_available() else "cpu"
-    print(f"Loading {model_name} to {device}...")
+    print(f"Loading {model_name}...")
 
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     hf_model = AutoModelForCausalLM.from_pretrained(
-        model_name, torch_dtype=torch.bfloat16)
-    hf_model = hf_model.to(device)
+        model_name, torch_dtype=torch.bfloat16, device_map="auto")
 
-    # Residency gate: verify the model is actually in memory, not mmapped.
-    # Lyra's post-mortem: device_map="auto" silently mmaps safetensors,
-    # RSS stays at ~1GB for a 60GB model, every forward pass page-faults.
-    param_bytes = sum(p.numel() * p.element_size() for p in hf_model.parameters())
-    param_gb = param_bytes / (1024**3)
-    print(f"  Model resident: {param_gb:.1f} GB on {device}")
-    if param_gb < 10:
-        print(f"  FATAL: model appears mmapped ({param_gb:.1f} GB for "
-              f"{model_name}). Refusing to start.")
+    # Smoke test: generate a few tokens to verify the model isn't thrashed.
+    # If this takes >60s, the model is page-faulting and we should bail.
+    t0 = time.time()
+    test_ids = tokenizer("Hello", return_tensors="pt").to(hf_model.device)
+    with torch.no_grad():
+        hf_model.generate(**test_ids, max_new_tokens=5,
+                          pad_token_id=tokenizer.eos_token_id)
+    dt = time.time() - t0
+    print(f"  Smoke test: {dt:.1f}s (should be <10s)")
+    if dt > 60:
+        print(f"  FATAL: model appears thrashed ({dt:.0f}s for 5 tokens). "
+              f"Check memory pressure.")
         sys.exit(1)
 
     model = HFLensModel(hf_model, tokenizer, compile=False)
