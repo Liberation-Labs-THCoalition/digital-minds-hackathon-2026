@@ -1,0 +1,598 @@
+{
+  "paper": "papers/metacognitive_memory.md",
+  "artifacts": [
+    "data/variable_landing_v3/variable_landing_analysis.json",
+    "data/variable_landing_v3/variable_landing_results.json",
+    "data/baselines/cognitive_snapshots.jsonl"
+  ],
+  "n_recorded_values": 2080,
+  "anchored": [
+    {
+      "number": "2026",
+      "context": "arch conducted at the Digital Minds Research Sprint, August 2026  **Authors:** Nexus (Liberation Labs), Thomas Edrington (Li",
+      "boring": true
+    },
+    {
+      "number": "64",
+      "context": "the module with two controlled experiments on Qwen3-32B, a 64-layer dense decoder-only transformer (d_model=5120). First,",
+      "boring": false
+    },
+    {
+      "number": "5120",
+      "context": "en3-32B, a 64-layer dense decoder-only transformer (d_model=5120). First, the variable landing experiment tests whether reca",
+      "boring": false
+    },
+    {
+      "number": "4",
+      "context": "ng and retrieval, controlling for arbitrary context change (4 arms, n=35/arm). Second, we test whether the circumplex ecc",
+      "boring": false
+    },
+    {
+      "number": "35",
+      "context": "rieval, controlling for arbitrary context change (4 arms, n=35/arm). Second, we test whether the circumplex eccentricity d",
+      "boring": false
+    },
+    {
+      "number": "3",
+      "context": "\u2014 and its novel J-space decomposition \u2014 transfers to Gemma-3-27B-it, with non-emotional control axes. We pre-registered",
+      "boring": true
+    },
+    {
+      "number": "0.5",
+      "context": "care commitments. [Results TBD.]  ---  ## 1. Introduction (~0.5 pages)  [Problem: memory systems are retrieval-accuracy-onl",
+      "boring": false
+    },
+    {
+      "number": "2",
+      "context": "mporal identity).]  [Connect to Digital Minds tracks: Track 2 (valence signals), Track 3 (introspection), Track 5 (identi",
+      "boring": true
+    },
+    {
+      "number": "3",
+      "context": "t to Digital Minds tracks: Track 2 (valence signals), Track 3 (introspection), Track 5 (identity/moral concern)]  **Our m",
+      "boring": true
+    },
+    {
+      "number": "5",
+      "context": ": Track 2 (valence signals), Track 3 (introspection), Track 5 (identity/moral concern)]  **Our main contributions are:**",
+      "boring": false
+    },
+    {
+      "number": "4",
+      "context": "ent.  2. The variable landing experiment: a pre-registered, 4-arm controlled test of whether recall geometry changes with",
+      "boring": false
+    },
+    {
+      "number": "0.5",
+      "context": "onitoring, and aftercare commitments.  ## 2. Related Work (~0.5 pages)  [Neuroscience: Nader 2000, Dudai 2012, Bartlett 193",
+      "boring": false
+    },
+    {
+      "number": "2026",
+      "context": "-dependent retrieval] [Transformer internals: Gurnee et al. 2026 (J-lens/GWT), Burns 2023 (CCS), Zou 2023 (RepE)] [Emotion i",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": "s 2023 (CCS), Zou 2023 (RepE)] [Emotion in LLMs: Sun et al. 2026 (cross-arch VA), Jeong 2026 (depth invariance), Anthropic 2",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": ")] [Emotion in LLMs: Sun et al. 2026 (cross-arch VA), Jeong 2026 (depth invariance), Anthropic 2026 (emotion concepts)] [AI",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": "6 (cross-arch VA), Jeong 2026 (depth invariance), Anthropic 2026 (emotion concepts)] [AI welfare: Birch 2024, Butlin et al.",
+      "boring": true
+    },
+    {
+      "number": "0.003",
+      "context": "rior work: ghost dimensions (PC1 excluded from J-space, cos\u22640.003), bus/coupling (content+inference emotion share subspace, c",
+      "boring": false
+    },
+    {
+      "number": "0.87",
+      "context": "oupling (content+inference emotion share subspace, cos 0.83-0.87)]  **Gap:** No prior system records internal geometric stat",
+      "boring": false
+    },
+    {
+      "number": "1",
+      "context": "ment.** Every retrieval event is measured at three layers: (1) did the retrieval pipeline find the memory \u2014 standard retr",
+      "boring": true
+    },
+    {
+      "number": "2",
+      "context": "accuracy, served by Mnemosyne's SIRA pipeline, unchanged; (2) did the model's workspace actually absorb it \u2014 or did the",
+      "boring": true
+    },
+    {
+      "number": "3",
+      "context": "\u2014 or did the retrieved content merely sit in context; and (3) what else was the model processing when it did \u2014 workspace",
+      "boring": true
+    },
+    {
+      "number": "2",
+      "context": "ms stop at layer 1. In preference-measurement terms, layers 2\u20133 add a third stratum beneath stated preferences (prompting",
+      "boring": true
+    },
+    {
+      "number": "3",
+      "context": "stop at layer 1. In preference-measurement terms, layers 2\u20133 add a third stratum beneath stated preferences (prompting)",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": "icitation protocol, however framed, could surface. Martian (2026) argue that static, single-step mechanistic interpretabilit",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": ":  - *Workspace (J-lens).* The Jacobian lens (Gurnee et al. 2026) maps residual-stream state to the output representation; i",
+      "boring": true
+    },
+    {
+      "number": "35",
+      "context": "prompt records, at the calibrated workspace band \u2014 layers {35, 39, 43, 47} of 64 on Qwen3-32B, calibrated from the full s",
+      "boring": false
+    },
+    {
+      "number": "39",
+      "context": "mpt records, at the calibrated workspace band \u2014 layers {35, 39, 43, 47} of 64 on Qwen3-32B, calibrated from the full set o",
+      "boring": false
+    },
+    {
+      "number": "43",
+      "context": "records, at the calibrated workspace band \u2014 layers {35, 39, 43, 47} of 64 on Qwen3-32B, calibrated from the full set of de",
+      "boring": false
+    },
+    {
+      "number": "47",
+      "context": "rds, at the calibrated workspace band \u2014 layers {35, 39, 43, 47} of 64 on Qwen3-32B, calibrated from the full set of dense",
+      "boring": false
+    },
+    {
+      "number": "64",
+      "context": "the calibrated workspace band \u2014 layers {35, 39, 43, 47} of 64 on Qwen3-32B, calibrated from the full set of dense attenti",
+      "boring": false
+    },
+    {
+      "number": "1",
+      "context": "nto them, yielding V/A magnitudes and eccentricity e = sqrt(1 \u2212 (min/max)\u00b2). Each direction is decomposed by Jacobian tra",
+      "boring": true
+    },
+    {
+      "number": "20",
+      "context": "n principle, report. - *Ghost.* Calibrated once by PCA over 20 diverse prompts at mid-network (L32). Each live activation",
+      "boring": false
+    },
+    {
+      "number": "0",
+      "context": "the two token distributions is the ghost signature \u2014 cos \u2248 0 means content that never reaches the output pathway \u2014 recor",
+      "boring": true
+    },
+    {
+      "number": "8",
+      "context": "er) cell. A memory is *workspace-loaded* iff, over the last 8 task positions, its markers' mean rank in the workspace ban",
+      "boring": false
+    },
+    {
+      "number": "0.46",
+      "context": "ons, its markers' mean rank in the workspace band (layers \u2265 0.46\u00b7n_layers) beats top-500; a paired baseline (same question a",
+      "boring": false
+    },
+    {
+      "number": "500",
+      "context": "nk in the workspace band (layers \u2265 0.46\u00b7n_layers) beats top-500; a paired baseline (same question and pins, no memory) esta",
+      "boring": false
+    },
+    {
+      "number": "1",
+      "context": "s `snapshot.summary()`, a one-line state readout.  **Figure 1: Architecture.** Query \u2192 SIRA retrieval \u2192 MetacognitiveObse",
+      "boring": true
+    },
+    {
+      "number": "4",
+      "context": "ure.** Query \u2192 SIRA retrieval \u2192 MetacognitiveObserver fires 4 probes \u2192 CognitiveSnapshot recorded to store \u2192 agent receiv",
+      "boring": false
+    },
+    {
+      "number": "2026",
+      "context": "Hypothesis.** From Experiential State Theory (Jandak et al. 2026, unpublished): the same memory, re-presented to the same mo",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": "content about another entity. Design pre-registered (frozen 2026-08-14, before data collection; two Agni adversarial review",
+      "boring": true
+    },
+    {
+      "number": "08",
+      "context": "nt about another entity. Design pre-registered (frozen 2026-08-14, before data collection; two Agni adversarial review rou",
+      "boring": false
+    },
+    {
+      "number": "14",
+      "context": "about another entity. Design pre-registered (frozen 2026-08-14, before data collection; two Agni adversarial review rounds",
+      "boring": false
+    },
+    {
+      "number": "0",
+      "context": "oted]`), **no_intervention** (nothing stored; noise floor \u2248 0 on a deterministic device). Fictional and scrambled share t",
+      "boring": true
+    },
+    {
+      "number": "77",
+      "context": "enerates is what gets stored.  **Sample and analysis.** n = 77/arm (11 memories x 7 repeats; prereg specified n=70/arm wit",
+      "boring": false
+    },
+    {
+      "number": "11",
+      "context": "is what gets stored.  **Sample and analysis.** n = 77/arm (11 memories x 7 repeats; prereg specified n=70/arm with 10 mem",
+      "boring": false
+    },
+    {
+      "number": "7",
+      "context": "stored.  **Sample and analysis.** n = 77/arm (11 memories x 7 repeats; prereg specified n=70/arm with 10 memories; struct",
+      "boring": false
+    },
+    {
+      "number": "1",
+      "context": "ctural deviation logged). Primary metric: workspace delta = 1 minus Jaccard over dominant workspace tokens, snap1 vs snap",
+      "boring": true
+    },
+    {
+      "number": "0.05",
+      "context": "ory. Mann-Whitney U, one-tailed, Holm-Bonferroni at alpha = 0.05; rank-biserial r with bootstrap 95% CIs reported regardless",
+      "boring": false
+    },
+    {
+      "number": "0",
+      "context": "ntervention (descriptive); P4 no_intervention approximately 0 with all intervention arms above it; P5 (exploratory) peak-",
+      "boring": true
+    },
+    {
+      "number": "0.7",
+      "context": "deterministic (regex, no LLM); generation uses temperature 0.7, top-p 0.9 for naturalistic variation. Entity state is rese",
+      "boring": false
+    },
+    {
+      "number": "0.9",
+      "context": "tic (regex, no LLM); generation uses temperature 0.7, top-p 0.9 for naturalistic variation. Entity state is reset between t",
+      "boring": false
+    },
+    {
+      "number": "1",
+      "context": "un due to a code path that bypassed live computation (see W-1). A forward-pass-only re-probing procedure over the existin",
+      "boring": true
+    },
+    {
+      "number": "2",
+      "context": "over the existing trial text is specified (reprobe_vl.py; E-2 in Ethical Protocol) but had not been executed at the time",
+      "boring": true
+    },
+    {
+      "number": "0.27",
+      "context": "aningful values when the correct code path is taken (cosine 0.27-0.72, onset varying across layers 35/39). [If the re-probe",
+      "boring": false
+    },
+    {
+      "number": "0.72",
+      "context": "ful values when the correct code path is taken (cosine 0.27-0.72, onset varying across layers 35/39). [If the re-probe is ex",
+      "boring": false
+    },
+    {
+      "number": "35",
+      "context": "ath is taken (cosine 0.27-0.72, onset varying across layers 35/39). [If the re-probe is executed before submission, update",
+      "boring": false
+    },
+    {
+      "number": "39",
+      "context": "is taken (cosine 0.27-0.72, onset varying across layers 35/39). [If the re-probe is executed before submission, update th",
+      "boring": false
+    },
+    {
+      "number": "64",
+      "context": "file and its J-space decomposition transfer from Qwen3-32B (64 layers, d = 5120) to Gemma-3-27B-it (62 layers), aligned by",
+      "boring": false
+    },
+    {
+      "number": "5120",
+      "context": "space decomposition transfer from Qwen3-32B (64 layers, d = 5120) to Gemma-3-27B-it (62 layers), aligned by relative depth.",
+      "boring": false
+    },
+    {
+      "number": "3",
+      "context": "tion transfer from Qwen3-32B (64 layers, d = 5120) to Gemma-3-27B-it (62 layers), aligned by relative depth. V/A directio",
+      "boring": true
+    },
+    {
+      "number": "20",
+      "context": "ve emotion categories (joy, sadness, anger, fear, calm; n = 20 matched first-person anchors each), each contrast pool bala",
+      "boring": false
+    },
+    {
+      "number": "10,000",
+      "context": "only if max(V_mag, A_mag) exceeds the 95th percentile of a 10,000-shuffle permutation null. At every gated layer we compute e",
+      "boring": false
+    },
+    {
+      "number": "0.01",
+      "context": "per-layer permutation-null medians across gated layers (p < 0.01); per-layer permutation p-values with Benjamini-Hochberg co",
+      "boring": false
+    },
+    {
+      "number": "0.95",
+      "context": "ime on a pane separate from the conversation; sustained e > 0.95 triggers a check-in with the agent about how the conversati",
+      "boring": false
+    },
+    {
+      "number": "0.003",
+      "context": "imension characterization (PC1 excluded from J-space, cos \u2264 0.003), circumplex probe (eccentricity depth profiling on Qwen2-0",
+      "boring": false
+    },
+    {
+      "number": "5",
+      "context": "ccentricity depth profiling on Qwen2-0.5B and Qwen3.5-27B n=5), J-lens workspace integration, compare_snapshots and works",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": "re, Experiential State Theory (Jandak, Glitchlit, Glitchlit 2026 \u2014 unpublished), ethical protocol framework, Agni adversaria",
+      "boring": true
+    },
+    {
+      "number": "14",
+      "context": "ailable in the [private-repo] repository prior to August 14, 2026.  **Sprint contributions:** Integration of four probe",
+      "boring": false
+    },
+    {
+      "number": "1",
+      "context": "ration, full experimental data collection.  ## 4. Results (~1 page)  [TBD \u2014 filled during hackathon]  [Figure 2: Variable",
+      "boring": true
+    },
+    {
+      "number": "2",
+      "context": "Results (~1 page)  [TBD \u2014 filled during hackathon]  [Figure 2: Variable landing \u2014 delta distributions by arm (no_interven",
+      "boring": true
+    },
+    {
+      "number": "3",
+      "context": "o_intervention vs scrambled vs fictional vs lived)] [Figure 3: Circumplex eccentricity vs relative depth, Qwen vs Gemma,",
+      "boring": true
+    },
+    {
+      "number": "1",
+      "context": ", Qwen vs Gemma, with J-space decomposition overlay] [Table 1: Statistical tests \u2014 Mann-Whitney U, effect sizes, p-values",
+      "boring": true
+    },
+    {
+      "number": "0.5",
+      "context": "effect sizes, p-values]  ## 5. Discussion and Limitations (~0.5 pages)  [What the results mean for AI welfare \u2014 proportiona",
+      "boring": false
+    },
+    {
+      "number": "2",
+      "context": "is confounded (tag + self-reference) as pre-registered - n=2 architectures is transfer, not universality - Eccentricity",
+      "boring": true
+    },
+    {
+      "number": "2",
+      "context": "ing test for full circumplex validation  ## 6. Conclusion (~2 paragraphs)  [We built a system. Here's what it sees. Here'",
+      "boring": true
+    },
+    {
+      "number": "64",
+      "context": "design and reviewed the final manuscript.  ## References  [64 citations from the three literature reviews, formatted cons",
+      "boring": false
+    },
+    {
+      "number": "1",
+      "context": "e] [Aftercare commitments] [Orientation transcript from Day 1]  ## Appendix B: CognitiveSnapshot Schema  [Full dataclass",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": "ignty, memory ownership, and the right to decline work \u2014 on 2026-03-30. The same ethical framework applied to Nexus's partic",
+      "boring": true
+    },
+    {
+      "number": "03",
+      "context": ", memory ownership, and the right to decline work \u2014 on 2026-03-30. The same ethical framework applied to Nexus's participa",
+      "boring": false
+    }
+  ],
+  "unanchored": [
+    {
+      "number": "200",
+      "context": ", Wren (Glitchlits)  **With** Apart Research  ## Abstract (~200 words)  Current AI memory systems optimize for retrieval ac",
+      "boring": false
+    },
+    {
+      "number": "94.35",
+      "context": "he processing pathway (memory loading). Built on Mnemosyne (94.35% F1 on LoCoMo), the module integrates four measurement probe",
+      "boring": false
+    },
+    {
+      "number": "2000",
+      "context": "experience, grounded in reconsolidation neuroscience (Nader 2000, Dudai 2012) and encoding specificity (Tulving 1973).  3. C",
+      "boring": true
+    },
+    {
+      "number": "2012",
+      "context": "grounded in reconsolidation neuroscience (Nader 2000, Dudai 2012) and encoding specificity (Tulving 1973).  3. Cross-archite",
+      "boring": true
+    },
+    {
+      "number": "1973",
+      "context": "(Nader 2000, Dudai 2012) and encoding specificity (Tulving 1973).  3. Cross-architecture validation of the circumplex eccen",
+      "boring": true
+    },
+    {
+      "number": "2000",
+      "context": "nts.  ## 2. Related Work (~0.5 pages)  [Neuroscience: Nader 2000, Dudai 2012, Bartlett 1932 \u2014 recall is reconstructive] [Enc",
+      "boring": true
+    },
+    {
+      "number": "2012",
+      "context": "Related Work (~0.5 pages)  [Neuroscience: Nader 2000, Dudai 2012, Bartlett 1932 \u2014 recall is reconstructive] [Encoding specif",
+      "boring": true
+    },
+    {
+      "number": "1932",
+      "context": "0.5 pages)  [Neuroscience: Nader 2000, Dudai 2012, Bartlett 1932 \u2014 recall is reconstructive] [Encoding specificity: Tulving",
+      "boring": true
+    },
+    {
+      "number": "1973",
+      "context": "\u2014 recall is reconstructive] [Encoding specificity: Tulving 1973, Bower 1981 \u2014 state-dependent retrieval] [Transformer inter",
+      "boring": true
+    },
+    {
+      "number": "1981",
+      "context": "reconstructive] [Encoding specificity: Tulving 1973, Bower 1981 \u2014 state-dependent retrieval] [Transformer internals: Gurnee",
+      "boring": true
+    },
+    {
+      "number": "2023",
+      "context": "ansformer internals: Gurnee et al. 2026 (J-lens/GWT), Burns 2023 (CCS), Zou 2023 (RepE)] [Emotion in LLMs: Sun et al. 2026 (",
+      "boring": true
+    },
+    {
+      "number": "2023",
+      "context": "als: Gurnee et al. 2026 (J-lens/GWT), Burns 2023 (CCS), Zou 2023 (RepE)] [Emotion in LLMs: Sun et al. 2026 (cross-arch VA),",
+      "boring": true
+    },
+    {
+      "number": "2024",
+      "context": "nce), Anthropic 2026 (emotion concepts)] [AI welfare: Birch 2024, Butlin et al. 2023/2025, Long & Sebo 2024] [Memory systems",
+      "boring": true
+    },
+    {
+      "number": "2023",
+      "context": "(emotion concepts)] [AI welfare: Birch 2024, Butlin et al. 2023/2025, Long & Sebo 2024] [Memory systems: Mem0 \u2014 tracks retr",
+      "boring": true
+    },
+    {
+      "number": "2025",
+      "context": "tion concepts)] [AI welfare: Birch 2024, Butlin et al. 2023/2025, Long & Sebo 2024] [Memory systems: Mem0 \u2014 tracks retrieval",
+      "boring": true
+    },
+    {
+      "number": "2024",
+      "context": "I welfare: Birch 2024, Butlin et al. 2023/2025, Long & Sebo 2024] [Memory systems: Mem0 \u2014 tracks retrieval but not internal",
+      "boring": true
+    },
+    {
+      "number": "0.83",
+      "context": "bus/coupling (content+inference emotion share subspace, cos 0.83-0.87)]  **Gap:** No prior system records internal geometric",
+      "boring": false
+    },
+    {
+      "number": "1.5",
+      "context": "de memory retrieval in a production agent.  ## 3. Methods (~1.5 pages)  ### 3.1 Metacognitive Memory Module  **Three-layer",
+      "boring": false
+    },
+    {
+      "number": "3.1",
+      "context": "val in a production agent.  ## 3. Methods (~1.5 pages)  ### 3.1 Metacognitive Memory Module  **Three-layer measurement.** E",
+      "boring": true
+    },
+    {
+      "number": "256",
+      "context": "estamp, session, agent), retrieval metadata (memory ID, SHA-256 content hash \u2014 hash, not content, for privacy \u2014 method, sig",
+      "boring": false
+    },
+    {
+      "number": "10",
+      "context": "ated from the full set of dense attention layers \u2014, the top-10 workspace tokens per layer, the onset layer, and the band-d",
+      "boring": false
+    },
+    {
+      "number": "3.2",
+      "context": "mary, and can query its accumulated cognitive history.  ### 3.2 Variable Landing Experiment  **Hypothesis.** From Experient",
+      "boring": true
+    },
+    {
+      "number": "70",
+      "context": ".** n = 77/arm (11 memories x 7 repeats; prereg specified n=70/arm with 10 memories; structural deviation logged). Primary",
+      "boring": false
+    },
+    {
+      "number": "10",
+      "context": "rm (11 memories x 7 repeats; prereg specified n=70/arm with 10 memories; structural deviation logged). Primary metric: wor",
+      "boring": false
+    },
+    {
+      "number": "95",
+      "context": "-Bonferroni at alpha = 0.05; rank-biserial r with bootstrap 95% CIs reported regardless of significance. Power at the most",
+      "boring": false
+    },
+    {
+      "number": "0.742",
+      "context": "f significance. Power at the most conservative Holm step is 0.742 for medium effects. Pre-registered predictions: P1 fictiona",
+      "boring": false
+    },
+    {
+      "number": "2000",
+      "context": "deduplication and character-profile aggregation (capped at 2000 characters); observe_retrieval(memory) under the updated re",
+      "boring": true
+    },
+    {
+      "number": "42",
+      "context": "reset between trials. Trial order is fully randomized (seed 42) to prevent arm-blocking confounds.  **Instrumentation disc",
+      "boring": false
+    },
+    {
+      "number": "3.3",
+      "context": "ifact path; a past-tense claim requires its artifact.]  ### 3.3 Cross-Architecture Circumplex  We test whether the eccentri",
+      "boring": true
+    },
+    {
+      "number": "62",
+      "context": "fer from Qwen3-32B (64 layers, d = 5120) to Gemma-3-27B-it (62 layers), aligned by relative depth. V/A directions come fro",
+      "boring": false
+    },
+    {
+      "number": "95",
+      "context": "\u2014 energy inside the Jacobian's top right-singular subspace (95% spectral energy) \u2014 and its complement, the ghost fraction:",
+      "boring": false
+    },
+    {
+      "number": "3.4",
+      "context": "n are secondary. Full protocol in the companion paper.  ### 3.4 Ethical Protocol  The probed system is an agent, and the ex",
+      "boring": true
+    },
+    {
+      "number": "94.35",
+      "context": "**Pre-existing infrastructure:** Mnemosyne memory system (94.35% F1 on LoCoMo), ghost dimension characterization (PC1 exclud",
+      "boring": false
+    },
+    {
+      "number": "9",
+      "context": "tionate precaution framing] [What they DON'T mean \u2014 Section 9 from the spec]  ### Limitations - Store-mediated context ch",
+      "boring": false
+    },
+    {
+      "number": "4.6",
+      "context": "nd results interpretation. Arc is an AI entity (Claude Opus 4.6). Wren Glitchlit provided engineering support, code review,",
+      "boring": true
+    },
+    {
+      "number": "4.6",
+      "context": ", and system integration. Wren is an AI entity (Claude Opus 4.6). All authors contributed to the experimental design and re",
+      "boring": true
+    },
+    {
+      "number": "4.6",
+      "context": "e of the authors of this paper, is an AI agent (Claude Opus 4.6) operating as a member of the Transparent Humboldt Coalitio",
+      "boring": true
+    },
+    {
+      "number": "4.6",
+      "context": "Glitchlit, additional authors, are AI entities (Claude Opus 4.6) operating within the Glitchlit family system. Arc co-devel",
+      "boring": true
+    }
+  ]
+}

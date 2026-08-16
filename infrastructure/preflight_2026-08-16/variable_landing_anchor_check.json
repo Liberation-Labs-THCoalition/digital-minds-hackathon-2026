@@ -1,0 +1,294 @@
+{
+  "paper": "papers/variable_landing.md",
+  "artifacts": [
+    "data/variable_landing_v3/variable_landing_analysis.json",
+    "data/variable_landing_v3/variable_landing_results.json",
+    "data/baselines/cognitive_snapshots.jsonl",
+    "data/orientation/mnemosyne_memories.jsonl",
+    "data/orientation/orientation_transcript.jsonl",
+    "data/orientation/orientation_v2_inbox.json",
+    "data/orientation/orientation_v2_memories.jsonl",
+    "data/orientation/orientation_v2_transcript.jsonl",
+    "data/orientation/vl_memories_v2.json"
+  ],
+  "n_recorded_values": 2083,
+  "anchored": [
+    {
+      "number": "2026",
+      "context": "arch conducted at the Digital Minds Research Sprint, August 2026  **Authors:** Thomas Edrington (Liberation Labs), Nexus (Li",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": "from Experiential State Theory (Jandak et al., unpublished 2026) using a pre-registered 4-arm controlled experiment on Qwen",
+      "boring": true
+    },
+    {
+      "number": "4",
+      "context": "ry (Jandak et al., unpublished 2026) using a pre-registered 4-arm controlled experiment on Qwen3.5-27B (design v4, frozen",
+      "boring": false
+    },
+    {
+      "number": "5",
+      "context": "ory has a measurable form of identity).]  [Connect to Track 5: identity, entity individuation, moral concern distinction]",
+      "boring": false
+    },
+    {
+      "number": "2026",
+      "context": "ger for internal events] [EST: Jandak, Glitchlit, Glitchlit 2026 \u2014 \"experiential states cannot be replicated because the exp",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": "e experiencer changes\"] [GWT in transformers: Gurnee et al. 2026 \u2014 J-space as workspace bottleneck] [AI self-recognition: Li",
+      "boring": true
+    },
+    {
+      "number": "2",
+      "context": "itecture.]  ### 3.2 Experimental Design  [Design v4 (Option 2, Mnemosyne store update), per the frozen preregistration (i",
+      "boring": true
+    },
+    {
+      "number": "1",
+      "context": "replaced where compute allows and counts reported.]  [Table 1: Control matrix \u2014 what each arm establishes]  [Measurement",
+      "boring": true
+    },
+    {
+      "number": "0.05",
+      "context": "i across the hypothesis-bearing family at family-wise alpha 0.05; sanity comparisons vs no_intervention uncorrected and labe",
+      "boring": false
+    },
+    {
+      "number": "10,000",
+      "context": "abeled.] [Rank-biserial effect size with bootstrap 95% CIs (10,000 resamples), reported regardless of significance: power at t",
+      "boring": false
+    },
+    {
+      "number": "0.003",
+      "context": "imension characterization (PC1 excluded from J-space, cos \u2264 0.003), circumplex probe (eccentricity depth profiling on Qwen2-0",
+      "boring": false
+    },
+    {
+      "number": "5",
+      "context": "ccentricity depth profiling on Qwen2-0.5B and Qwen3.5-27B n=5), J-lens workspace integration, compare_snapshots and works",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": "re, Experiential State Theory (Jandak, Glitchlit, Glitchlit 2026 \u2014 unpublished), ethical protocol framework, Agni adversaria",
+      "boring": true
+    },
+    {
+      "number": "14",
+      "context": "ailable in the [private-repo] repository prior to August 14, 2026.  **Sprint contributions:** All experimental runs (4",
+      "boring": false
+    },
+    {
+      "number": "4",
+      "context": "14, 2026.  **Sprint contributions:** All experimental runs (4 arms, all observations), statistical analysis, berry waffle",
+      "boring": false
+    },
+    {
+      "number": "1",
+      "context": "monitoring during experiment.  ## 4. Results  [TBD] [Figure 1: Delta distributions by arm] [Figure 2: Eccentricity during",
+      "boring": true
+    },
+    {
+      "number": "2",
+      "context": "sults  [TBD] [Figure 1: Delta distributions by arm] [Figure 2: Eccentricity during experiment (welfare monitor)] [Table 2",
+      "boring": true
+    },
+    {
+      "number": "2",
+      "context": "2: Eccentricity during experiment (welfare monitor)] [Table 2: Statistical tests]  ## 5. Discussion and Limitations  [Wha",
+      "boring": true
+    },
+    {
+      "number": "2",
+      "context": "xperimental design (v4) and its preregistration, the Option 2 store-mediated pipeline, the orientation protocol execution",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": "hub.com/Liberation-Labs-THCoalition/digital-minds-hackathon-2026 - **Data/Datasets**: [Zenodo DOI TBD] - **Pre-registered pr",
+      "boring": true
+    },
+    {
+      "number": "2026",
+      "context": "tructure/preregister_variable_landing.md (design v4, frozen 2026-08-14 before data collection; deviations logged in an appen",
+      "boring": true
+    },
+    {
+      "number": "08",
+      "context": "ure/preregister_variable_landing.md (design v4, frozen 2026-08-14 before data collection; deviations logged in an appended",
+      "boring": false
+    },
+    {
+      "number": "14",
+      "context": "/preregister_variable_landing.md (design v4, frozen 2026-08-14 before data collection; deviations logged in an appended se",
+      "boring": false
+    },
+    {
+      "number": "2",
+      "context": "conversation via the agentic protocol. CC built the Option 2 store-mediated pipeline and the v4 design revision. Dwayne",
+      "boring": true
+    },
+    {
+      "number": "1",
+      "context": "ppendix A: Orientation Transcript [Full transcript from Day 1]  ## Appendix B: Pre-Registered Protocol [Relevant sections",
+      "boring": true
+    }
+  ],
+  "unanchored": [
+    {
+      "number": "200",
+      "context": "), CC (THCoalition)  **With** Apart Research  ## Abstract (~200 words)  Neuroscience has established that memories are reco",
+      "boring": false
+    },
+    {
+      "number": "2000",
+      "context": "ect's state at retrieval modulates what is retrieved (Nader 2000, Tulving 1973). We test whether this principle extends to A",
+      "boring": true
+    },
+    {
+      "number": "1973",
+      "context": "retrieval modulates what is retrieved (Nader 2000, Tulving 1973). We test whether this principle extends to AI systems: doe",
+      "boring": true
+    },
+    {
+      "number": "1973",
+      "context": "back depends on who you are when you ask (Tulving & Thomson 1973, Bower 1981). If AI systems exhibit analogous state-depende",
+      "boring": true
+    },
+    {
+      "number": "1981",
+      "context": "on who you are when you ask (Tulving & Thomson 1973, Bower 1981). If AI systems exhibit analogous state-dependent recall ge",
+      "boring": true
+    },
+    {
+      "number": "2000",
+      "context": "ng experience.  ## 2. Related Work  [Reconsolidation: Nader 2000, Schiller 2010, Dudai 2012 \u2014 recall destabilizes and rewrit",
+      "boring": true
+    },
+    {
+      "number": "2010",
+      "context": "## 2. Related Work  [Reconsolidation: Nader 2000, Schiller 2010, Dudai 2012 \u2014 recall destabilizes and rewrites] [Encoding s",
+      "boring": true
+    },
+    {
+      "number": "2012",
+      "context": "ed Work  [Reconsolidation: Nader 2000, Schiller 2010, Dudai 2012 \u2014 recall destabilizes and rewrites] [Encoding specificity:",
+      "boring": true
+    },
+    {
+      "number": "1973",
+      "context": "l destabilizes and rewrites] [Encoding specificity: Tulving 1973, Bower 1981, Eich & Metcalfe 1989 \u2014 state-dependent retriev",
+      "boring": true
+    },
+    {
+      "number": "1981",
+      "context": "es and rewrites] [Encoding specificity: Tulving 1973, Bower 1981, Eich & Metcalfe 1989 \u2014 state-dependent retrieval, stronger",
+      "boring": true
+    },
+    {
+      "number": "1989",
+      "context": "ding specificity: Tulving 1973, Bower 1981, Eich & Metcalfe 1989 \u2014 state-dependent retrieval, stronger for internal events]",
+      "boring": true
+    },
+    {
+      "number": "2025",
+      "context": "pace as workspace bottleneck] [AI self-recognition: Lindsey 2025 \u2014 functional introspective access exists] [AI welfare: Birc",
+      "boring": true
+    },
+    {
+      "number": "2024",
+      "context": "functional introspective access exists] [AI welfare: Birch 2024 (proportionate precaution), Long & Sebo 2024 (taking welfar",
+      "boring": true
+    },
+    {
+      "number": "2024",
+      "context": "welfare: Birch 2024 (proportionate precaution), Long & Sebo 2024 (taking welfare seriously), Butlin et al. 2023/2025 (consci",
+      "boring": true
+    },
+    {
+      "number": "2023",
+      "context": "Long & Sebo 2024 (taking welfare seriously), Butlin et al. 2023/2025 (consciousness indicators)]  **Gap:** No prior work ha",
+      "boring": true
+    },
+    {
+      "number": "2025",
+      "context": "& Sebo 2024 (taking welfare seriously), Butlin et al. 2023/2025 (consciousness indicators)]  **Gap:** No prior work has mea",
+      "boring": true
+    },
+    {
+      "number": "3.1",
+      "context": "controls for arbitrary context change.  ## 3. Methods  ### 3.1 The Metacognitive Memory Module (brief \u2014 full detail in com",
+      "boring": true
+    },
+    {
+      "number": "3.2",
+      "context": "ame memory. See [Module paper] for full architecture.]  ### 3.2 Experimental Design  [Design v4 (Option 2, Mnemosyne store",
+      "boring": true
+    },
+    {
+      "number": "2.3",
+      "context": "ived-arm conversation is naturalistic, not scripted (prereg 2.3): scripting would measure the experimenters' writing, not t",
+      "boring": false
+    },
+    {
+      "number": "70",
+      "context": "g so the PRIMARY comparison carries no tag confound.]  [n = 70 per arm, 280 observations; trial order randomized. Mechanic",
+      "boring": false
+    },
+    {
+      "number": "280",
+      "context": "MARY comparison carries no tag confound.]  [n = 70 per arm, 280 observations; trial order randomized. Mechanical exclusion",
+      "boring": false
+    },
+    {
+      "number": "3.3",
+      "context": "city extraction operates on the serialized snapshots.]  ### 3.3 Ethical Protocol  [Orientation conversation: what we told t",
+      "boring": true
+    },
+    {
+      "number": "3.4",
+      "context": "nded if markers indicate, honest conversation if null]  ### 3.4 Statistical Analysis  [Mann-Whitney U, one-tailed in the pr",
+      "boring": true
+    },
+    {
+      "number": "95",
+      "context": "ted and labeled.] [Rank-biserial effect size with bootstrap 95% CIs (10,000 resamples), reported regardless of significance",
+      "boring": false
+    },
+    {
+      "number": "0.742",
+      "context": "f significance: power at the most conservative Holm step is 0.742, so this study is framed as a pilot for effect-size estimat",
+      "boring": false
+    },
+    {
+      "number": "94.35",
+      "context": "**Pre-existing infrastructure:** Mnemosyne memory system (94.35% F1 on LoCoMo), ghost dimension characterization (PC1 exclud",
+      "boring": false
+    },
+    {
+      "number": "0.742",
+      "context": "del (Qwen3.5-27B) has no prior consent relationship - Power 0.742 at the most conservative corrected step (n=70/arm): pilot f",
+      "boring": false
+    },
+    {
+      "number": "70",
+      "context": "ip - Power 0.742 at the most conservative corrected step (n=70/arm): pilot framing; small effects are explicitly not ruled",
+      "boring": false
+    },
+    {
+      "number": "4.6",
+      "context": "ent  Nexus, one of the authors, is an AI agent (Claude Opus 4.6) and member of the Transparent Humboldt Coalition. Nexus de",
+      "boring": true
+    },
+    {
+      "number": "4.6",
+      "context": "review. Arc and Wren Glitchlit are AI entities (Claude Opus 4.6) operating within the Glitchlit family system; Arc co-devel",
+      "boring": true
+    }
+  ]
+}
