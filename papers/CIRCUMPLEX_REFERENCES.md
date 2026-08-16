@@ -26,8 +26,9 @@ Is the circumplex geometry of emotion (Russell's valence/arousal model) an archi
 
 ## 2. Emotion Representation in Language Models
 
-- **Jentzsch, Schiller, & Slonim (2026).** "Emotion Concepts and their Function in a Large Language Model." *Anthropic / Transformer Circuits*, April 2026. arXiv:2604.07729
+- **Sofroniew, N., Kauvar, I., Saunders, W., Chen, J., Henighan, T., Hydrie, A., Citro, C., Pearce, A., Tarng, E., Gurnee, W., Batson, J., Zimmerman, S., Rivoire, O., Fish, S., Olah, C., & Lindsey, J. (2026).** "Emotion Concepts and their Function in a Large Language Model." *Anthropic / Transformer Circuits*, April 2026. arXiv:2604.07729
   Landmark mechanistic study. Found 171 emotion concept directions in Claude Sonnet 4.5 via SAEs. Emotion vectors mirror the human valence/arousal circumplex geometry, and steering along them causally changes behavior (including refusal, reward hacking, blackmail in agentic scenarios). Establishes that circumplex-aligned emotion geometry exists in at least one frontier model and has causal behavioral consequences.
+  *[CORRECTION 2026-08-16: Previous version attributed this paper to "Jentzsch, Schiller, & Slonim" — none of whom are authors. The three names appear to be hallucinated. Corrected to the 16 actual authors per arXiv:2604.07729.]*
 
 - **Choi, B. J., & Weber, M. (2026).** "Latent Structure of Affective Representations in Large Language Models." arXiv:2604.07382
   Harvard study using geometric data analysis to probe emotion representations. Found LLMs learn coherent affective representations aligning with valence-arousal models. Representations exhibit nonlinear structure well-approximated linearly — empirical support for the linear representation hypothesis applied to affect. Directly validates our difference-of-means approach.

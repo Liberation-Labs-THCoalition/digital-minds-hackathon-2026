@@ -27,7 +27,7 @@ Compiled 2026-08-11 for Apart Research Digital Minds Hackathon (Aug 14-16).
 - **Dudai (2012).** "The Restless Engram: Consolidations Never End." *Annual Review of Neuroscience*, 35, 227-247. DOI: 10.1146/annurev-neuro-062111-150500
   Engrams are never finalized — continuously modified at systems level. If consolidation never ends, the "same" memory is never the same object twice.
 
-- **Schwabe (2024).** "Memory Under Stress: From Adaptation to Disorder." *Biological Psychiatry*. DOI: 10.1016/j.biopsych.2024.06.009
+- **Schwabe (2024).** "Memory Under Stress: From Adaptation to Disorder." *Biological Psychiatry*. DOI: 10.1016/j.biopsych.2024.06.005
   Stress alters four fundamental memory processes via hormonal cascades. Subject's physiological state at retrieval modulates what is retrieved.
 
 - **Bartlett (1932).** *Remembering: A Study in Experimental and Social Psychology.* Cambridge University Press.
@@ -116,3 +116,17 @@ Compiled 2026-08-11 for Apart Research Digital Minds Hackathon (Aug 14-16).
 
 - **Goldstein & Kirk-Giannini (2024).** "A Case for AI Consciousness: Language Agents and Global Workspace Theory." arXiv:2410.11407.
   If GWT is correct, artificial language agents might already satisfy its conditions for phenomenal consciousness.
+
+---
+
+## Citation Audit Flags (2026-08-16, Kavi)
+
+*Writer notes — soften these claims before submission:*
+
+1. **Nader+Tulving for "memories are reconstructed, not replayed" (VL abstract):** Misattributed. Nader 2000 is reconsolidation/lability; Tulving & Thomson 1973 is cue–trace overlap. "Reconstructed, not replayed" is Bartlett 1932 — add Bartlett, keep Nader for lability only.
+2. **Bower 1981 stated as established:** Bower & Mayer (1985) failed to replicate Bower's own effect. Eich (1995) established boundary conditions. Cite as contested. Note: Eich & Metcalfe (1989) shows mood-dependence IS robust for internally generated events — our regime. This *strengthens* the paper.
+3. **Schiller 2010 for "retrieval actively rewrites":** Chalkia et al. (2020) is a registered null replication in humans. Qualify the human-behavioral extension; the animal result (Nader) is not in dispute.
+4. **Martian 2026:** Direct quote is verbatim accurate, but "call for interpretability run continuously in production" extends beyond the source. Source frames around research/eval trajectories, not deployed always-on instrumentation. Rewrite to: "call for interpretability methods that track evolving internal state across an agent's trajectory."
+5. **Jeong 2026:** "Depth invariance" inverts the actual finding. Jeong found emotion representations localize at ~50% depth, architecture-invariant across 124M–3B. The invariance is across architectures, not across depths. Fix: "architecture-invariant mid-depth localization."
+6. **LoCoMo "94.35% F1":** No benchmark citation anywhere. Add: Maharana et al. (2024), arXiv:2402.17753. State which F1 measure and against which baselines.
+7. **Tulving 1973:** Use "Tulving & Thomson 1973" throughout (inconsistent within VL).
