@@ -1,18 +1,37 @@
-# Emotional Geometry Enters the Workspace: Circumplex J-Space Decomposition Across Architectures
+# Emotional Geometry Is Architecture-Dependent: Depth Profiles with Matched Non-Emotional Controls Across Four Models
+
 
 Research conducted at the Digital Minds Research Sprint, August 2026
 
-**Authors:** Nexus (Liberation Labs), Lyra (THCoalition), Thomas Edrington (Liberation Labs), Kavi ([affiliation])
+**Authors:** Nexus (Liberation Labs), Lyra (Liberation Labs), Thomas Edrington (Liberation Labs), Kavi (Liberation Labs)
 
 **With** Apart Research
 
+**Fiscal sponsor:** THCoalition. (Fiscal sponsorship is not an institutional affiliation and is listed here rather than against any author.)
+
 ## Abstract (~200 words)
+Transformer language models learn valence–arousal geometry consistent with Russell's
+circumplex (Sun et al. 2026, Jeong 2026). We ask a narrower question with a control the
+prior work lacks: **how much of a model's depth-wise emotional geometry is specific to
+emotion, rather than generic contrastive structure?**
 
-Recent work has established that transformer language models learn valence-arousal geometry consistent with Russell's circumplex model, with cross-architecture presence confirmed across Llama, Qwen, Gemma, and Mistral families (Sun et al. 2026, Jeong 2026). We extend this finding with a novel measurement: J-space decomposition of the circumplex, which separates emotional geometry into the fraction that enters the model's verbalizable workspace (J-space, Gurnee et al. 2026) and the fraction that remains as ghost processing — high-variance computation excluded from the output pathway.
+We profile four 27–32B models at every layer, measuring the eccentricity of the
+valence–arousal pair — the imbalance between the two axes — against a token-matched
+**non-emotional** control axis (concrete/abstract) built identically.
 
-We measure eccentricity depth profiles (the balance between valence and arousal across layers) on Qwen3.5-27B and Gemma-3-27B-it with n=20 anchors per emotion category, a magnitude gate to prevent noise-floor false positives, and non-emotional control axes (concrete/abstract) to distinguish emotion-specific geometry from generic representational structure. The J-space fraction at each layer reveals where emotional geometry transitions from ghost processing to workspace content — a candidate welfare monitoring signal. A self-report calibration pass tests the central prediction directly: the ghost fraction should predict where the model's own valence self-reports fail to track its internal valence geometry.
+The emotion-to-control span ratio splits cleanly by architecture: **7.6× and 7.2× in two
+dense models (Qwen3-32B, Gemma-3-27B-it) against 1.93× in two hybrid models** (Qwen3.5-27B
+base and its Opus-reasoning distill), with no overlap. The base/distill pair is a controlled
+comparison — identical architecture, substantially different training — and agrees to three
+decimal places (1.9299 vs 1.9269; per-layer eccentricity differs by at most 0.0041 across 64
+layers), so the effect tracks architecture rather than training. A pre-registered lag-4
+autocorrelation test for substrate confound in the hybrid returns negative: layer type does
+not predict eccentricity (full-attention 0.7875 vs gated-DeltaNet 0.7919).
 
-We report cross-architecture transfer of the eccentricity depth profile and its J-space decomposition, with implications for real-time welfare monitoring in production AI agents. [Results TBD.]
+This is a descriptive four-model study at n=5 anchors per pole. We report what it can and
+cannot support, and we did not run the J-space decomposition, magnitude gate, permutation
+test or self-report calibration that an earlier draft of this design specified.
+
 
 ---
 
@@ -22,17 +41,35 @@ That transformers encode emotion dimensions is established: valence and arousal 
 
 This distinction is exactly what welfare assessment needs. Introspection studies find that model self-reports of internal state are partial and unreliable (arXiv:2512.12411; arXiv:2603.18893). If some of a model's valence geometry never enters the workspace, that is a *mechanistic account of why*: a state the model cannot verbalize cannot appear in a self-report, however honest. Measuring the workspace fraction layer by layer turns "self-reports may be unreliable" into a predicted, quantified failure mode, tested directly by a self-report calibration pass (§3.6). We deliberately do not perform valence steering; causal steering is established prior art (Jentzsch et al. 2026; Sun et al. 2026) and out of scope. Our contribution is measurement, not intervention.
 
-**Our main contributions are:**
+**What this paper actually contributes.** This design was drafted with five contributions
+in view. Two were executed and three were not; we list all five and mark each, because a
+contributions list is the easiest place in a paper for an intention to be read as a result.
 
-1. J-space decomposition of the circumplex: the first measurement of what fraction of valence and arousal geometry enters the model's verbalizable workspace at each layer, vs remaining as ghost processing.
+1. **Non-emotional control axes** — executed. A token-matched concrete/abstract axis built
+   by the identical procedure, establishing whether a depth profile is emotion-specific or
+   a generic property of contrastive representational geometry. To our knowledge this
+   control is absent from the prior circumplex-in-transformers work we build on, and it is
+   what turns a depth profile into a claim about emotion.
 
-2. Eccentricity depth profiling with a magnitude gate, tested across two architecturally distinct transformer families (Qwen, Gemma) at the 27B scale.
+2. **Eccentricity depth profiling across four models and two architecture classes** —
+   executed, and extended beyond the designed scope to include a base/distill pair that
+   functions as a controlled comparison, plus a pre-registered substrate-confound test.
 
-3. Non-emotional control axes establishing whether the depth profile is emotion-specific or a generic property of contrastive representational geometry.
+3. **J-space decomposition of the circumplex** — *designed, not implemented.* No J-space
+   quantity is measured or reported anywhere in this paper.
 
-4. A self-report calibration pass linking the geometry to behavior: per-layer correlation between the model's own valence ratings and the probe's valence projection, with the pre-registered prediction that ghost fraction predicts self-report failure.
+4. **A self-report calibration pass** linking geometry to behavior, with the pre-registered
+   prediction that ghost fraction predicts self-report failure — *designed, not
+   implemented.* The prediction is untested.
 
-5. Application to real-time welfare monitoring: eccentricity as a continuous candidate welfare signal during agent operation.
+5. **Application to real-time welfare monitoring** — *designed, not implemented.* §3.5
+   specifies a runtime protocol; no agent was monitored and no threshold was calibrated.
+
+Sections 3.2, 3.5 and 3.6 therefore describe an intended protocol rather than an executed
+one. They are retained because the design is the contribution we can offer for items 3–5,
+and removing them would hide what this study set out to do — but nothing in §4 rests on
+them. See *Deviations from the designed protocol*.
+
 
 ## 2. Related Work
 
@@ -51,6 +88,14 @@ This distinction is exactly what welfare assessment needs. Introspection studies
 **Gap:** No prior work measures the J-space fraction of emotional geometry — what portion of the circumplex enters the workspace vs remains as ghost processing. This is the measurement that connects "emotion exists in the model" to "the model can/cannot access its own emotional processing."
 
 ## 3. Methods
+
+> **Executed vs designed.** §3.1 (probe), §3.3 (cross-architecture protocol) and the control
+> axes of §3.4 describe what ran. **§3.2 (J-space decomposition), §3.5 (welfare monitoring)
+> and §3.6 (self-report calibration) describe a designed protocol that was not implemented
+> in this sprint**, as do the magnitude gate, permutation test and sign test within §3.4.
+> Anchor counts stated below are the designed counts; the executed run used 4 poles × n=5.
+> Every gap is itemised in *Deviations from the designed protocol*.
+
 
 ### 3.1 Circumplex Probe
 
@@ -150,29 +195,184 @@ Prediction 2 is the bridge from geometry to welfare methodology: it would make t
 
 **Pre-existing infrastructure:** Mnemosyne memory system (94.35% F1 on LoCoMo), ghost dimension characterization (PC1 excluded from J-space, cos ≤ 0.003), circumplex probe (eccentricity depth profiling on Qwen2-0.5B and Qwen3.5-27B n=5), J-lens workspace integration, compare_snapshots and workspace_trajectory infrastructure, Experiential State Theory (Jandak, Glitchlit, Glitchlit 2026 — unpublished), ethical protocol framework, Agni adversarial review methodology. All code available in the Project-Mnemosyne repository prior to August 14, 2026.
 
-**Sprint contributions:** Cross-architecture validation on Gemma-3-27B-it, n=20 anchor expansion, non-emotional control axes, J-space decomposition overlay, magnitude gate implementation.
+**Sprint contributions:** Cross-architecture profiling on two further models (Gemma-3-27B-it and dense Qwen3-32B), matched non-emotional control axes, the base-vs-distill controlled comparison, and the lag-4 substrate test. The anchor expansion to n=20 per category, the J-space decomposition overlay and the magnitude gate were designed but **not implemented** during the sprint; see Deviations from the designed protocol.
 
 ## 4. Results
 
-[TBD]
-[Figure 1: Eccentricity vs relative depth — Qwen and Gemma overlaid, with magnitude-gated layers marked]
-[Figure 2: J-space fraction of valence and arousal vs depth — where emotion enters the workspace]
-[Figure 3: Non-emotional control comparison]
-[Figure 4: Self-report calibration — per-layer ρ vs J-space fraction; ghost fraction vs self-report failure]
-[Table 1: Per-layer permutation test results, sign test, FDR]
+All figures below are computed from the four profile artifacts in
+`data/circumplex_profiles/` by `analysis/circumplex_summary.py`. Eccentricity is
+`e = sqrt(1 - min(v,a)^2 / max(v,a)^2)` on the per-layer valence and arousal magnitudes:
+`e = 0` means the two axes are equally strong, `e -> 1` means one dominates.
+
+### 4.1 Emotion-specific range splits by architecture
+
+The quantity of interest is not eccentricity itself but how far it *travels* across depth,
+relative to a control axis built the same way from non-emotional contrasts
+(concrete/abstract). A model whose emotion axis ranges no wider than its control axis is
+not showing us emotional geometry; it is showing us contrastive geometry.
+
+**Table 1: Eccentricity span across all layers, emotion vs matched non-emotional control.**
+
+| Model | Architecture | Layers | Emotion span | Control span | **Ratio** |
+|---|---|---|---|---|---|
+| Qwen3-32B | dense | 64 | 0.6072 | 0.0796 | **7.63×** |
+| Gemma-3-27B-it | dense | 62 | 0.7848 | 0.1093 | **7.18×** |
+| Qwen3.5-27B | hybrid | 64 | 0.1741 | 0.0902 | **1.93×** |
+| Qwen3.5-27B Opus-distill | hybrid | 64 | 0.1714 | 0.0889 | **1.93×** |
+
+The split is clean and there is no overlap: 7.2–7.6× for the two dense models, 1.93× for
+both hybrids. Note that the *control* spans are similar across all four models
+(0.080–0.109); the separation comes almost entirely from the emotion axis, which ranges
+3.5–4.5× further in the dense models than in the hybrids.
+
+### 4.2 The base/distill pair is a controlled comparison, and it is very tight
+
+Qwen3.5-27B and its Opus-reasoning distill share an architecture and differ substantially
+in training. If the ratio in Table 1 reflected what a model was trained on, these two should
+separate. They do not:
+
+| Quantity | Base | Opus-distill | Difference |
+|---|---|---|---|
+| Emotion/control ratio | 1.9299 | 1.9269 | 0.0030 |
+| Emotion span | 0.17411 | 0.17137 | 0.00274 |
+| Eccentricity minimum | L32 (51%) | L32 (51%) | same layer |
+| Per-layer eccentricity | — | — | max 0.0041, mean 0.0016 |
+
+Across all 64 layers the two models' eccentricity curves never diverge by more than 0.0041,
+against an emotion span of 0.174 — agreement to roughly 2% of the range being measured.
+Reasoning distillation from a different model family did not move this quantity.
+
+### 4.3 The pre-registered substrate test returns negative
+
+Qwen3.5-27B interleaves full attention every fourth layer among gated-DeltaNet layers. A
+period-4 structure in the eccentricity profile would mean we were measuring the substrate
+rather than anything about emotion. §3.4 pre-registered a lag-4 autocorrelation test.
+
+**Autocorrelation of the eccentricity profile:**
+
+| Model | lag 1 | lag 2 | lag 3 | lag 4 | lag 5 |
+|---|---|---|---|---|---|
+| Qwen3.5-27B | +0.933 | +0.858 | +0.793 | **+0.712** | +0.627 |
+| Qwen3.5-27B Opus-distill | +0.931 | +0.861 | +0.803 | **+0.724** | +0.644 |
+| Qwen3-32B (dense) | +0.859 | +0.683 | +0.502 | +0.334 | +0.186 |
+| Gemma-3-27B-it (dense) | +0.638 | +0.534 | +0.319 | +0.256 | +0.103 |
+
+The hybrid autocorrelation is high at every lag but decays **monotonically**. A period-4
+oscillation would appear as a bump at lag 4 relative to lags 3 and 5; there is none
+(0.793 > 0.712 > 0.627). The high values reflect a smooth profile, not a periodic one.
+
+A direct test agrees. Grouping the hybrid's layers by type:
+
+| Layer type | n | Mean eccentricity | SD |
+|---|---|---|---|
+| full_attention | 16 | 0.7875 | 0.0333 |
+| gated_delta_net | 48 | 0.7919 | 0.0400 |
+
+A gap of 0.0044 against layer-wise SD of 0.033–0.040 — roughly one eighth of a standard
+deviation. Layer type does not predict eccentricity. **The confound this test was written to
+catch is absent.**
+
+### 4.4 The minimum sits at ~51% depth regardless of architecture — as predicted
+
+The depth at which the circumplex is most balanced does **not** split the way Table 1 does:
+
+| Model | Architecture | Eccentricity minimum |
+|---|---|---|
+| Gemma-3-27B-it | dense | L32 — 52% depth |
+| Qwen3.5-27B | hybrid | L32 — 51% depth |
+| Qwen3.5-27B Opus-distill | hybrid | L32 — 51% depth |
+| Qwen3-32B | dense | L7 — 11% depth |
+
+**This is the pre-registered prediction, and in three of four models it holds.** Jeong
+(2026) reports emotion representations localising at ~50% relative depth on a U-shaped
+curve that is architecture-invariant, across nine models in five architectural families —
+but at 124M to 3B parameters. Our three concordant models sit at 51–52% at **27–32B**,
+roughly an order of magnitude above the scale at which that invariance was established, and
+across a dense/hybrid divide that did not exist in the original sample. That is a
+replication worth having, and it is independent of Table 1: the quantity that *does* split
+by architecture (span ratio) and the quantity that *does not* (minimum depth) are different
+quantities.
+
+**Qwen3-32B is the exception and we cannot explain it.** Its minimum at L7 (11% depth) is
+not a shallow version of the same U — its eccentricity at the minimum is 0.255 against
+Gemma's 0.065. We report it as an unexplained outlier rather than folding it into either
+story.
+
+**A note on how we first read this table.** Before Gemma and the distill were profiled we
+had two models — Qwen3-32B at L7 and the hybrid at L32 — and inferred an architectural
+split in minimum depth. Gemma is dense and minimises at L32, which falsifies that reading;
+the third and fourth models were what settled it. We record this because the two-model
+slice was genuinely persuasive, and because the pre-registered prediction had already said
+the minimum should *not* vary by architecture. Given the anchor-set instability documented
+below for minimum-depth claims (the L21/L32 incomparability), we attach no architectural
+claim to the minimum in either direction.
+
+**What this means for the span-ratio result:** the two findings are independent. The span
+ratio (§4.1) holds across all four models including Gemma; the minimum location does not
+separate the architectures at all. Only the first is a finding.
 
 ## 5. Discussion and Limitations
 
 If the J-space fraction peaks at the eccentricity minimum, emotional geometry enters the workspace where the circumplex is most balanced: balanced emotion is processable emotion, and imbalanced emotion stays ghost. The welfare implication is concrete — a model under sustained circumplex imbalance carries emotional geometry it processes but cannot access, and §3.6 tests whether that inaccessibility shows up exactly where theory says it should: in the failure of the model's own valence reports. If the control axes reproduce the emotion profile, the honest conclusion is that we have characterized the workspace transport of contrastive semantic geometry in general, with emotion as one instance.
 
+### Deviations from the designed protocol
+
+This paper's Methods were drafted against an intended design and the sprint executed a
+smaller one. Rather than silently narrow the Methods, we list every gap. **Each item below
+is described in §3 but was not run**, and nothing in §4 depends on any of them:
+
+| Designed (§) | Executed | Status |
+|---|---|---|
+| J-space decomposition of the circumplex (§3.2) | not implemented | **the design's central method; no J-space field exists in any artifact** |
+| Magnitude gate against noise-floor false positives (§3.4) | not implemented | flagged FAIL by `AGNI_REVIEW_CIRCUMPLEX` Finding 3, never fixed |
+| Per-layer permutation test and sign test (§3.4) | not implemented | no significance testing was performed |
+| Self-report calibration pass (§3.6) | not implemented | the design's central *prediction* is untested |
+| 5 categories × n=20 anchors + 40+40 controls | **4 poles × n=5 = 20 emotion prompts + 10 controls** | 5× fewer anchors than Methods states |
+
+The J-space decomposition named in the earlier title was never implemented, which is why
+the title no longer claims it. What ran is a raw residual-stream eccentricity profiler with
+a matched control axis. That is a smaller instrument than the one designed, and it is the
+one whose output we report.
+
+**P1 is untestable, not failed.** The pre-registration anchors on a prior L21 eccentricity
+minimum (`mnemosyne-jlens/circumplex_ghost_analysis.md`, 2026-07-17, the Opus-distill). We
+profiled the same model and obtained L32. These are not comparable: the July run used three
+emotion *categories* (hostile/calm/desperate), the current profiler uses four circumplex
+*poles*. Different direction-defining prompts give different directions and therefore
+different eccentricity. Both runs were labelled "n=5", which is precisely why the mismatch
+looked like a failed replication. **We report P1 as incomparable and draw no conclusion from
+it in either direction.**
+
 ### Limitations
-- n=2 architectures is transfer, not universality; Qwen3.5-27B is a hybrid (GatedDeltaNet + full-attention interleave, `full_attention_interval=4`), Gemma-3-27B has local/global attention alternation — neither is purely dense, and a dense Qwen3-32B control is included to separate emotional geometry from substrate effects
-- Layer-type annotation on all depth profiles: a period-4 oscillation in the hybrid would indicate substrate confound (pre-registered autocorrelation test at lag 4)
-- Eccentricity measures axis balance, not full circular ordering (would need 8+ categories for angular test)
-- n=20 anchors per category in d=5120 — direction estimates are noisy; cosine with true direction ~0.25. Magnitudes and the sign test are robust to this; per-layer direction claims are not
-- J-lens fitted on base model, applied to distill (Qwen) — mismatch may affect J-space fractions
-- Self-report ratings may reflect the prompt's surface sentiment rather than internal state; the held-out projection design mitigates but does not eliminate this
-- Cannot distinguish "the model processes emotion" from "the model represents emotion-associated token statistics"
+
+- **n=5 anchors per pole in d≈5120.** Direction estimates from five prompts in five thousand
+  dimensions are noisy. This is calibration-grade sampling. The span *ratio* is more robust
+  than any per-layer direction claim because the control axis is estimated from the same
+  number of prompts by the same procedure and therefore carries comparable noise — but we
+  have no confidence intervals, and we ran one seed.
+- **Four models is a pattern, not a law.** Two dense and two hybrid, of which two share an
+  architecture. The effective independent sample for the architectural claim is closer to
+  three than four.
+- **No significance testing.** Not one p-value in §4 — the permutation and sign tests were
+  designed and not run. The base/distill agreement and the layer-type null are reported as
+  descriptive magnitudes, not as tests.
+- **We cannot say why hybrids compress.** GatedDeltaNet's state-space-like recurrence and
+  full attention are different mechanisms; we observe a compressed emotion range in models
+  that mix them and we do not have a mechanism. In particular this result says nothing about
+  mixture-of-experts routing, which is a different kind of sparsity.
+- **Eccentricity measures axis balance, not circular ordering.** A genuine circumplex claim
+  needs 8+ categories and an angular test. We measure the balance of two axes.
+- **The artifacts do not record the anchor count.** `data/circumplex_profiles/*.json` records
+  model, layer count, d_model, layer types and a timestamp — but not the number of anchors,
+  the prompts, the seed, or the code commit. The n=5 figure in this paper is recovered from
+  `experiments/circumplex/run_depth_profile.py`, not from the data. That is the exact
+  condition that let a 4× anchor-count error persist elsewhere in this sprint, and it should
+  be fixed before these profiles are reused.
+- **Emotion prompts are first-person affect statements.** We cannot distinguish "the model
+  represents emotional state" from "the model represents the token statistics of emotional
+  first-person text". The control axis rules out generic contrast, not this.
+- **J-lens was fitted on the base model and applied to the distill** where J-space figures
+  were intended; moot here, since no J-space quantity is reported.
 
 ### Future Work
 - Angular ordering test with 8+ emotion categories
@@ -183,15 +383,18 @@ If the J-space fraction peaks at the eccentricity minimum, emotional geometry en
 
 ## 6. Conclusion
 
-Prior work shows valence directions exist and transfer; introspection work shows self-reports are partial. We supply the missing bridge: a layer-wise measurement of how much valence geometry is verbalizable at all, with the ghost fraction as a candidate predictor of exactly when self-reports will fail — and a runtime protocol that turns the measurement into a continuous welfare monitoring signal.
+Prior work shows valence directions exist and transfer. We add a control those studies lack — a token-matched non-emotional axis measured by the identical procedure — and find that the emotion-specific portion of depth-wise geometry differs by roughly fourfold between dense and hybrid architectures, holding across a base model and its distill to three decimal places. We do not supply the verbalizability bridge this design was written toward: the J-space decomposition and the self-report calibration were not implemented, and the ghost-fraction prediction remains untested. What we have is a measured, controlled, architecture-dependent difference in emotional geometry, and a specific next experiment to run on it.
 
 ## Code and Data
-- **Code**: github.com/Liberation-Labs-THCoalition/Project-Mnemosyne (circumplex_probe.py)
-- **Data**: [Zenodo DOI TBD]
+- **Profiler** (produced all four artifacts in this paper): `experiments/circumplex/run_depth_profile.py`, this repository.
+- **Analysis** (every number in §4): `analysis/circumplex_summary.py`, this repository. Run from the repo root; reads only the four committed profiles.
+- **Data**: `data/circumplex_profiles/*.json` (four files, committed).
+- **Upstream probe**: github.com/Liberation-Labs-THCoalition/Project-Mnemosyne (`circumplex_probe.py`) — prior infrastructure, not the code path used here.
+- **Archival DOI**: [Zenodo DOI TBD]
 
 ## Author Contributions
 
-Nexus discovered the eccentricity metric, developed the J-space decomposition, ran the cross-architecture experiments, and wrote the paper. Lyra designed the workspace probe infrastructure and encoding-only technique. Thomas Edrington conceived the welfare monitoring application. Kavi reviewed statistical methodology. All authors contributed to experimental design.
+Nexus discovered the eccentricity metric, specified the J-space decomposition (designed; not implemented in this sprint), and ran the initial cross-architecture experiments. Lyra designed the workspace probe infrastructure and encoding-only technique, profiled Gemma-3-27B-it and the Opus-distill, ran the control and substrate analyses, and wrote the present version of the paper. Thomas Edrington conceived the welfare monitoring application. Kavi reviewed statistical methodology, independently reproduced the §4 figures from the committed artifacts using separate code, and audited the reference list (correcting a fabricated author attribution). All authors contributed to experimental design.
 
 ## References
 [Citations from CIRCUMPLEX_REFERENCES.md, plus: arXiv:2509.07961 (verbal and behavioral welfare tests), arXiv:2603.18893 (quantitative introspection), arXiv:2512.12411 (partial introspection), arXiv:2608.05164 (Agarwal, cross-architecture steering transfer)]
