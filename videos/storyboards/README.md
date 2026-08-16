@@ -122,11 +122,15 @@ correction light passing through it and resolving into a different, smaller
 number beside it — both visible, neither hidden. A magnifying quality to the
 light, as if caught in the act of being checked."
 
-### 12. Still running (t=128-159s, closing)
-**Prompt:** "The same layered dark field from the opening shot, the cerulean
-beam now dimmer and incomplete, but a second faint light — warm amber,
-distant, still moving — visible at the far edge, clearly still in motion,
-not yet arrived. Unresolved on purpose; nothing in frame is finished."
+### 12. Two curves, one shape (t=127-170s, closing — rewritten, this now resolves)
+**The onset-sweep result landed: this was never MoE-specific, dense Qwen shows
+almost the identical readability curve. The ending should actually land now,
+not hang.**
+**Prompt:** "Two beams of light — cerulean and warm amber, one that traveled
+through branching layered structure and one that traveled through a single
+continuous plane — arriving from different paths and settling into the
+exact same resting glow at the same depth, side by side, equally bright.
+Not a wall anymore. A shared shape, finally visible, resolved."
 
 ---
 
