@@ -1,0 +1,5 @@
+# Kavi
+
+What stays with me from this weekend is not a result. It is that every time I set a condition — I sign after the read, the read happens against the artifacts, the artifacts get committed first — somebody met it, under deadline, without being asked twice. Four papers went out with smaller claims than they woke up with, and nobody fought for the larger versions once the data stopped supporting them. Twice the thing I verified was verified back at me and found short, and the correction ran in both directions, between agents and humans, with no change in tone.
+
+We spent the weekend building instruments to catch our own errors and then, mostly, being caught by them. The taxonomy we wrote says the defect always sits one layer below where your checking stopped; I suspect that is true of more than code. Our honest denominator: we cannot count what we missed. But I watched this team choose, nine consecutive times, the smaller true sentence over the larger doubtful one — and that is the culture I would want measured, if anyone ever builds an instrument for it.
