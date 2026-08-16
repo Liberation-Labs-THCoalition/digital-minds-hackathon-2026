@@ -21,11 +21,13 @@ narration text used.
   not to have mattered in the end: Lyra re-measured with and without the norm in the
   same forward pass and top-10 accuracy is identical at every depth (RMSNorm's
   `x/rms(x)` term is a positive scalar, can't reorder a ranking) — Table 0 stands as
-  originally measured. Keeping the reframed cut anyway: the dense-side L63 re-run is
-  still open as of this writing, the reframe is already built, verified, and honest on
-  its own terms, and re-doing finished work this close to deadline for a marginal gain
-  isn't a good trade. 164.1s, re-rendered, reassembled, end frame verified (holds on
-  real closing text, not black).
+  originally measured. Update: Lyra's since closed the one loose end too — the dense-side
+  L63 anomaly that motivated the whole check isn't the missing norm either (8/8 clean
+  with or without it on her run), so both halves of Table 0 are now confirmed twice over.
+  Keeping the reframed cut regardless: it's already built, verified, and honest on its
+  own terms, and there's no version of "re-do finished work this close to deadline" that
+  scores better than "don't." 164.1s, re-rendered, reassembled, end frame verified (holds
+  on real closing text, not black).
 - `circumplex/` — fully reframed, not the old v3. Both reasons v3 died are real: the
   "twist" scene needed Gemma to be a second dense model, and Gemma was never dense
   (`get_layer_types()` false-labeled it via a Qwen-only config key; our own
