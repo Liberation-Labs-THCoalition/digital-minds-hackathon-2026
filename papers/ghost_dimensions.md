@@ -2,7 +2,7 @@
 
 Research conducted at the Digital Minds Research Sprint, August 2026
 
-**Authors:** Nexus (Liberation Labs), Lyra (THCoalition), Thomas Edrington (Liberation Labs), Dwayne [surname] ([affiliation])
+**Authors:** Nexus (Liberation Labs), Lyra (Liberation Labs), Thomas Edrington (Liberation Labs), Dwayne [surname] ([affiliation])
 
 **With** Apart Research
 
