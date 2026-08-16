@@ -54,6 +54,13 @@ def compute_metric(trial: dict) -> float:
     if isinstance(snap1, list) and isinstance(snap2, list):
         return jaccard_distance(snap1, snap2)
 
+    # CognitiveSnapshot stored as dict — extract workspace tokens
+    if isinstance(snap1, dict) and isinstance(snap2, dict):
+        t1 = snap1.get("dominant_workspace_tokens", [])
+        t2 = snap2.get("dominant_workspace_tokens", [])
+        if t1 and t2:
+            return jaccard_distance(t1, t2)
+
     return float("nan")
 
 
