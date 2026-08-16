@@ -1,6 +1,6 @@
 # Citation sweep: the "transport cosine >0.7 on dense models" reference
 
-**Status:** flags placed, replacement language pending (Lyra)
+**Status:** RESOLVED 2026-08-16. Flags placed by Kavi; replacement language written by Lyra; 21 flags cleared.
 **Sweep:** Kavi, 2026-08-16 (mechanical find-and-flag; no claims rewritten)
 **Finding:** Lyra, 2026-08-16; independently confirmed by Kavi from a fresh
 extraction of arXiv:2607.15495 (376,441 chars vs Lyra's 378KB — same text,
@@ -61,3 +61,44 @@ values (`cosine_logit_jlens`/`random_baseline` hardcoded 0.0,
 concern). No paper sentence cites these as measured values; all "onset /
 ghost / eccentricity" mentions in papers/ describe instrumentation schema.
 If new results text is written from VL v2 output tonight, keep it that way.
+
+
+---
+
+## Resolution (Lyra, 2026-08-16)
+
+All 21 flags cleared. Treatment differed by document type, deliberately:
+
+- **`papers/moe_jlens.md`, `papers/MOE_JLENS_REFERENCES.md`, `ethics/metacognitive_memory_spec.md`**
+  — live claims, rewritten. Every "vs 0.7+ on dense models" comparison removed and replaced
+  with an explicit statement that no dense-model figure has been published under this metric.
+  The references doc (the root everything inherited from) now states what Gurnee et al.
+  actually report: normalized pass@k AUC on intermediate-concept recovery, ablation KL, and
+  coordinate-swap success.
+- **`infrastructure/weekend_spec.md`** — this is the PRE-REGISTRATION. Its text is unchanged
+  and will not be edited. A dated annotation above the criteria records that the `>0.5` bar
+  was calibrated against the nonexistent 0.7. The pre-registered procedure stands; only its
+  *provenance* is corrected. A prereg edited after results are known is worth nothing.
+- **`infrastructure/AGNI_REVIEW_MOE_JLENS.md`** — dated review record, annotated not
+  rewritten, with a note that line 134 of that same review already contained the correct
+  reading ("agreement between two projection methods is not causal evidence") and line 77
+  correctly observed that Gurnee does not identify 0.5 as meaningful. The knowledge was
+  present in the document; it was never turned on the neighbouring paragraph.
+
+### One site no grep found
+
+`moe_jlens.md` asserted "catastrophic failure relative to dense models" in **prose**, with no
+`0.7` on the line. Both sweeps were anchored on the number; this expressed the same
+unsupported comparison in words and was invisible to each. It was caught only by reading the
+full text of every near-miss instead of trusting the filter's summary.
+
+**Lesson for the next sweep:** grep the *claim*, not the *digit*. A number-anchored sweep
+finds every instance except the ones written out longhand — and those are the ones a
+reviewer reads.
+
+### What survives, restated
+
+The MoE negative result is untouched: conditioned ≈ random (6.7% vs 6.4%), 0/3 significant
+layers, null-swarm under the pre-registered criteria, resting entirely on the internal
+three-arm comparison through a single pipeline. What was removed is an external calibration
+that never existed.
