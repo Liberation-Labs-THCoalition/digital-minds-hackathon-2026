@@ -142,6 +142,7 @@ The metacognitive probes require (1) hidden-state access via forward hooks, (2) 
 
 ### 5.2 Frontier Research Infrastructure (NOT demo models)
 
+<!-- FLAG(0.7-sweep): the "transport cosine >0.7 on dense models (Gurnee et al.)" reference is unsupported -- no such figure exists in arXiv:2607.15495 (verified independently by Lyra and Kavi, 2026-08-16). Replacement language: Lyra. See papers/CITATION_SWEEP_0.7.md -->
 We also run GLM-5.2 (744B/40B active) and Nemotron-3-Super-120B (120B/12B active) locally with full KV-cache access. **Both are MoE, and the J-lens probes do not yet work on MoE routing** — our Modal test failed transport fidelity (~12% cosine vs >0.7 on dense layers), and routing-conditioned lens fitting is an open problem in this lab. These models are research infrastructure for future cache-geometry work, not part of this submission. **All demonstrations in this submission run on dense models: Qwen3.5-27B primary, Llama 3.3 70B stretch.**
 
 ---

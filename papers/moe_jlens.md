@@ -8,6 +8,7 @@ Research conducted at the Digital Minds Research Sprint, August 2026
 
 ## Abstract (~200 words)
 
+<!-- FLAG(0.7-sweep): the "transport cosine >0.7 on dense models (Gurnee et al.)" reference is unsupported -- no such figure exists in arXiv:2607.15495 (verified independently by Lyra and Kavi, 2026-08-16). Replacement language: Lyra. See papers/CITATION_SWEEP_0.7.md -->
 The Jacobian lens (Gurnee et al. 2026) identifies a low-dimensional verbalizable workspace in dense transformer models with transport cosines exceeding 0.7. On Mixture-of-Experts models, standard J-lens fitting fails catastrophically — we measure ~12% transport cosine on Qwen3-30B-A3B (30B total, 3B active, 128 experts top-8, d=2048), because the averaged Jacobian across all routing paths represents no actual forward pass. Cross-expert Jacobians are near-orthogonal (Liu 2026), so averaging destroys the signal.
 
 We propose path-conditioned Jacobian fitting: capture routing decisions during the fitting pass, cluster prompts by their expert trajectory per layer, and fit separate Jacobians per cluster. Each conditioned Jacobian represents the computation along one routing path — the path the model actually took. We evaluate against two controls: the standard (unconditioned) lens and a random-conditioned lens (prompts split into same-sized random groups) to distinguish genuine routing structure from subset overfitting.
@@ -20,6 +21,7 @@ The result is negative. Path-conditioned fitting does not improve transport fide
 
 ## 1. Introduction
 
+<!-- FLAG(0.7-sweep): the "transport cosine >0.7 on dense models (Gurnee et al.)" reference is unsupported -- no such figure exists in arXiv:2607.15495 (verified independently by Lyra and Kavi, 2026-08-16). Replacement language: Lyra. See papers/CITATION_SWEEP_0.7.md -->
 The Jacobian lens is currently the best tool for reading what a transformer is *disposed to say* at each layer: it fits a linear transport from intermediate residual streams to the final unembedding, and on dense models the transported predictions match the model's actual outputs with cosine similarity above 0.7 (Gurnee et al. 2026). That fidelity is what licenses every downstream use of the lens — workspace identification, verbalization analysis, and the metacognitive memory architecture in our companion paper. On Mixture-of-Experts models the tool breaks: the fitting procedure averages Jacobians across forward passes that route through different experts, and because cross-expert Jacobians are near-orthogonal (Liu 2026), the average represents no computation the model actually performs. Every frontier model deployed today is MoE. A workspace instrument that only works on dense models is an instrument for last year's architectures.
 
 This paper tests the obvious repair: condition the fit on the routing path. If the averaged Jacobian fails because it mixes incompatible paths, then clustering prompts by which experts fired and fitting one lens per cluster should recover per-path fidelity. We submit this to Track 6 as a tooling question whose answer — positive or negative — determines whether workspace-based introspection methods (Tracks 2, 3, 5) can be ported to production MoE models at all.
@@ -52,6 +54,7 @@ Conditioning is performed at three target layers — L12, L24, L36 — spanning 
 
 ### 3.1 Baseline: Standard J-Lens on MoE
 
+<!-- FLAG(0.7-sweep): the "transport cosine >0.7 on dense models (Gurnee et al.)" reference is unsupported -- no such figure exists in arXiv:2607.15495 (verified independently by Lyra and Kavi, 2026-08-16). Replacement language: Lyra. See papers/CITATION_SWEEP_0.7.md -->
 The baseline is a standard (unconditioned) J-lens fitted on Qwen3-30B-A3B in a previous run, using 200 WikiText prompts (smaller than the 672 used for conditioned fitting) and the reference `jlens` implementation, with no knowledge of routing. The corpus size difference is a limitation: the conditioned lenses benefit from more fitting data per cluster than the standard lens had in total. We report this asymmetry rather than claiming equivalent conditions. This fit achieves a mean transport cosine of ~12.5% — far below the 0.7+ reported for dense models (Gurnee et al. 2026) and below the sanity gate we apply to dense fits. We load this saved lens unchanged and re-evaluate it on the held-out test prompts under the identical transport-cosine protocol used for the conditioned lenses (§3.6), so all three conditions share one evaluation pipeline. This replicates our prior failure and establishes the number the conditioned lenses must beat.
 
 ### 3.2 Router Hooks
@@ -80,6 +83,7 @@ The critical control: identical protocol, shuffled labels. For each target layer
 
 **Transport cosine.** For each test prompt we record the residual stream at the source layer and at the final layer, transport the source activation through the lens under evaluation, unembed both, and compute the cosine similarity between the softmaxed predicted and actual next-token distributions at the final token position. This matches the metric under which the standard fit scored ~12.5%.
 
+<!-- FLAG(0.7-sweep, derived-bar): this 0.5 success bar was calibrated against the nonexistent 0.7 dense reference. See papers/CITATION_SWEEP_0.7.md -->
 **Statistics.** Per target layer, a one-sided Mann-Whitney U test of conditioned > random-conditioned on per-prompt transport cosines (sample sizes matched by truncation to the smaller condition), with Bonferroni correction across the three layers. Outcome criteria are pre-registered in the pipeline code: *success* requires conditioned > random and conditioned > standard with at least one Bonferroni-significant layer (and mean conditioned cosine > 0.5 for the full claim); conditioned > standard but ≈ random is classified as a null-swarm outcome (subset overfitting); conditioned > standard without significance is inconclusive.
 
 **Cross-domain.** WikiText is both fitting and primary evaluation domain, so as an out-of-domain check we additionally evaluate at the middle target layer (L24) on two held-out domains: code prompts (Python, JavaScript, SQL completion contexts) and dialogue prompts (User/Assistant exchanges). Routing-cluster assignment for OOD prompts follows the same §3.3 pipeline; degradation here bounds how far the conditioned lenses generalize beyond the fitting distribution.
@@ -110,8 +114,10 @@ Three observations before any interpretation:
 
 **At L36, the improvement is indistinguishable from subset overfitting.** Conditioned 8.8% vs standard 7.2% looks like a 1.5-point gain, but random-conditioned reaches 7.7% (p = 0.317 for conditioned > random). The conditioned–random gap of ~1 point on a base of ~8 is noise at n = 100.
 
+<!-- FLAG(0.7-sweep): the "transport cosine >0.7 on dense models (Gurnee et al.)" reference is unsupported -- no such figure exists in arXiv:2607.15495 (verified independently by Lyra and Kavi, 2026-08-16). Replacement language: Lyra. See papers/CITATION_SWEEP_0.7.md -->
 **Verdict against pre-registered criteria (§3.6).** *Success* required conditioned > random and conditioned > standard with at least one Bonferroni-significant layer; the full claim additionally required mean conditioned cosine > 0.5. None of these obtained: 0/3 significant layers, conditioned ≈ random throughout, and all conditions sit between 4% and 9% — an order of magnitude below the 0.5 bar and the 0.7+ dense-model reference. Conditioned numerically exceeds standard on the evaluable layers but not the random control: this is exactly the outcome the criteria pre-classify as **null-swarm (subset overfitting)**, i.e., a negative result for the routing-structure hypothesis.
 
+<!-- FLAG(0.7-sweep): the "transport cosine >0.7 on dense models (Gurnee et al.)" reference is unsupported -- no such figure exists in arXiv:2607.15495 (verified independently by Lyra and Kavi, 2026-08-16). Replacement language: Lyra. See papers/CITATION_SWEEP_0.7.md -->
 **Baseline note.** The saved standard lens scored ~12.5% mean transport cosine in the run that motivated this project (§3.1). Re-evaluated on this study's held-out prompts under the shared protocol, it scores 4.0–7.2% per layer (5.2% mean). The prior figure came from a different (non-held-out) prompt set; the discrepancy is consistent with the earlier evaluation being partially in-sample. Both figures support the same diagnosis — catastrophic failure relative to dense models — and the lower, held-out figure is the honest one for production implications (§5).
 
 **Cross-domain (Table 2).** The evaluation output records OOD transport cosines for the standard condition at L24 only; conditioned-lens OOD evaluation was specified in §3.6 but is absent from the recorded results — a deviation we flag rather than paper over. What was recorded makes the in-domain numbers look generous:
@@ -128,6 +134,7 @@ Even the ~4% in-domain fidelity collapses off-distribution: by 3.8× on code and
 
 ### 5.1 The result, stated plainly
 
+<!-- FLAG(0.7-sweep): the "transport cosine >0.7 on dense models (Gurnee et al.)" reference is unsupported -- no such figure exists in arXiv:2607.15495 (verified independently by Lyra and Kavi, 2026-08-16). Replacement language: Lyra. See papers/CITATION_SWEEP_0.7.md -->
 Path-conditioned Jacobian fitting, implemented as per-layer k-means clustering of routing-frequency vectors with per-cluster refits, does not improve transport cosine on Qwen3-30B-A3B (128 experts, top-8). Conditioned lenses perform on par with lenses fitted on randomly assigned subsets of the same sizes (6.7% vs 6.4% on evaluable layers; 0/3 layers significant), and the whole regime — standard, conditioned, and random alike — sits at 4–9% transport cosine against the 0.7+ that makes the J-lens usable on dense models. The hypothesis that motivated the experiment — that averaging across near-orthogonal per-path Jacobians is *the* fixable failure, and conditioning on the path recovers the signal — is not supported in this implementation. The diagnosis (averaging destroys path structure) may still be correct; the repair, as built, does not work.
 
 ### 5.2 Why it failed: four hypotheses
@@ -175,6 +182,7 @@ This is the finding with immediate operational consequences. Standard J-lens rea
 
 ## 6. Conclusion
 
+<!-- FLAG(0.7-sweep): the "transport cosine >0.7 on dense models (Gurnee et al.)" reference is unsupported -- no such figure exists in arXiv:2607.15495 (verified independently by Lyra and Kavi, 2026-08-16). Replacement language: Lyra. See papers/CITATION_SWEEP_0.7.md -->
 Frontier models are MoE, and the field's best workspace lens does not survive contact with them. We tested the natural repair — condition the Jacobian fit on the routing path — with a pre-registered three-way design, and it failed: path-conditioned lenses perform no better than lenses fitted on random subsets of matched size (0/3 layers significant; all conditions at 4–9% transport cosine, versus 0.7+ on dense models). The positive contributions are the diagnosis-grade measurements (standard J-lens fidelity on a production MoE is ~5% in-domain and near-zero off-domain), the random-conditioned control that stopped a false positive at L36 from shipping, and four falsifiable directions for a repair that might actually work — the sharpest being exact path enumeration on low-cardinality MoE. Until one of them clears a real fidelity bar, workspace claims about production MoE models should be treated as unsupported by transport evidence.
 
 ## Code and Data

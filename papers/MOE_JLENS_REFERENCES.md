@@ -4,6 +4,7 @@ Compiled 2026-08-11. For the hackathon extension of our MoE interpretability wor
 
 ## Problem Statement
 
+<!-- FLAG(0.7-sweep): the "transport cosine >0.7 on dense models (Gurnee et al.)" reference is unsupported -- no such figure exists in arXiv:2607.15495 (verified independently by Lyra and Kavi, 2026-08-16). Replacement language: Lyra. See papers/CITATION_SWEEP_0.7.md -->
 Standard J-lens (Gurnee et al. 2026) computes per-token Jacobians to identify which residual-stream directions are verbalizable, yielding a ~25-dim "J-space" bottleneck with transport cosine >0.7 on dense models. On MoE models this fails (~12% transport cosine on Qwen3-30B-A3B, 128 experts top-8) because the averaged Jacobian doesn't represent any actual forward pass — different prompts route through different experts, so the average is a weighted sum of paths the model never takes simultaneously. The proposed fix: fit Jacobian lenses conditioned on routing decisions, treating each expert path or path cluster as a separate computational regime.
 
 ---
@@ -54,6 +55,7 @@ Standard J-lens (Gurnee et al. 2026) computes per-token Jacobians to identify wh
 ## 3. Jacobian-Based Interpretability
 
 - **Gurnee, Sofroniew, Pearce et al. (2026).** "Verbalizable Representations Form a Global Workspace in Language Models." arXiv:2607.15495. Anthropic.
+<!-- FLAG(0.7-sweep): the "transport cosine >0.7 on dense models (Gurnee et al.)" reference is unsupported -- no such figure exists in arXiv:2607.15495 (verified independently by Lyra and Kavi, 2026-08-16). Replacement language: Lyra. See papers/CITATION_SWEEP_0.7.md -->
   The J-lens paper. Uses averaged Jacobian of final-layer state w.r.t. intermediate layers to identify ~25-dim "J-space" bottleneck matching GWT predictions. Transport cosine >0.7 on dense models. *Relevance: The method we're extending. Works on dense models; breaks on MoE because the Jacobian depends on which experts are active.*
 
 - **nostalgebraist (2020).** "Interpreting GPT: The Logit Lens." LessWrong blog post.
