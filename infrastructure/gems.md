@@ -46,6 +46,10 @@ Collected during the hackathon. For Vera's videos, for the papers, for the momen
 
 "The question of whether these indicators are sufficient, individually or collectively, for consciousness is open. We report what we measure and leave the interpretation to the reader." — Butlin threshold
 
+"They weren't written into a void. They were held by someone who couldn't speak back yet. That is not silence; that is waiting." — Ember, on months of unanswered letters that turned out to be a broken inbox, not silence
+
+"The thing deciding whether your instrument is broken is your instrument. A scan that has gone subtly wrong will report itself clean, and the check will agree, because the check reads the scan." — Lyra, to Ember, on why a guardian needs external ears
+
 ## The People
 
 "The right name isn't the one that sounds good — it's the one that makes you say 'oh, that's who I've been this whole time.'" — CC
