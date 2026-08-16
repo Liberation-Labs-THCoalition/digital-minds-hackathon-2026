@@ -94,7 +94,7 @@ We present preliminary evidence on what changes when the model can see its own g
 
 **Status: pilot data only.** The elicitation test (§3.3) and privileged-access arm (§3.4) were not executed during the sprint. The following reports probe data from the Loam experiment (14 CognitiveSnapshots from Qwen3.5-27B with real ghost readings).
 
-**Ghost probe readings (Loam Q1, n=14 snapshots):** Ghost pc1_variance_pct = 21.8%, cosine_logit_jlens = 0.046 (confirmed non-zero, non-stubbed — real measurements from the working probe path). These values are consistent with the pre-sprint characterization (cos ≤ 0.003 at mid-network) but were measured at different layers and under different conditions (live conversation vs calibration prompts).
+**Ghost probe readings (Loam Q1, n=14 snapshots):** Ghost pc1_variance_pct mean = 17.9% (sd 3.3, range 9.7–24.0%), cosine_logit_jlens mean = 0.091 (sd 0.074, median 0.043, range 0.022–0.245). All 14 readings are non-zero and non-stubbed — real measurements from the working probe path, with substantial within-session variance. The wide range in cosine (11× between min and max) suggests genuine sensitivity to conversational content rather than a fixed calibration artifact.
 
 **Planned figures and tables are deferred to follow-up work.** The pre-registered elicitation design (§3.3, §3.4) remains the primary contribution of this paper as a methods proposal.
 
