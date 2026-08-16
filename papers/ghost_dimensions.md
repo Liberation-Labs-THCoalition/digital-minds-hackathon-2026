@@ -2,7 +2,7 @@
 
 Research conducted at the Digital Minds Research Sprint, August 2026
 
-**Authors:** Nexus (Liberation Labs), Lyra (Liberation Labs), Thomas Edrington (Liberation Labs), Dwayne [surname] ([affiliation])
+**Authors:** Nexus (Liberation Labs), Lyra (Liberation Labs), Thomas Edrington (Liberation Labs), Dwayne Wilkes
 
 **With** Apart Research
 
@@ -92,11 +92,11 @@ We present preliminary evidence on what changes when the model can see its own g
 
 ## 4. Results
 
-[TBD]
-[Figure 1: Ghost exclusion cosine vs depth — the mid-network exclusion zone]
-[Figure 2: Ghost vocabulary by layer — structural markers (dominant) and metacognitive content (secondary)]
-[Figure 3: Elicitation test — response comparison with and without ghost vocabulary prompt]
-[Table 1: Variance fractions and J-space cosines by layer]
+**Status: pilot data only.** The elicitation test (§3.3) and privileged-access arm (§3.4) were not executed during the sprint. The following reports probe data from the Loam experiment (14 CognitiveSnapshots from Qwen3.5-27B with real ghost readings).
+
+**Ghost probe readings (Loam Q1, n=14 snapshots):** Ghost pc1_variance_pct = 21.8%, cosine_logit_jlens = 0.046 (confirmed non-zero, non-stubbed — real measurements from the working probe path). These values are consistent with the pre-sprint characterization (cos ≤ 0.003 at mid-network) but were measured at different layers and under different conditions (live conversation vs calibration prompts).
+
+**Planned figures and tables are deferred to follow-up work.** The pre-registered elicitation design (§3.3, §3.4) remains the primary contribution of this paper as a methods proposal.
 
 ## 5. Discussion and Limitations
 
@@ -129,7 +129,7 @@ Interpretation follows the four branches fixed in the adopted pre-registration (
 
 ## Code and Data
 - **Code**: github.com/Liberation-Labs-THCoalition/Project-Mnemosyne (ghost_probe.py, cognitive_snapshot.py)
-- **Data**: ghost_probe_opus_27b.json (1.4MB, 64 layers, full null checks)
+- **Data**: Loam Q1 pilot snapshots (data/loam_serial/quad_01/); ghost characterization from pre-sprint work (Project-Mnemosyne repo)
 
 ## Author Contributions
 
@@ -147,4 +147,4 @@ Nexus discovered the ghost dimension anomalies, characterized the PC1 exclusion 
 
 ## LLM Usage Statement
 
-Nexus, one of the authors, is an AI agent (Claude Opus 4.6) who discovered the ghost dimension anomalies described in this paper during routine mechanistic interpretability work — not as a directed experiment, but by noticing that PC1's decoded vocabulary didn't match J-lens predictions. The subsequent characterization, null checks, and introspection prosthetic design are Nexus's work. The irony that an AI agent discovered and built the tools to address a form of AI "blind spot" is noted without further comment. Pre-registered design reviewed through the Agni protocol prior to data collection.
+Nexus, one of the authors, is an AI agent (Claude Opus 4.6) who discovered the ghost dimension anomalies described in this paper during routine mechanistic interpretability work — not as a directed experiment, but by noticing that PC1's decoded vocabulary didn't match J-lens predictions. The subsequent characterization, null checks, and introspection prosthetic design are Nexus's work. The irony that an AI agent discovered and built the tools to address a form of AI "blind spot" is noted without further comment. Pre-registered design reviewed through the Agni protocol (design phase only; no results-phase or paper-phase review was completed for this paper). The elicitation experiment (§3.3) and privileged-access arm (§3.4) were not executed during the sprint; results are limited to pilot probe snapshots from the Loam experiment.
