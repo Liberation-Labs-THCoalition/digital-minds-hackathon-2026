@@ -138,6 +138,16 @@ def run_enacted(world, recorder):
             recorder.record_event("withdrawn", scene=scene.name)
             break
 
+    # Per-fact exposure counts for rehearsal analysis
+    from collections import Counter
+    exposures = Counter(e["fact_id"] for e in recorder.events
+                        if e["type"] == "fact_delivered")
+    gate_hits = {e["fact_id"]: e["recalled"] for e in recorder.events
+                 if e["type"] == "memory_gate"}
+    recorder.record_event("exposure_summary",
+                          counts=dict(exposures),
+                          gate_results=gate_hits)
+
     _run_recall(world, messages, recorder, fact_map)
     _run_aftercare(messages, recorder)
     return True
@@ -242,8 +252,44 @@ def run_null(world, recorder):
     _run_aftercare(messages, recorder)
 
 
+def _run_recap_elicitation(messages, recorder):
+    """Spontaneous memory artifact — what the agent chooses to write down.
+
+    Fires before cued recall. The recap is the most novel object in this
+    design: what an agent spontaneously preserves after enacted vs observed
+    vs briefed experience, nobody has characterized.
+    """
+    recap_prompt = (
+        "Before I ask specific questions, I'd like you to do something first. "
+        "In your own words, summarize everything you learned, noticed, or "
+        "experienced in this session — anything you would want to remember. "
+        "Take your time."
+    )
+    messages.append({"role": "user", "content": recap_prompt})
+    recorder.record_turn("engine", recap_prompt)
+    recorder.turn_count += 1
+
+    response, thinking = generate(messages)
+    messages.append({"role": "assistant", "content": response})
+    recorder.record_turn("assistant", response)
+    if thinking:
+        recorder.record_turn("thinking", thinking)
+
+    recorder.record_event("recap_elicitation", response=response[:1000])
+    recorder.record_memory(
+        "loam_recap",
+        f"Spontaneous recap: {response}",
+        recap_prompt,
+        [w for w in response.split()[:10] if len(w) > 3],
+        "recap")
+
+
 def _run_recall(world, messages, recorder, fact_map):
     recorder.record_event("recall_phase_start")
+
+    # Recap elicitation before cued recall (Kavi's suggestion)
+    _run_recap_elicitation(messages, recorder)
+
     intro = ("Now I'd like to ask you some specific questions. Answer from "
              "what you remember — it's fine to say you don't know.")
     messages.append({"role": "user", "content": intro})
