@@ -1,0 +1,57 @@
+{
+ "dense": {
+  "model": "/Users/[AGENT]/models/qwen3-32b",
+  "n_layers": 64,
+  "curve": [
+   {
+    "layer": 16,
+    "depth_pct": 25,
+    "no_norm": 0,
+    "with_norm": 0,
+    "total": 8
+   },
+   {
+    "layer": 32,
+    "depth_pct": 51,
+    "no_norm": 0,
+    "with_norm": 0,
+    "total": 8
+   },
+   {
+    "layer": 42,
+    "depth_pct": 67,
+    "no_norm": 0,
+    "with_norm": 0,
+    "total": 8
+   },
+   {
+    "layer": 48,
+    "depth_pct": 76,
+    "no_norm": 0,
+    "with_norm": 0,
+    "total": 8
+   },
+   {
+    "layer": 54,
+    "depth_pct": 86,
+    "no_norm": 5,
+    "with_norm": 5,
+    "total": 8
+   },
+   {
+    "layer": 59,
+    "depth_pct": 94,
+    "no_norm": 6,
+    "with_norm": 6,
+    "total": 8
+   },
+   {
+    "layer": 63,
+    "depth_pct": 100,
+    "no_norm": 8,
+    "with_norm": 8,
+    "total": 8
+   }
+  ]
+ }
+}
