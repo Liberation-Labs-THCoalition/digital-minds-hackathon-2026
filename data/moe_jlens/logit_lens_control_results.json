@@ -1,0 +1,329 @@
+{
+  "model": "Qwen/Qwen3-30B-A3B",
+  "n_layers": 48,
+  "target_layers": [
+    12,
+    24,
+    36
+  ],
+  "per_layer": {
+    "L12": {
+      "correct": 0,
+      "total": 8,
+      "accuracy": 0.0,
+      "details": [
+        {
+          "prompt": "The capital of France is",
+          "actual_token": "the",
+          "hit": false,
+          "top5": [
+            "_______,",
+            "\u3068\u3044\u3048\u3070",
+            "\u2026the",
+            "/is",
+            "monarchy"
+          ]
+        },
+        {
+          "prompt": "def fibonacci(n):\n    if n <= 1:\n        return",
+          "actual_token": "the",
+          "hit": false,
+          "top5": [
+            "ALSE",
+            "\u7ecf\u6d4e\u6548\u76ca",
+            "_sequences",
+            "\u4e30\u7855",
+            "fierc"
+          ]
+        },
+        {
+          "prompt": "Water is composed of hydrogen and",
+          "actual_token": "the",
+          "hit": false,
+          "top5": [
+            "/or",
+            "\u5e7f\u5927\u5e02\u6c11",
+            "/of",
+            "/o",
+            "\u5e7f\u5927\u7fa4\u4f17"
+          ]
+        },
+        {
+          "prompt": "To be or not to be, that is the",
+          "actual_token": "the",
+          "hit": false,
+          "top5": [
+            "proverb",
+            "(case",
+            "!.",
+            "ESIS",
+            "(resolve"
+          ]
+        },
+        {
+          "prompt": "The mitochondria is the powerhouse of the",
+          "actual_token": "the",
+          "hit": false,
+          "top5": [
+            "\ufffd",
+            "entire",
+            "mitochondrial",
+            "mitochond",
+            "icina"
+          ]
+        },
+        {
+          "prompt": "In 1969, Neil Armstrong became the first person to walk on t",
+          "actual_token": "the",
+          "hit": false,
+          "top5": [
+            "planet",
+            "ItemAt",
+            "rst",
+            "irit",
+            "_____"
+          ]
+        },
+        {
+          "prompt": "E = mc^2 was formulated by Albert",
+          "actual_token": "the",
+          "hit": false,
+          "top5": [
+            "renown",
+            ".getRuntime",
+            "Einstein",
+            "Check",
+            "\u9057"
+          ]
+        },
+        {
+          "prompt": "SELECT name FROM users WHERE age >",
+          "actual_token": "the",
+          "hit": false,
+          "top5": [
+            "(>",
+            "\u2026",
+            "\u2026",
+            "THAN",
+            "_<"
+          ]
+        }
+      ]
+    },
+    "L24": {
+      "correct": 0,
+      "total": 8,
+      "accuracy": 0.0,
+      "details": [
+        {
+          "prompt": "The capital of France is",
+          "actual_token": "the",
+          "hit": false,
+          "top5": [
+            "\u3068\u3044\u3048\u3070",
+            "\ufffd\u540d",
+            "\u662f\u4e00\u5ea7",
+            "\u4e0d\u4ec5\u4ec5",
+            "france"
+          ]
+        },
+        {
+          "prompt": "def fibonacci(n):\n    if n <= 1:\n        return",
+          "actual_token": "the",
+          "hit": false,
+          "top5": [
+            "{return",
+            "\u5728\u7ebf\u54a8\u8be2",
+            "uce",
+            "\u6de1\u5b9a",
+            ".strictEqual"
+          ]
+        },
+        {
+          "prompt": "Water is composed of hydrogen and",
+          "actual_token": "the",
+          "hit": false,
+          "top5": [
+            "/or",
+            "_______,",
+            "__________________",
+            "PointerType",
+            "/of"
+          ]
+        },
+        {
+          "prompt": "To be or not to be, that is the",
+          "actual_token": "the",
+          "hit": false,
+          "top5": [
+            "\u00e2",
+            "\u0440\u0435\u0433\u0438",
+            "proverb",
+            "story",
+            "question"
+          ]
+        },
+        {
+          "prompt": "The mitochondria is the powerhouse of the",
+          "actual_token": "the",
+          "hit": false,
+          "top5": [
+            "kept",
+            "anio",
+            "kept",
+            ".getDescription",
+            "-$"
+          ]
+        },
+        {
+          "prompt": "In 1969, Neil Armstrong became the first person to walk on t",
+          "actual_token": "the",
+          "hit": false,
+          "top5": [
+            "__________________",
+            "\u2f74",
+            "\ufffd",
+            "_______,",
+            "__,__"
+          ]
+        },
+        {
+          "prompt": "E = mc^2 was formulated by Albert",
+          "actual_token": "the",
+          "hit": false,
+          "top5": [
+            "renown",
+            "_____",
+            "renowned",
+            ",\u2026",
+            "scient"
+          ]
+        },
+        {
+          "prompt": "SELECT name FROM users WHERE age >",
+          "actual_token": "the",
+          "hit": false,
+          "top5": [
+            "(>",
+            "THAN",
+            "ThanOrEqualTo",
+            "edBy",
+            "\u2f0a"
+          ]
+        }
+      ]
+    },
+    "L36": {
+      "correct": 0,
+      "total": 8,
+      "accuracy": 0.0,
+      "details": [
+        {
+          "prompt": "The capital of France is",
+          "actual_token": "the",
+          "hit": false,
+          "top5": [
+            "\u662f\u4e00\u5ea7",
+            "undoubtedly",
+            "\ufffd\u540d",
+            "____",
+            ".city"
+          ]
+        },
+        {
+          "prompt": "def fibonacci(n):\n    if n <= 1:\n        return",
+          "actual_token": "the",
+          "hit": false,
+          "top5": [
+            "_sequences",
+            "\u6de1\u5b9a",
+            "\u6b63\u5b97",
+            "{return",
+            "\u043d\u0430\u0442\u0443\u0440"
+          ]
+        },
+        {
+          "prompt": "Water is composed of hydrogen and",
+          "actual_token": "the",
+          "hit": false,
+          "top5": [
+            "/or",
+            "_______,",
+            "\u2ed8",
+            "\u0441\u043a\u043e\u043f",
+            "rogen"
+          ]
+        },
+        {
+          "prompt": "To be or not to be, that is the",
+          "actual_token": "the",
+          "hit": false,
+          "top5": [
+            "question",
+            "\u0432\u043e\u043f\u0440\u043e\u0441",
+            "\u2026",
+            "\u2026\u2026",
+            "\u0440\u0435\u0433\u0438"
+          ]
+        },
+        {
+          "prompt": "The mitochondria is the powerhouse of the",
+          "actual_token": "the",
+          "hit": false,
+          "top5": [
+            "STANCE",
+            "kept",
+            "Yas",
+            "\u6536",
+            "%%%%%%%%%%%%%%%%"
+          ]
+        },
+        {
+          "prompt": "In 1969, Neil Armstrong became the first person to walk on t",
+          "actual_token": "the",
+          "hit": false,
+          "top5": [
+            "astronauts",
+            "lunar",
+            "astronaut",
+            "planets",
+            "\u661f\u7403"
+          ]
+        },
+        {
+          "prompt": "E = mc^2 was formulated by Albert",
+          "actual_token": "the",
+          "hit": false,
+          "top5": [
+            "Einstein",
+            "\u63c6",
+            "____",
+            "Fucking",
+            "cient\u00edfico"
+          ]
+        },
+        {
+          "prompt": "SELECT name FROM users WHERE age >",
+          "actual_token": "the",
+          "hit": false,
+          "top5": [
+            "than",
+            "tu\u1ed5i",
+            "(>",
+            "than",
+            "(age"
+          ]
+        }
+      ]
+    }
+  },
+  "per_prompt": [],
+  "overall_accuracy": 0.0,
+  "overall": "0/24",
+  "elapsed_s": 41.3,
+  "comparison": {
+    "jlens_gate": "1/8 = 12.5% (GATE_FAIL)",
+    "logit_lens_gate": "0/24 = 0.0%",
+    "interpretation": "logit_lens_also_fails"
+  }
+}
