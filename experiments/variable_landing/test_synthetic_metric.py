@@ -60,9 +60,10 @@ def test_known_jaccard_three_of_seven():
         "snap2_data": workspace_tokens(storage_transform(snap2)),
     }
     metric = compute_metric(trial)
-    assert abs(metric - 3.0 / 7.0) < 1e-9, (
-        f"expected Jaccard 3/7, got {metric} — the metric is not reading "
-        f"workspace token sets")
+    # |intersection|=3, |union|=7 -> distance 4/7 (prereg metric is distance)
+    assert abs(metric - 4.0 / 7.0) < 1e-9, (
+        f"expected Jaccard distance 4/7, got {metric} — the metric is not "
+        f"reading workspace token sets")
 
 
 def test_metric_is_not_a_duration_proxy():
@@ -75,7 +76,8 @@ def test_metric_is_not_a_duration_proxy():
         "snap1_data": workspace_tokens(storage_transform(s_early)),
         "snap2_data": workspace_tokens(storage_transform(s_late)),
     }
-    assert compute_metric(trial) == 1.0
+    # identical token sets -> zero distance, regardless of elapsed time
+    assert compute_metric(trial) == 0.0
 
 
 def test_eccentricity_extracted_from_asdict_snapshot():
