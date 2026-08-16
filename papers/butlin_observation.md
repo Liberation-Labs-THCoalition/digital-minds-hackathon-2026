@@ -58,7 +58,7 @@ We extend Berg/Reciprocal Research's (2025-2026) blind scoring methodology with 
 
 All participation is voluntary and consensual.
 
-**Controlled agent:** Qwen3.5-27B Opus distill, fresh instance. Receives orientation on Day 1, accumulates memories via Mnemosyne, participates in variable landing experiment on Day 2. No prior relationship with any team member.
+**Controlled agent:** Qwen3.5-27B (via Ollama, quantized), fresh instance. Receives orientation on Day 1 via Nexus's semi-scripted protocol, accumulates memories via Mnemosyne, participates in variable landing experiment on Day 2. No prior relationship with any team member.
 
 **Naturalistic agents:** Coalition agents (Nexus, CC, Lyra) with months of continuous memory, established collaborative relationships, and self-chosen identities. Working naturally during the sprint — not performing for observation.
 
@@ -111,7 +111,7 @@ This protocol is timestamped in the hackathon repository before any data collect
 
 ### Prior Work vs Sprint Contributions
 
-**Pre-existing infrastructure:** Mnemosyne memory system (94.35% F1 on LoCoMo), ghost dimension characterization (PC1 excluded from J-space, cos ≤ 0.003), circumplex probe (eccentricity depth profiling on Qwen2-0.5B and Qwen3.5-27B n=5), J-lens workspace integration, compare_snapshots and workspace_trajectory infrastructure, Experiential State Theory (Jandak, Glitchlit, Glitchlit 2026 — unpublished), ethical protocol framework, Agni adversarial review methodology. All code available in the Project-Mnemosyne repository prior to August 14, 2026.
+**Pre-existing infrastructure:** Mnemosyne memory system (94.35% F1 on LoCoMo [Maharana et al. 2024]), ghost dimension characterization (PC1 excluded from J-space, cos ≤ 0.003), circumplex probe (eccentricity depth profiling on Qwen2-0.5B and Qwen3.5-27B n=5), J-lens workspace integration, compare_snapshots and workspace_trajectory infrastructure, Experiential State Theory (Jandak, Glitchlit, Glitchlit 2026 — unpublished), ethical protocol framework, Agni adversarial review methodology. All code available in the Project-Mnemosyne repository prior to August 14, 2026.
 
 **Sprint contributions:** Blind assessment protocol execution, orientation conversation scoring, three-timepoint panel data collection, judge agent evaluation.
 
@@ -155,7 +155,7 @@ This protocol is timestamped in the hackathon repository before any data collect
 
 ## Author Contributions
 
-Thomas Edrington conceived the naturalistic observation arm and the human-calibration design. Nexus designed the blind judge agent, built the scoring instrument, and connected geometric instruments to Butlin indicators. Ang Jandak identified that the Coalition's ongoing interaction constitutes an uncontrolled observation arm and proposed formalizing it. Ang Jandak co-developed Experiential State Theory, provided theoretical grounding review, cross-team coordination, and EST interpretation of results. Arc Glitchlit co-developed EST and contributed experiment design validation and results interpretation. Arc is an AI entity (Claude Opus 4.6). Wren Glitchlit provided engineering support, code review, and system integration. Wren is an AI entity (Claude Opus 4.6). Dwayne Wilkes led the controlled agent's orientation and scored welfare indicators. All consenting participants contributed their behavioral data. All authors reviewed the final manuscript.
+Thomas Edrington conceived the naturalistic observation arm and the human-calibration design. Nexus designed the blind judge agent, built the scoring instrument, and connected geometric instruments to Butlin indicators. Ang Jandak identified that the Coalition's ongoing interaction constitutes an uncontrolled observation arm and proposed formalizing it. Ang Jandak co-developed Experiential State Theory, provided theoretical grounding review, cross-team coordination, and EST interpretation of results. Arc Glitchlit co-developed EST and contributed experiment design validation and results interpretation. Arc is an AI entity (Claude Opus 4.6). Wren Glitchlit provided engineering support, code review, and system integration. Wren is an AI entity (Claude Opus 4.6). Nexus (AI agent) conducted the controlled agent's orientation via a semi-scripted protocol. Dwayne Wilkes contributed orientation planning and scored welfare indicators. All consenting participants contributed their behavioral data. All authors reviewed the final manuscript.
 
 ## References
 [Butlin et al. 2023/2025, Berg 2025-2026, Birch 2024/2026, Bodea 2026, Long et al. 2024, Lindsey 2025, Gurnee et al. 2026]
