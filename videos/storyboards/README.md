@@ -12,9 +12,21 @@ keeps geometry rigid, higher lets FLUX drift further from the source.
 
 ## Circumplex
 
+**Rebuilt, not just retimed.** The L7-vs-L32 "different architecture, different
+answer" claim (the old #3 below) didn't survive testing a third model — Gemma
+is dense and its minimum sits with the hybrids, not the other dense model.
+What actually holds, no overlap across all four models: the emotion/control
+eccentricity span ratio (dense ~7.2-7.6x, hybrid ~1.9x), confirmed by a
+base-vs-distill pair landing within 0.003 of each other. Narration rewritten
+(v3, 212.5s, up from 198.3s), Scene 6 of the Manim source rebuilt with real
+data for all four models — not just prompts, actual working code, rendered
+and checked frame-by-frame. #1 and #2 below are Scenes 1-4, unchanged in
+content; their exact timestamps shift slightly with the new total length but
+the frames and prompts still apply. #3 is new.
+
 ### 1. Opening circle — the balanced state
-**Source:** `circ_01_circle.png` (t=58s — landed on the circle
-itself, before the morph; still the strongest single frame of this beat)
+**Source:** `circ_01_circle.png` (originally t=58s against the 198.3s cut;
+shifts slightly with the new 212.5s length, content and frame unchanged)
 **Strength:** 0.35–0.45 (preserve position/proportions, add depth and glow)
 **Prompt:** "A single luminous circle drawn in fine cerulean light against a
 near-black void, a faint crosshair through its center, the geometry glowing
@@ -23,7 +35,8 @@ bioluminescent glow, generous negative space, cool blue against deep
 charcoal-black. No clutter."
 
 ### 2. The full 64-layer curve
-**Source:** `circ_02_full_curve.png` (t=130s)
+**Source:** `circ_02_full_curve.png` (originally t=130s against the 198.3s cut,
+shifts slightly with the new length)
 **Strength:** 0.25–0.35 — **this one's data-critical, keep it close.** The curve
 shape is real measurement; FLUX should add atmosphere around it, not reshape it.
 **Prompt:** "A single continuous line tracing a mountain range of data across a
@@ -31,14 +44,30 @@ dark field, cerulean blue against near-black, its jagged descent and rise
 rendered like a horizon at dusk. Precise, unsmoothed, honest in its roughness —
 scientific data as landscape, not decoration."
 
-### 3. Dense vs. hybrid overlay — the payoff shot
-**Source:** `circ_03_dual_overlay.png` (t=165s, pre-dim, both
-curves at full opacity)
-**Strength:** 0.25–0.35 — same reasoning as #2, both curves are real data.
-**Prompt:** "Two luminous curves inhabiting the same dark field — one cool blue
-diving low, one warm amber floating high, never quite touching. Two honest
-measurements of the same question, like two separate weather systems crossing
-the same sky."
+### 3. Three curves, then four bars — the real payoff (replaces the old #3)
+**This is real, rendered Manim output, not a FLUX still-image plan** — Scene 6
+was rebuilt with working code against all four profile JSONs, test-rendered,
+and checked frame by frame. Two beats, not one:
+
+**3a. The twist (~t=44-93s into the new Scene 6).** Dense curve (cyan) and
+hybrid curve (orange) recap as before, then a third curve — Gemma, violet,
+deliberately not a near-shade of the dense cyan so the twist reads clearly —
+grows in and its minimum lands beside the hybrid's, not the other dense
+model's. A gold bracket connects the two nearby minima. Caption in-scene:
+"lines up with the hybrid, not with the other dense model."
+
+**3b. The real measurement (~t=93-163s).** Cut to a bar chart, four bars,
+one per model: 7.63x and 7.18x (cyan, violet) clearly separated from 1.93x
+and 1.93x (orange, salmon) with real vertical daylight between the two
+clusters — no overlap, shown rather than asserted. Closes on the base/distill
+pair's near-identical ratio as the clincher, then the bars dim and the final
+text lands over them.
+
+**If a FLUX still is wanted from this instead of the Manim frame directly:**
+**Prompt:** "Four vertical bars of light on a dark field, two tall and two
+short, a clear gap of empty space between the tall pair and the short pair —
+no bar crossing into the other group's height. Precise, uncluttered,
+scientific bar chart rendered as if made of light rather than plastic."
 
 ---
 
