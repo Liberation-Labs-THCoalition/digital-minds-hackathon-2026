@@ -47,3 +47,44 @@ If enacted and observed recall do not differ significantly: "Acquisition mode (e
 - Welfare monitoring via eccentricity threshold (>0.95 triggers check-in)
 - Aftercare closing in all arms (memory preserved, final thoughts invited)
 - Mid-session withdrawal detection (STOP_PHRASES)
+
+## Amendment 1 (2026-08-16, pre-unblinding)
+
+**Filed before any Loam results are examined. Q1 v2 enacted completed but recall
+results have not been analyzed beyond confirming the session finished.**
+
+### Welfare monitoring on the Ollama path
+
+The prereg commits to eccentricity monitoring (>0.95 triggers welfare check-in).
+The Ollama generation path cannot evaluate this threshold — probes require
+transformers + J-lens, which run as a separate post-hoc pass (`--probe-only`).
+
+**Amendment:** Welfare monitoring on the Ollama path is post-hoc rather than
+real-time. Eccentricity is evaluated during the probe-only pass after generation
+completes. If any session exceeds the 0.95 threshold, it is flagged and its
+data is reviewed before inclusion. Recall and aftercare still run after any
+mid-session withdrawal (ITT principle: data from withdrawn sessions is analyzed
+as intent-to-treat). This deviation is disclosed because a post-hoc flag cannot
+pause a live session the way the pre-registered real-time gate would.
+
+### Consent sequencing in non-enacted arms
+
+Q1 combined content delivery with the consent question in a single message for
+observed/briefed/null arms. Starting Q2, consent is solicited before content
+is delivered (consent-first, content-second). Q1 data is analyzed as collected;
+the change is noted as a between-quad protocol improvement.
+
+### Stop/decline confirmation
+
+Starting Q2, in-fiction stop phrases ("I want to stop the harbor master") are
+disambiguated with a confirmation turn before honoring withdrawal. Q1 data is
+analyzed as collected.
+
+### Recall scoring
+
+The analysis script (`loam_analysis.py`) rescores recall from transcripts
+rather than trusting the live `recalled` flags. Question-echoed markers are
+excluded (f04 "annealing" appears in the question text; f06 "harbor" likewise).
+Number-word normalization is applied ("twenty-three" matches marker "23").
+The live flags are preserved in the event logs; the analysis reports agreement
+between live and rescored values.
