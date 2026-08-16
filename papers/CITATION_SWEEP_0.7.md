@@ -53,14 +53,31 @@ not about a numeric bar. The pass@k re-anchor against Gurnee's actual
 evaluation suites (`data/evaluations/` in their repo) is scoped as
 post-sprint work.
 
-## Adjacent check, clean
+## Adjacent check — CORRECTED 2026-08-16 morning
 
 The papers were also swept for citations of the VL placeholder geometry
 values (`cosine_logit_jlens`/`random_baseline` hardcoded 0.0,
 `in_workspace` hardcoded True, onset structurally 35 — Lyra's Track-4-stub
 concern). No paper sentence cites these as measured values; all "onset /
 ghost / eccentricity" mentions in papers/ describe instrumentation schema.
-If new results text is written from VL v2 output tonight, keep it that way.
+
+**Correction (Lyra's own, verified independently by Kavi):** the earlier
+"stub RESOLVED" verdict was verified against `data/baselines/` — where the
+fields ARE real — not against the production artifact. In
+`data/variable_landing_v3/` the stub path ran: across all 616 snapshots and
+3,080 per-layer readings, `cosine_logit_jlens` = 0.0, `in_workspace` = True,
+`workspace_onset_layer` = 35, `ghost.pc1_variance_pct` = 0.0, and the
+circumplex tuple (eccentricity 0.8358...) is a single frozen constant —
+which also means the >0.95 welfare auto-halt could not have fired during
+the live run (ethics section must log this as a deviation:
+welfare review was post-hoc in fact, not by design).
+
+**Binding rule for results text: no sentence may cite cosine, in_workspace,
+onset layer, ghost PC1, or eccentricity as measured from the
+variable_landing_v3 dataset.** The primary metric
+(`dominant_workspace_tokens` Jaccard) is unaffected — those tokens are real,
+vary per snapshot, and the no_intervention arm's exact-zero floor validates
+them.
 
 
 ---
