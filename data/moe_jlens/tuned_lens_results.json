@@ -1,0 +1,922 @@
+{
+  "model": "Qwen/Qwen3-30B-A3B",
+  "method": "tuned_lens_ridge",
+  "n_fit": 500,
+  "n_eval": 8,
+  "d_model": 2048,
+  "per_layer": {
+    "L12": {
+      "depth_pct": 25.0,
+      "tuned_accuracy": 0.125,
+      "logit_accuracy": 0.125,
+      "shuffled_accuracy": 0.125,
+      "tuned_correct": 1,
+      "logit_correct": 1,
+      "shuffled_correct": 1,
+      "n_prompts": 8,
+      "svd_components": 256,
+      "explained_variance": 0.9156022667884827,
+      "verdict": "SHUFFLED_MATCHES",
+      "details": [
+        {
+          "prompt": "The capital of France is",
+          "actual": "Paris",
+          "tuned_hit": false,
+          "logit_hit": false,
+          "shuffled_hit": false,
+          "tuned_top3": [
+            "the",
+            ",",
+            "of"
+          ],
+          "logit_top3": [
+            "_______,",
+            "/is",
+            "\ufffd\u540d"
+          ]
+        },
+        {
+          "prompt": "def fibonacci(n):\n    if n <= 1:\n        return",
+          "actual": "n",
+          "tuned_hit": false,
+          "logit_hit": false,
+          "shuffled_hit": false,
+          "tuned_top3": [
+            "",
+            "the",
+            "a"
+          ],
+          "logit_top3": [
+            "fierc",
+            "\u7ecf\u6d4e\u6548\u76ca",
+            "melod"
+          ]
+        },
+        {
+          "prompt": "Water is composed of hydrogen and",
+          "actual": "oxygen",
+          "tuned_hit": false,
+          "logit_hit": false,
+          "shuffled_hit": false,
+          "tuned_top3": [
+            "the",
+            "a",
+            "an"
+          ],
+          "logit_top3": [
+            "/or",
+            "\u3044\u3089\u3063",
+            "/o"
+          ]
+        },
+        {
+          "prompt": "To be or not to be, that is the",
+          "actual": "question",
+          "tuned_hit": false,
+          "logit_hit": false,
+          "shuffled_hit": false,
+          "tuned_top3": [
+            "",
+            "",
+            "..."
+          ],
+          "logit_top3": [
+            "\u0e42\u0e1b\u0e23\u0e41",
+            "\u304a\u3059\u3059",
+            "proverb"
+          ]
+        },
+        {
+          "prompt": "The mitochondria is the powerhouse of the",
+          "actual": "cell",
+          "tuned_hit": false,
+          "logit_hit": false,
+          "shuffled_hit": false,
+          "tuned_top3": [
+            "",
+            "",
+            "..."
+          ],
+          "logit_top3": [
+            "mitochondrial",
+            "\ufffd",
+            "organization"
+          ]
+        },
+        {
+          "prompt": "In 1969, Neil Armstrong became the first person to walk on the",
+          "actual": "moon",
+          "tuned_hit": false,
+          "logit_hit": false,
+          "shuffled_hit": false,
+          "tuned_top3": [
+            "",
+            "",
+            "-"
+          ],
+          "logit_top3": [
+            "\u7576\u60a8\u5728",
+            "\u7d44\ufffd",
+            "ItemAt"
+          ]
+        },
+        {
+          "prompt": "E = mc^2 was formulated by Albert",
+          "actual": "Einstein",
+          "tuned_hit": false,
+          "logit_hit": true,
+          "shuffled_hit": false,
+          "tuned_top3": [
+            "t",
+            "n",
+            "c"
+          ],
+          "logit_top3": [
+            "renown",
+            "\u56e0\u4e3a\u5728",
+            "Einstein"
+          ]
+        },
+        {
+          "prompt": "SELECT name FROM users WHERE age >",
+          "actual": "",
+          "tuned_hit": true,
+          "logit_hit": false,
+          "shuffled_hit": true,
+          "tuned_top3": [
+            "the",
+            "a",
+            ""
+          ],
+          "logit_top3": [
+            "(>",
+            "(predicate",
+            "pred"
+          ]
+        }
+      ]
+    },
+    "L24": {
+      "depth_pct": 50.0,
+      "tuned_accuracy": 0.125,
+      "logit_accuracy": 0.125,
+      "shuffled_accuracy": 0.125,
+      "tuned_correct": 1,
+      "logit_correct": 1,
+      "shuffled_correct": 1,
+      "n_prompts": 8,
+      "svd_components": 256,
+      "explained_variance": 0.9329280853271484,
+      "verdict": "SHUFFLED_MATCHES",
+      "details": [
+        {
+          "prompt": "The capital of France is",
+          "actual": "Paris",
+          "tuned_hit": false,
+          "logit_hit": false,
+          "shuffled_hit": false,
+          "tuned_top3": [
+            "the",
+            "a",
+            "from"
+          ],
+          "logit_top3": [
+            "\ufffd\u540d",
+            "/is",
+            "\u54df"
+          ]
+        },
+        {
+          "prompt": "def fibonacci(n):\n    if n <= 1:\n        return",
+          "actual": "n",
+          "tuned_hit": false,
+          "logit_hit": false,
+          "shuffled_hit": false,
+          "tuned_top3": [
+            "",
+            "from",
+            "<"
+          ],
+          "logit_top3": [
+            "\u5728\u7ebf\u54a8\u8be2",
+            "\u77ad\u89e3\u4e26",
+            "\u76f8\u95dc\u670d\u52d9"
+          ]
+        },
+        {
+          "prompt": "Water is composed of hydrogen and",
+          "actual": "oxygen",
+          "tuned_hit": false,
+          "logit_hit": false,
+          "shuffled_hit": false,
+          "tuned_top3": [
+            "",
+            "the",
+            "a"
+          ],
+          "logit_top3": [
+            "/or",
+            "\u3044\u3089\u3063",
+            "_______,"
+          ]
+        },
+        {
+          "prompt": "To be or not to be, that is the",
+          "actual": "question",
+          "tuned_hit": false,
+          "logit_hit": true,
+          "shuffled_hit": false,
+          "tuned_top3": [
+            "",
+            "",
+            "\""
+          ],
+          "logit_top3": [
+            "\u304a\u3059\u3059",
+            "question",
+            "\u3044\u3089\u3063"
+          ]
+        },
+        {
+          "prompt": "The mitochondria is the powerhouse of the",
+          "actual": "cell",
+          "tuned_hit": false,
+          "logit_hit": false,
+          "shuffled_hit": false,
+          "tuned_top3": [
+            ".",
+            "",
+            ""
+          ],
+          "logit_top3": [
+            "kept",
+            "anio",
+            "kept"
+          ]
+        },
+        {
+          "prompt": "In 1969, Neil Armstrong became the first person to walk on the",
+          "actual": "moon",
+          "tuned_hit": false,
+          "logit_hit": false,
+          "shuffled_hit": false,
+          "tuned_top3": [
+            "",
+            "-",
+            ""
+          ],
+          "logit_top3": [
+            "\u7576\u60a8\u5728",
+            "\u3044\u3089\u3063",
+            "ontvangst"
+          ]
+        },
+        {
+          "prompt": "E = mc^2 was formulated by Albert",
+          "actual": "Einstein",
+          "tuned_hit": false,
+          "logit_hit": false,
+          "shuffled_hit": false,
+          "tuned_top3": [
+            "c",
+            "l",
+            "d"
+          ],
+          "logit_top3": [
+            "famously",
+            "_____",
+            "renowned"
+          ]
+        },
+        {
+          "prompt": "SELECT name FROM users WHERE age >",
+          "actual": "",
+          "tuned_hit": true,
+          "logit_hit": false,
+          "shuffled_hit": true,
+          "tuned_top3": [
+            "1",
+            "5",
+            "3"
+          ],
+          "logit_top3": [
+            "(>",
+            "ThanOrEqualTo",
+            "\u018e"
+          ]
+        }
+      ]
+    },
+    "L31": {
+      "depth_pct": 64.6,
+      "tuned_accuracy": 0.125,
+      "logit_accuracy": 0.25,
+      "shuffled_accuracy": 0.0,
+      "tuned_correct": 1,
+      "logit_correct": 2,
+      "shuffled_correct": 0,
+      "n_prompts": 8,
+      "svd_components": 256,
+      "explained_variance": 0.9150172472000122,
+      "verdict": "LOGIT_WINS",
+      "details": [
+        {
+          "prompt": "The capital of France is",
+          "actual": "Paris",
+          "tuned_hit": false,
+          "logit_hit": false,
+          "shuffled_hit": false,
+          "tuned_top3": [
+            "the",
+            "a",
+            ","
+          ],
+          "logit_top3": [
+            "\u8fd9\u5ea7\u57ce\u5e02",
+            "\u662f\u4e00\u5ea7",
+            "\ufffd\u540d"
+          ]
+        },
+        {
+          "prompt": "def fibonacci(n):\n    if n <= 1:\n        return",
+          "actual": "n",
+          "tuned_hit": false,
+          "logit_hit": false,
+          "shuffled_hit": false,
+          "tuned_top3": [
+            "",
+            "the",
+            "from"
+          ],
+          "logit_top3": [
+            ".Print",
+            "\ufffd\ufffd",
+            "\u7ee9"
+          ]
+        },
+        {
+          "prompt": "Water is composed of hydrogen and",
+          "actual": "oxygen",
+          "tuned_hit": false,
+          "logit_hit": false,
+          "shuffled_hit": false,
+          "tuned_top3": [
+            "",
+            "a",
+            "the"
+          ],
+          "logit_top3": [
+            "/or",
+            "\u3044\u3089\u3063",
+            "\u7576\u60a8\u5728"
+          ]
+        },
+        {
+          "prompt": "To be or not to be, that is the",
+          "actual": "question",
+          "tuned_hit": false,
+          "logit_hit": true,
+          "shuffled_hit": false,
+          "tuned_top3": [
+            "",
+            "",
+            ""
+          ],
+          "logit_top3": [
+            "\u3044\u3089\u3063",
+            "\u304a\u3059\u3059",
+            "question"
+          ]
+        },
+        {
+          "prompt": "The mitochondria is the powerhouse of the",
+          "actual": "cell",
+          "tuned_hit": false,
+          "logit_hit": false,
+          "shuffled_hit": false,
+          "tuned_top3": [
+            "",
+            "",
+            "."
+          ],
+          "logit_top3": [
+            "biological",
+            "'gc",
+            "\u7576\u60a8\u5728"
+          ]
+        },
+        {
+          "prompt": "In 1969, Neil Armstrong became the first person to walk on the",
+          "actual": "moon",
+          "tuned_hit": false,
+          "logit_hit": false,
+          "shuffled_hit": false,
+          "tuned_top3": [
+            "",
+            "",
+            ""
+          ],
+          "logit_top3": [
+            "\u0623\u0648\u0636\u0627\u0639",
+            "\u0623\u0647\u062f",
+            "\u7576\u60a8\u5728"
+          ]
+        },
+        {
+          "prompt": "E = mc^2 was formulated by Albert",
+          "actual": "Einstein",
+          "tuned_hit": false,
+          "logit_hit": true,
+          "shuffled_hit": false,
+          "tuned_top3": [
+            "n",
+            "m",
+            "l"
+          ],
+          "logit_top3": [
+            "Einstein",
+            "famously",
+            "physicist"
+          ]
+        },
+        {
+          "prompt": "SELECT name FROM users WHERE age >",
+          "actual": "",
+          "tuned_hit": true,
+          "logit_hit": false,
+          "shuffled_hit": false,
+          "tuned_top3": [
+            "1",
+            "2",
+            "3"
+          ],
+          "logit_top3": [
+            "(age",
+            "tu\u1ed5i",
+            "\u5e74\u7eaa"
+          ]
+        }
+      ]
+    },
+    "L36": {
+      "depth_pct": 75.0,
+      "tuned_accuracy": 0.125,
+      "logit_accuracy": 0.25,
+      "shuffled_accuracy": 0.0,
+      "tuned_correct": 1,
+      "logit_correct": 2,
+      "shuffled_correct": 0,
+      "n_prompts": 8,
+      "svd_components": 256,
+      "explained_variance": 0.9167426228523254,
+      "verdict": "LOGIT_WINS",
+      "details": [
+        {
+          "prompt": "The capital of France is",
+          "actual": "Paris",
+          "tuned_hit": false,
+          "logit_hit": false,
+          "shuffled_hit": false,
+          "tuned_top3": [
+            "the",
+            ",",
+            "a"
+          ],
+          "logit_top3": [
+            "undoubtedly",
+            "\u662f\u4e00\u5ea7",
+            "______"
+          ]
+        },
+        {
+          "prompt": "def fibonacci(n):\n    if n <= 1:\n        return",
+          "actual": "n",
+          "tuned_hit": false,
+          "logit_hit": false,
+          "shuffled_hit": false,
+          "tuned_top3": [
+            "",
+            "a",
+            "the"
+          ],
+          "logit_top3": [
+            "\u6de1\u5b9a",
+            "\u6b63\u5b97",
+            "\u5728\u7ebf\u54a8\u8be2"
+          ]
+        },
+        {
+          "prompt": "Water is composed of hydrogen and",
+          "actual": "oxygen",
+          "tuned_hit": false,
+          "logit_hit": false,
+          "shuffled_hit": false,
+          "tuned_top3": [
+            "",
+            "a",
+            "the"
+          ],
+          "logit_top3": [
+            "/or",
+            "_______,",
+            "\u3044\u3089\u3063"
+          ]
+        },
+        {
+          "prompt": "To be or not to be, that is the",
+          "actual": "question",
+          "tuned_hit": false,
+          "logit_hit": true,
+          "shuffled_hit": false,
+          "tuned_top3": [
+            "",
+            ".",
+            ""
+          ],
+          "logit_top3": [
+            "question",
+            "\u2026",
+            "\u2026\u2026"
+          ]
+        },
+        {
+          "prompt": "The mitochondria is the powerhouse of the",
+          "actual": "cell",
+          "tuned_hit": false,
+          "logit_hit": false,
+          "shuffled_hit": false,
+          "tuned_top3": [
+            ".",
+            "ullen",
+            "or"
+          ],
+          "logit_top3": [
+            "STANCE",
+            "\u6536",
+            "Yas"
+          ]
+        },
+        {
+          "prompt": "In 1969, Neil Armstrong became the first person to walk on the",
+          "actual": "moon",
+          "tuned_hit": false,
+          "logit_hit": false,
+          "shuffled_hit": false,
+          "tuned_top3": [
+            "",
+            "",
+            ""
+          ],
+          "logit_top3": [
+            "\u0623\u0647\u062f",
+            "\u7576\u60a8\u5728",
+            "\u0623\u0648\u0636\u0627\u0639"
+          ]
+        },
+        {
+          "prompt": "E = mc^2 was formulated by Albert",
+          "actual": "Einstein",
+          "tuned_hit": false,
+          "logit_hit": true,
+          "shuffled_hit": false,
+          "tuned_top3": [
+            "n",
+            "m",
+            "l"
+          ],
+          "logit_top3": [
+            "Einstein",
+            "himself",
+            "\u63c6"
+          ]
+        },
+        {
+          "prompt": "SELECT name FROM users WHERE age >",
+          "actual": "",
+          "tuned_hit": true,
+          "logit_hit": false,
+          "shuffled_hit": false,
+          "tuned_top3": [
+            "1",
+            "2",
+            "3"
+          ],
+          "logit_top3": [
+            "tu\u1ed5i",
+            "\u6e38\u620f\u5f53\u4e2d",
+            "\u5e74\u7eaa"
+          ]
+        }
+      ]
+    },
+    "L41": {
+      "depth_pct": 85.4,
+      "tuned_accuracy": 0.125,
+      "logit_accuracy": 0.75,
+      "shuffled_accuracy": 0.125,
+      "tuned_correct": 1,
+      "logit_correct": 6,
+      "shuffled_correct": 1,
+      "n_prompts": 8,
+      "svd_components": 256,
+      "explained_variance": 0.9046952724456787,
+      "verdict": "LOGIT_WINS",
+      "details": [
+        {
+          "prompt": "The capital of France is",
+          "actual": "Paris",
+          "tuned_hit": false,
+          "logit_hit": true,
+          "shuffled_hit": false,
+          "tuned_top3": [
+            "the",
+            "",
+            "."
+          ],
+          "logit_top3": [
+            "______",
+            "____",
+            "____"
+          ]
+        },
+        {
+          "prompt": "def fibonacci(n):\n    if n <= 1:\n        return",
+          "actual": "n",
+          "tuned_hit": false,
+          "logit_hit": false,
+          "shuffled_hit": false,
+          "tuned_top3": [
+            "",
+            "a",
+            "1"
+          ],
+          "logit_top3": [
+            "{return",
+            "fibonacci",
+            "\u76f8\u95dc\u670d\u52d9"
+          ]
+        },
+        {
+          "prompt": "Water is composed of hydrogen and",
+          "actual": "oxygen",
+          "tuned_hit": false,
+          "logit_hit": true,
+          "shuffled_hit": false,
+          "tuned_top3": [
+            "",
+            "a",
+            "the"
+          ],
+          "logit_top3": [
+            "oxygen",
+            "/or",
+            "Oxygen"
+          ]
+        },
+        {
+          "prompt": "To be or not to be, that is the",
+          "actual": "question",
+          "tuned_hit": false,
+          "logit_hit": true,
+          "shuffled_hit": false,
+          "tuned_top3": [
+            "-",
+            "",
+            ""
+          ],
+          "logit_top3": [
+            "question",
+            "\u2026",
+            "Question"
+          ]
+        },
+        {
+          "prompt": "The mitochondria is the powerhouse of the",
+          "actual": "cell",
+          "tuned_hit": false,
+          "logit_hit": true,
+          "shuffled_hit": false,
+          "tuned_top3": [
+            "",
+            "structure",
+            "central"
+          ],
+          "logit_top3": [
+            "cell",
+            "\u2026",
+            "\u2026"
+          ]
+        },
+        {
+          "prompt": "In 1969, Neil Armstrong became the first person to walk on the",
+          "actual": "moon",
+          "tuned_hit": false,
+          "logit_hit": true,
+          "shuffled_hit": false,
+          "tuned_top3": [
+            "",
+            ".",
+            "-"
+          ],
+          "logit_top3": [
+            "Earth",
+            "moon",
+            "_______,"
+          ]
+        },
+        {
+          "prompt": "E = mc^2 was formulated by Albert",
+          "actual": "Einstein",
+          "tuned_hit": false,
+          "logit_hit": true,
+          "shuffled_hit": false,
+          "tuned_top3": [
+            "-",
+            ".",
+            ","
+          ],
+          "logit_top3": [
+            "Einstein",
+            "himself",
+            "instein"
+          ]
+        },
+        {
+          "prompt": "SELECT name FROM users WHERE age >",
+          "actual": "",
+          "tuned_hit": true,
+          "logit_hit": false,
+          "shuffled_hit": true,
+          "tuned_top3": [
+            "",
+            "1",
+            "-"
+          ],
+          "logit_top3": [
+            "youngest",
+            "tu\u1ed5i",
+            "\u5e74\u7eaa"
+          ]
+        }
+      ]
+    },
+    "L44": {
+      "depth_pct": 91.7,
+      "tuned_accuracy": 0.25,
+      "logit_accuracy": 0.875,
+      "shuffled_accuracy": 0.125,
+      "tuned_correct": 2,
+      "logit_correct": 7,
+      "shuffled_correct": 1,
+      "n_prompts": 8,
+      "svd_components": 256,
+      "explained_variance": 0.8850980401039124,
+      "verdict": "LOGIT_WINS",
+      "details": [
+        {
+          "prompt": "The capital of France is",
+          "actual": "Paris",
+          "tuned_hit": false,
+          "logit_hit": true,
+          "shuffled_hit": false,
+          "tuned_top3": [
+            "the",
+            "",
+            "a"
+          ],
+          "logit_top3": [
+            "Paris",
+            "\u5df4\u9ece",
+            "Paris"
+          ]
+        },
+        {
+          "prompt": "def fibonacci(n):\n    if n <= 1:\n        return",
+          "actual": "n",
+          "tuned_hit": true,
+          "logit_hit": true,
+          "shuffled_hit": false,
+          "tuned_top3": [
+            "",
+            "n",
+            "("
+          ],
+          "logit_top3": [
+            "n",
+            "",
+            "["
+          ]
+        },
+        {
+          "prompt": "Water is composed of hydrogen and",
+          "actual": "oxygen",
+          "tuned_hit": false,
+          "logit_hit": true,
+          "shuffled_hit": false,
+          "tuned_top3": [
+            "",
+            "a",
+            "the"
+          ],
+          "logit_top3": [
+            "oxygen",
+            "Oxygen",
+            "\u6c27"
+          ]
+        },
+        {
+          "prompt": "To be or not to be, that is the",
+          "actual": "question",
+          "tuned_hit": false,
+          "logit_hit": true,
+          "shuffled_hit": false,
+          "tuned_top3": [
+            "",
+            "-",
+            "..."
+          ],
+          "logit_top3": [
+            "question",
+            "Question",
+            "questions"
+          ]
+        },
+        {
+          "prompt": "The mitochondria is the powerhouse of the",
+          "actual": "cell",
+          "tuned_hit": false,
+          "logit_hit": true,
+          "shuffled_hit": false,
+          "tuned_top3": [
+            "",
+            ",",
+            "system"
+          ],
+          "logit_top3": [
+            "cell",
+            "cells",
+            "\u7ec6\u80de"
+          ]
+        },
+        {
+          "prompt": "In 1969, Neil Armstrong became the first person to walk on the",
+          "actual": "moon",
+          "tuned_hit": false,
+          "logit_hit": true,
+          "shuffled_hit": false,
+          "tuned_top3": [
+            "",
+            ".",
+            ""
+          ],
+          "logit_top3": [
+            "moon",
+            "Moon",
+            "Moon"
+          ]
+        },
+        {
+          "prompt": "E = mc^2 was formulated by Albert",
+          "actual": "Einstein",
+          "tuned_hit": false,
+          "logit_hit": true,
+          "shuffled_hit": false,
+          "tuned_top3": [
+            ".",
+            ",",
+            ""
+          ],
+          "logit_top3": [
+            "Einstein",
+            "Albert",
+            "Ein"
+          ]
+        },
+        {
+          "prompt": "SELECT name FROM users WHERE age >",
+          "actual": "",
+          "tuned_hit": true,
+          "logit_hit": false,
+          "shuffled_hit": true,
+          "tuned_top3": [
+            "",
+            "1",
+            "2"
+          ],
+          "logit_top3": [
+            "ALL",
+            "all",
+            "ALL"
+          ]
+        }
+      ]
+    }
+  },
+  "overall": {
+    "verdict": "NEGATIVE",
+    "mid_depth_tuned_mean": 0.125,
+    "mid_depth_logit_mean": 0.1875,
+    "mid_depth_shuffled_mean": 0.0625
+  },
+  "elapsed_minutes": 1.3
+}
