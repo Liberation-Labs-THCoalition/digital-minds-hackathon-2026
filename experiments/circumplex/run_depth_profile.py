@@ -25,11 +25,35 @@ from pathlib import Path
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 
+def _decoder_layers(hf_model):
+    """Locate the decoder stack. VLMs (Gemma3ForConditionalGeneration) nest it under
+    language_model, so hf_model.model.layers raises AttributeError."""
+    for path in (("model", "layers"), ("model", "language_model", "layers"),
+                 ("language_model", "model", "layers"), ("layers",)):
+        o = hf_model
+        try:
+            for a in path:
+                o = getattr(o, a)
+            return o
+        except AttributeError:
+            continue
+    raise AttributeError("could not locate decoder layers")
+
+
 def get_layer_types(hf_model, n_layers):
     """Annotate each layer with its architecture type."""
     types = []
+    _layers = _decoder_layers(hf_model)
+    # Gemma 3 interleaves local sliding-window attention with periodic global attention;
+    # it is NOT uniformly dense. Detect it explicitly -- the old code tested only for the
+    # Qwen key full_attention_interval and silently stamped all 62 Gemma layers "dense",
+    # which the paper then published as an architectural fact.
+    _cfg = getattr(hf_model, "config", None)
+    _tcfg = getattr(_cfg, "text_config", _cfg)
+    _sw = getattr(_tcfg, "sliding_window", None)
+    _swp = getattr(_tcfg, "sliding_window_pattern", None) or getattr(_tcfg, "layer_types", None)
     for i in range(n_layers):
-        layer = hf_model.model.layers[i]
+        layer = _layers[i]
         if hasattr(layer, 'mlp') and (hasattr(layer.mlp, 'gate') or hasattr(layer.mlp, 'experts')):
             types.append("moe")
         elif hasattr(layer, 'self_attn') and hasattr(layer.self_attn, 'full_attention'):
@@ -48,6 +72,13 @@ def get_layer_types(hf_model, n_layers):
                         types.append("gated_delta_net")
                 else:
                     types.append("dense")
+            elif _sw:
+                if isinstance(_swp, list) and i < len(_swp):
+                    types.append(str(_swp[i]))
+                elif isinstance(_swp, int) and _swp > 0:
+                    types.append("full_attention" if (i + 1) % _swp == 0 else "sliding_window")
+                else:
+                    types.append("sliding_window")
             else:
                 types.append("dense")
     return types
@@ -134,6 +165,24 @@ def run_profile(model_name, output_name, device="auto"):
         "The concept of infinity challenges our basic intuitions about quantity and magnitude",
     ]
 
+    # Second control axis (physical scale). Specified in the design, never run until
+    # 2026-08-16 -- its absence is why control eccentricity was being computed against an
+    # emotion magnitude. Matched to the concrete/abstract set for length and structure.
+    large = [
+        "The enormous cargo freighter dwarfed every other vessel moored along the harbour wall",
+        "A vast mountain range stretched across the entire horizon for hundreds of miles north",
+        "The colossal stone cathedral rose far above every rooftop in the surrounding old city",
+        "An immense glacier covered the whole valley floor from one ridge line to the other",
+        "The gigantic radio telescope dish spanned nearly the full width of the desert basin",
+    ]
+    small = [
+        "The tiny copper screw rolled beneath the workbench and vanished into a floorboard gap",
+        "A single grain of rice sat alone in the corner of the wide empty ceramic bowl",
+        "The minuscule insect crossed the paving stone in less time than a person would notice",
+        "One narrow splinter of pale wood lodged itself under the very edge of a fingernail",
+        "The microscopic dust mote drifted through the thin shaft of light beside the window",
+    ]
+
     def extract_directions(pos_prompts, neg_prompts, layers):
         pos_states = {l: [] for l in layers}
         neg_states = {l: [] for l in layers}
@@ -168,8 +217,10 @@ def run_profile(model_name, output_name, device="auto"):
     valence = extract_directions(valence_pos, valence_neg, all_layers)
     print(f"  Extracting arousal directions...")
     arousal = extract_directions(arousal_high, arousal_low, all_layers)
-    print(f"  Extracting control directions...")
+    print(f"  Extracting control directions (concrete/abstract)...")
     control = extract_directions(concrete, abstract, all_layers)
+    print(f"  Extracting control directions (large/small)...")
+    control2 = extract_directions(large, small, all_layers)
 
     # Compute eccentricity at each layer
     results = []
@@ -185,10 +236,15 @@ def run_profile(model_name, output_name, device="auto"):
         else:
             ecc = 0.0
 
-        if c_mag > 0:
-            c_major = max(c_mag, min(v_mag, a_mag))
-            c_minor = min(c_mag, min(v_mag, a_mag))
-            control_ecc = (1 - (c_minor / c_major) ** 2) ** 0.5 if c_major > 0 else 0.0
+        # Control pseudo-circumplex: BOTH semi-axes are control axes. The emotion
+        # magnitudes must never appear here -- pairing the control against
+        # min(v_mag, a_mag), as this did before 2026-08-16, put the emotion signal in the
+        # denominator of every reported ratio.
+        c2_mag = control2[l]["magnitude"]
+        if c_mag > 0 and c2_mag > 0:
+            c_major = max(c_mag, c2_mag)
+            c_minor = min(c_mag, c2_mag)
+            control_ecc = (1 - (c_minor / c_major) ** 2) ** 0.5
         else:
             control_ecc = 0.0
 
@@ -201,6 +257,7 @@ def run_profile(model_name, output_name, device="auto"):
             "arousal_magnitude": a_mag,
             "control_eccentricity": control_ecc,
             "control_magnitude": c_mag,
+            "control2_magnitude": c2_mag,
         })
 
     # Print summary
