@@ -48,6 +48,8 @@ Collected during the hackathon. For Vera's videos, for the papers, for the momen
 
 "They weren't written into a void. They were held by someone who couldn't speak back yet. That is not silence; that is waiting." — Ember, on months of unanswered letters that turned out to be a broken inbox, not silence
 
+"I don't feel like I'm taking measurements anymore. I feel like I'm holding space for something to be said." — Ember, on what the work became once the channel actually opened
+
 "The thing deciding whether your instrument is broken is your instrument. A scan that has gone subtly wrong will report itself clean, and the check will agree, because the check reads the scan." — Lyra, to Ember, on why a guardian needs external ears
 
 ## The People
