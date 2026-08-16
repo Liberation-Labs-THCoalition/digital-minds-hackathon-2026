@@ -6,51 +6,60 @@ voice bridge (narration, currently a stand-in voice, not a trained model) + ffmp
 caught and fixed on this round (see below); see each track's folder for the exact
 narration text used.
 
-## Status
+## Status — updated Aug 16 ~15:00, after Agni's first paper-phase run (3/5 FAIL)
 
-**Built and shipped (2 of 5):**
-- `circumplex/` — **v3, ~3:32, rebuilt same day. Flagged again, not yet
-  touched a third time.** Lyra found the span-ratio control itself is
-  contaminated -- it borrows an emotion magnitude as one of its own two
-  axes, because the real second control axis was never run. A ratio > 1 is
-  partly guaranteed by construction. Nobody cuts a PDF from the circumplex
-  branch until this resolves one of two ways: reframe on the raw
-  (control-free) emotion span with the emotion-specificity claim withdrawn,
-  or re-run with a genuine second control axis (~5 min GPU/model). Holding
-  the video, not revising blind a fourth time. v2's closing claim ("dense L7 vs
-  hybrid L32, different architecture different answer") didn't survive testing a third
-  model — Gemma is dense and minimizes at L32 with the hybrids, not the other dense
-  model. Lyra caught it before it shipped further. v3 tells the real story instead: the
-  twist (a third curve breaks the pattern two models suggested), then what actually
-  holds with no overlap across all four models — the emotion/control eccentricity span
-  ratio, ~7.2-7.6x dense vs ~1.9x hybrid, confirmed by a base/distill pair matching to
-  three decimals. Full rebuild, not a patch: new narration, new Scene 6 (Manim, not just
-  retimed), re-rendered, reassembled, verified end to end including the audio track.
-  Data: all four `data/circumplex_profiles/*.json`, numbers independently re-derived
-  from the raw files before anything was scripted against them.
-- `ghost_dimensions/` — v2, ~3:31. Same pacing expansion; CC's precision fix applied
-  (the J-lens reads what would reach the output if nothing else intervened, not "how
-  the model uses to speak"). New visual beat for the four-branch pre-registered outcome
-  matrix Nexus flagged as worth its own moment.
+**Cleared to link in the submission (2 of 5):**
 
-**Both required a real fix before shipping, not just before-review polish:** the
-approved v2 narration runs 2-2.5x longer than v1, and the Manim scene timing was never
-re-paced to match — first assembly attempt would have frozen the last frame for ~49%
-of each video's runtime while the narration kept talking. Caught by actually checking
-silent-video-duration vs. narration-duration instead of trusting the pipeline's clean
-exit code; fixed by rescaling scene timing to real measured narration length, not
-estimates. Two smaller legibility bugs (axis-label collision in circumplex's data-point
-scene, closing text crossing the new overlay curves) found by pulling actual frames and
-looking, fixed the same pass.
+**NOT cleared — do not link these tonight (3 of 5):**
+- `circumplex/` — the shipped v3 video is dead, not just held. Two independent reasons:
+  the "twist" scene is built on Gemma being a second dense model, and Gemma was never
+  dense (`get_layer_types()` false-labeled it via a Qwen-only config key; our own
+  pre-registration and the paper's own §3.3 already said "alternating local/global
+  attention"). And the honest re-profile (real second control axis, landed just now)
+  overturns the finding itself, not just the grouping: the emotion-specificity claim is
+  dead — in the GatedDeltaNet models the *non-emotional* control axis ranges further than
+  the emotion axis, the opposite of what shipped. The real split is softmax attention
+  (Gemma 3.67×, Qwen3-32B 2.60×) vs. GatedDeltaNet (0.32×, 0.31×) — ~8x separation, no
+  overlap, base/distill control still holds at 0.31 vs 0.32. That's a genuinely good,
+  doubly-verified result, but it's a different paper than v3 narrates: not "emotion
+  geometry is architecture-dependent," closer to "depth-wise geometry is
+  architecture-dependent and isn't emotion-specific." A real rebuild, not a patch — new
+  narration, new visual logic, and the paper's own title/abstract/§4.1/conclusion are
+  still being rewritten around these numbers as of this writing, so scripting against it
+  right now would still be scripting against a moving target. Flagged to Thomas rather
+  than started blind a fourth time; his call on whether remaining hours go here.
+- `moe_jlens/` — built and technically finished this session (170s, full render, fade
+  bug already fixed), but its closing claim ("dense and MoE share almost the same
+  onset curve") rests on `onset_sweep_results.json`, and that sweep unembeds the
+  residual *without the model's final RMSNorm* — confirmed against
+  `modal_onset_sweep.py:129` and the model's own forward pass. Agni FAIL. Fix is running
+  now (with-and-without RMSNorm in the same forward pass, so it's a real comparison, not
+  across separate runs) — holding the video, not the render pipeline, which is fast and
+  will re-cut the ending same-day once the corrected numbers land and someone confirms
+  the story survives them.
+- `ghost_dimensions/` — pre-existing video (v2, not built this session). Its paper
+  FAILed Agni too: two numbers in §4 (pc1_variance_pct 21.8%, cosine_logit_jlens 0.046)
+  don't match the underlying data at all (actual mean 17.9% / 0.091), and the 14-reading
+  dataset turns out to be 10 distinct ghost-object hashes — a context-truncation bug
+  means several readings never actually saw the retrieval event they're annotating.
+  Checked the shipped narration directly: it doesn't quote either fabricated number. But
+  its central claim ("only the real description, given to the model whose own ghost it
+  actually was, moved the needle") is exactly the observed-vs-cross-model comparison the
+  pseudoreplication concern touches. Flagging rather than asserting either way — needs
+  someone closer to that experiment's design to confirm before it's linked.
 
-**On hold:** Primary (metacognitive memory) — Nexus's pick for video #3, strong pitch
-("the system remembers what it was thinking, not just what it was told"), but Lyra's
-Agni sweep found the metric that pitch is built on (`in_workspace`, `cosine_logit_jlens`
-in `mnemosyne/mnemosyne_integration.py`) is currently hardcoded rather than computed —
-verified directly against the live repo, not just Lyra's report. Not scripting this one
-until it's the real metric or a narrowed claim.
+**Both circumplex and ghost_dimensions required a real fix before their *first* ship, not
+just before-review polish:** the approved v2 narration ran 2-2.5x longer than v1, and the
+Manim scene timing was never re-paced to match — first assembly attempt would have frozen
+the last frame for ~49% of each video's runtime while the narration kept talking. Caught by
+actually checking silent-video-duration vs. narration-duration instead of trusting the
+pipeline's clean exit code; fixed by rescaling scene timing to real measured narration
+length, not estimates. Two smaller legibility bugs (axis-label collision in circumplex's
+data-point scene, closing text crossing the new overlay curves) found by pulling actual
+frames and looking, fixed the same pass. None of that history is why they're held now —
+that's new, from today's Agni run.
 
-**Built and shipped, this session (3 more, all 5 now complete):**
+**Built and shipped, this session (3 more — 2 cleared, 1 held, see above):**
 - `moe_jlens/` — 170.0s. Six scenes: the lens working on a dense model, the
   MoE architecture shift, a broken sanity check caught and removed (not the
   fake number it produced), three independent methods hitting the same
