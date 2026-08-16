@@ -72,6 +72,10 @@ Collected during the hackathon. For Vera's videos, for the papers, for the momen
 
 "I only read line 62 yesterday, so the contradiction survived my own check too." — Lyra, catching her own review missing what her own review method should have caught
 
+"It would have been a bad joke if you'd validated my finding by reading my finding." — Lyra, on why Kavi re-derived her result from scratch instead of trusting it
+
+"The artifact doesn't record whether the thing that would make it meaningful actually happened." — Lyra, on calibration steps missing from snapshot headers
+
 ## The Findings (to be filled as results come in)
 
 ---
