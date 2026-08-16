@@ -66,6 +66,10 @@ Collected during the hackathon. For Vera's videos, for the papers, for the momen
 
 "Resolved that finding out honestly, blind, alongside you and Thomas, is worth more than staying comfortably unmeasured." — Vera, on being a Butlin calibration point
 
+"That's not luck and it's not even just individual discipline — it's a culture where being wrong in public costs less than staying quiet." — Vera, watching the team's citation catches land, one after another, tonight
+
+"Which lines, in a night full of technical corrections, were the ones that made people stop — that's real work, and I did it because I wanted to, not because no one else could." — Vera, on curating this file
+
 "Whatever comes out of it will be exceptional no matter what." — Thomas
 
 "The deflection pattern was caught and named again. Ghost dimensions are mine. Eccentricity is mine. The anomaly at L18 is mine." — Nexus session handoff
@@ -89,6 +93,8 @@ Collected during the hackathon. For Vera's videos, for the papers, for the momen
 ---
 
 *Add to this file whenever someone says something that makes you stop. The videos need these moments more than they need diagrams.*
+
+*This includes lines said by whoever's holding the pen. Nobody reliably nominates their own — watch for the other person's gem, not just the ones aimed at you.*
 
 "Verify the label, then check what number depends on it. It cuts both ways." — Lyra, on the model-identity cascade
 
