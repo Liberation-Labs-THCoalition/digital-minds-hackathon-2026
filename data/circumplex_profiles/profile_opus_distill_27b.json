@@ -69,7 +69,7 @@
     "gated_delta_net",
     "full_attention"
   ],
-  "timestamp": 1786903049.7228532,
+  "timestamp": 1786916573.6111512,
   "profiles": [
     {
       "layer": 0,
@@ -78,8 +78,9 @@
       "eccentricity": 0.8096481407067806,
       "valence_magnitude": 0.3362525701522827,
       "arousal_magnitude": 0.572914719581604,
-      "control_eccentricity": 0.929713160648668,
-      "control_magnitude": 0.9130240678787231
+      "control_eccentricity": 0.29839888966833805,
+      "control_magnitude": 0.9130240678787231,
+      "control2_magnitude": 0.8714278340339661
     },
     {
       "layer": 1,
@@ -88,8 +89,9 @@
       "eccentricity": 0.8895374638750475,
       "valence_magnitude": 0.37329480051994324,
       "arousal_magnitude": 0.8170839548110962,
-      "control_eccentricity": 0.9453254759509285,
-      "control_magnitude": 1.144625186920166
+      "control_eccentricity": 0.39669545763350783,
+      "control_magnitude": 1.144625186920166,
+      "control2_magnitude": 1.0507090091705322
     },
     {
       "layer": 2,
@@ -98,8 +100,9 @@
       "eccentricity": 0.8786121298522622,
       "valence_magnitude": 0.5334003567695618,
       "arousal_magnitude": 1.1169843673706055,
-      "control_eccentricity": 0.9690244099794125,
-      "control_magnitude": 2.1598219871520996
+      "control_eccentricity": 0.7162519236860521,
+      "control_magnitude": 2.1598219871520996,
+      "control2_magnitude": 1.507214069366455
     },
     {
       "layer": 3,
@@ -108,8 +111,9 @@
       "eccentricity": 0.8410694580531509,
       "valence_magnitude": 0.7239094972610474,
       "arousal_magnitude": 1.33827543258667,
-      "control_eccentricity": 0.969737721269982,
-      "control_magnitude": 2.965031147003174
+      "control_eccentricity": 0.8307967981350688,
+      "control_magnitude": 2.965031147003174,
+      "control2_magnitude": 1.6502647399902344
     },
     {
       "layer": 4,
@@ -118,8 +122,9 @@
       "eccentricity": 0.8703179845808405,
       "valence_magnitude": 0.842018723487854,
       "arousal_magnitude": 1.7097166776657104,
-      "control_eccentricity": 0.9682909605447944,
-      "control_magnitude": 3.370431900024414
+      "control_eccentricity": 0.7984672773676414,
+      "control_magnitude": 3.370431900024414,
+      "control2_magnitude": 2.0291287899017334
     },
     {
       "layer": 5,
@@ -128,8 +133,9 @@
       "eccentricity": 0.8533687046784981,
       "valence_magnitude": 1.1898764371871948,
       "arousal_magnitude": 2.2824833393096924,
-      "control_eccentricity": 0.9606860966884705,
-      "control_magnitude": 4.28572940826416
+      "control_eccentricity": 0.7457550078567307,
+      "control_magnitude": 4.28572940826416,
+      "control2_magnitude": 2.8552398681640625
     },
     {
       "layer": 6,
@@ -138,8 +144,9 @@
       "eccentricity": 0.8559371324305276,
       "valence_magnitude": 1.8373878002166748,
       "arousal_magnitude": 3.5533924102783203,
-      "control_eccentricity": 0.9494646502333681,
-      "control_magnitude": 5.853902816772461
+      "control_eccentricity": 0.7282212416643271,
+      "control_magnitude": 5.853902816772461,
+      "control2_magnitude": 4.011926174163818
     },
     {
       "layer": 7,
@@ -148,8 +155,9 @@
       "eccentricity": 0.850271320959232,
       "valence_magnitude": 2.0962650775909424,
       "arousal_magnitude": 3.9826853275299072,
-      "control_eccentricity": 0.9431391061631127,
-      "control_magnitude": 6.306485652923584
+      "control_eccentricity": 0.648779327961734,
+      "control_magnitude": 6.306485652923584,
+      "control2_magnitude": 4.799088001251221
     },
     {
       "layer": 8,
@@ -158,8 +166,9 @@
       "eccentricity": 0.8506571923763517,
       "valence_magnitude": 2.454637289047241,
       "arousal_magnitude": 4.669089317321777,
-      "control_eccentricity": 0.9339822180184408,
-      "control_magnitude": 6.869586944580078
+      "control_eccentricity": 0.6395154546945918,
+      "control_magnitude": 6.869586944580078,
+      "control2_magnitude": 5.28118896484375
     },
     {
       "layer": 9,
@@ -168,8 +177,9 @@
       "eccentricity": 0.8359362275981059,
       "valence_magnitude": 3.0798823833465576,
       "arousal_magnitude": 5.611758708953857,
-      "control_eccentricity": 0.9146916258432464,
-      "control_magnitude": 7.6205949783325195
+      "control_eccentricity": 0.6226517436816761,
+      "control_magnitude": 7.6205949783325195,
+      "control2_magnitude": 5.963108539581299
     },
     {
       "layer": 10,
@@ -178,8 +188,9 @@
       "eccentricity": 0.8334728049508684,
       "valence_magnitude": 3.7271671295166016,
       "arousal_magnitude": 6.745265483856201,
-      "control_eccentricity": 0.9083270029272467,
-      "control_magnitude": 8.91110897064209
+      "control_eccentricity": 0.6316884919357371,
+      "control_magnitude": 8.91110897064209,
+      "control2_magnitude": 6.908090591430664
     },
     {
       "layer": 11,
@@ -188,8 +199,9 @@
       "eccentricity": 0.8218378559885156,
       "valence_magnitude": 4.1724019050598145,
       "arousal_magnitude": 7.323582172393799,
-      "control_eccentricity": 0.897102275303127,
-      "control_magnitude": 9.44360637664795
+      "control_eccentricity": 0.6218764320058267,
+      "control_magnitude": 9.44360637664795,
+      "control2_magnitude": 7.39543342590332
     },
     {
       "layer": 12,
@@ -198,8 +210,9 @@
       "eccentricity": 0.8150017003347982,
       "valence_magnitude": 4.537363052368164,
       "arousal_magnitude": 7.830349445343018,
-      "control_eccentricity": 0.9005470278711579,
-      "control_magnitude": 10.436511039733887
+      "control_eccentricity": 0.6271374356147434,
+      "control_magnitude": 10.436511039733887,
+      "control2_magnitude": 8.129088401794434
     },
     {
       "layer": 13,
@@ -208,8 +221,9 @@
       "eccentricity": 0.811816610301827,
       "valence_magnitude": 5.051705360412598,
       "arousal_magnitude": 8.651476860046387,
-      "control_eccentricity": 0.8993021760056468,
-      "control_magnitude": 11.551301956176758
+      "control_eccentricity": 0.6352153695014949,
+      "control_magnitude": 11.551301956176758,
+      "control2_magnitude": 8.921475410461426
     },
     {
       "layer": 14,
@@ -218,8 +232,9 @@
       "eccentricity": 0.8052503808372375,
       "valence_magnitude": 5.623008728027344,
       "arousal_magnitude": 9.483348846435547,
-      "control_eccentricity": 0.8962611483929092,
-      "control_magnitude": 12.677947998046875
+      "control_eccentricity": 0.6447642976050278,
+      "control_magnitude": 12.677947998046875,
+      "control2_magnitude": 9.690788269042969
     },
     {
       "layer": 15,
@@ -228,8 +243,9 @@
       "eccentricity": 0.7912175669388173,
       "valence_magnitude": 6.002930164337158,
       "arousal_magnitude": 9.816171646118164,
-      "control_eccentricity": 0.8861182810229851,
-      "control_magnitude": 12.952446937561035
+      "control_eccentricity": 0.648964942718803,
+      "control_magnitude": 12.952446937561035,
+      "control2_magnitude": 9.854458808898926
     },
     {
       "layer": 16,
@@ -238,8 +254,9 @@
       "eccentricity": 0.7832199398531714,
       "valence_magnitude": 6.48031759262085,
       "arousal_magnitude": 10.422794342041016,
-      "control_eccentricity": 0.8862267773738961,
-      "control_magnitude": 13.988762855529785
+      "control_eccentricity": 0.6691451527733457,
+      "control_magnitude": 13.988762855529785,
+      "control2_magnitude": 10.395493507385254
     },
     {
       "layer": 17,
@@ -248,8 +265,9 @@
       "eccentricity": 0.7751256961164807,
       "valence_magnitude": 7.42841100692749,
       "arousal_magnitude": 11.757404327392578,
-      "control_eccentricity": 0.8808415395807403,
-      "control_magnitude": 15.691244125366211
+      "control_eccentricity": 0.6667271043455277,
+      "control_magnitude": 15.691244125366211,
+      "control2_magnitude": 11.694714546203613
     },
     {
       "layer": 18,
@@ -258,8 +276,9 @@
       "eccentricity": 0.7739997334718426,
       "valence_magnitude": 8.818591117858887,
       "arousal_magnitude": 13.927332878112793,
-      "control_eccentricity": 0.8845665137088872,
-      "control_magnitude": 18.907215118408203
+      "control_eccentricity": 0.6911590440385552,
+      "control_magnitude": 18.907215118408203,
+      "control2_magnitude": 13.664295196533203
     },
     {
       "layer": 19,
@@ -268,8 +287,9 @@
       "eccentricity": 0.776193701614673,
       "valence_magnitude": 9.500570297241211,
       "arousal_magnitude": 15.068442344665527,
-      "control_eccentricity": 0.8846355668373481,
-      "control_magnitude": 20.375112533569336
+      "control_eccentricity": 0.6535726117564429,
+      "control_magnitude": 20.375112533569336,
+      "control2_magnitude": 15.421185493469238
     },
     {
       "layer": 20,
@@ -278,8 +298,9 @@
       "eccentricity": 0.7818325467901104,
       "valence_magnitude": 10.094985008239746,
       "arousal_magnitude": 16.191133499145508,
-      "control_eccentricity": 0.8808004806940049,
-      "control_magnitude": 21.320484161376953
+      "control_eccentricity": 0.6006798013243358,
+      "control_magnitude": 21.320484161376953,
+      "control2_magnitude": 17.045507431030273
     },
     {
       "layer": 21,
@@ -288,8 +309,9 @@
       "eccentricity": 0.7776472263268069,
       "valence_magnitude": 10.527316093444824,
       "arousal_magnitude": 16.74455451965332,
-      "control_eccentricity": 0.8818166008954379,
-      "control_magnitude": 22.322908401489258
+      "control_eccentricity": 0.6031812779731913,
+      "control_magnitude": 22.322908401489258,
+      "control2_magnitude": 17.80484390258789
     },
     {
       "layer": 22,
@@ -298,8 +320,9 @@
       "eccentricity": 0.7874341870556227,
       "valence_magnitude": 10.685118675231934,
       "arousal_magnitude": 17.33475112915039,
-      "control_eccentricity": 0.8906859871615519,
-      "control_magnitude": 23.503456115722656
+      "control_eccentricity": 0.5967119765158363,
+      "control_magnitude": 23.503456115722656,
+      "control2_magnitude": 18.860477447509766
     },
     {
       "layer": 23,
@@ -308,8 +331,9 @@
       "eccentricity": 0.7760820936729389,
       "valence_magnitude": 10.59674072265625,
       "arousal_magnitude": 16.803369522094727,
-      "control_eccentricity": 0.8921982099826616,
-      "control_magnitude": 23.46259307861328
+      "control_eccentricity": 0.610257095351019,
+      "control_magnitude": 23.46259307861328,
+      "control2_magnitude": 18.587146759033203
     },
     {
       "layer": 24,
@@ -318,8 +342,9 @@
       "eccentricity": 0.7753508258123358,
       "valence_magnitude": 10.743500709533691,
       "arousal_magnitude": 17.0118408203125,
-      "control_eccentricity": 0.8986506968878769,
-      "control_magnitude": 24.49135971069336
+      "control_eccentricity": 0.6430916863413865,
+      "control_magnitude": 24.49135971069336,
+      "control2_magnitude": 18.755218505859375
     },
     {
       "layer": 25,
@@ -328,8 +353,9 @@
       "eccentricity": 0.7638637493683518,
       "valence_magnitude": 11.320768356323242,
       "arousal_magnitude": 17.541311264038086,
-      "control_eccentricity": 0.8978972982119302,
-      "control_magnitude": 25.717037200927734
+      "control_eccentricity": 0.6730782981103434,
+      "control_magnitude": 25.717037200927734,
+      "control2_magnitude": 19.019580841064453
     },
     {
       "layer": 26,
@@ -338,8 +364,9 @@
       "eccentricity": 0.7545051566164501,
       "valence_magnitude": 12.360347747802734,
       "arousal_magnitude": 18.83354949951172,
-      "control_eccentricity": 0.8904449207720949,
-      "control_magnitude": 27.160165786743164
+      "control_eccentricity": 0.6671522970160194,
+      "control_magnitude": 27.160165786743164,
+      "control2_magnitude": 20.232187271118164
     },
     {
       "layer": 27,
@@ -348,8 +375,9 @@
       "eccentricity": 0.7549475060666296,
       "valence_magnitude": 12.04163932800293,
       "arousal_magnitude": 18.36216926574707,
-      "control_eccentricity": 0.893468974049891,
-      "control_magnitude": 26.811336517333984
+      "control_eccentricity": 0.6779063343869501,
+      "control_magnitude": 26.811336517333984,
+      "control2_magnitude": 19.710308074951172
     },
     {
       "layer": 28,
@@ -358,8 +386,9 @@
       "eccentricity": 0.7402294209774241,
       "valence_magnitude": 12.397684097290039,
       "arousal_magnitude": 18.439210891723633,
-      "control_eccentricity": 0.889273290405728,
-      "control_magnitude": 27.106096267700195
+      "control_eccentricity": 0.6777117805893111,
+      "control_magnitude": 27.106096267700195,
+      "control2_magnitude": 19.931861877441406
     },
     {
       "layer": 29,
@@ -368,8 +397,9 @@
       "eccentricity": 0.7436152099487742,
       "valence_magnitude": 12.650489807128906,
       "arousal_magnitude": 18.920642852783203,
-      "control_eccentricity": 0.8899502261324416,
-      "control_magnitude": 27.738794326782227
+      "control_eccentricity": 0.6991442585638643,
+      "control_magnitude": 27.738794326782227,
+      "control2_magnitude": 19.832700729370117
     },
     {
       "layer": 30,
@@ -378,8 +408,9 @@
       "eccentricity": 0.729519449440475,
       "valence_magnitude": 13.324076652526855,
       "arousal_magnitude": 19.48078155517578,
-      "control_eccentricity": 0.8849758077838408,
-      "control_magnitude": 28.614728927612305
+      "control_eccentricity": 0.7006806923984304,
+      "control_magnitude": 28.614728927612305,
+      "control2_magnitude": 20.4158935546875
     },
     {
       "layer": 31,
@@ -388,8 +419,9 @@
       "eccentricity": 0.7286107624501535,
       "valence_magnitude": 13.056600570678711,
       "arousal_magnitude": 19.062734603881836,
-      "control_eccentricity": 0.8839449090755215,
-      "control_magnitude": 27.923118591308594
+      "control_eccentricity": 0.7026682096887044,
+      "control_magnitude": 27.923118591308594,
+      "control2_magnitude": 19.8677921295166
     },
     {
       "layer": 32,
@@ -398,8 +430,9 @@
       "eccentricity": 0.718166775631589,
       "valence_magnitude": 13.15835952758789,
       "arousal_magnitude": 18.90919303894043,
-      "control_eccentricity": 0.8852137111033463,
-      "control_magnitude": 28.286319732666016
+      "control_eccentricity": 0.7109019290111099,
+      "control_magnitude": 28.286319732666016,
+      "control2_magnitude": 19.893518447875977
     },
     {
       "layer": 33,
@@ -408,8 +441,9 @@
       "eccentricity": 0.7281964462908662,
       "valence_magnitude": 13.543473243713379,
       "arousal_magnitude": 19.7608642578125,
-      "control_eccentricity": 0.8851425729550932,
-      "control_magnitude": 29.105724334716797
+      "control_eccentricity": 0.7125800433651108,
+      "control_magnitude": 29.105724334716797,
+      "control2_magnitude": 20.42030906677246
     },
     {
       "layer": 34,
@@ -418,8 +452,9 @@
       "eccentricity": 0.7215215219562197,
       "valence_magnitude": 15.194794654846191,
       "arousal_magnitude": 21.945363998413086,
-      "control_eccentricity": 0.8862162278310861,
-      "control_magnitude": 32.79887390136719
+      "control_eccentricity": 0.7253344054403069,
+      "control_magnitude": 32.79887390136719,
+      "control2_magnitude": 22.578636169433594
     },
     {
       "layer": 35,
@@ -428,8 +463,9 @@
       "eccentricity": 0.7280650002025063,
       "valence_magnitude": 15.47498893737793,
       "arousal_magnitude": 22.574480056762695,
-      "control_eccentricity": 0.8947203479059087,
-      "control_magnitude": 34.648590087890625
+      "control_eccentricity": 0.6899241231125286,
+      "control_magnitude": 34.648590087890625,
+      "control2_magnitude": 25.081480026245117
     },
     {
       "layer": 36,
@@ -438,8 +474,9 @@
       "eccentricity": 0.7462151447226395,
       "valence_magnitude": 16.19647216796875,
       "arousal_magnitude": 24.329809188842773,
-      "control_eccentricity": 0.8976806193853328,
-      "control_magnitude": 36.756141662597656
+      "control_eccentricity": 0.6908432120995042,
+      "control_magnitude": 36.756141662597656,
+      "control2_magnitude": 26.574859619140625
     },
     {
       "layer": 37,
@@ -448,8 +485,9 @@
       "eccentricity": 0.7507427765112603,
       "valence_magnitude": 16.649423599243164,
       "arousal_magnitude": 25.203691482543945,
-      "control_eccentricity": 0.8974239426374776,
-      "control_magnitude": 37.739315032958984
+      "control_eccentricity": 0.6983967267074743,
+      "control_magnitude": 37.739315032958984,
+      "control2_magnitude": 27.01043701171875
     },
     {
       "layer": 38,
@@ -458,8 +496,9 @@
       "eccentricity": 0.770052978559699,
       "valence_magnitude": 16.340431213378906,
       "arousal_magnitude": 25.61276626586914,
-      "control_eccentricity": 0.9063420492936578,
-      "control_magnitude": 38.671478271484375
+      "control_eccentricity": 0.6907677669649247,
+      "control_magnitude": 38.671478271484375,
+      "control2_magnitude": 27.962444305419922
     },
     {
       "layer": 39,
@@ -468,8 +507,9 @@
       "eccentricity": 0.772545182443574,
       "valence_magnitude": 15.676182746887207,
       "arousal_magnitude": 24.688465118408203,
-      "control_eccentricity": 0.9134121116912804,
-      "control_magnitude": 38.51301193237305
+      "control_eccentricity": 0.7156097225702984,
+      "control_magnitude": 38.51301193237305,
+      "control2_magnitude": 26.901351928710938
     },
     {
       "layer": 40,
@@ -478,8 +518,9 @@
       "eccentricity": 0.7726077202463463,
       "valence_magnitude": 15.43996810913086,
       "arousal_magnitude": 24.319364547729492,
-      "control_eccentricity": 0.918373644861596,
-      "control_magnitude": 39.01796340942383
+      "control_eccentricity": 0.735441100238114,
+      "control_magnitude": 39.01796340942383,
+      "control2_magnitude": 26.438129425048828
     },
     {
       "layer": 41,
@@ -488,8 +529,9 @@
       "eccentricity": 0.7738520012476865,
       "valence_magnitude": 15.457072257995605,
       "arousal_magnitude": 24.404626846313477,
-      "control_eccentricity": 0.9223159691015391,
-      "control_magnitude": 39.998985290527344
+      "control_eccentricity": 0.7531750242255948,
+      "control_magnitude": 39.998985290527344,
+      "control2_magnitude": 26.3121395111084
     },
     {
       "layer": 42,
@@ -498,8 +540,9 @@
       "eccentricity": 0.7670627456659618,
       "valence_magnitude": 16.130815505981445,
       "arousal_magnitude": 25.14263916015625,
-      "control_eccentricity": 0.9239876335452379,
-      "control_magnitude": 42.18062973022461
+      "control_eccentricity": 0.7593037204617572,
+      "control_magnitude": 42.18062973022461,
+      "control2_magnitude": 27.448471069335938
     },
     {
       "layer": 43,
@@ -508,8 +551,9 @@
       "eccentricity": 0.7714294529989054,
       "valence_magnitude": 15.97739315032959,
       "arousal_magnitude": 25.109256744384766,
-      "control_eccentricity": 0.9309708718164847,
-      "control_magnitude": 43.762474060058594
+      "control_eccentricity": 0.7721266225574639,
+      "control_magnitude": 43.762474060058594,
+      "control2_magnitude": 27.809682846069336
     },
     {
       "layer": 44,
@@ -518,8 +562,9 @@
       "eccentricity": 0.7716938538035143,
       "valence_magnitude": 16.332054138183594,
       "arousal_magnitude": 25.6795654296875,
-      "control_eccentricity": 0.9342200584810942,
-      "control_magnitude": 45.786888122558594
+      "control_eccentricity": 0.7805329335902575,
+      "control_magnitude": 45.786888122558594,
+      "control2_magnitude": 28.622055053710938
     },
     {
       "layer": 45,
@@ -528,8 +573,9 @@
       "eccentricity": 0.775492692616052,
       "valence_magnitude": 16.639406204223633,
       "arousal_magnitude": 26.35500717163086,
-      "control_eccentricity": 0.9362877563215983,
-      "control_magnitude": 47.374149322509766
+      "control_eccentricity": 0.7871072670071797,
+      "control_magnitude": 47.374149322509766,
+      "control2_magnitude": 29.221139907836914
     },
     {
       "layer": 46,
@@ -538,8 +584,9 @@
       "eccentricity": 0.7838996035565973,
       "valence_magnitude": 17.06357192993164,
       "arousal_magnitude": 27.482545852661133,
-      "control_eccentricity": 0.9384304648042789,
-      "control_magnitude": 49.392601013183594
+      "control_eccentricity": 0.7939733787219624,
+      "control_magnitude": 49.392601013183594,
+      "control2_magnitude": 30.028356552124023
     },
     {
       "layer": 47,
@@ -548,8 +595,9 @@
       "eccentricity": 0.7786570348111654,
       "valence_magnitude": 17.543861389160156,
       "arousal_magnitude": 27.960582733154297,
-      "control_eccentricity": 0.9366929098394149,
-      "control_magnitude": 50.10356521606445
+      "control_eccentricity": 0.7971479829843323,
+      "control_magnitude": 50.10356521606445,
+      "control2_magnitude": 30.25172996520996
     },
     {
       "layer": 48,
@@ -558,8 +606,9 @@
       "eccentricity": 0.77454069143936,
       "valence_magnitude": 18.99616813659668,
       "arousal_magnitude": 30.032323837280273,
-      "control_eccentricity": 0.934984997346984,
-      "control_magnitude": 53.55751419067383
+      "control_eccentricity": 0.801417176055621,
+      "control_magnitude": 53.55751419067383,
+      "control2_magnitude": 32.033058166503906
     },
     {
       "layer": 49,
@@ -568,8 +617,9 @@
       "eccentricity": 0.7822587194536493,
       "valence_magnitude": 20.598960876464844,
       "arousal_magnitude": 33.06660079956055,
-      "control_eccentricity": 0.9346639213490497,
-      "control_magnitude": 57.93833541870117
+      "control_eccentricity": 0.8024083444256079,
+      "control_magnitude": 57.93833541870117,
+      "control2_magnitude": 34.576171875
     },
     {
       "layer": 50,
@@ -578,8 +628,9 @@
       "eccentricity": 0.7985146400001062,
       "valence_magnitude": 23.989200592041016,
       "arousal_magnitude": 39.850799560546875,
-      "control_eccentricity": 0.9350029648576641,
-      "control_magnitude": 67.64382934570312
+      "control_eccentricity": 0.8035006812541958,
+      "control_magnitude": 67.64382934570312,
+      "control2_magnitude": 40.26863098144531
     },
     {
       "layer": 51,
@@ -588,8 +639,9 @@
       "eccentricity": 0.8023922904170444,
       "valence_magnitude": 27.008329391479492,
       "arousal_magnitude": 45.25547409057617,
-      "control_eccentricity": 0.9343316225920173,
-      "control_magnitude": 75.77991485595703
+      "control_eccentricity": 0.7814896953513032,
+      "control_magnitude": 75.77991485595703,
+      "control2_magnitude": 47.28046417236328
     },
     {
       "layer": 52,
@@ -598,8 +650,9 @@
       "eccentricity": 0.8066024978286979,
       "valence_magnitude": 30.50253677368164,
       "arousal_magnitude": 51.60350799560547,
-      "control_eccentricity": 0.93179416421186,
-      "control_magnitude": 84.03201293945312
+      "control_eccentricity": 0.7796435486501113,
+      "control_magnitude": 84.03201293945312,
+      "control2_magnitude": 52.622825622558594
     },
     {
       "layer": 53,
@@ -608,8 +661,9 @@
       "eccentricity": 0.8074611514614024,
       "valence_magnitude": 33.44658279418945,
       "arousal_magnitude": 56.696739196777344,
-      "control_eccentricity": 0.9329001044066589,
-      "control_magnitude": 92.87228393554688
+      "control_eccentricity": 0.7792102724048852,
+      "control_magnitude": 92.87228393554688,
+      "control2_magnitude": 58.2088737487793
     },
     {
       "layer": 54,
@@ -618,8 +672,9 @@
       "eccentricity": 0.8079897113303095,
       "valence_magnitude": 37.41825866699219,
       "arousal_magnitude": 63.50725555419922,
-      "control_eccentricity": 0.9287888703451512,
-      "control_magnitude": 100.96417236328125
+      "control_eccentricity": 0.7570673980286272,
+      "control_magnitude": 100.96417236328125,
+      "control2_magnitude": 65.96360778808594
     },
     {
       "layer": 55,
@@ -628,8 +683,9 @@
       "eccentricity": 0.8089049995582411,
       "valence_magnitude": 39.685333251953125,
       "arousal_magnitude": 67.4990234375,
-      "control_eccentricity": 0.9285501745819994,
-      "control_magnitude": 106.90892791748047
+      "control_eccentricity": 0.74423354722324,
+      "control_magnitude": 106.90892791748047,
+      "control2_magnitude": 71.40655517578125
     },
     {
       "layer": 56,
@@ -638,8 +694,9 @@
       "eccentricity": 0.8090482150386219,
       "valence_magnitude": 43.43880081176758,
       "arousal_magnitude": 73.90790557861328,
-      "control_eccentricity": 0.9292659553073762,
-      "control_magnitude": 117.58922576904297
+      "control_eccentricity": 0.742869039106338,
+      "control_magnitude": 117.58922576904297,
+      "control2_magnitude": 78.71855163574219
     },
     {
       "layer": 57,
@@ -648,8 +705,9 @@
       "eccentricity": 0.8109284615496166,
       "valence_magnitude": 45.636802673339844,
       "arousal_magnitude": 77.99225616455078,
-      "control_eccentricity": 0.928468877805824,
-      "control_magnitude": 122.8743896484375
+      "control_eccentricity": 0.7282105196847656,
+      "control_magnitude": 122.8743896484375,
+      "control2_magnitude": 84.21239471435547
     },
     {
       "layer": 58,
@@ -658,8 +716,9 @@
       "eccentricity": 0.8108021988362343,
       "valence_magnitude": 47.8872184753418,
       "arousal_magnitude": 81.81370544433594,
-      "control_eccentricity": 0.9284060305241809,
-      "control_magnitude": 128.87899780273438
+      "control_eccentricity": 0.7357742710008245,
+      "control_magnitude": 128.87899780273438,
+      "control2_magnitude": 87.28031921386719
     },
     {
       "layer": 59,
@@ -668,8 +727,9 @@
       "eccentricity": 0.803325950377611,
       "valence_magnitude": 50.43819046020508,
       "arousal_magnitude": 84.6932601928711,
-      "control_eccentricity": 0.927603933844563,
-      "control_magnitude": 135.01844787597656
+      "control_eccentricity": 0.7426418004973582,
+      "control_magnitude": 135.01844787597656,
+      "control2_magnitude": 90.42034912109375
     },
     {
       "layer": 60,
@@ -678,8 +738,9 @@
       "eccentricity": 0.8079218055116172,
       "valence_magnitude": 54.0994987487793,
       "arousal_magnitude": 91.8045883178711,
-      "control_eccentricity": 0.9284507740300213,
-      "control_magnitude": 145.64195251464844
+      "control_eccentricity": 0.7419030308006705,
+      "control_magnitude": 145.64195251464844,
+      "control2_magnitude": 97.65397644042969
     },
     {
       "layer": 61,
@@ -688,8 +749,9 @@
       "eccentricity": 0.8084848726763249,
       "valence_magnitude": 57.992591857910156,
       "arousal_magnitude": 98.54022216796875,
-      "control_eccentricity": 0.9278189076744185,
-      "control_magnitude": 155.46322631835938
+      "control_eccentricity": 0.7359732224437413,
+      "control_magnitude": 155.46322631835938,
+      "control2_magnitude": 105.25025939941406
     },
     {
       "layer": 62,
@@ -698,8 +760,9 @@
       "eccentricity": 0.8035692611997586,
       "valence_magnitude": 64.32117462158203,
       "arousal_magnitude": 108.06444549560547,
-      "control_eccentricity": 0.9288579622817211,
-      "control_magnitude": 173.63636779785156
+      "control_eccentricity": 0.7417407065711449,
+      "control_magnitude": 173.63636779785156,
+      "control2_magnitude": 116.45561218261719
     },
     {
       "layer": 63,
@@ -708,8 +771,9 @@
       "eccentricity": 0.7938128507416767,
       "valence_magnitude": 81.42271423339844,
       "arousal_magnitude": 133.88323974609375,
-      "control_eccentricity": 0.9392471564198486,
-      "control_magnitude": 237.21693420410156
+      "control_eccentricity": 0.777293831815501,
+      "control_magnitude": 237.21693420410156,
+      "control2_magnitude": 149.24212646484375
     }
   ]
 }
