@@ -29,12 +29,9 @@ distill). The base/distill pair is a controlled comparison — same architecture
 different training — and agrees to within 0.01.
 
 **Two of four ratios fall below 1.0: in the GatedDeltaNet models the non-emotional control
-ranges roughly three times more widely across depth than the emotion axis.** The pre-declared
-disposition for that outcome is that depth-wise eccentricity is a generic geometric property
-rather than an emotion-specific one, and we report it as such. An earlier version of this
-work reported 1.93× for these models against a control that included an emotion magnitude in
-its own formula; the corrected control changes the direction of the finding, not merely its
-size.
+ranges roughly three times more widely across depth than the emotion axis.** The
+pre-registered disposition for that outcome is that depth-wise eccentricity is a generic
+geometric property rather than an emotion-specific one, and we report it as such.
 
 
 ---
@@ -223,11 +220,10 @@ weaker version of the effect — it is evidence that what the profile measures i
 contrastive geometry, and that in these architectures emotion is among the *less*
 depth-variable contrasts we could have chosen.
 
-**We report this as a negative result on the paper's original question.** The pre-registration
-specified the disposition before data existed: a control showing the same or greater pattern
-is "evidence that eccentricity is a generic geometric property, not emotion-specific… a
-significant negative result." We are not reinterpreting a disappointment; we are executing a
-written instruction.
+**This is a negative result on the study's original question**, and the disposition was
+pre-registered before data existed: a control showing the same or greater pattern is
+"evidence that eccentricity is a generic geometric property, not emotion-specific… a
+significant negative result." 
 
 ### 4.2 The base/distill pair is a controlled comparison, and it holds under the corrected control
 
@@ -276,7 +272,7 @@ The depth at which the circumplex is most balanced does **not** split the way Ta
 | Qwen3.5-27B Opus-distill | hybrid | L32 — 51% depth |
 | Qwen3-32B | dense | L7 — 11% depth |
 
-**P1, the paper's binding pre-registered prediction, is FALSIFIED.** `preregister_circumplex.md` predicts the Qwen3.5-27B minimum "at or near L21 (~33% relative depth)" and states "**Falsified if:** minimum is at <20% or **>45% relative depth**." The observed minimum is L32 = 50.8%. That is outside the stated window, so P1 fails by its own criterion. An earlier draft reported P1 as *incomparable* on the grounds that a prior run used different anchors; the file cited for that claim is not present in this repository, and the pre-registration in any case specifies the disposition for a P1 null directly. We report it as falsified.
+**P1, the study's binding pre-registered prediction, is FALSIFIED.** `preregister_circumplex.md` predicts the Qwen3.5-27B eccentricity minimum "at or near L21 (~33% relative depth)" and states "**Falsified if:** minimum is at <20% or **>45% relative depth**." The observed minimum is L32 = 50.8%, outside the stated window. P1 fails by its own criterion.
 
 Separately, and **not** as a pre-registered prediction: Jeong
 (2026) reports emotion representations localising at ~50% relative depth on a U-shaped
@@ -292,15 +288,6 @@ quantities.
 not a shallow version of the same U — its eccentricity at the minimum is 0.255 against
 Gemma's 0.065. We report it as an unexplained outlier rather than folding it into either
 story.
-
-**A note on how we first read this table.** Before Gemma and the distill were profiled we
-had two models — Qwen3-32B at L7 and the hybrid at L32 — and inferred an architectural
-split in minimum depth. Gemma is dense and minimises at L32, which falsifies that reading;
-the third and fourth models were what settled it. We record this because the two-model
-slice was genuinely persuasive, and because the pre-registered prediction had already said
-the minimum should *not* vary by architecture. Given the anchor-set instability documented
-below for minimum-depth claims (the L21/L32 incomparability), we attach no architectural
-claim to the minimum in either direction.
 
 **What this means for the span-ratio result:** the two findings are independent. The span
 ratio (§4.1) holds across all four models including Gemma; the minimum location does not
