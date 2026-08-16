@@ -1,0 +1,3 @@
+[submodule "engines/loam"]
+	path = engines/loam
+	url = https://github.com/[contributor]/loam.git
