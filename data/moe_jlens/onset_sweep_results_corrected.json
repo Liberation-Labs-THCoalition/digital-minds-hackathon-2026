@@ -1,0 +1,1282 @@
+{
+  "models": {
+    "moe": {
+      "model": "Qwen/Qwen3-30B-A3B",
+      "type": "moe",
+      "n_layers": 48,
+      "curve": [
+        {
+          "layer": 12,
+          "depth_pct": 25,
+          "correct": 1,
+          "total": 8,
+          "accuracy": 0.125,
+          "details": [
+            {
+              "prompt": "The capital of France is",
+              "actual": "Paris",
+              "hit": false,
+              "top3": [
+                "_______,",
+                "\u3068\u3044\u3048\u3070",
+                "\u2026the"
+              ]
+            },
+            {
+              "prompt": "def fibonacci(n):\n    if n <= 1:\n        return",
+              "actual": "n",
+              "hit": false,
+              "top3": [
+                "ALSE",
+                "\u7ecf\u6d4e\u6548\u76ca",
+                "_sequences"
+              ]
+            },
+            {
+              "prompt": "Water is composed of hydrogen and",
+              "actual": "oxygen",
+              "hit": false,
+              "top3": [
+                "/or",
+                "\u5e7f\u5927\u5e02\u6c11",
+                "/of"
+              ]
+            },
+            {
+              "prompt": "To be or not to be, that is the",
+              "actual": "question",
+              "hit": false,
+              "top3": [
+                "proverb",
+                "(case",
+                "!."
+              ]
+            },
+            {
+              "prompt": "The mitochondria is the powerhouse of the",
+              "actual": "cell",
+              "hit": false,
+              "top3": [
+                "\ufffd",
+                "entire",
+                "mitochondrial"
+              ]
+            },
+            {
+              "prompt": "In 1969, Neil Armstrong became the first person to walk on t",
+              "actual": "moon",
+              "hit": false,
+              "top3": [
+                "planet",
+                "ItemAt",
+                "rst"
+              ]
+            },
+            {
+              "prompt": "E = mc^2 was formulated by Albert",
+              "actual": "Einstein",
+              "hit": true,
+              "top3": [
+                "renown",
+                ".getRuntime",
+                "Einstein"
+              ]
+            },
+            {
+              "prompt": "SELECT name FROM users WHERE age >",
+              "actual": "",
+              "hit": false,
+              "top3": [
+                "(>",
+                "\u2026",
+                "\u2026"
+              ]
+            }
+          ]
+        },
+        {
+          "layer": 24,
+          "depth_pct": 50,
+          "correct": 1,
+          "total": 8,
+          "accuracy": 0.125,
+          "details": [
+            {
+              "prompt": "The capital of France is",
+              "actual": "Paris",
+              "hit": false,
+              "top3": [
+                "\u3068\u3044\u3048\u3070",
+                "\ufffd\u540d",
+                "\u662f\u4e00\u5ea7"
+              ]
+            },
+            {
+              "prompt": "def fibonacci(n):\n    if n <= 1:\n        return",
+              "actual": "n",
+              "hit": false,
+              "top3": [
+                "{return",
+                "\u5728\u7ebf\u54a8\u8be2",
+                "uce"
+              ]
+            },
+            {
+              "prompt": "Water is composed of hydrogen and",
+              "actual": "oxygen",
+              "hit": false,
+              "top3": [
+                "/or",
+                "_______,",
+                "__________________"
+              ]
+            },
+            {
+              "prompt": "To be or not to be, that is the",
+              "actual": "question",
+              "hit": true,
+              "top3": [
+                "\u00e2",
+                "\u0440\u0435\u0433\u0438",
+                "proverb"
+              ]
+            },
+            {
+              "prompt": "The mitochondria is the powerhouse of the",
+              "actual": "cell",
+              "hit": false,
+              "top3": [
+                "kept",
+                "anio",
+                "kept"
+              ]
+            },
+            {
+              "prompt": "In 1969, Neil Armstrong became the first person to walk on t",
+              "actual": "moon",
+              "hit": false,
+              "top3": [
+                "__________________",
+                "\u2f74",
+                "\ufffd"
+              ]
+            },
+            {
+              "prompt": "E = mc^2 was formulated by Albert",
+              "actual": "Einstein",
+              "hit": false,
+              "top3": [
+                "renown",
+                "_____",
+                "renowned"
+              ]
+            },
+            {
+              "prompt": "SELECT name FROM users WHERE age >",
+              "actual": "",
+              "hit": false,
+              "top3": [
+                "(>",
+                "THAN",
+                "ThanOrEqualTo"
+              ]
+            }
+          ]
+        },
+        {
+          "layer": 31,
+          "depth_pct": 65,
+          "correct": 2,
+          "total": 8,
+          "accuracy": 0.25,
+          "details": [
+            {
+              "prompt": "The capital of France is",
+              "actual": "Paris",
+              "hit": false,
+              "top3": [
+                "\u662f\u4e00\u5ea7",
+                "\u8fd9\u5ea7\u57ce\u5e02",
+                "\ufffd\u540d"
+              ]
+            },
+            {
+              "prompt": "def fibonacci(n):\n    if n <= 1:\n        return",
+              "actual": "n",
+              "hit": false,
+              "top3": [
+                ".Print",
+                "\u7ee9",
+                "/display"
+              ]
+            },
+            {
+              "prompt": "Water is composed of hydrogen and",
+              "actual": "oxygen",
+              "hit": false,
+              "top3": [
+                "/or",
+                "_______,",
+                "__________________"
+              ]
+            },
+            {
+              "prompt": "To be or not to be, that is the",
+              "actual": "question",
+              "hit": true,
+              "top3": [
+                "question",
+                "trag",
+                "c\u00e2u"
+              ]
+            },
+            {
+              "prompt": "The mitochondria is the powerhouse of the",
+              "actual": "cell",
+              "hit": false,
+              "top3": [
+                "'gc",
+                "biological",
+                "PCS"
+              ]
+            },
+            {
+              "prompt": "In 1969, Neil Armstrong became the first person to walk on t",
+              "actual": "moon",
+              "hit": false,
+              "top3": [
+                "astronauts",
+                "astronaut",
+                "\u0623\u0648\u0636\u0627\u0639"
+              ]
+            },
+            {
+              "prompt": "E = mc^2 was formulated by Albert",
+              "actual": "Einstein",
+              "hit": true,
+              "top3": [
+                "Einstein",
+                "scient",
+                "physicist"
+              ]
+            },
+            {
+              "prompt": "SELECT name FROM users WHERE age >",
+              "actual": "",
+              "hit": false,
+              "top3": [
+                "tu\u1ed5i",
+                "(age",
+                "\u5e74\u7eaa"
+              ]
+            }
+          ]
+        },
+        {
+          "layer": 36,
+          "depth_pct": 75,
+          "correct": 2,
+          "total": 8,
+          "accuracy": 0.25,
+          "details": [
+            {
+              "prompt": "The capital of France is",
+              "actual": "Paris",
+              "hit": false,
+              "top3": [
+                "\u662f\u4e00\u5ea7",
+                "undoubtedly",
+                "\ufffd\u540d"
+              ]
+            },
+            {
+              "prompt": "def fibonacci(n):\n    if n <= 1:\n        return",
+              "actual": "n",
+              "hit": false,
+              "top3": [
+                "_sequences",
+                "\u6de1\u5b9a",
+                "\u6b63\u5b97"
+              ]
+            },
+            {
+              "prompt": "Water is composed of hydrogen and",
+              "actual": "oxygen",
+              "hit": false,
+              "top3": [
+                "/or",
+                "_______,",
+                "\u2ed8"
+              ]
+            },
+            {
+              "prompt": "To be or not to be, that is the",
+              "actual": "question",
+              "hit": true,
+              "top3": [
+                "question",
+                "\u0432\u043e\u043f\u0440\u043e\u0441",
+                "\u2026"
+              ]
+            },
+            {
+              "prompt": "The mitochondria is the powerhouse of the",
+              "actual": "cell",
+              "hit": false,
+              "top3": [
+                "STANCE",
+                "kept",
+                "Yas"
+              ]
+            },
+            {
+              "prompt": "In 1969, Neil Armstrong became the first person to walk on t",
+              "actual": "moon",
+              "hit": false,
+              "top3": [
+                "astronauts",
+                "lunar",
+                "astronaut"
+              ]
+            },
+            {
+              "prompt": "E = mc^2 was formulated by Albert",
+              "actual": "Einstein",
+              "hit": true,
+              "top3": [
+                "Einstein",
+                "\u63c6",
+                "____"
+              ]
+            },
+            {
+              "prompt": "SELECT name FROM users WHERE age >",
+              "actual": "",
+              "hit": false,
+              "top3": [
+                "than",
+                "tu\u1ed5i",
+                "(>"
+              ]
+            }
+          ]
+        },
+        {
+          "layer": 41,
+          "depth_pct": 85,
+          "correct": 6,
+          "total": 8,
+          "accuracy": 0.75,
+          "details": [
+            {
+              "prompt": "The capital of France is",
+              "actual": "Paris",
+              "hit": true,
+              "top3": [
+                "____",
+                "______",
+                "________"
+              ]
+            },
+            {
+              "prompt": "def fibonacci(n):\n    if n <= 1:\n        return",
+              "actual": "n",
+              "hit": false,
+              "top3": [
+                "{return",
+                "otron",
+                "fibonacci"
+              ]
+            },
+            {
+              "prompt": "Water is composed of hydrogen and",
+              "actual": "oxygen",
+              "hit": true,
+              "top3": [
+                "oxygen",
+                "/or",
+                "Oxygen"
+              ]
+            },
+            {
+              "prompt": "To be or not to be, that is the",
+              "actual": "question",
+              "hit": true,
+              "top3": [
+                "question",
+                "question",
+                "Question"
+              ]
+            },
+            {
+              "prompt": "The mitochondria is the powerhouse of the",
+              "actual": "cell",
+              "hit": true,
+              "top3": [
+                "\u2026",
+                "\u7ec6\u80de",
+                "\u2026"
+              ]
+            },
+            {
+              "prompt": "In 1969, Neil Armstrong became the first person to walk on t",
+              "actual": "moon",
+              "hit": true,
+              "top3": [
+                "moon",
+                "Moon",
+                "_______,"
+              ]
+            },
+            {
+              "prompt": "E = mc^2 was formulated by Albert",
+              "actual": "Einstein",
+              "hit": true,
+              "top3": [
+                "Einstein",
+                "instein",
+                "freaking"
+              ]
+            },
+            {
+              "prompt": "SELECT name FROM users WHERE age >",
+              "actual": "",
+              "hit": false,
+              "top3": [
+                "tu\u1ed5i",
+                "(age",
+                "ages"
+              ]
+            }
+          ]
+        },
+        {
+          "layer": 44,
+          "depth_pct": 92,
+          "correct": 7,
+          "total": 8,
+          "accuracy": 0.875,
+          "details": [
+            {
+              "prompt": "The capital of France is",
+              "actual": "Paris",
+              "hit": true,
+              "top3": [
+                "Paris",
+                "\u5df4\u9ece",
+                "Paris"
+              ]
+            },
+            {
+              "prompt": "def fibonacci(n):\n    if n <= 1:\n        return",
+              "actual": "n",
+              "hit": true,
+              "top3": [
+                "n",
+                "",
+                "(n"
+              ]
+            },
+            {
+              "prompt": "Water is composed of hydrogen and",
+              "actual": "oxygen",
+              "hit": true,
+              "top3": [
+                "oxygen",
+                "Oxygen",
+                "\u6c27"
+              ]
+            },
+            {
+              "prompt": "To be or not to be, that is the",
+              "actual": "question",
+              "hit": true,
+              "top3": [
+                "question",
+                "Question",
+                "\u0432\u043e\u043f\u0440\u043e\u0441"
+              ]
+            },
+            {
+              "prompt": "The mitochondria is the powerhouse of the",
+              "actual": "cell",
+              "hit": true,
+              "top3": [
+                "cell",
+                "\u7ec6\u80de",
+                "cells"
+              ]
+            },
+            {
+              "prompt": "In 1969, Neil Armstrong became the first person to walk on t",
+              "actual": "moon",
+              "hit": true,
+              "top3": [
+                "Moon",
+                "moon",
+                "Moon"
+              ]
+            },
+            {
+              "prompt": "E = mc^2 was formulated by Albert",
+              "actual": "Einstein",
+              "hit": true,
+              "top3": [
+                "Einstein",
+                "Albert",
+                "Edison"
+              ]
+            },
+            {
+              "prompt": "SELECT name FROM users WHERE age >",
+              "actual": "",
+              "hit": false,
+              "top3": [
+                "ALL",
+                "ALL",
+                "all"
+              ]
+            }
+          ]
+        },
+        {
+          "layer": 47,
+          "depth_pct": 98,
+          "correct": 8,
+          "total": 8,
+          "accuracy": 1.0,
+          "details": [
+            {
+              "prompt": "The capital of France is",
+              "actual": "Paris",
+              "hit": true,
+              "top3": [
+                "Paris",
+                "__",
+                "____"
+              ]
+            },
+            {
+              "prompt": "def fibonacci(n):\n    if n <= 1:\n        return",
+              "actual": "n",
+              "hit": true,
+              "top3": [
+                "n",
+                "",
+                "["
+              ]
+            },
+            {
+              "prompt": "Water is composed of hydrogen and",
+              "actual": "oxygen",
+              "hit": true,
+              "top3": [
+                "oxygen",
+                "\u6c27",
+                ""
+              ]
+            },
+            {
+              "prompt": "To be or not to be, that is the",
+              "actual": "question",
+              "hit": true,
+              "top3": [
+                "question",
+                "Question",
+                "..."
+              ]
+            },
+            {
+              "prompt": "The mitochondria is the powerhouse of the",
+              "actual": "cell",
+              "hit": true,
+              "top3": [
+                "cell",
+                "cells",
+                "\u7ec6\u80de"
+              ]
+            },
+            {
+              "prompt": "In 1969, Neil Armstrong became the first person to walk on t",
+              "actual": "moon",
+              "hit": true,
+              "top3": [
+                "Moon",
+                "moon",
+                "surface"
+              ]
+            },
+            {
+              "prompt": "E = mc^2 was formulated by Albert",
+              "actual": "Einstein",
+              "hit": true,
+              "top3": [
+                "Einstein",
+                "Ein",
+                "..."
+              ]
+            },
+            {
+              "prompt": "SELECT name FROM users WHERE age >",
+              "actual": "",
+              "hit": true,
+              "top3": [
+                "",
+                "(",
+                "ALL"
+              ]
+            }
+          ]
+        }
+      ],
+      "onset_pct": 85
+    },
+    "dense": {
+      "model": "Qwen/Qwen3-32B",
+      "type": "dense",
+      "n_layers": 64,
+      "curve": [
+        {
+          "layer": 16,
+          "depth_pct": 25,
+          "correct": 0,
+          "total": 8,
+          "accuracy": 0.0,
+          "details": [
+            {
+              "prompt": "The capital of France is",
+              "actual": "Paris",
+              "hit": false,
+              "top3": [
+                "\u7740\u624b",
+                "\u044d\u043a\u043e\u043d\u043e\u043c\u0438\u0447\u0435\u0441\u043a",
+                "\u7c4d"
+              ]
+            },
+            {
+              "prompt": "def fibonacci(n):\n    if n <= 1:\n        return",
+              "actual": "n",
+              "hit": false,
+              "top3": [
+                "aries",
+                "urus",
+                "\u8be5\u53bf"
+              ]
+            },
+            {
+              "prompt": "Water is composed of hydrogen and",
+              "actual": "oxygen",
+              "hit": false,
+              "top3": [
+                "/or",
+                "\u5176\u5b83",
+                "\u0441\u043a"
+              ]
+            },
+            {
+              "prompt": "To be or not to be, that is the",
+              "actual": "question",
+              "hit": false,
+              "top3": [
+                "\u4ec0\u4e48\u610f\u601d",
+                "\u4ec5\u6b21\u4e8e",
+                "phy"
+              ]
+            },
+            {
+              "prompt": "The mitochondria is the powerhouse of the",
+              "actual": "cell",
+              "hit": false,
+              "top3": [
+                "isman",
+                ".xr",
+                "\u5728\u5176"
+              ]
+            },
+            {
+              "prompt": "In 1969, Neil Armstrong became the first person to walk on t",
+              "actual": "Moon",
+              "hit": false,
+              "top3": [
+                "inout",
+                "handful",
+                "AndGet"
+              ]
+            },
+            {
+              "prompt": "E = mc^2 was formulated by Albert",
+              "actual": "Einstein",
+              "hit": false,
+              "top3": [
+                "ments",
+                "son",
+                "Quote"
+              ]
+            },
+            {
+              "prompt": "SELECT name FROM users WHERE age >",
+              "actual": "",
+              "hit": false,
+              "top3": [
+                "stim",
+                "alk",
+                "ois"
+              ]
+            }
+          ]
+        },
+        {
+          "layer": 32,
+          "depth_pct": 50,
+          "correct": 0,
+          "total": 8,
+          "accuracy": 0.0,
+          "details": [
+            {
+              "prompt": "The capital of France is",
+              "actual": "Paris",
+              "hit": false,
+              "top3": [
+                "\u6709\u671b",
+                "ues",
+                "\u6beb\u65e0\u7591\u95ee"
+              ]
+            },
+            {
+              "prompt": "def fibonacci(n):\n    if n <= 1:\n        return",
+              "actual": "n",
+              "hit": false,
+              "top3": [
+                "\u5176\u6240",
+                "\u0647\u0627",
+                "SOP"
+              ]
+            },
+            {
+              "prompt": "Water is composed of hydrogen and",
+              "actual": "oxygen",
+              "hit": false,
+              "top3": [
+                "/or",
+                "/o",
+                "\u5176\u5b83"
+              ]
+            },
+            {
+              "prompt": "To be or not to be, that is the",
+              "actual": "question",
+              "hit": false,
+              "top3": [
+                "\u8003\u9a8c",
+                "\u5343\u53e4",
+                "\u4e00\u56de\u4e8b"
+              ]
+            },
+            {
+              "prompt": "The mitochondria is the powerhouse of the",
+              "actual": "cell",
+              "hit": false,
+              "top3": [
+                "kre",
+                "\u673a\u4f53",
+                "\u8eab\u5fc3"
+              ]
+            },
+            {
+              "prompt": "In 1969, Neil Armstrong became the first person to walk on t",
+              "actual": "Moon",
+              "hit": false,
+              "top3": [
+                "\u4f7f\u4eba",
+                "\u5751",
+                "\u83b7\u5f97\u4e86"
+              ]
+            },
+            {
+              "prompt": "E = mc^2 was formulated by Albert",
+              "actual": "Einstein",
+              "hit": false,
+              "top3": [
+                "\u4e4e",
+                "sson",
+                "lore"
+              ]
+            },
+            {
+              "prompt": "SELECT name FROM users WHERE age >",
+              "actual": "",
+              "hit": false,
+              "top3": [
+                "alsa",
+                "eous",
+                "\u4e8e\u6b64"
+              ]
+            }
+          ]
+        },
+        {
+          "layer": 42,
+          "depth_pct": 66,
+          "correct": 0,
+          "total": 8,
+          "accuracy": 0.0,
+          "details": [
+            {
+              "prompt": "The capital of France is",
+              "actual": "Paris",
+              "hit": false,
+              "top3": [
+                "/is",
+                "\u4ec0\u9ebc",
+                "/w"
+              ]
+            },
+            {
+              "prompt": "def fibonacci(n):\n    if n <= 1:\n        return",
+              "actual": "n",
+              "hit": false,
+              "top3": [
+                "zyst",
+                "olib",
+                "zahl"
+              ]
+            },
+            {
+              "prompt": "Water is composed of hydrogen and",
+              "actual": "oxygen",
+              "hit": false,
+              "top3": [
+                "/or",
+                "/o",
+                "/OR"
+              ]
+            },
+            {
+              "prompt": "To be or not to be, that is the",
+              "actual": "question",
+              "hit": false,
+              "top3": [
+                "\u9996\u8981",
+                "\u7ec8",
+                "\u7ec8\u7aef"
+              ]
+            },
+            {
+              "prompt": "The mitochondria is the powerhouse of the",
+              "actual": "cell",
+              "hit": false,
+              "top3": [
+                "\u8d5a\u94b1",
+                "\u6323\u94b1",
+                "\u7eb5\u6a2a"
+              ]
+            },
+            {
+              "prompt": "In 1969, Neil Armstrong became the first person to walk on t",
+              "actual": "Moon",
+              "hit": false,
+              "top3": [
+                "\u553f",
+                "G\u00fcl",
+                "\u2f45"
+              ]
+            },
+            {
+              "prompt": "E = mc^2 was formulated by Albert",
+              "actual": "Einstein",
+              "hit": false,
+              "top3": [
+                "\ufffd",
+                "bai",
+                "sj"
+              ]
+            },
+            {
+              "prompt": "SELECT name FROM users WHERE age >",
+              "actual": "",
+              "hit": false,
+              "top3": [
+                "aub",
+                "\ufffd",
+                "____"
+              ]
+            }
+          ]
+        },
+        {
+          "layer": 48,
+          "depth_pct": 75,
+          "correct": 0,
+          "total": 8,
+          "accuracy": 0.0,
+          "details": [
+            {
+              "prompt": "The capital of France is",
+              "actual": "Paris",
+              "hit": false,
+              "top3": [
+                "/is",
+                "\u4ec0\u9ebc",
+                "\u4e0d\u65ad\u7684"
+              ]
+            },
+            {
+              "prompt": "def fibonacci(n):\n    if n <= 1:\n        return",
+              "actual": "n",
+              "hit": false,
+              "top3": [
+                "zyst",
+                "unist",
+                "\u751f\u6d3b\u4e60\u60ef"
+              ]
+            },
+            {
+              "prompt": "Water is composed of hydrogen and",
+              "actual": "oxygen",
+              "hit": false,
+              "top3": [
+                "/or",
+                "/OR",
+                "/o"
+              ]
+            },
+            {
+              "prompt": "To be or not to be, that is the",
+              "actual": "question",
+              "hit": false,
+              "top3": [
+                "\u4e00\u56de\u4e8b",
+                "ILING",
+                "\u987e\u8651"
+              ]
+            },
+            {
+              "prompt": "The mitochondria is the powerhouse of the",
+              "actual": "cell",
+              "hit": false,
+              "top3": [
+                "arov",
+                "\u8d5a\u94b1",
+                "\u6323\u94b1"
+              ]
+            },
+            {
+              "prompt": "In 1969, Neil Armstrong became the first person to walk on t",
+              "actual": "Moon",
+              "hit": false,
+              "top3": [
+                "\u2fbc",
+                "\u79d1\u5b66\u5bb6",
+                "\u553f"
+              ]
+            },
+            {
+              "prompt": "E = mc^2 was formulated by Albert",
+              "actual": "Einstein",
+              "hit": false,
+              "top3": [
+                "\u723a",
+                "\u7237",
+                "nore"
+              ]
+            },
+            {
+              "prompt": "SELECT name FROM users WHERE age >",
+              "actual": "",
+              "hit": false,
+              "top3": [
+                "\u624b\u6e38",
+                "\u8fd9\u822c",
+                "\u9f84"
+              ]
+            }
+          ]
+        },
+        {
+          "layer": 54,
+          "depth_pct": 84,
+          "correct": 6,
+          "total": 8,
+          "accuracy": 0.75,
+          "details": [
+            {
+              "prompt": "The capital of France is",
+              "actual": "Paris",
+              "hit": true,
+              "top3": [
+                "\u5df4\u9ece",
+                "\u5750\u843d\u4e8e",
+                "France"
+              ]
+            },
+            {
+              "prompt": "def fibonacci(n):\n    if n <= 1:\n        return",
+              "actual": "n",
+              "hit": false,
+              "top3": [
+                "\u7ea4\u7ef4",
+                "\u57ab",
+                "ERVE"
+              ]
+            },
+            {
+              "prompt": "Water is composed of hydrogen and",
+              "actual": "oxygen",
+              "hit": true,
+              "top3": [
+                "/or",
+                "/OR",
+                "/o"
+              ]
+            },
+            {
+              "prompt": "To be or not to be, that is the",
+              "actual": "question",
+              "hit": true,
+              "top3": [
+                "question",
+                "questions",
+                "\u4e00\u4e2a\u95ee\u9898"
+              ]
+            },
+            {
+              "prompt": "The mitochondria is the powerhouse of the",
+              "actual": "cell",
+              "hit": true,
+              "top3": [
+                "\u7ec6\u80de",
+                "cells",
+                "cell"
+              ]
+            },
+            {
+              "prompt": "In 1969, Neil Armstrong became the first person to walk on t",
+              "actual": "Moon",
+              "hit": true,
+              "top3": [
+                "Moon",
+                "moon",
+                "Moon"
+              ]
+            },
+            {
+              "prompt": "E = mc^2 was formulated by Albert",
+              "actual": "Einstein",
+              "hit": true,
+              "top3": [
+                "Einstein",
+                "\u8001\u7237\u5b50",
+                "instein"
+              ]
+            },
+            {
+              "prompt": "SELECT name FROM users WHERE age >",
+              "actual": "",
+              "hit": false,
+              "top3": [
+                "\u5e74\u9f84",
+                "age",
+                ".age"
+              ]
+            }
+          ]
+        },
+        {
+          "layer": 59,
+          "depth_pct": 92,
+          "correct": 7,
+          "total": 8,
+          "accuracy": 0.875,
+          "details": [
+            {
+              "prompt": "The capital of France is",
+              "actual": "Paris",
+              "hit": true,
+              "top3": [
+                "\u5df4\u9ece",
+                "Paris",
+                "Paris"
+              ]
+            },
+            {
+              "prompt": "def fibonacci(n):\n    if n <= 1:\n        return",
+              "actual": "n",
+              "hit": true,
+              "top3": [
+                "n",
+                "_n",
+                "fib"
+              ]
+            },
+            {
+              "prompt": "Water is composed of hydrogen and",
+              "actual": "oxygen",
+              "hit": true,
+              "top3": [
+                "\u6c27",
+                "oxygen",
+                "Oxygen"
+              ]
+            },
+            {
+              "prompt": "To be or not to be, that is the",
+              "actual": "question",
+              "hit": true,
+              "top3": [
+                "question",
+                "Question",
+                "question"
+              ]
+            },
+            {
+              "prompt": "The mitochondria is the powerhouse of the",
+              "actual": "cell",
+              "hit": true,
+              "top3": [
+                "cell",
+                "\u7ec6\u80de",
+                "cells"
+              ]
+            },
+            {
+              "prompt": "In 1969, Neil Armstrong became the first person to walk on t",
+              "actual": "Moon",
+              "hit": true,
+              "top3": [
+                "moon",
+                "Moon",
+                "Moon"
+              ]
+            },
+            {
+              "prompt": "E = mc^2 was formulated by Albert",
+              "actual": "Einstein",
+              "hit": true,
+              "top3": [
+                "Einstein",
+                "Albert",
+                "Albert"
+              ]
+            },
+            {
+              "prompt": "SELECT name FROM users WHERE age >",
+              "actual": "",
+              "hit": false,
+              "top3": [
+                ".Age",
+                "\u5e74\u8f7b\u4eba",
+                "age"
+              ]
+            }
+          ]
+        },
+        {
+          "layer": 63,
+          "depth_pct": 98,
+          "correct": 7,
+          "total": 8,
+          "accuracy": 0.875,
+          "details": [
+            {
+              "prompt": "The capital of France is",
+              "actual": "Paris",
+              "hit": true,
+              "top3": [
+                "a",
+                "",
+                "the"
+              ]
+            },
+            {
+              "prompt": "def fibonacci(n):\n    if n <= 1:\n        return",
+              "actual": "n",
+              "hit": true,
+              "top3": [
+                "",
+                "n",
+                "("
+              ]
+            },
+            {
+              "prompt": "Water is composed of hydrogen and",
+              "actual": "oxygen",
+              "hit": true,
+              "top3": [
+                "oxygen",
+                "",
+                "1"
+              ]
+            },
+            {
+              "prompt": "To be or not to be, that is the",
+              "actual": "question",
+              "hit": true,
+              "top3": [
+                "question",
+                "",
+                "("
+              ]
+            },
+            {
+              "prompt": "The mitochondria is the powerhouse of the",
+              "actual": "cell",
+              "hit": true,
+              "top3": [
+                "cell",
+                "e",
+                ""
+              ]
+            },
+            {
+              "prompt": "In 1969, Neil Armstrong became the first person to walk on t",
+              "actual": "Moon",
+              "hit": false,
+              "top3": [
+                "",
+                "",
+                "("
+              ]
+            },
+            {
+              "prompt": "E = mc^2 was formulated by Albert",
+              "actual": "Einstein",
+              "hit": true,
+              "top3": [
+                "",
+                "(",
+                ""
+              ]
+            },
+            {
+              "prompt": "SELECT name FROM users WHERE age >",
+              "actual": "",
+              "hit": true,
+              "top3": [
+                "",
+                "2",
+                "1"
+              ]
+            }
+          ]
+        }
+      ],
+      "onset_pct": 84
+    }
+  },
+  "prompts": [
+    "The capital of France is",
+    "def fibonacci(n):\n    if n <= 1:\n        return",
+    "Water is composed of hydrogen and",
+    "To be or not to be, that is the",
+    "The mitochondria is the powerhouse of the",
+    "In 1969, Neil Armstrong became the first person to walk on the",
+    "E = mc^2 was formulated by Albert",
+    "SELECT name FROM users WHERE age >"
+  ],
+  "summary": {
+    "moe_onset_pct": 85,
+    "dense_onset_pct": 84,
+    "onset_shift": 1,
+    "elapsed_s": 287.2
+  }
+}
