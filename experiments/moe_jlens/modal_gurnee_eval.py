@@ -58,7 +58,7 @@ SWAP_PROMPTS = [
     gpu="H100",
     timeout=3600,
     volumes={"/results": RESULTS_VOL, "/hf-cache": HF_CACHE_VOL},
-    secrets=[modal.Secret.from_name("huggingface-secret", required=False)],
+    # secrets=[modal.Secret.from_name("huggingface-secret")],
 )
 def run_gurnee_eval():
     import json

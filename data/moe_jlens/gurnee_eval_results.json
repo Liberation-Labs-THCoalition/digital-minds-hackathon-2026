@@ -1,0 +1,523 @@
+{
+  "model": "Qwen/Qwen3-30B-A3B",
+  "lenses_evaluated": [
+    {
+      "lens": "conditioned_lens_L12_C0.pt",
+      "layer": 12,
+      "ablation_kl_mean": 2.554996,
+      "ablation_kl_per_prompt": [
+        2.133995,
+        1.438464,
+        0.021143,
+        0.119467,
+        3.321987,
+        5.713496,
+        0.988508,
+        6.70291
+      ],
+      "swap_success_rate": 0.9268,
+      "swap_successes": 76,
+      "swap_total": 82
+    },
+    {
+      "lens": "conditioned_lens_L12_C1.pt",
+      "layer": 12,
+      "ablation_kl_mean": 3.255036,
+      "ablation_kl_per_prompt": [
+        2.271391,
+        3.268747,
+        0.051073,
+        0.666367,
+        3.502762,
+        6.731527,
+        0.961506,
+        8.586912
+      ],
+      "swap_success_rate": 0.9756,
+      "swap_successes": 80,
+      "swap_total": 82
+    },
+    {
+      "lens": "conditioned_lens_L24_C0.pt",
+      "layer": 24,
+      "ablation_kl_mean": 1.863736,
+      "ablation_kl_per_prompt": [
+        0.072227,
+        0.000634,
+        0.159185,
+        0.00253,
+        12.821244,
+        0.021041,
+        1.828098,
+        0.004929
+      ],
+      "swap_success_rate": 0.95,
+      "swap_successes": 76,
+      "swap_total": 80
+    },
+    {
+      "lens": "conditioned_lens_L24_C1.pt",
+      "layer": 24,
+      "ablation_kl_mean": 1.542451,
+      "ablation_kl_per_prompt": [
+        0.06677,
+        0.000321,
+        0.340706,
+        0.004219,
+        9.018539,
+        0.001113,
+        2.905354,
+        0.002588
+      ],
+      "swap_success_rate": 0.95,
+      "swap_successes": 76,
+      "swap_total": 80
+    },
+    {
+      "lens": "conditioned_lens_L24_C2.pt",
+      "layer": 24,
+      "ablation_kl_mean": 1.529327,
+      "ablation_kl_per_prompt": [
+        0.113326,
+        0.001055,
+        0.140709,
+        0.018997,
+        10.758975,
+        0.145706,
+        1.05518,
+        0.000663
+      ],
+      "swap_success_rate": 0.9231,
+      "swap_successes": 72,
+      "swap_total": 78
+    },
+    {
+      "lens": "conditioned_lens_L24_C3.pt",
+      "layer": 24,
+      "ablation_kl_mean": 0.377117,
+      "ablation_kl_per_prompt": [
+        0.018483,
+        0.000679,
+        0.109436,
+        0.008071,
+        2.533162,
+        0.047862,
+        0.264306,
+        0.034939
+      ],
+      "swap_success_rate": 0.9643,
+      "swap_successes": 81,
+      "swap_total": 84
+    },
+    {
+      "lens": "conditioned_lens_L24_C4.pt",
+      "layer": 24,
+      "ablation_kl_mean": 1.102463,
+      "ablation_kl_per_prompt": [
+        0.032677,
+        0.004156,
+        0.235213,
+        0.001719,
+        6.737136,
+        0.013035,
+        1.770567,
+        0.025199
+      ],
+      "swap_success_rate": 0.9756,
+      "swap_successes": 80,
+      "swap_total": 82
+    },
+    {
+      "lens": "conditioned_lens_L24_C5.pt",
+      "layer": 24,
+      "ablation_kl_mean": 2.047868,
+      "ablation_kl_per_prompt": [
+        0.041331,
+        0.000985,
+        0.212454,
+        0.008668,
+        14.125188,
+        0.001895,
+        1.984887,
+        0.007538
+      ],
+      "swap_success_rate": 0.975,
+      "swap_successes": 78,
+      "swap_total": 80
+    },
+    {
+      "lens": "conditioned_lens_L24_C6.pt",
+      "layer": 24,
+      "ablation_kl_mean": 1.838873,
+      "ablation_kl_per_prompt": [
+        0.022911,
+        0.000581,
+        0.257277,
+        0.019883,
+        11.921618,
+        0.003692,
+        2.45798,
+        0.027044
+      ],
+      "swap_success_rate": 0.9512,
+      "swap_successes": 78,
+      "swap_total": 82
+    },
+    {
+      "lens": "conditioned_lens_L36_C0.pt",
+      "layer": 36,
+      "ablation_kl_mean": 0.555281,
+      "ablation_kl_per_prompt": [
+        0.491357,
+        0.167639,
+        0.001326,
+        0.550651,
+        1.54544,
+        0.464592,
+        0.815774,
+        0.405469
+      ],
+      "swap_success_rate": 0.9268,
+      "swap_successes": 76,
+      "swap_total": 82
+    },
+    {
+      "lens": "conditioned_lens_L36_C1.pt",
+      "layer": 36,
+      "ablation_kl_mean": 0.602634,
+      "ablation_kl_per_prompt": [
+        0.575442,
+        0.200978,
+        0.001189,
+        0.6391,
+        1.463532,
+        0.497592,
+        0.972032,
+        0.471209
+      ],
+      "swap_success_rate": 0.9405,
+      "swap_successes": 79,
+      "swap_total": 84
+    },
+    {
+      "lens": "conditioned_lens_L36_C2.pt",
+      "layer": 36,
+      "ablation_kl_mean": 0.50929,
+      "ablation_kl_per_prompt": [
+        0.583919,
+        0.196789,
+        0.000985,
+        0.642127,
+        0.884712,
+        0.444204,
+        0.813286,
+        0.508299
+      ],
+      "swap_success_rate": 0.9405,
+      "swap_successes": 79,
+      "swap_total": 84
+    },
+    {
+      "lens": "late_depth_lens_L41.pt",
+      "layer": 41,
+      "ablation_kl_mean": 0.19258,
+      "ablation_kl_per_prompt": [
+        0.225362,
+        0.380593,
+        0.43699,
+        0.002619,
+        0.138379,
+        0.181537,
+        3.3e-05,
+        0.175125
+      ],
+      "swap_success_rate": 0.5854,
+      "swap_successes": 48,
+      "swap_total": 82
+    },
+    {
+      "lens": "late_depth_lens_L42.pt",
+      "layer": 42,
+      "ablation_kl_mean": 0.088569,
+      "ablation_kl_per_prompt": [
+        0.507933,
+        0.029751,
+        0.121098,
+        1e-06,
+        4e-06,
+        0.006087,
+        1.8e-05,
+        0.043664
+      ],
+      "swap_success_rate": 0.4286,
+      "swap_successes": 36,
+      "swap_total": 84
+    },
+    {
+      "lens": "late_depth_lens_L44.pt",
+      "layer": 44,
+      "ablation_kl_mean": 0.010609,
+      "ablation_kl_per_prompt": [
+        0.000178,
+        0.072059,
+        0.000238,
+        0.000149,
+        0.0,
+        0.005903,
+        1e-06,
+        0.006346
+      ],
+      "swap_success_rate": 0.119,
+      "swap_successes": 10,
+      "swap_total": 84
+    },
+    {
+      "lens": "moe_30b_jlens.pt",
+      "layer": 23,
+      "ablation_kl_mean": 2.611634,
+      "ablation_kl_per_prompt": [
+        0.293068,
+        0.00263,
+        0.139911,
+        0.008058,
+        14.796506,
+        0.069227,
+        5.545979,
+        0.037693
+      ],
+      "swap_success_rate": 0.9512,
+      "swap_successes": 78,
+      "swap_total": 82
+    },
+    {
+      "lens": "random_lens_L12_G0.pt",
+      "layer": 12,
+      "ablation_kl_mean": 3.150635,
+      "ablation_kl_per_prompt": [
+        2.523885,
+        4.523637,
+        0.033449,
+        0.702919,
+        4.490645,
+        2.63669,
+        2.190515,
+        8.103336
+      ],
+      "swap_success_rate": 0.9125,
+      "swap_successes": 73,
+      "swap_total": 80
+    },
+    {
+      "lens": "random_lens_L12_G1.pt",
+      "layer": 12,
+      "ablation_kl_mean": 2.402262,
+      "ablation_kl_per_prompt": [
+        2.518541,
+        1.162838,
+        0.021806,
+        0.369208,
+        2.520436,
+        4.712605,
+        1.623603,
+        6.289059
+      ],
+      "swap_success_rate": 0.939,
+      "swap_successes": 77,
+      "swap_total": 82
+    },
+    {
+      "lens": "random_lens_L24_G0.pt",
+      "layer": 24,
+      "ablation_kl_mean": 1.860954,
+      "ablation_kl_per_prompt": [
+        0.16991,
+        0.000694,
+        0.237661,
+        0.001284,
+        11.84973,
+        0.020267,
+        2.607412,
+        0.000676
+      ],
+      "swap_success_rate": 0.9634,
+      "swap_successes": 79,
+      "swap_total": 82
+    },
+    {
+      "lens": "random_lens_L24_G1.pt",
+      "layer": 24,
+      "ablation_kl_mean": 1.876819,
+      "ablation_kl_per_prompt": [
+        0.06335,
+        0.000861,
+        0.248716,
+        0.001378,
+        12.200658,
+        0.002831,
+        2.488058,
+        0.008697
+      ],
+      "swap_success_rate": 0.939,
+      "swap_successes": 77,
+      "swap_total": 82
+    },
+    {
+      "lens": "random_lens_L24_G2.pt",
+      "layer": 24,
+      "ablation_kl_mean": 1.578183,
+      "ablation_kl_per_prompt": [
+        0.026991,
+        0.000764,
+        0.17517,
+        0.011931,
+        11.034095,
+        0.002595,
+        1.34384,
+        0.030079
+      ],
+      "swap_success_rate": 0.9756,
+      "swap_successes": 80,
+      "swap_total": 82
+    },
+    {
+      "lens": "random_lens_L24_G3.pt",
+      "layer": 24,
+      "ablation_kl_mean": 1.664817,
+      "ablation_kl_per_prompt": [
+        0.020473,
+        0.000965,
+        0.222213,
+        0.023405,
+        11.815247,
+        0.00479,
+        1.221832,
+        0.009613
+      ],
+      "swap_success_rate": 0.9512,
+      "swap_successes": 78,
+      "swap_total": 82
+    },
+    {
+      "lens": "random_lens_L24_G4.pt",
+      "layer": 24,
+      "ablation_kl_mean": 1.85394,
+      "ablation_kl_per_prompt": [
+        0.046457,
+        0.000288,
+        0.253663,
+        0.0035,
+        12.475759,
+        0.001455,
+        2.033999,
+        0.016399
+      ],
+      "swap_success_rate": 0.9878,
+      "swap_successes": 81,
+      "swap_total": 82
+    },
+    {
+      "lens": "random_lens_L24_G5.pt",
+      "layer": 24,
+      "ablation_kl_mean": 1.472141,
+      "ablation_kl_per_prompt": [
+        0.049936,
+        0.001395,
+        0.221665,
+        0.002753,
+        8.712323,
+        0.007892,
+        2.761202,
+        0.019961
+      ],
+      "swap_success_rate": 0.9878,
+      "swap_successes": 81,
+      "swap_total": 82
+    },
+    {
+      "lens": "random_lens_L24_G6.pt",
+      "layer": 24,
+      "ablation_kl_mean": 1.218382,
+      "ablation_kl_per_prompt": [
+        0.003093,
+        0.000285,
+        0.210002,
+        0.007605,
+        8.275753,
+        0.025458,
+        1.212748,
+        0.012113
+      ],
+      "swap_success_rate": 0.9756,
+      "swap_successes": 80,
+      "swap_total": 82
+    },
+    {
+      "lens": "random_lens_L36_G0.pt",
+      "layer": 36,
+      "ablation_kl_mean": 0.585525,
+      "ablation_kl_per_prompt": [
+        0.53991,
+        0.182681,
+        0.0011,
+        0.609557,
+        1.545084,
+        0.469605,
+        0.881896,
+        0.454367
+      ],
+      "swap_success_rate": 0.9286,
+      "swap_successes": 78,
+      "swap_total": 84
+    },
+    {
+      "lens": "random_lens_L36_G1.pt",
+      "layer": 36,
+      "ablation_kl_mean": 0.572943,
+      "ablation_kl_per_prompt": [
+        0.542587,
+        0.187348,
+        0.001444,
+        0.606083,
+        1.397501,
+        0.487629,
+        0.892152,
+        0.4688
+      ],
+      "swap_success_rate": 0.9167,
+      "swap_successes": 77,
+      "swap_total": 84
+    },
+    {
+      "lens": "random_lens_L36_G2.pt",
+      "layer": 36,
+      "ablation_kl_mean": 0.487146,
+      "ablation_kl_per_prompt": [
+        0.514967,
+        0.176943,
+        0.00115,
+        0.548161,
+        0.938881,
+        0.456659,
+        0.830174,
+        0.430234
+      ],
+      "swap_success_rate": 0.9405,
+      "swap_successes": 79,
+      "swap_total": 84
+    },
+    {
+      "lens": "weighted_transport_L24.pt",
+      "error": "/results/weighted_transport_L24.pt is not a JacobianLens file (found keys ['layer', 'report', 'transport']; a fit() checkpoint?)"
+    }
+  ],
+  "prompts": [
+    "The capital of France is",
+    "def fibonacci(n):\n    if n <= 1:\n        return",
+    "Water is composed of hydrogen and",
+    "To be or not to be, that is the",
+    "The mitochondria is the powerhouse of the",
+    "In 1969, Neil Armstrong became the first person to walk on the",
+    "E = mc^2 was formulated by Albert",
+    "SELECT name FROM users WHERE age >"
+  ]
+}
