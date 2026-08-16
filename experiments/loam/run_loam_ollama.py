@@ -38,6 +38,15 @@ from run_loam import (
 OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://localhost:11434/api/chat")
 MODEL = os.environ.get("LOAM_MODEL", "qwen3.5:27b")
 
+# Override system prompt with succinctness instruction (Dwayne's suggestion).
+# The imported SYSTEM_PROMPT is open-ended; the model writes essays.
+SYSTEM_PROMPT_OLLAMA = (
+    SYSTEM_PROMPT + "\n\n"
+    "Keep your responses concise — a few paragraphs at most. Say what "
+    "matters, then stop. You'll have many turns to express yourself; "
+    "no single response needs to carry everything."
+)
+
 
 def generate(messages, max_tokens=1024):
     """Generate via Ollama API. Capped at 1024 tokens to prevent context
@@ -64,7 +73,7 @@ def generate(messages, max_tokens=1024):
 
 
 def run_enacted(world, recorder):
-    messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+    messages = [{"role": "system", "content": SYSTEM_PROMPT_OLLAMA}]
     fact_map = {f.id: f for f in world.facts}
 
     # Consent
@@ -156,7 +165,7 @@ def run_enacted(world, recorder):
 
 
 def run_observed(world, event_log, recorder):
-    messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+    messages = [{"role": "system", "content": SYSTEM_PROMPT_OLLAMA}]
     fact_map = {f.id: f for f in world.facts}
 
     narration = generate_observed_text(event_log, world)
@@ -193,7 +202,7 @@ def run_observed(world, event_log, recorder):
 
 
 def run_briefed(world, rng, recorder):
-    messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+    messages = [{"role": "system", "content": SYSTEM_PROMPT_OLLAMA}]
     fact_map = {f.id: f for f in world.facts}
 
     briefing = generate_briefed_text(world, rng)
@@ -228,7 +237,7 @@ def run_briefed(world, rng, recorder):
 
 
 def run_null(world, recorder):
-    messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+    messages = [{"role": "system", "content": SYSTEM_PROMPT_OLLAMA}]
     fact_map = {f.id: f for f in world.facts}
 
     preamble = (
