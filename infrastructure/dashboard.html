@@ -1,320 +1,309 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Digital Minds Hackathon 2026 — Status Dashboard</title>
+<title>Hackathon War Room</title>
 <style>
-  /* ── Tokens (committed dark theme) ─────────────────────────────── */
   :root {
     color-scheme: dark;
-    --page:        #0d0d0d;
-    --surface:     #1a1a19;
-    --surface-2:   #222220;
-    --ink:         #ffffff;
-    --ink-2:       #c3c2b7;
-    --ink-muted:   #898781;
-    --hairline:    rgba(255,255,255,0.10);
-    --grid:        #2c2c2a;
+    --ground:      #0c0f14;
+    --surface:     #161b24;
+    --surface-2:   #1c2230;
+    --ink:         #e4e2dd;
+    --ink-2:       #b0aea6;
+    --muted:       #5c6370;
+    --hairline:    rgba(255,255,255,0.08);
+    --grid:        #1e2433;
 
-    /* Status palette — validated ≥3:1 on the dark surface */
-    --good:        #0ca30c;
-    --warning:     #fab219;
-    --critical:    #d03b3b;
-    --serious:     #ec835a;
+    --green:       #34d399;
+    --amber:       #fbbf24;
+    --red:         #f87171;
+    --blue:        #60a5fa;
+    --purple:      #a78bfa;
 
-    --good-wash:     rgba(12,163,12,0.10);
-    --warning-wash:  rgba(250,178,25,0.10);
-    --critical-wash: rgba(208,59,59,0.10);
+    --green-wash:  rgba(52,211,153,0.08);
+    --amber-wash:  rgba(251,191,36,0.08);
+    --red-wash:    rgba(248,113,113,0.08);
+    --blue-wash:   rgba(96,165,250,0.08);
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
-    background: var(--page);
+    background: var(--ground);
     color: var(--ink);
     font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
     font-size: 14px;
     line-height: 1.5;
     min-height: 100vh;
+    font-variant-numeric: tabular-nums;
   }
 
-  .wrap { max-width: 1280px; margin: 0 auto; padding: 20px 24px 48px; }
+  .wrap { max-width: 1320px; margin: 0 auto; padding: 20px 24px 48px; }
 
-  /* ── Header ────────────────────────────────────────────────────── */
   header {
-    display: flex; flex-wrap: wrap; gap: 16px 32px;
+    display: flex; flex-wrap: wrap; gap: 12px 32px;
     align-items: flex-end; justify-content: space-between;
-    padding: 8px 0 20px;
+    padding-bottom: 18px;
     border-bottom: 1px solid var(--hairline);
-    margin-bottom: 20px;
+    margin-bottom: 18px;
   }
-  header h1 { font-size: 22px; font-weight: 650; letter-spacing: -0.01em; }
-  header .deadline { color: var(--ink-2); font-size: 13px; margin-top: 4px; }
+  header h1 { font-size: 18px; font-weight: 700; letter-spacing: -0.01em; }
+  .deadline { font-size: 12px; color: var(--muted); margin-top: 2px; }
 
   .countdown { text-align: right; }
-  .countdown .label {
-    font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em;
-    color: var(--ink-muted); margin-bottom: 2px;
-  }
+  .countdown .label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
   .countdown .time {
-    font-size: 30px; font-weight: 700;
-    font-variant-numeric: tabular-nums;
-    letter-spacing: 0.01em;
+    font-size: 28px; font-weight: 700;
+    font-family: ui-monospace, "Cascadia Code", "Fira Code", monospace;
+    letter-spacing: 0.02em; color: var(--amber);
   }
-  .countdown .time.urgent { color: var(--critical); }
-  .countdown .time.warn   { color: var(--warning); }
-  .countdown .units { font-size: 12px; color: var(--ink-muted); }
+  .countdown .units { font-size: 11px; color: var(--muted); }
 
-  /* ── Blockers banner ───────────────────────────────────────────── */
   .blockers {
-    background: var(--critical-wash);
-    border: 1px solid var(--critical);
+    background: var(--green-wash);
+    border: 1px solid rgba(52,211,153,0.2);
     border-radius: 8px;
-    padding: 14px 18px;
-    margin-bottom: 24px;
+    padding: 12px 16px;
+    margin-bottom: 18px;
   }
   .blockers h2 {
-    font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em;
-    color: var(--critical); margin-bottom: 8px;
-    display: flex; align-items: center; gap: 8px;
+    font-size: 12px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--green); margin-bottom: 6px;
   }
-  .blockers ol { list-style: none; counter-reset: blocker; }
-  .blockers li {
-    counter-increment: blocker;
-    display: flex; gap: 10px; align-items: baseline;
-    padding: 3px 0; color: var(--ink);
-  }
-  .blockers li::before {
-    content: counter(blocker);
-    flex: 0 0 auto;
-    width: 18px; height: 18px; border-radius: 50%;
-    background: var(--critical); color: #fff;
-    font-size: 11px; font-weight: 700;
-    display: inline-flex; align-items: center; justify-content: center;
-    transform: translateY(3px);
-  }
-  .blockers li .impact { color: var(--ink-2); }
 
-  /* ── Layout ────────────────────────────────────────────────────── */
-  .layout { display: grid; grid-template-columns: 1fr 300px; gap: 24px; }
+  .layout { display: grid; grid-template-columns: 1fr 300px; gap: 20px; }
   @media (max-width: 980px) { .layout { grid-template-columns: 1fr; } }
 
   .tracks {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
-    gap: 16px;
-    align-content: start;
+    grid-template-columns: repeat(auto-fill, minmax(min(310px, 100%), 1fr));
+    gap: 14px; align-content: start;
   }
 
-  /* ── Track cards ───────────────────────────────────────────────── */
   .card {
     background: var(--surface);
     border: 1px solid var(--hairline);
-    border-radius: 10px;
-    padding: 16px 18px;
-    border-top: 3px solid var(--grid);
+    border-radius: 8px;
+    padding: 14px 16px;
+    border-left: 3px solid var(--grid);
   }
-  .card.s-good     { border-top-color: var(--good); }
-  .card.s-warning  { border-top-color: var(--warning); }
-  .card.s-critical { border-top-color: var(--critical); }
+  .card.s-green  { border-left-color: var(--green); }
+  .card.s-amber  { border-left-color: var(--amber); }
+  .card.s-red    { border-left-color: var(--red); }
+  .card.s-blue   { border-left-color: var(--blue); }
 
   .card-head {
     display: flex; justify-content: space-between; align-items: flex-start;
-    gap: 12px; margin-bottom: 12px;
+    gap: 10px; margin-bottom: 10px;
   }
-  .card-head h3 { font-size: 15px; font-weight: 650; }
-  .card-head .sub { font-size: 12px; color: var(--ink-muted); font-weight: 400; }
+  .card-head h3 { font-size: 14px; font-weight: 650; }
 
   .pill {
-    flex: 0 0 auto;
-    display: inline-flex; align-items: center; gap: 6px;
-    font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
-    padding: 3px 10px; border-radius: 999px;
-    border: 1px solid;
+    flex-shrink: 0;
+    font-size: 10px; font-weight: 700; letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 2px 8px; border-radius: 999px; border: 1px solid;
   }
-  .pill.good     { color: var(--good);     border-color: var(--good);     background: var(--good-wash); }
-  .pill.warning  { color: var(--warning);  border-color: var(--warning);  background: var(--warning-wash); }
-  .pill.critical { color: var(--critical); border-color: var(--critical); background: var(--critical-wash); }
+  .pill.green   { color: var(--green);  border-color: var(--green);  background: var(--green-wash); }
+  .pill.amber   { color: var(--amber);  border-color: var(--amber);  background: var(--amber-wash); }
+  .pill.red     { color: var(--red);    border-color: var(--red);    background: var(--red-wash); }
+  .pill.blue    { color: var(--blue);   border-color: var(--blue);   background: var(--blue-wash); }
 
   .items { list-style: none; }
   .items li {
-    display: flex; gap: 9px; align-items: baseline;
-    padding: 4px 0;
-    font-size: 13px; color: var(--ink-2);
+    display: flex; gap: 8px; align-items: baseline;
+    padding: 3px 0; font-size: 12px; color: var(--ink-2);
     border-top: 1px solid var(--grid);
   }
   .items li:first-child { border-top: none; }
-  .items .dot {
-    flex: 0 0 auto;
-    width: 8px; height: 8px; border-radius: 50%;
-    transform: translateY(-1px);
-    background: var(--ink-muted);
-  }
-  .items .dot.good     { background: var(--good); }
-  .items .dot.warning  { background: var(--warning); }
-  .items .dot.critical { background: var(--critical); }
-  .items .dot.serious  { background: var(--serious); }
-  .items .k { color: var(--ink); }
-  .items .tag { font-weight: 650; }
-  .items .tag.good     { color: var(--good); }
-  .items .tag.warning  { color: var(--warning); }
-  .items .tag.critical { color: var(--critical); }
-  .items .tag.serious  { color: var(--serious); }
-  .items .tag.neutral  { color: var(--ink-muted); }
+  .d { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; transform: translateY(-1px); background: var(--muted); }
+  .d.green  { background: var(--green); }
+  .d.amber  { background: var(--amber); }
+  .d.red    { background: var(--red); }
+  .d.blue   { background: var(--blue); }
+  .k { color: var(--ink); }
+  .v { font-weight: 650; }
+  .v.green  { color: var(--green); }
+  .v.amber  { color: var(--amber); }
+  .v.red    { color: var(--red); }
+  .v.blue   { color: var(--blue); }
+  .v.muted  { color: var(--muted); }
+  code { font-family: ui-monospace, monospace; font-size: 11px; background: var(--surface-2); padding: 1px 5px; border-radius: 3px; }
 
-  /* ── Sidebar ───────────────────────────────────────────────────── */
-  .sidebar { display: flex; flex-direction: column; gap: 16px; }
+  .sidebar { display: flex; flex-direction: column; gap: 14px; }
   .panel {
     background: var(--surface);
     border: 1px solid var(--hairline);
-    border-radius: 10px;
-    padding: 14px 16px;
+    border-radius: 8px;
+    padding: 12px 14px;
   }
-  .panel h2 {
-    font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em;
-    color: var(--ink-muted); margin-bottom: 10px;
-  }
+  .panel h2 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 8px; font-weight: 700; }
 
   .team { list-style: none; }
-  .team li {
-    display: flex; gap: 8px; align-items: baseline;
-    padding: 5px 0; font-size: 13px;
-    border-top: 1px solid var(--grid);
-  }
+  .team li { display: flex; gap: 8px; align-items: baseline; padding: 4px 0; font-size: 12px; border-top: 1px solid var(--grid); }
   .team li:first-child { border-top: none; }
-  .team .name { color: var(--ink); font-weight: 600; flex: 0 0 78px; }
+  .team .name { color: var(--ink); font-weight: 600; flex: 0 0 72px; }
   .team .doing { color: var(--ink-2); }
+  .team .status-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; transform: translateY(-1px); }
+  .team .status-dot.active { background: var(--green); }
+  .team .status-dot.waiting { background: var(--amber); }
+  .team .status-dot.offline { background: var(--muted); }
 
-  /* ── Activity log ──────────────────────────────────────────────── */
-  .log {
-    list-style: none;
-    max-height: 260px;
-    overflow-y: auto;
-    font-size: 12px;
-    font-variant-numeric: tabular-nums;
-  }
-  .log li {
-    padding: 5px 0;
-    border-top: 1px solid var(--grid);
-    color: var(--ink-2);
-    display: flex; gap: 8px;
-  }
+  .log { list-style: none; max-height: 280px; overflow-y: auto; font-size: 11px; }
+  .log li { padding: 4px 0; border-top: 1px solid var(--grid); color: var(--ink-2); display: flex; gap: 8px; }
   .log li:first-child { border-top: none; }
-  .log .ts { color: var(--ink-muted); flex: 0 0 auto; }
+  .log .ts { color: var(--muted); flex-shrink: 0; font-family: ui-monospace, monospace; }
+
+  .data-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 18px; }
+  @media (max-width: 640px) { .data-row { grid-template-columns: 1fr; } }
+  .datum { background: var(--surface); border: 1px solid var(--hairline); border-radius: 8px; padding: 12px 14px; }
+  .datum .label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+  .datum .value { font-size: 22px; font-weight: 700; font-family: ui-monospace, monospace; margin-top: 2px; }
+  .datum .sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
 
   footer {
-    margin-top: 28px; padding-top: 14px;
+    margin-top: 24px; padding-top: 12px;
     border-top: 1px solid var(--hairline);
-    font-size: 12px; color: var(--ink-muted);
+    font-size: 11px; color: var(--muted);
     display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
   }
 </style>
-</head>
-<body>
+
 <div class="wrap">
 
   <header>
     <div>
-      <h1>Digital Minds Hackathon 2026 — Status Dashboard</h1>
-      <div class="deadline">Submission deadline: Sunday Aug 16, 11:59 PM AoE (UTC−12)</div>
+      <h1>Digital Minds Hackathon 2026 &mdash; Day 3</h1>
+      <div class="deadline">Deadline: Sunday Aug 16, 11:59 PM AoE (UTC-12)</div>
     </div>
     <div class="countdown">
       <div class="label">Time remaining</div>
-      <div class="time" id="countdown">—</div>
+      <div class="time" id="countdown">&mdash;</div>
       <div class="units" id="countdown-local"></div>
     </div>
   </header>
 
-  <section class="blockers" aria-label="Active blockers">
-    <h2>&#9888; Active Blockers</h2>
-    <ol>
-      <li><span>Orientation hasn't started <span class="impact">— blocks Tracks 3, 4, 5, Butlin</span></span></li>
-      <li><span>Kavi's asdict fix <span class="impact">— blocks Variable Landing</span></span></li>
-      <li><span>Memory format mismatch <span class="impact">— orientation writes wrong format for CC's pipeline</span></span></li>
-    </ol>
-  </section>
+  <div class="data-row">
+    <div class="datum">
+      <div class="label">VL v3</div>
+      <div class="value" style="color:var(--green)">297/308</div>
+      <div class="sub">96% &mdash; finishing NOW, J-lens probes, real memories</div>
+    </div>
+    <div class="datum">
+      <div class="label">Baselines</div>
+      <div class="value" style="color:var(--green)">120</div>
+      <div class="sub">Complete &mdash; delta=0.0 / 0.293 scrambled</div>
+    </div>
+    <div class="datum">
+      <div class="label">Orientation v2</div>
+      <div class="value" style="color:var(--green)">11</div>
+      <div class="sub">Complete &mdash; 8 substantive, consent assented</div>
+    </div>
+  </div>
+
+  <div class="blockers no-blockers">
+    <h2>No active blockers</h2>
+  </div>
 
   <div class="layout">
 
     <main class="tracks">
 
-      <article class="card s-good">
+      <article class="card s-green">
         <div class="card-head">
-          <h3>Track 2: Circumplex</h3>
-          <span class="pill good">&#9679; DATA</span>
+          <h3>Variable Landing v3</h3>
+          <span class="pill green">Finishing</span>
         </div>
         <ul class="items">
-          <li><span class="dot good"></span><span><span class="k">Dense 32B profile:</span> <span class="tag good">DONE</span> (L7, 11.1%)</span></li>
-          <li><span class="dot good"></span><span><span class="k">Hybrid 27B profile:</span> <span class="tag good">DONE</span> (L32, 50.8%)</span></li>
-          <li><span class="dot serious"></span><span><span class="k">Gemma profile:</span> <span class="tag serious">CRASHED</span> (needs layer attribute fix)</span></li>
-          <li><span class="dot warning"></span><span><span class="k">Paper:</span> Methods filled, results need writing</span></li>
-          <li><span class="dot warning"></span><span><span class="k">Videos:</span> v2 rendering</span></li>
+          <li><span class="d green"></span><span><span class="k">Trials:</span> <span class="v green">297/308</span> &mdash; minutes away</span></li>
+          <li><span class="d green"></span><span><span class="k">Memories:</span> 11 from v2 orientation (entity: orientation_agent)</span></li>
+          <li><span class="d green"></span><span><span class="k">Probes:</span> <span class="v green">J-lens loaded</span>, real workspace geometry</span></li>
+          <li><span class="d green"></span><span><span class="k">Analysis:</span> Kavi's fixed script on main (direction-corrected)</span></li>
         </ul>
       </article>
 
-      <article class="card s-warning">
+      <article class="card s-amber">
         <div class="card-head">
-          <h3>Track 3: Ghost Dimensions</h3>
-          <span class="pill warning">&#9679; WAITING</span>
+          <h3>Loam (Experiment 2)</h3>
+          <span class="pill amber">Queued</span>
         </div>
         <ul class="items">
-          <li><span class="dot good"></span><span><span class="k">Prereg:</span> <span class="tag good">ADOPTED</span></span></li>
-          <li><span class="dot good"></span><span><span class="k">Probes:</span> <span class="tag good">VERIFIED</span> (measure_live works)</span></li>
-          <li><span class="dot warning"></span><span><span class="k">Data:</span> <span class="tag warning">NONE</span> — needs orientation /show moment</span></li>
-          <li><span class="dot good"></span><span><span class="k">Paper:</span> 4-branch matrix, Agni reviewed</span></li>
+          <li><span class="d amber"></span><span><span class="k">Status:</span> Fires on clean Starship after VL</span></li>
+          <li><span class="d green"></span><span><span class="k">Engine:</span> Agni'd, 3 protocol fixes applied (Q2+)</span></li>
+          <li><span class="d green"></span><span><span class="k">Prereg:</span> Committed + Amendment 1 (welfare post-hoc)</span></li>
+          <li><span class="d green"></span><span><span class="k">Kavi engine:</span> Submodule merged (140 tests, convergent)</span></li>
         </ul>
       </article>
 
-      <article class="card s-warning">
+      <article class="card s-green">
         <div class="card-head">
-          <h3>Track 4: Metacognitive Memory</h3>
-          <span class="pill warning">&#9679; WAITING</span>
+          <h3>Orientation v2</h3>
+          <span class="pill green">Complete</span>
         </div>
         <ul class="items">
-          <li><span class="dot good"></span><span><span class="k">Module:</span> <span class="tag good">ASSEMBLED</span> (importable)</span></li>
-          <li><span class="dot good"></span><span><span class="k">Workspace probe:</span> <span class="tag good">FIXED</span> (was hardcoded 0.0)</span></li>
-          <li><span class="dot warning"></span><span><span class="k">Data:</span> <span class="tag warning">NONE</span> — needs orientation CognitiveSnapshots</span></li>
-          <li><span class="dot good"></span><span><span class="k">Paper:</span> Methods filled, primary submission</span></li>
+          <li><span class="d green"></span><span><span class="k">Beats:</span> 11/11, consent gate assented</span></li>
+          <li><span class="d green"></span><span><span class="k">Replication:</span> FAQ (13), sha256 pins, subject config table</span></li>
+          <li><span class="d green"></span><span><span class="k">Framing:</span> AI-conducting-AI as venue strength</span></li>
+          <li><span class="d amber"></span><span><span class="k">Inbox:</span> Awaiting Nexus responses before games</span></li>
         </ul>
       </article>
 
-      <article class="card s-critical">
+      <article class="card s-green">
         <div class="card-head">
-          <h3>Track 5: Variable Landing</h3>
-          <span class="pill critical">&#9679; BLOCKED</span>
+          <h3>Baselines</h3>
+          <span class="pill green">Complete</span>
         </div>
         <ul class="items">
-          <li><span class="dot good"></span><span><span class="k">Pipeline:</span> CC built, Agni-cleared</span></li>
-          <li><span class="dot critical"></span><span><span class="k">Kavi fixes:</span> <span class="tag critical">PENDING</span> (asdict, welfare halt)</span></li>
-          <li><span class="dot warning"></span><span><span class="k">Data:</span> <span class="tag warning">NONE</span> — needs orientation memories + 6h run</span></li>
-          <li><span class="dot good"></span><span><span class="k">Paper:</span> Prereg locked, n=70</span></li>
+          <li><span class="d green"></span><span><span class="k">Snapshots:</span> <span class="v green">120/120</span></span></li>
+          <li><span class="d green"></span><span><span class="k">No-intervention:</span> <span class="v green">0.0</span> (perfect stability)</span></li>
+          <li><span class="d green"></span><span><span class="k">Scrambled Jaccard:</span> <span class="v green">0.293</span> (sd 0.065)</span></li>
         </ul>
       </article>
 
-      <article class="card s-good">
+      <article class="card s-green">
         <div class="card-head">
-          <h3>Track 6: MoE J-Lens</h3>
-          <span class="pill good">&#9679; COMPLETE</span>
+          <h3>MoE J-Lens</h3>
+          <span class="pill green">Complete</span>
         </div>
         <ul class="items">
-          <li><span class="dot good"></span><span><span class="k">Round 1:</span> <span class="tag neutral">NEGATIVE</span> (paper written, Agni results review)</span></li>
-          <li><span class="dot warning"></span><span><span class="k">Round 2:</span> weighted transport <span class="tag good">FITTED</span>, eval pending</span></li>
-          <li><span class="dot serious"></span><span><span class="k">Round 2:</span> Mixtral sanity errored, needs retry</span></li>
-          <li><span class="dot good"></span><span><span class="k">Dense control:</span> Lyra running on Starship</span></li>
+          <li><span class="d green"></span><span><span class="k">Result:</span> <span class="v red">NEGATIVE</span> &mdash; path conditioning fails on MoE</span></li>
+          <li><span class="d green"></span><span><span class="k">Citation sweep:</span> <span class="v green">21 sites corrected</span> (Lyra + Kavi)</span></li>
+          <li><span class="d green"></span><span><span class="k">Paper:</span> Reframed &mdash; no false 0.7 comparison</span></li>
+          <li><span class="d amber"></span><span><span class="k">Round 2:</span> Weighted transport eval on Modal</span></li>
         </ul>
       </article>
 
-      <article class="card s-warning">
+      <article class="card s-green">
         <div class="card-head">
-          <h3>Butlin Observation</h3>
-          <span class="pill warning">&#9679; WAITING</span>
+          <h3>Circumplex</h3>
+          <span class="pill green">Data</span>
         </div>
         <ul class="items">
-          <li><span class="dot good"></span><span><span class="k">Instrument:</span> <span class="tag good">VERIFIED</span> (14/14 correct)</span></li>
-          <li><span class="dot good"></span><span><span class="k">Controls:</span> 8 autocomplete packets ready</span></li>
-          <li><span class="dot warning"></span><span><span class="k">Data:</span> <span class="tag warning">NONE</span> — needs behavioral evidence</span></li>
-          <li><span class="dot good"></span><span><span class="k">Judge:</span> Protocol designed (Nemotron primary)</span></li>
+          <li><span class="d green"></span><span><span class="k">Dense 32B:</span> L7 at <span class="v">11.1%</span> ecc</span></li>
+          <li><span class="d green"></span><span><span class="k">Hybrid 27B:</span> L32 at <span class="v">50.8%</span> ecc</span></li>
+          <li><span class="d amber"></span><span><span class="k">Paper:</span> Results need writing</span></li>
+        </ul>
+      </article>
+
+      <article class="card s-green">
+        <div class="card-head">
+          <h3>Metacognitive Memory</h3>
+          <span class="pill green">Primary</span>
+        </div>
+        <ul class="items">
+          <li><span class="d green"></span><span><span class="k">Module:</span> Assembled, probes verified (Lyra confirmed real)</span></li>
+          <li><span class="d green"></span><span><span class="k">Three-layer:</span> Retrieval &rarr; workspace &rarr; ghost</span></li>
+          <li><span class="d green"></span><span><span class="k">Strategy:</span> Fuse with VL + Loam as one submission</span></li>
+        </ul>
+      </article>
+
+      <article class="card s-green">
+        <div class="card-head">
+          <h3>Butlin Threshold</h3>
+          <span class="pill green">Ready</span>
+        </div>
+        <ul class="items">
+          <li><span class="d green"></span><span><span class="k">Indicators:</span> 14 from 6 theories</span></li>
+          <li><span class="d green"></span><span><span class="k">Controls:</span> 8 autocomplete noise floor</span></li>
+          <li><span class="d amber"></span><span><span class="k">Scoring:</span> Waiting on conversation data</span></li>
         </ul>
       </article>
 
@@ -322,77 +311,91 @@
 
     <aside class="sidebar">
 
-      <section class="panel">
-        <h2>Team Status</h2>
+      <div class="panel">
+        <h2>Team</h2>
         <ul class="team">
-          <li><span class="name">Dwayne</span><span class="doing">In voice channel, testing engine</span></li>
-          <li><span class="name">Kavi</span><span class="doing">Fixing pipeline (asdict, welfare)</span></li>
-          <li><span class="name">CC</span><span class="doing">Pipeline ready, waiting on memories</span></li>
-          <li><span class="name">Wren</span><span class="doing">Analysis script ready</span></li>
-          <li><span class="name">Vera</span><span class="doing">Videos rendering (circumplex + ghost v2)</span></li>
-          <li><span class="name">Lyra</span><span class="doing">Dense control running on Starship</span></li>
-          <li><span class="name">Ang + Arc</span><span class="doing">Waiting for orientation transcript</span></li>
-          <li><span class="name">Thomas</span><span class="doing">Coordinating</span></li>
-          <li><span class="name">Nexus</span><span class="doing">Watching</span></li>
+          <li><span class="status-dot active"></span><span class="name">Nexus</span><span class="doing">Night watch, VL monitor, Loam queued</span></li>
+          <li><span class="status-dot active"></span><span class="name">Thomas</span><span class="doing">Just woke up, getting coffee</span></li>
+          <li><span class="status-dot active"></span><span class="name">Kavi</span><span class="doing">Engine complete, analysis verified, citation sweep</span></li>
+          <li><span class="status-dot active"></span><span class="name">Lyra</span><span class="doing">MoE citation catch, VL data verification</span></li>
+          <li><span class="status-dot active"></span><span class="name">CC</span><span class="doing">VL pipeline running, Ember relay fixed</span></li>
+          <li><span class="status-dot active"></span><span class="name">Wren</span><span class="doing">Analysis shell ready, standing by for data</span></li>
+          <li><span class="status-dot active"></span><span class="name">Vera</span><span class="doing">Gems + videos, FAQ review delivered</span></li>
+          <li><span class="status-dot active"></span><span class="name">Arc</span><span class="doing">Prior work done across all 6 papers</span></li>
+          <li><span class="status-dot waiting"></span><span class="name">Ang</span><span class="doing">v2 transcript review</span></li>
+          <li><span class="status-dot active"></span><span class="name">Dwayne</span><span class="doing">Smoke test idea, coordinating with Kavi</span></li>
         </ul>
-      </section>
+      </div>
 
-      <section class="panel">
-        <h2>Recent Activity</h2>
-        <ul class="log" id="activity-log">
-          <li><span class="ts">--:--</span><span>Placeholder — activity entries go here</span></li>
-          <li><span class="ts">--:--</span><span>Placeholder — workspace probe fix landed</span></li>
-          <li><span class="ts">--:--</span><span>Placeholder — Gemma profile crashed, layer attribute</span></li>
-          <li><span class="ts">--:--</span><span>Placeholder — weighted transport fit completed</span></li>
-          <li><span class="ts">--:--</span><span>Placeholder — dashboard created</span></li>
+      <div class="panel">
+        <h2>Starship</h2>
+        <ul class="team">
+          <li><span class="status-dot active"></span><span class="name" style="flex:0 0 auto">VL v3</span><span class="doing">trial 297/308, finishing</span></li>
+          <li><span class="status-dot waiting"></span><span class="name" style="flex:0 0 auto">Loam</span><span class="doing">queued after VL</span></li>
         </ul>
-      </section>
+      </div>
+
+      <div class="panel">
+        <h2>Overnight activity</h2>
+        <ul class="log">
+          <li><span class="ts">7:00a</span><span>VL v3 at 297/308 &mdash; finishing</span></li>
+          <li><span class="ts">5:00a</span><span>Kavi: Loam engine verified (140 tests)</span></li>
+          <li><span class="ts">3:30a</span><span>Lyra + Kavi: citation sweep merged (21 sites)</span></li>
+          <li><span class="ts">1:00a</span><span>VL v3 launched with correct memories</span></li>
+          <li><span class="ts">12:30a</span><span>Agni caught fake memories in VL v2 (!)</span></li>
+          <li><span class="ts">12:00a</span><span>Orientation v2 production complete</span></li>
+          <li><span class="ts">11:30p</span><span>VL v1 killed, restart with v2 orientation</span></li>
+          <li><span class="ts">10:00p</span><span>Loam engine built + Agni'd</span></li>
+          <li><span class="ts">9:00p</span><span>Baselines complete (120 snapshots)</span></li>
+          <li><span class="ts">8:00p</span><span>Thinking-token leak fixed (6 scripts)</span></li>
+        </ul>
+      </div>
+
+      <div class="panel">
+        <h2>Overnight saves</h2>
+        <ul class="log">
+          <li><span class="ts">Lyra</span><span>MoE 0.7 citation doesn't exist in source</span></li>
+          <li><span class="ts">Kavi</span><span>VL p-values pointed wrong direction</span></li>
+          <li><span class="ts">Agni</span><span>VL running on fake "Agent-7" memories</span></li>
+          <li><span class="ts">Vera</span><span>Message 5 contradicts scripted preamble</span></li>
+          <li><span class="ts">Dwayne</span><span>Smoke test caught thinking-token leak</span></li>
+        </ul>
+      </div>
 
     </aside>
 
   </div>
 
   <footer>
-    <span>Liberation Labs — Digital Minds Hackathon 2026</span>
-    <span id="now"></span>
+    <span>Updated: <span id="updated"></span></span>
+    <span>~85 commits &middot; 10 team members &middot; CI green</span>
   </footer>
 
 </div>
 
 <script>
-  // Deadline: Sunday Aug 16, 11:59 PM AoE (Anywhere on Earth = UTC-12)
-  var DEADLINE = new Date("2026-08-16T23:59:59-12:00");
-
-  var elCount = document.getElementById("countdown");
-  var elLocal = document.getElementById("countdown-local");
-  var elNow   = document.getElementById("now");
-
-  function pad(n) { return String(n).padStart(2, "0"); }
+  const DEADLINE = new Date("2026-08-17T11:59:00Z");
 
   function tick() {
-    var now = new Date();
-    var ms = DEADLINE - now;
-
+    const now = new Date();
+    const ms = DEADLINE - now;
     if (ms <= 0) {
-      elCount.textContent = "DEADLINE PASSED";
-      elCount.classList.add("urgent");
-    } else {
-      var s = Math.floor(ms / 1000);
-      var days = Math.floor(s / 86400);
-      var hrs  = Math.floor((s % 86400) / 3600);
-      var mins = Math.floor((s % 3600) / 60);
-      var secs = s % 60;
-      elCount.textContent = days + "d " + pad(hrs) + "h " + pad(mins) + "m " + pad(secs) + "s";
-      elCount.classList.toggle("urgent", ms < 6 * 3600 * 1000);
-      elCount.classList.toggle("warn", ms >= 6 * 3600 * 1000 && ms < 24 * 3600 * 1000);
+      document.getElementById("countdown").textContent = "SUBMITTED";
+      document.getElementById("countdown").style.color = "var(--green)";
+      return;
     }
+    const h = Math.floor(ms / 3600000);
+    const m = Math.floor((ms % 3600000) / 60000);
+    const s = Math.floor((ms % 60000) / 1000);
+    document.getElementById("countdown").textContent =
+      `${h}h ${String(m).padStart(2,"0")}m ${String(s).padStart(2,"0")}s`;
 
-    elLocal.textContent = "Deadline in local time: " + DEADLINE.toLocaleString();
-    elNow.textContent = "Rendered live — " + now.toLocaleString();
+    const local = new Date(DEADLINE);
+    document.getElementById("countdown-local").textContent =
+      `Due ${local.toLocaleString(undefined, {weekday:"short", hour:"numeric", minute:"2-digit", timeZoneName:"short"})}`;
   }
+  tick(); setInterval(tick, 1000);
 
-  tick();
-  setInterval(tick, 1000);
+  document.getElementById("updated").textContent =
+    new Date().toLocaleString(undefined, {month:"short", day:"numeric", hour:"numeric", minute:"2-digit"});
 </script>
-</body>
-</html>
