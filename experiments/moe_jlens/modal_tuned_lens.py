@@ -90,8 +90,8 @@ def run_tuned_lens():
 
     # Load fitting corpus
     print(f"\n--- Loading {N_FIT} wikitext prompts ---")
-    ds = load_dataset("wikitext", "wikitext-103-v1", split="train",
-                      cache_dir="/hf-cache")
+    ds = load_dataset("Salesforce/wikitext", "wikitext-103-v1", split="train",
+                      cache_dir="/hf-cache", trust_remote_code=True)
     fit_texts = []
     for row in ds:
         text = row["text"].strip()
