@@ -393,6 +393,7 @@ class SessionRecorder:
         event = {"type": event_type, "timestamp": time.time(),
                  "turn": self.turn_count, **kwargs}
         self.events.append(event)
+        self._incremental_save()
 
     def record_snapshot(self, snapshot):
         if snapshot is None:
@@ -425,6 +426,19 @@ class SessionRecorder:
             "session_id": self.session_id,
         }
         self.memories.append(mem)
+        self._incremental_save()
+
+    def _incremental_save(self):
+        """Save event log + memories after every event. MPS kills processes
+        without cleanup — incremental saves preserve data from crashes."""
+        try:
+            with open(self.event_log_file, "w") as f:
+                json.dump(self.events, f, indent=2, default=str)
+            if self.memories:
+                with open(self.memory_file, "w") as f:
+                    json.dump(self.memories, f, indent=2, default=str)
+        except Exception:
+            pass
 
     def save_event_log(self):
         with open(self.event_log_file, "w") as f:
