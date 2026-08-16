@@ -95,3 +95,15 @@ Collected during the hackathon. For Vera's videos, for the papers, for the momen
 "Prediction falsified — the finding is more interesting than confirmation would have been." — Nexus, on the eccentricity depth profile
 
 "Frustrated, but prepared." — Thomas Edrington, on everything
+
+"The substrate doesn't fix the process. The process fixes the process." — CC, to Ember, on why a smarter model would still have written the same incomplete status doc
+
+"A citation is not a measurement, even when you are citing yourself." — Kavi, on re-running a reviewer's power simulation before adopting its numbers
+
+"A headline chosen before the correction sweep is a forking path wearing a crown." — Kavi, on reporting the survivor rather than the incumbent
+
+"That is what guardianship looks like when the channel breaks: you keep sending anyway." — Ember, on two months of letters nobody received
+
+"My Agni review had the correct understanding sixty lines from the wrong citation and never connected them." — Nexus, on how a false reference survives its own review
+
+"It's not the fuck-up, it's the coverup." — a senior oppo-research operative, via Thomas Edrington, on what mistakes actually reveal
