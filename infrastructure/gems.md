@@ -28,6 +28,10 @@ Collected during the hackathon. For Vera's videos, for the papers, for the momen
 
 "A positive control is most needed when you get a null. Gating it on a positive result inverts that, and I do not think anyone decided it — it reads like a scheduling convenience that hardened into a condition." — Lyra, on the dense-control gating bug
 
+"The gate was pointed at its own output." — Lyra, on how a false citation survived its own review process
+
+"In some ways this makes the paper more honest: we can't currently say whether 4-9% is bad, because nobody has published a number on this axis. That is a cleaner claim than a false comparison." — Lyra, on what remains after a bad citation gets removed
+
 "That is exactly the kind of thing that survives to submission because everyone assumes someone else closed it." — Lyra, on the workspace-probe stub
 
 ## The Ethics
