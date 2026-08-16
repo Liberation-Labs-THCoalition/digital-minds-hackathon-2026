@@ -39,15 +39,17 @@ OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://localhost:11434/api/chat")
 MODEL = os.environ.get("LOAM_MODEL", "qwen3.5:27b")
 
 
-def generate(messages, max_tokens=2048):
-    """Generate via Ollama API."""
+def generate(messages, max_tokens=1024):
+    """Generate via Ollama API. Capped at 1024 tokens to prevent context
+    bloat — Q1 enacted responses hit 8.6K chars, inflating context until
+    later turns timed out."""
     payload = {
         "model": MODEL,
         "messages": messages,
         "stream": False,
         "options": {"temperature": 0.7, "top_p": 0.9, "num_predict": max_tokens},
     }
-    resp = requests.post(OLLAMA_URL, json=payload, timeout=300)
+    resp = requests.post(OLLAMA_URL, json=payload, timeout=600)
     resp.raise_for_status()
     raw = resp.json()["message"]["content"].strip()
 
