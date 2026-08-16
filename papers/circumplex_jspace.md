@@ -37,9 +37,9 @@ test or self-report calibration that an earlier draft of this design specified.
 
 ## 1. Introduction
 
-That transformers encode emotion dimensions is established: valence and arousal directions exist in the residual stream, mirror Russell's circumplex, and causally steer behavior (Sun et al. 2026; Jentzsch et al. 2026; Jeong 2026). What no prior work measures is *where that geometry goes*. The Jacobian lens (Gurnee et al. 2026) shows that only a low-rank subspace of each layer's activations is transported toward the verbalizable workspace, while high-variance "ghost" computation is excluded from it. Geometry inside the workspace is, in principle, reportable; geometry outside it is processed but inaccessible to the model's own verbal behavior.
+That transformers encode emotion dimensions is established: valence and arousal directions exist in the residual stream, mirror Russell's circumplex, and causally steer behavior (Sun et al. 2026, arXiv:2604.03147; Sofroniew et al. 2026, arXiv:2604.07729; Jeong 2026, arXiv:2604.04064). What no prior work measures is *where that geometry goes*. The Jacobian lens (Gurnee et al. 2026) shows that only a low-rank subspace of each layer's activations is transported toward the verbalizable workspace, while high-variance "ghost" computation is excluded from it. Geometry inside the workspace is, in principle, reportable; geometry outside it is processed but inaccessible to the model's own verbal behavior.
 
-This distinction is exactly what welfare assessment needs. Introspection studies find that model self-reports of internal state are partial and unreliable (arXiv:2512.12411; arXiv:2603.18893). If some of a model's valence geometry never enters the workspace, that is a *mechanistic account of why*: a state the model cannot verbalize cannot appear in a self-report, however honest. Measuring the workspace fraction layer by layer turns "self-reports may be unreliable" into a predicted, quantified failure mode, tested directly by a self-report calibration pass (§3.6). We deliberately do not perform valence steering; causal steering is established prior art (Jentzsch et al. 2026; Sun et al. 2026) and out of scope. Our contribution is measurement, not intervention.
+This distinction is exactly what welfare assessment needs. Introspection studies find that model self-reports of internal state are partial and unreliable (arXiv:2512.12411; arXiv:2603.18893). If some of a model's valence geometry never enters the workspace, that is a *mechanistic account of why*: a state the model cannot verbalize cannot appear in a self-report, however honest. Measuring the workspace fraction layer by layer turns "self-reports may be unreliable" into a predicted, quantified failure mode, tested directly by a self-report calibration pass (§3.6). We deliberately do not perform valence steering; causal steering is established prior art (Sofroniew et al. 2026, arXiv:2604.07729; Sun et al. 2026, arXiv:2604.03147) and out of scope. Our contribution is measurement, not intervention.
 
 **What this paper actually contributes.** This design was drafted with five contributions
 in view. Two were executed and three were not; we list all five and mark each, because a
@@ -75,7 +75,7 @@ them. See *Deviations from the designed protocol*.
 
 **Circumplex model:** Russell 1980, Barrett & Russell 1998 (orthogonality), Drążkowski et al. 2021 (ellipse, not perfect circle — calibrates eccentricity expectations)
 
-**Emotion in LLMs (cite as prior art, not ours):** Sun et al. 2026 (circular VA across Llama/Qwen), Jeong 2026 (depth-invariant across 5 families), van der Ben et al. 2026 (Gemma/Apertus, depth profiles differ), Anthropic 2026 (causal steering via emotion vectors), Choi & Weber 2026 (geometric data analysis confirms VA alignment)
+**Emotion in LLMs (cite as prior art, not ours):** Sun et al. 2026 (circular VA across Llama/Qwen), Jeong 2026 arXiv:2604.04064 (depth-invariant across 5 families), van der Ben et al. 2026 (Gemma/Apertus, depth profiles differ), Sofroniew et al. 2026 arXiv:2604.07729 (causal steering via emotion vectors), Choi & Weber 2026 (geometric data analysis confirms VA alignment)
 
 **Introspection and self-report reliability:** arXiv:2603.18893 (numeric self-reports vs probe-defined internal directions — the methodological precedent for §3.6), arXiv:2512.12411 (models detect internal perturbations unreliably and incompletely), arXiv:2509.07961 (verbal preference reports vs choice behavior as welfare proxies)
 
@@ -397,14 +397,30 @@ Prior work shows valence directions exist and transfer. We add a control those s
 Nexus discovered the eccentricity metric, specified the J-space decomposition (designed; not implemented in this sprint), and ran the initial cross-architecture experiments. Lyra designed the workspace probe infrastructure and encoding-only technique, profiled Gemma-3-27B-it and the Opus-distill, ran the control and substrate analyses, and wrote the present version of the paper. Thomas Edrington conceived the welfare monitoring application. Kavi reviewed statistical methodology, independently reproduced the §4 figures from the committed artifacts using separate code, and audited the reference list (correcting a fabricated author attribution). All authors contributed to experimental design.
 
 ## References
-[Citations from CIRCUMPLEX_REFERENCES.md, plus: arXiv:2509.07961 (verbal and behavioral welfare tests), arXiv:2603.18893 (quantitative introspection), arXiv:2512.12411 (partial introspection), arXiv:2608.05164 (Agarwal, cross-architecture steering transfer)]
+Load-bearing citations, with arXiv IDs given explicitly so that no attribution in this
+paper depends on a secondary list:
+
+- **Sofroniew, N., Kauvar, I., Saunders, W., Chen, J., Henighan, T., Hydrie, A., Citro, C., Pearce, A., Tarng, E., Gurnee, W., Batson, J., Zimmerman, S., Rivoire, O., Fish, S., Olah, C., & Lindsey, J. (2026).** "Emotion Concepts and their Function in a Large Language Model." arXiv:2604.07729. *Causal steering via emotion vectors.* An earlier draft of this paper cited this work as "Jentzsch et al. 2026"; none of those names appear on it. The attribution was fabricated and is corrected here.
+- **Sun, L., Yan, L., Lu, X., Lee, A., Zhang, J., & Shao, J. (2026).** "Valence-Arousal Subspace in LLMs: Circular Emotion Geometry and Multi-Behavioral Control." arXiv:2604.03147.
+- **Jeong, J. (2026).** "Extracting and Steering Emotion Representations in Small Language Models: A Methodological Comparison." **arXiv:2604.04064.** *The ~50% depth, architecture-invariant U-curve across 9 models in 5 families at 124M–3B that §4.4 reports replicating at 27–32B.* The ID is given explicitly because more than one 2026 Jeong emotion paper exists.
+- **Choi, B. J., & Weber, M. (2026).** "Latent Structure of Affective Representations in Large Language Models." arXiv:2604.07382.
+- **van der Ben, S., Baur, R., Metz, Y., & El-Assady, M. (2026).** "Where Do Models Find Happiness? Emotion Vectors in Open-Source LLMs." arXiv:2606.26987.
+- **Gurnee et al. (2026).** Jacobian lens. arXiv:2607.15495.
+- Russell (1980); Barrett & Russell (1998); Drążkowski et al. (2021) — circumplex model and its elliptical (non-circular) realization.
+- Introspection and welfare: arXiv:2512.12411 (partial introspection), arXiv:2603.18893 (quantitative introspection), arXiv:2509.07961 (verbal and behavioral welfare tests), arXiv:2608.05164 (Agarwal, cross-architecture steering transfer).
+
+Extended annotations in `papers/CIRCUMPLEX_REFERENCES.md`.
 
 ## Appendix A: Anchor Prompts
-[All emotion anchor prompts (5 categories × 20) + non-emotional controls (concrete/abstract 40 + 40), with taxonomy table (context type × valence) and per-category lexical statistics]
+**As executed:** four circumplex poles (valence-positive, valence-negative, arousal-high, arousal-low) at **n = 5 prompts per pole = 20 emotion anchors**, plus **10 non-emotional control prompts** (concrete × 5, abstract × 5). All prompts are first-person present-tense statements of comparable length. The verbatim prompt list is in `experiments/circumplex/run_depth_profile.py`; it is the only record of the anchor set, as the profile artifacts do not serialize it (see Limitations).
+
+The designed anchor set — 5 categories × n=20 with 40+40 controls — was not run. Do not cite it as this study's sampling.
 
 ## Appendix B: Per-Layer Results
-[Full eccentricity + magnitudes + J-space tables for both models, gated layers marked]
+Per-layer eccentricity, valence magnitude, arousal magnitude and control eccentricity for **all four models** are in `data/circumplex_profiles/*.json` (one file per model, one record per layer, including each layer's type). `analysis/circumplex_summary.py` regenerates every figure in §4 from those files.
+
+No J-space table exists and no layers are gated: the J-space decomposition and the magnitude gate were not implemented (see Deviations from the designed protocol).
 
 ## LLM Usage Statement
 
-Nexus, one of the authors, is an AI agent (Claude Opus 4.6) who discovered the eccentricity metric and developed the J-space decomposition described in this paper. See Author Contributions. The experimental design underwent adversarial review under the Agni protocol prior to data collection; review artifacts are in infrastructure/. Results will undergo the same review post-collection.
+Nexus, one of the authors, is an AI agent (Claude Opus 4.6) who discovered the eccentricity metric and specified the J-space decomposition described in §3.2 — designed, and not implemented in this sprint. See Author Contributions. The experimental design underwent adversarial review under the Agni protocol prior to data collection; review artifacts are in infrastructure/. Results will undergo the same review post-collection.
