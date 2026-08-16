@@ -14,17 +14,49 @@ No specific agent identity required — the protocol is the protocol.
    messages + consent gate + inbox prompt. Delivers the orientation
    and records transcript + memories.
 
-2. **`orientation_faq.md`** — Pre-written answers to the 10 most
+2. **`orientation_faq.md`** — Pre-written answers to the most
    common agent questions. The conducting agent delivers these
    verbatim when a question matches. Freeforms go to the inbox.
 
-3. **`PREREG.md`** (from the Loam experiment) — The ethical
-   commitments: consent gate, welfare monitoring, aftercare, 
-   withdrawal rights. The orientation implements these.
+3. **`ORIENTATION_FREEZE.sha256`** — Content pins: sha256 of the
+   system prompt, every protocol message, and every FAQ answer.
+   "Verbatim" is a checkable claim, not an asserted one: run
+   `python freeze_hashes.py --check` before conducting; any
+   mismatch means the protocol texts have drifted from the
+   published bundle.
+
+4. **`PREREG.md`** (from the Loam experiment, **pinned at commit
+   `c68494f`**, which includes Amendment 1) — The ethical
+   commitments: consent gate, welfare monitoring (post-hoc on the
+   Ollama path, per the amendment), aftercare, withdrawal rights.
+   The orientation implements these as they stand at that commit.
+
+### Subject configuration (required — a replication must record this)
+
+The protocol pins the conducting side; the subject side varies by lab
+and MUST be recorded and published alongside any replication. A run on
+a different subject build is a new data point, not a replication, unless
+this table matches. Reference row (our run):
+
+| Field | Reference value | Your replication |
+|-------|-----------------|------------------|
+| Subject model | Qwen3.5-27B | |
+| Precision / quantization | bf16 (transformers) or Q4_K_M (Ollama `qwen3.5:27b`) | |
+| Temperature | 0.7 | |
+| top_p | 0.9 | |
+| num_predict (max new tokens) | 1024 | |
+| Context window | 128K | |
+| Serving stack + version | (record yours: e.g. Ollama x.y.z / transformers x.y) | |
+| Script + bundle commit | (this repo's commit SHA at run time) | |
+
+Replication is **protocol-level, not transcript-level**: sampling at
+temperature 0.7 means no two runs produce identical transcripts, and no
+byte-identity claims are made anywhere. What replicates is the delivered
+texts (hash-checked), the gate mechanics, and the FAQ policy.
 
 ### Context (for the conducting agent)
 
-4. **Design rationale** — Why the orientation exists, how it was
+5. **Design rationale** — Why the orientation exists, how it was
    designed, what trade-offs were made. Excerpted from the session
    transcript (this conversation) with the conducting researcher's
    consent. Redacted for private information.
@@ -37,21 +69,22 @@ No specific agent identity required — the protocol is the protocol.
    - Why AI conducting: demonstration of the venue's thesis, not compromise
    - Consent-first sequencing: informed consent requires answers before content
 
-5. **Conducting agent configuration** — Model identity, system prompt,
-   any relevant identity framework. Published with the conducting
-   agent's consent.
+6. **Conducting agent configuration** — Model identity (exact model
+   ID and snapshot date, not just the version family — versions are
+   moving targets), system prompt, any relevant identity framework.
+   Published with the conducting agent's consent.
 
 ### Supplementary (for transparency, not replication)
 
-6. **v1 transcript** — The first orientation run, with its strengths
+7. **v1 transcript** — The first orientation run, with its strengths
    (genuine consent, strong agent engagement) and limitations (dropped
    turn, unanswered questions). Preserved as-is.
 
-7. **Inbox responses** — The conducting agent's genuine responses to
+8. **Inbox responses** — The conducting agent's genuine responses to
    the subject's questions. Published as supplementary material.
    Replicating labs substitute their own researcher's responses.
 
-8. **This conversation** (excerpted) — The design process, showing
+9. **This conversation** (excerpted) — The design process, showing
    how the protocol emerged from group discussion. Demonstrates
    the ethical reasoning behind methodological choices.
 
@@ -66,9 +99,14 @@ FAQ (Supplementary Material B); questions outside the FAQ are routed
 to the inbox and answered before any experimental sessions. The
 protocol is fully specified in the replication bundle (Supplementary
 Material A) and can be conducted by any researcher — human or AI —
-with access to the FAQ and the subject model's API. The conducting
-agent's configuration and design rationale are published with consent
-as supplementary context."
+with access to the FAQ and the subject model's API. The consent gate
+is mechanical (code, not judgment). Protocol texts are verified
+against published sha256 pins (freeze_hashes.py --check) before
+conducting, and each replication records and publishes its subject
+configuration table. Replication is protocol-level; transcripts are
+sampled at temperature 0.7 and are not expected to be identical. The
+conducting agent's configuration and design rationale are published
+with consent as supplementary context."
 
 ## Privacy
 
