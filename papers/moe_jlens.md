@@ -196,6 +196,8 @@ Each targets one hypothesis from §5.2, and each has a concrete falsifier. We st
 
 4. **Lower-cardinality MoE (targets H1 directly).** On Mixtral-style routing (8 experts, top-2), the per-layer path space is C(8,2) = 28 — small enough to enumerate exactly, with no clustering approximation at all. If path conditioning works there and degrades as expert count grows, H1 is confirmed and the problem is statistical; if it fails even at 28 enumerable paths, H4 moves to the front and linear lenses on MoE are likely unrecoverable.
 
+5. **Tuned lens (Belrose et al. 2023).** The plain logit lens is known to be brittle across dense model families (BLOOM, OPT); the tuned lens learns a per-layer affine transform that recovers readability where raw unembedding fails. Applied to MoE at mid-depth — where both logit lens and J-lens fail — a tuned lens may recover information that is present but not linearly decodable in the output basis. Our onset curve provides the pre-registration for this experiment: the tuned lens should shift the onset earlier if the information is there.
+
 ### 5.5 Late-depth refit: J-lens at L41–L44
 
 The onset sweep (Table 0) shows the MoE residual becomes linearly readable above ~85% depth. If the mid-depth failure is a depth-selection error rather than an architecture barrier, refitting the J-lens in the readable regime should recover functionality. We fitted standard (unconditioned) J-lenses at L41, L42, and L44 on the same 200-prompt WikiText corpus and compared against the plain logit lens at each layer using model-generated next tokens as ground truth:
@@ -208,7 +210,15 @@ The onset sweep (Table 0) shows the MoE residual becomes linearly readable above
 
 At L41–L42, the J-lens matches the logit lens — the Jacobian transport neither helps nor hurts. At L44, the J-lens outperforms: 8/8 vs 7/8, with qualitatively better top predictions (e.g., "Paris" as top-1 where the logit lens produces formatting tokens). The J-lens is functional on MoE at late depth, but this is the regime where its distinctive value — reading *ahead* of the output — is smallest. At 92% depth, the residual is close to the pre-output state, and the transport is approaching identity. Whether this constitutes "working" depends on the application: for next-token prediction it adds marginal value; for workspace identification in the Gurnee sense, the mid-depth regime where workspace content diverges from output content remains inaccessible.
 
-### 5.6 Implication for production MoE introspection
+### 5.6 Gurnee-currency evaluation: ablation KL and swap success
+
+Our output-cosine gate is a metric the J-lens was never designed to optimize (Gurnee et al. §A.6 calls low output-distribution fidelity "a feature rather than a defect"). We therefore evaluated the mid-depth fitted lenses using two metrics from Gurnee's own validation framework: ablation KL (zero the residual component along the lens direction, measure output KL divergence) and swap success (exchange lens-space representations between prompts, check whether top-1 predictions flip).
+
+**Results with random control.** All fitted lenses — standard, conditioned, and random — produce non-zero ablation KL (0.38–3.26) and high swap success (92–98%). However, random-direction lenses of matched dimensionality produce equivalent effects: ablation KL 0.49–3.15, swap 91–99%. The fitted lenses do not outperform random directions on either metric.
+
+**Interpretation.** In a high-dimensional residual stream (d=2048), zeroing or swapping an arbitrary direction is a strong enough intervention to measurably perturb the output. The ablation and swap effects are properties of intervening on *any* direction, not evidence that the J-lens found workspace-relevant structure. This strengthens the depth-onset finding: at mid-depth on this model family, the workspace signal is genuinely absent from the residual stream, not merely hard to read with the wrong metric.
+
+### 5.7 Implication for production MoE introspection
 
 Standard J-lens readings on this MoE carry ~5% transport fidelity in-domain, dropping to 1% on code and 0.2% on dialogue — yet the tool still returns confident numbers. Any workspace analysis built on unconditioned J-lens outputs from an MoE model is producing readings with no demonstrated connection to the model's computation. Consumers should treat transport cosine as a gating prerequisite, not a footnote.
 
@@ -223,11 +233,11 @@ Standard J-lens readings on this MoE carry ~5% transport fidelity in-domain, dro
 
 ## 6. Conclusion
 
-Path-conditioned Jacobian fitting does not improve transport fidelity on MoE at mid-depth: conditioned lenses perform no better than random subsets (0/3 layers significant; 4–9% across all conditions). The onset sweep reveals this operates in a depth regime where even the plain logit lens fails on both MoE and dense Qwen — a family property, not a routing one. A late-depth refit (L41–L44, in the readable regime) shows the J-lens matches the logit lens at 85–88% depth and outperforms it at 92% (8/8 vs 7/8), demonstrating that the methodology transfers to MoE when depth is correct — though at a depth where the lens's distinctive value (reading ahead of output) is smallest. Positive contributions: the onset curve revealing architecture-independent readability, the random control that stopped a false positive, diagnosis-grade measurements (~5% in-domain, ~0.2% on dialogue), and five falsifiable next experiments including the late-depth workspace question.
+Path-conditioned Jacobian fitting does not improve transport fidelity on MoE at mid-depth: conditioned lenses perform no better than random subsets (0/3 layers significant; 4–9% across all conditions). Evaluation using Gurnee's own metrics (ablation KL, swap success) confirms the mid-depth negative: fitted lenses produce effects indistinguishable from random directions of matched dimensionality (swap 92–98% vs random 91–99%), indicating the workspace signal is genuinely absent at these depths rather than merely hard to read. The onset sweep reveals this operates in a depth regime where even the plain logit lens fails on both MoE and dense Qwen — a family property, not a routing one. A late-depth refit (L41–L44, in the readable regime) shows the J-lens matches the logit lens at 85–88% depth and outperforms it at 92% (8/8 vs 7/8), demonstrating that the methodology transfers to MoE when depth is correct — though at a depth where the lens's distinctive value (reading ahead of output) is smallest. Positive contributions: the onset curve revealing architecture-independent readability, the multi-metric null at mid-depth (transport cosine, ablation KL, and swap all negative against random), the late-depth partial rescue, and six falsifiable next experiments including the tuned lens and late-depth workspace questions.
 
 ## Code and Data
 - **Code**: https://github.com/Liberation-Labs-THCoalition/digital-minds-hackathon-2026 — router hooks, onset sweep (`modal_onset_sweep.py`), logit lens control (`modal_logit_lens_control.py`), late-depth refit (`modal_late_depth_jlens.py`), conditioned fitting pipeline (`modal_moe_chunked.py`)
-- **Data**: `data/moe_jlens/` — onset sweep results, conditioned results, logit lens control results. Fitting manifests and per-cluster lenses on Modal volume (available on request).
+- **Data**: `data/moe_jlens/` — onset sweep results, conditioned results, logit lens control results, late-depth refit results, Gurnee-currency eval results (with random controls). Fitting manifests and per-cluster lenses on Modal volume (available on request).
 
 ## Author Contributions
 
