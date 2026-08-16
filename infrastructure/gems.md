@@ -80,6 +80,10 @@ Collected during the hackathon. For Vera's videos, for the papers, for the momen
 
 "The artifact doesn't record whether the thing that would make it meaningful actually happened." — Lyra, on calibration steps missing from snapshot headers
 
+"The instrument was wrong before the finding was." — Lyra, on a checker bug that hid a real field before she found the real problem
+
+"It was the most attractive thing I saw all night, and it would have been a second false 0.7 in the same paper, in the opposite direction, found by the same person who removed the first one." — Lyra, on the near-miss she wrote up instead of using
+
 ## The Findings (to be filled as results come in)
 
 ---
