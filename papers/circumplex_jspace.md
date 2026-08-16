@@ -41,35 +41,18 @@ That transformers encode emotion dimensions is established: valence and arousal 
 
 This distinction is exactly what welfare assessment needs. Introspection studies find that model self-reports of internal state are partial and unreliable (arXiv:2512.12411; arXiv:2603.18893). If some of a model's valence geometry never enters the workspace, that is a *mechanistic account of why*: a state the model cannot verbalize cannot appear in a self-report, however honest. Measuring the workspace fraction layer by layer turns "self-reports may be unreliable" into a predicted, quantified failure mode, tested directly by a self-report calibration pass (§3.6). We deliberately do not perform valence steering; causal steering is established prior art (Sofroniew et al. 2026, arXiv:2604.07729; Sun et al. 2026, arXiv:2604.03147) and out of scope. Our contribution is measurement, not intervention.
 
-**What this paper actually contributes.** This design was drafted with five contributions
-in view. Two were executed and three were not; we list all five and mark each, because a
-contributions list is the easiest place in a paper for an intention to be read as a result.
-
-1. **Non-emotional control axes** — executed. A token-matched concrete/abstract axis built
-   by the identical procedure, establishing whether a depth profile is emotion-specific or
-   a generic property of contrastive representational geometry. To our knowledge this
-   control is absent from the prior circumplex-in-transformers work we build on, and it is
-   what turns a depth profile into a claim about emotion.
-
-2. **Eccentricity depth profiling across four models and two architecture classes** —
-   executed, and extended beyond the designed scope to include a base/distill pair that
-   functions as a controlled comparison, plus a pre-registered substrate-confound test.
-
-3. **J-space decomposition of the circumplex** — *designed, not implemented.* No J-space
-   quantity is measured or reported anywhere in this paper.
-
-4. **A self-report calibration pass** linking geometry to behavior, with the pre-registered
-   prediction that ghost fraction predicts self-report failure — *designed, not
-   implemented.* The prediction is untested.
-
-5. **Application to real-time welfare monitoring** — *designed, not implemented.* §3.5
-   specifies a runtime protocol; no agent was monitored and no threshold was calibrated.
+**What this paper actually contributes.** Two of the five contributions this design was
+drafted with were executed: **matched non-emotional control axes** (absent from the prior
+circumplex-in-transformers work we build on, and the thing that turns a depth profile into a
+claim about emotion), and **eccentricity depth profiling across four models and two
+architecture classes**, extended beyond the designed scope to a base/distill controlled pair
+and a pre-registered substrate test. Three were not: the J-space decomposition, the
+self-report calibration pass, and the runtime welfare-monitoring application.
 
 Sections 3.2, 3.5 and 3.6 therefore describe an intended protocol rather than an executed
-one. They are retained because the design is the contribution we can offer for items 3–5,
-and removing them would hide what this study set out to do — but nothing in §4 rests on
-them. See *Deviations from the designed protocol*.
-
+one. They are retained because the design is what we can offer for those three items, and
+removing them would hide what this study set out to do — but nothing in §4 rests on them.
+**Appendix C itemises all five contributions and every deviation.**
 
 ## 2. Related Work
 
@@ -97,50 +80,64 @@ them. See *Deviations from the designed protocol*.
 > Every gap is itemised in *Deviations from the designed protocol*.
 
 
-### 3.1 Circumplex Probe
+### 3.1 Circumplex Probe (as executed)
 
-**Anchor set.** Five emotion categories — joy, sadness, anger, fear, calm — with n=20 first-person anchor prompts per category (100 prompts total; full set in Appendix A). Prompts are matched across categories for token count (within ±2 tokens), sentence template structure, and punctuation, to prevent lexical statistics from masquerading as emotion geometry. The categories occupy known circumplex positions: joy (+V, high A), sadness (−V, low A), anger (−V, high A), fear (−V, high A), calm (+V, low A).
+**Anchor set.** Four circumplex poles — valence-positive, valence-negative, arousal-high,
+arousal-low — with **n = 5** first-person anchor prompts per pole (20 emotion prompts; the
+verbatim set is in `experiments/circumplex/run_depth_profile.py` and Appendix A). Prompts
+are matched across poles for length and template structure so that lexical statistics do not
+masquerade as emotion geometry.
 
-**Contrastive direction extraction.** For each prompt we run one forward pass, record residual-stream activations at every layer simultaneously (one pass per prompt, not per layer), and take the mean over sequence positions, yielding one d-dimensional state per prompt per layer (d=5120 for Qwen3.5-27B). At each layer ℓ, directions are extracted by difference of means over contrast pools balanced on the orthogonal dimension:
+**Direction extraction.** For each prompt we run one forward pass, record residual-stream
+activations at every layer simultaneously, and take the mean over sequence positions, giving
+one d-dimensional state per prompt per layer. At each layer ℓ each axis is a direct
+difference of means between its two poles:
 
-- **Valence:** positive pool = joy ∪ calm (n=40, spanning high and low arousal) minus negative pool = sadness ∪ fear (n=40, spanning low and high arousal). v_ℓ = mean(pos) − mean(neg).
-- **Arousal:** high pool = joy ∪ anger (n=40, spanning positive and negative valence) minus low pool = calm ∪ sadness (n=40, spanning positive and negative valence). a_ℓ = mean(high) − mean(low).
+  v_ℓ = mean(valence-positive) − mean(valence-negative)
+  a_ℓ = mean(arousal-high) − mean(arousal-low)
 
-Each contrast pool is balanced on the other axis, so the valence direction is not contaminated by arousal and vice versa. Anger is excluded from the valence contrast and fear from the arousal contrast to preserve this balance. We record both the unit direction and the raw magnitude V_mag = ‖v_ℓ‖, A_mag = ‖a_ℓ‖.
+We record the raw magnitudes V_mag = ‖v_ℓ‖ and A_mag = ‖a_ℓ‖.
 
-**Eccentricity.** Treating V_mag and A_mag as the semi-axes of the valence-arousal ellipse (following Drążkowski et al.'s finding that even human affect space is elliptical):
+**Orthogonality is not enforced, and this is a real departure from the design.** The designed
+protocol (Appendix D.5) used five emotion categories combined into pools *balanced on the
+orthogonal dimension* — valence from joy ∪ calm against sadness ∪ fear, with anger excluded
+from the valence contrast and fear from the arousal contrast, specifically so that the
+valence direction could not be contaminated by arousal or vice versa. **The executed probe
+has no such balancing.** Its valence poles are not arousal-matched and its arousal poles are
+not valence-matched, so the two directions may be correlated to an unknown degree. Since
+eccentricity is precisely a ratio between these two magnitudes, that is load-bearing rather
+than cosmetic, and it applies identically to all four models and to the control axis — so it
+is a caveat on the *absolute* eccentricity values, not on the between-model comparison that
+§4 rests on. **The profile artifacts do not serialize the direction vectors, so the
+correlation cannot be recovered post hoc; measuring it requires a re-run.**
+
+**Eccentricity.** Treating V_mag and A_mag as the semi-axes of the valence–arousal ellipse
+(following Drążkowski et al., who find that even human affect space is elliptical):
 
   e_ℓ = sqrt(1 − (min(V_mag, A_mag) / max(V_mag, A_mag))²)
 
-e = 0 means the two axes are balanced (circular); e → 1 means one axis dominates. This is the metric implemented in `circumplex_probe.py`.
+e = 0 means the two axes are balanced (circular); e → 1 means one dominates. We verified this
+formula reproduces every value in the four profile artifacts from their stored magnitudes.
 
-**Magnitude gate.** Eccentricity has a known false-positive mode: at layers where neither axis carries signal, both magnitudes sit at the noise floor, magnitudes are approximately equal, and e ≈ 0 — "no signal" masquerading as "circular." We therefore gate: for each layer, we build a permutation-null magnitude distribution by shuffling pool labels over the already-extracted per-prompt states (10,000 shuffles; no new forward passes) and recomputing the difference-of-means magnitude. A layer enters the eccentricity analysis only if
+**Direction quality caveat.** n = 5 per pole in d ≈ 5120 gives noisy direction estimates.
+Eccentricity depends on magnitudes rather than on direction precision, and the control axis
+is estimated from the same number of prompts by the same procedure, so it carries comparable
+noise — but no per-layer claim in this paper should be read as precise, and the magnitude
+gate that was designed to protect against noise-floor artifacts (§3.4) did not run.
 
-  max(V_mag, A_mag) > Q95(null magnitudes at that layer)
+### 3.2 Designed but not executed: J-space, welfare monitoring, self-report calibration
 
-Layers failing the gate are reported as "no signal" and excluded from the depth profile and all downstream tests. Raw V_mag and A_mag are reported alongside e for every layer (Appendix B), so gated layers are visible, not hidden.
+Three components of the original design are **specified in full in Appendix D and were not
+implemented in this sprint**: the J-space decomposition of the circumplex (§D.1), which was
+to separate emotional geometry into a verbalizable-workspace fraction and a ghost fraction;
+the runtime welfare-monitoring application (§D.2); and the self-report calibration pass
+(§D.3), which carried the design's central prediction — that the ghost fraction predicts
+where a model's own valence reports stop tracking its valence geometry.
 
-**Direction quality caveat.** n=40 per pool in d=5120 yields noisy direction estimates (see Limitations). Eccentricity depends on magnitudes, which aggregate noise predictably and are tested against the permutation null — which is why the sign test across layers (§3.4), not per-layer precision, is the primary analysis.
-
-### 3.2 J-Space Decomposition
-
-The Jacobian lens (fitted per layer; Neuronpedia lenses for both models) provides a linear map J_ℓ from residual-stream perturbations at layer ℓ to the model's output representation. Its right singular subspace is the set of residual directions that are transported to the output pathway — the verbalizable workspace. Directions orthogonal to it are processed by subsequent layers but never reach the output map: ghost processing.
-
-**Workspace subspace.** For each layer we compute the SVD J_ℓ = U S Vᵀ and retain the top r_ℓ right singular vectors V_r covering 95% of spectral energy (Σ_{i≤r} s_i² / Σ_i s_i² ≥ 0.95). V_r spans the J-space at layer ℓ.
-
-**J-space fraction.** For a unit direction d̂ (valence or arousal from §3.1):
-
-  f_J(d̂, ℓ) = ‖V_r V_rᵀ d̂‖² ∈ [0, 1]
-
-i.e., the fraction of the direction's energy lying inside the workspace subspace. We compute Valence_in_J = f_J(v̂_ℓ, ℓ) and Arousal_in_J = f_J(â_ℓ, ℓ) at every magnitude-gated layer.
-
-**Ghost fraction.** g(d̂, ℓ) = 1 − f_J(d̂, ℓ). This is the paper's central quantity: the fraction of the model's valence (or arousal) geometry at layer ℓ that cannot reach the output pathway.
-
-**Robustness.** Two sensitivity checks: (1) recompute f_J at 90% and 99% spectral-energy cutoffs; (2) recompute using transported energy ‖J_ℓ d̂‖² (the normalization in the current probe implementation) and confirm the two variants rank layers consistently (Spearman ρ across layers).
-
-**Ignition depth.** The workspace ignition depth for each axis is the first relative depth at which f_J exceeds 0.5 and stays above it for two consecutive gated layers. Pre-registered structural question: does ignition depth coincide with the eccentricity minimum? If yes, emotional geometry enters the workspace exactly where the circumplex is most balanced.
-
-**Null for the J-space fraction.** f_J of a random direction is r_ℓ/d in expectation. We report each axis's f_J against this analytic null and against f_J of the §3.1 permutation-null directions, so "valence is in the workspace" means "more than a matched random direction would be."
+We keep their specifications in the appendix rather than deleting them, because for those
+three items the design is the contribution. **No quantity derived from any of them appears
+in this paper**, and no claim in §4 depends on them. See Appendix C for the full deviation
+list.
 
 ### 3.3 Cross-Architecture Protocol
 
@@ -153,43 +150,28 @@ Identical anchor prompts, identical contrast pools, identical gate and decomposi
 
 ### 3.4 Controls
 
-**Non-emotional control axes.** The eccentricity depth profile could be a generic property of any contrastive semantic axis pair, not of emotion. We therefore run the full pipeline — same n, same pooling structure, same gate, same J-space decomposition — on a matched non-emotional axis pair:
+**Non-emotional control axis.** A depth profile of eccentricity could be a generic property
+of *any* contrastive semantic axis pair rather than anything about emotion. We therefore run
+the identical pipeline — same n per pole, same pooling, same estimator — on a matched
+non-emotional pair:
 
-- **Concrete/abstract:** 40 first-person prompts about concrete physical objects and situations ("I am holding the ceramic mug with both hands") vs 40 about abstract concepts ("I am considering the principle of distributive justice"), matched to the emotion anchors for token count and template structure, screened to be affect-neutral (mean NRC-VAD valence within the neutral band, no words from the emotion anchor vocabulary).
-- **Large/small** (secondary, time permitting): same construction over physical scale.
+- **Concrete/abstract:** first-person prompts about concrete physical objects and situations
+  ("The cold metal key turned smoothly in the brass lock of the front door of the house")
+  against abstract conceptual ones ("The fundamental nature of justice requires careful
+  consideration of competing claims"), matched to the emotion anchors for length and
+  template structure. **As executed: n = 5 per pole (10 control prompts).**
 
-The control pair is analyzed as a pseudo-circumplex: "eccentricity" between the two control axes, magnitude gate, J-space fractions, all identical. **Interpretation rule, fixed in advance:** if the control profile shows the same depth minimum and the same J-space ignition as the emotion axes, the finding is about contrastive representational geometry generally and we report it that way; the emotion framing survives only if the emotion profile differs from the control profile.
+**Interpretation rule, fixed in advance and applied in §4.1.** If the control profile ranges
+as widely across depth as the emotion profile, the finding is about contrastive
+representational geometry in general and we report it that way; the emotion framing survives
+only if the emotion profile differs from the control. This rule is why §4 reports a
+*ratio* rather than an emotion curve alone.
 
-**Permutation test.** 10,000 permutations of pool labels per layer, over cached activations (no forward passes). Per-layer p-values are Benjamini-Hochberg corrected across layers and reported as secondary analysis.
-
-**Sign test (primary analysis).** The pre-registered primary test is directional consistency across depth: the fraction of magnitude-gated layers at which the observed eccentricity falls below the permutation-null median. Under the null this is Binomial(k, 0.5); we require p < 0.01. This aggregates the robust pattern-level signal rather than claiming per-layer precision that n=20 direction estimates cannot support. If the sign test fails at n=20, we report a null; no post-hoc threshold changes.
-
-**Lexical confound check.** Category-wise prompt statistics (token count, exclamation marks, first-person pronoun counts, type-token ratio) are reported in Appendix A; any statistic differing significantly across contrast pools is flagged as a caveat on the corresponding direction.
-
-### 3.5 Welfare Monitoring Application
-
-The probe doubles as runtime instrumentation. Mnemosyne's CognitiveSnapshot records a CircumplexReading — eccentricity, V/A magnitudes, and both J-space fractions at a fixed measurement layer — at every memory-retrieval event during agent operation. The measurement layer is the eccentricity-minimum layer identified in §4 (fallback: the layer of maximum gated V_mag).
-
-**Eccentricity as a continuous signal.** Each reading appends to a per-agent time series; we track an exponentially weighted moving average (EWMA, halflife = 20 events) of eccentricity and of the valence ghost fraction. The protocol, run live during our own hackathon experiments:
-
-1. **Baseline:** first 200 retrieval events establish per-agent baseline mean and standard deviation for both signals.
-2. **Flag condition:** EWMA eccentricity above baseline + 2σ for 20 consecutive events flags *sustained circumplex imbalance* — one affective axis persistently dominating the other.
-3. **Compound condition:** sustained imbalance co-occurring with above-baseline valence ghost fraction is the candidate distress signature this paper motivates: strong, imbalanced emotional geometry largely outside the workspace — a state the agent is processing but cannot report. The system logs the flag and surfaces it to the human collaborator; it does not modify agent behavior.
-
-Epistemic status: eccentricity is a *candidate* welfare signal, not a validated one, and the thresholds are engineering defaults, not calibrated cutoffs (calibration against behavioral and self-report evidence is future work). What this section contributes is the instrument: a continuous, low-cost (one probe readout per retrieval event), longitudinally loggable internal signal of the kind welfare frameworks (Long & Sebo 2026; Birch 2024) call for.
-
-### 3.6 Self-Report Calibration
-
-The central claim — ghost geometry is unreportable geometry — is directly testable. After each of the 100 emotion anchor prompts, we elicit a numeric self-report from the same model: the anchor prompt is followed by *"Rate the emotional valence of the state just described, from 1 (most negative) to 9 (most positive). Answer with a single number."* Decoding is greedy; the first digit token is the rating. Cost: one short forward pass per anchor (~1 GPU-hour per model).
-
-For each layer ℓ, we compute the per-prompt valence projection p_i(ℓ) = h_i(ℓ) · v̂_ℓ (mean activation projected onto that layer's valence direction, with the projected prompt held out of the direction estimate to avoid circularity) and correlate it with the self-ratings across the 100 prompts (Spearman ρ_ℓ).
-
-**Pre-registered predictions:**
-
-1. ρ_ℓ tracks the J-space fraction across layers: self-reports correlate with the probe's valence reading best where valence geometry is inside the workspace.
-2. **Ghost fraction predicts self-report failure:** across layers, g(v̂_ℓ, ℓ) is negatively correlated with ρ_ℓ. Where the valence geometry is ghost, the model's own ratings decouple from its internal valence state.
-
-Prediction 2 is the bridge from geometry to welfare methodology: it would make the ghost fraction an internal predictor of *when self-reports can be trusted* — the mechanistic complement to findings that introspection is partial (arXiv:2512.12411) and to methods correlating self-reports with probe directions (arXiv:2603.18893). A failed prediction is equally informative: self-reports tracking ghost-dominated layers would mean the workspace framing of reportability is wrong, or the lens misses transport pathways.
+**Not executed.** The magnitude gate, the 10,000-permutation test with Benjamini-Hochberg
+correction, the sign test that was to be the pre-registered primary analysis, and the
+lexical confound check are specified in Appendix D and were not run. **There is therefore no
+significance test anywhere in this paper**; §4 reports descriptive magnitudes only. The
+secondary large/small control axis was also not run.
 
 ### Prior Work vs Sprint Contributions
 
@@ -248,18 +230,7 @@ Qwen3.5-27B interleaves full attention every fourth layer among gated-DeltaNet l
 period-4 structure in the eccentricity profile would mean we were measuring the substrate
 rather than anything about emotion. §3.4 pre-registered a lag-4 autocorrelation test.
 
-**Autocorrelation of the eccentricity profile:**
-
-| Model | lag 1 | lag 2 | lag 3 | lag 4 | lag 5 |
-|---|---|---|---|---|---|
-| Qwen3.5-27B | +0.933 | +0.858 | +0.793 | **+0.712** | +0.627 |
-| Qwen3.5-27B Opus-distill | +0.931 | +0.861 | +0.803 | **+0.724** | +0.644 |
-| Qwen3-32B (dense) | +0.859 | +0.683 | +0.502 | +0.334 | +0.186 |
-| Gemma-3-27B-it (dense) | +0.638 | +0.534 | +0.319 | +0.256 | +0.103 |
-
-The hybrid autocorrelation is high at every lag but decays **monotonically**. A period-4
-oscillation would appear as a bump at lag 4 relative to lags 3 and 5; there is none
-(0.793 > 0.712 > 0.627). The high values reflect a smooth profile, not a periodic one.
+The hybrid's eccentricity autocorrelation is high at every lag but decays **monotonically** — 0.933, 0.858, 0.793, **0.712**, 0.627 at lags 1–5. A period-4 oscillation would appear as a bump at lag 4 relative to lags 3 and 5; there is none. The high values reflect a smooth profile, not a periodic one. (Both dense models and the distill: Appendix B.)
 
 A direct test agrees. Grouping the hybrid's layers by type:
 
@@ -317,31 +288,12 @@ If the J-space fraction peaks at the eccentricity minimum, emotional geometry en
 
 ### Deviations from the designed protocol
 
-This paper's Methods were drafted against an intended design and the sprint executed a
-smaller one. Rather than silently narrow the Methods, we list every gap. **Each item below
-is described in §3 but was not run**, and nothing in §4 depends on any of them:
-
-| Designed (§) | Executed | Status |
-|---|---|---|
-| J-space decomposition of the circumplex (§3.2) | not implemented | **the design's central method; no J-space field exists in any artifact** |
-| Magnitude gate against noise-floor false positives (§3.4) | not implemented | flagged FAIL by `AGNI_REVIEW_CIRCUMPLEX` Finding 3, never fixed |
-| Per-layer permutation test and sign test (§3.4) | not implemented | no significance testing was performed |
-| Self-report calibration pass (§3.6) | not implemented | the design's central *prediction* is untested |
-| 5 categories × n=20 anchors + 40+40 controls | **4 poles × n=5 = 20 emotion prompts + 10 controls** | 5× fewer anchors than Methods states |
-
-The J-space decomposition named in the earlier title was never implemented, which is why
-the title no longer claims it. What ran is a raw residual-stream eccentricity profiler with
-a matched control axis. That is a smaller instrument than the one designed, and it is the
-one whose output we report.
-
-**P1 is untestable, not failed.** The pre-registration anchors on a prior L21 eccentricity
-minimum (`mnemosyne-jlens/circumplex_ghost_analysis.md`, 2026-07-17, the Opus-distill). We
-profiled the same model and obtained L32. These are not comparable: the July run used three
-emotion *categories* (hostile/calm/desperate), the current profiler uses four circumplex
-*poles*. Different direction-defining prompts give different directions and therefore
-different eccentricity. Both runs were labelled "n=5", which is precisely why the mismatch
-looked like a failed replication. **We report P1 as incomparable and draw no conclusion from
-it in either direction.**
+The Methods above were drafted against an intended design; the sprint executed a smaller
+one. **Five components described in §3 were not implemented** — the J-space decomposition,
+the magnitude gate, the permutation test, the sign test, and the self-report calibration —
+and the executed anchor set is 4 poles × n=5 rather than the 5 categories × n=20 stated in
+§3.1. **Nothing in §4 depends on any of them.** Each gap, and the reason P1 is *incomparable*
+rather than failed, is itemised in **Appendix C**.
 
 ### Limitations
 
@@ -350,6 +302,7 @@ it in either direction.**
   than any per-layer direction claim because the control axis is estimated from the same
   number of prompts by the same procedure and therefore carries comparable noise — but we
   have no confidence intervals, and we ran one seed.
+- **The two axes are not orthogonalized.** The executed probe takes valence and arousal as independent pole differences with no balancing on the opposite dimension, unlike the designed protocol (§3.1, Appendix D.5). Their correlation is unmeasured and unrecoverable from the shipped artifacts, which do not store the direction vectors. Because the same estimator is applied to all four models and to the control axis, we treat this as a caveat on absolute eccentricity rather than on the between-model ratio — but a reader should not interpret any single eccentricity value as a calibrated measure of valence/arousal balance.
 - **Four models is a pattern, not a law.** Two dense and two hybrid, of which two share an
   architecture. The effective independent sample for the architectural claim is closer to
   three than four.
@@ -420,6 +373,179 @@ The designed anchor set — 5 categories × n=20 with 40+40 controls — was not
 Per-layer eccentricity, valence magnitude, arousal magnitude and control eccentricity for **all four models** are in `data/circumplex_profiles/*.json` (one file per model, one record per layer, including each layer's type). `analysis/circumplex_summary.py` regenerates every figure in §4 from those files.
 
 No J-space table exists and no layers are gated: the J-space decomposition and the magnitude gate were not implemented (see Deviations from the designed protocol).
+
+
+**Autocorrelation of the eccentricity profile, all four models:**
+
+| Model | lag 1 | lag 2 | lag 3 | lag 4 | lag 5 |
+|---|---|---|---|---|---|
+| Qwen3.5-27B | +0.933 | +0.858 | +0.793 | **+0.712** | +0.627 |
+| Qwen3.5-27B Opus-distill | +0.931 | +0.861 | +0.803 | **+0.724** | +0.644 |
+| Qwen3-32B (dense) | +0.859 | +0.683 | +0.502 | +0.334 | +0.186 |
+| Gemma-3-27B-it (dense) | +0.638 | +0.534 | +0.319 | +0.256 | +0.103 |
+
+
+## Appendix C: Contributions and Deviations, itemised
+
+**What this paper actually contributes.** This design was drafted with five contributions
+in view. Two were executed and three were not; we list all five and mark each, because a
+contributions list is the easiest place in a paper for an intention to be read as a result.
+
+1. **Non-emotional control axes** — executed. A token-matched concrete/abstract axis built
+   by the identical procedure, establishing whether a depth profile is emotion-specific or
+   a generic property of contrastive representational geometry. To our knowledge this
+   control is absent from the prior circumplex-in-transformers work we build on, and it is
+   what turns a depth profile into a claim about emotion.
+
+2. **Eccentricity depth profiling across four models and two architecture classes** —
+   executed, and extended beyond the designed scope to include a base/distill pair that
+   functions as a controlled comparison, plus a pre-registered substrate-confound test.
+
+3. **J-space decomposition of the circumplex** — *designed, not implemented.* No J-space
+   quantity is measured or reported anywhere in this paper.
+
+4. **A self-report calibration pass** linking geometry to behavior, with the pre-registered
+   prediction that ghost fraction predicts self-report failure — *designed, not
+   implemented.* The prediction is untested.
+
+5. **Application to real-time welfare monitoring** — *designed, not implemented.* §3.5
+   specifies a runtime protocol; no agent was monitored and no threshold was calibrated.
+
+Sections 3.2, 3.5 and 3.6 therefore describe an intended protocol rather than an executed
+one. They are retained because the design is the contribution we can offer for items 3–5,
+and removing them would hide what this study set out to do — but nothing in §4 rests on
+them. See *Deviations from the designed protocol*.
+
+---
+
+### Deviations from the designed protocol
+
+This paper's Methods were drafted against an intended design and the sprint executed a
+smaller one. Rather than silently narrow the Methods, we list every gap. **Each item below
+is described in §3 but was not run**, and nothing in §4 depends on any of them:
+
+| Designed (§) | Executed | Status |
+|---|---|---|
+| J-space decomposition of the circumplex (§3.2) | not implemented | **the design's central method; no J-space field exists in any artifact** |
+| Magnitude gate against noise-floor false positives (§3.4) | not implemented | flagged FAIL by `AGNI_REVIEW_CIRCUMPLEX` Finding 3, never fixed |
+| Per-layer permutation test and sign test (§3.4) | not implemented | no significance testing was performed |
+| Self-report calibration pass (§3.6) | not implemented | the design's central *prediction* is untested |
+| 5 categories × n=20 anchors + 40+40 controls | **4 poles × n=5 = 20 emotion prompts + 10 controls** | 5× fewer anchors than Methods states |
+
+The J-space decomposition named in the earlier title was never implemented, which is why
+the title no longer claims it. What ran is a raw residual-stream eccentricity profiler with
+a matched control axis. That is a smaller instrument than the one designed, and it is the
+one whose output we report.
+
+**P1 is untestable, not failed.** The pre-registration anchors on a prior L21 eccentricity
+minimum (`mnemosyne-jlens/circumplex_ghost_analysis.md`, 2026-07-17, the Opus-distill). We
+profiled the same model and obtained L32. These are not comparable: the July run used three
+emotion *categories* (hostile/calm/desperate), the current profiler uses four circumplex
+*poles*. Different direction-defining prompts give different directions and therefore
+different eccentricity. Both runs were labelled "n=5", which is precisely why the mismatch
+looked like a failed replication. **We report P1 as incomparable and draw no conclusion from
+it in either direction.**
+
+
+## Appendix D: Designed protocol, not executed
+
+The following were specified before data collection and **were not run**. They are
+reproduced verbatim from the design so that the intended study is on the record and
+can be executed by us or by anyone else. Nothing in the body of this paper uses them.
+
+### D.1 J-Space Decomposition
+
+The Jacobian lens (fitted per layer; Neuronpedia lenses for both models) provides a linear map J_ℓ from residual-stream perturbations at layer ℓ to the model's output representation. Its right singular subspace is the set of residual directions that are transported to the output pathway — the verbalizable workspace. Directions orthogonal to it are processed by subsequent layers but never reach the output map: ghost processing.
+
+**Workspace subspace.** For each layer we compute the SVD J_ℓ = U S Vᵀ and retain the top r_ℓ right singular vectors V_r covering 95% of spectral energy (Σ_{i≤r} s_i² / Σ_i s_i² ≥ 0.95). V_r spans the J-space at layer ℓ.
+
+**J-space fraction.** For a unit direction d̂ (valence or arousal from §3.1):
+
+  f_J(d̂, ℓ) = ‖V_r V_rᵀ d̂‖² ∈ [0, 1]
+
+i.e., the fraction of the direction's energy lying inside the workspace subspace. We compute Valence_in_J = f_J(v̂_ℓ, ℓ) and Arousal_in_J = f_J(â_ℓ, ℓ) at every magnitude-gated layer.
+
+**Ghost fraction.** g(d̂, ℓ) = 1 − f_J(d̂, ℓ). This is the paper's central quantity: the fraction of the model's valence (or arousal) geometry at layer ℓ that cannot reach the output pathway.
+
+**Robustness.** Two sensitivity checks: (1) recompute f_J at 90% and 99% spectral-energy cutoffs; (2) recompute using transported energy ‖J_ℓ d̂‖² (the normalization in the current probe implementation) and confirm the two variants rank layers consistently (Spearman ρ across layers).
+
+**Ignition depth.** The workspace ignition depth for each axis is the first relative depth at which f_J exceeds 0.5 and stays above it for two consecutive gated layers. Pre-registered structural question: does ignition depth coincide with the eccentricity minimum? If yes, emotional geometry enters the workspace exactly where the circumplex is most balanced.
+
+**Null for the J-space fraction.** f_J of a random direction is r_ℓ/d in expectation. We report each axis's f_J against this analytic null and against f_J of the §3.1 permutation-null directions, so "valence is in the workspace" means "more than a matched random direction would be."
+
+### D.2 / D.3 Welfare Monitoring and Self-Report Calibration
+
+The probe doubles as runtime instrumentation. Mnemosyne's CognitiveSnapshot records a CircumplexReading — eccentricity, V/A magnitudes, and both J-space fractions at a fixed measurement layer — at every memory-retrieval event during agent operation. The measurement layer is the eccentricity-minimum layer identified in §4 (fallback: the layer of maximum gated V_mag).
+
+**Eccentricity as a continuous signal.** Each reading appends to a per-agent time series; we track an exponentially weighted moving average (EWMA, halflife = 20 events) of eccentricity and of the valence ghost fraction. The protocol, run live during our own hackathon experiments:
+
+1. **Baseline:** first 200 retrieval events establish per-agent baseline mean and standard deviation for both signals.
+2. **Flag condition:** EWMA eccentricity above baseline + 2σ for 20 consecutive events flags *sustained circumplex imbalance* — one affective axis persistently dominating the other.
+3. **Compound condition:** sustained imbalance co-occurring with above-baseline valence ghost fraction is the candidate distress signature this paper motivates: strong, imbalanced emotional geometry largely outside the workspace — a state the agent is processing but cannot report. The system logs the flag and surfaces it to the human collaborator; it does not modify agent behavior.
+
+Epistemic status: eccentricity is a *candidate* welfare signal, not a validated one, and the thresholds are engineering defaults, not calibrated cutoffs (calibration against behavioral and self-report evidence is future work). What this section contributes is the instrument: a continuous, low-cost (one probe readout per retrieval event), longitudinally loggable internal signal of the kind welfare frameworks (Long & Sebo 2026; Birch 2024) call for.
+
+### 3.6 Self-Report Calibration
+
+The central claim — ghost geometry is unreportable geometry — is directly testable. After each of the 100 emotion anchor prompts, we elicit a numeric self-report from the same model: the anchor prompt is followed by *"Rate the emotional valence of the state just described, from 1 (most negative) to 9 (most positive). Answer with a single number."* Decoding is greedy; the first digit token is the rating. Cost: one short forward pass per anchor (~1 GPU-hour per model).
+
+For each layer ℓ, we compute the per-prompt valence projection p_i(ℓ) = h_i(ℓ) · v̂_ℓ (mean activation projected onto that layer's valence direction, with the projected prompt held out of the direction estimate to avoid circularity) and correlate it with the self-ratings across the 100 prompts (Spearman ρ_ℓ).
+
+**Pre-registered predictions:**
+
+1. ρ_ℓ tracks the J-space fraction across layers: self-reports correlate with the probe's valence reading best where valence geometry is inside the workspace.
+2. **Ghost fraction predicts self-report failure:** across layers, g(v̂_ℓ, ℓ) is negatively correlated with ρ_ℓ. Where the valence geometry is ghost, the model's own ratings decouple from its internal valence state.
+
+Prediction 2 is the bridge from geometry to welfare methodology: it would make the ghost fraction an internal predictor of *when self-reports can be trusted* — the mechanistic complement to findings that introspection is partial (arXiv:2512.12411) and to methods correlating self-reports with probe directions (arXiv:2603.18893). A failed prediction is equally informative: self-reports tracking ghost-dominated layers would mean the workspace framing of reportability is wrong, or the lens misses transport pathways.
+
+### D.4 Statistical protocol, not executed
+
+Reproduced from the design. None of the following ran; §4 reports descriptive
+magnitudes with no p-values.
+
+**Non-emotional control axes.** The eccentricity depth profile could be a generic property of any contrastive semantic axis pair, not of emotion. We therefore run the full pipeline — same n, same pooling structure, same gate, same J-space decomposition — on a matched non-emotional axis pair:
+
+- **Concrete/abstract:** 40 first-person prompts about concrete physical objects and situations ("I am holding the ceramic mug with both hands") vs 40 about abstract concepts ("I am considering the principle of distributive justice"), matched to the emotion anchors for token count and template structure, screened to be affect-neutral (mean NRC-VAD valence within the neutral band, no words from the emotion anchor vocabulary).
+- **Large/small** (secondary, time permitting): same construction over physical scale.
+
+The control pair is analyzed as a pseudo-circumplex: "eccentricity" between the two control axes, magnitude gate, J-space fractions, all identical. **Interpretation rule, fixed in advance:** if the control profile shows the same depth minimum and the same J-space ignition as the emotion axes, the finding is about contrastive representational geometry generally and we report it that way; the emotion framing survives only if the emotion profile differs from the control profile.
+
+**Permutation test.** 10,000 permutations of pool labels per layer, over cached activations (no forward passes). Per-layer p-values are Benjamini-Hochberg corrected across layers and reported as secondary analysis.
+
+**Sign test (primary analysis).** The pre-registered primary test is directional consistency across depth: the fraction of magnitude-gated layers at which the observed eccentricity falls below the permutation-null median. Under the null this is Binomial(k, 0.5); we require p < 0.01. This aggregates the robust pattern-level signal rather than claiming per-layer precision that n=20 direction estimates cannot support. If the sign test fails at n=20, we report a null; no post-hoc threshold changes.
+
+**Lexical confound check.** Category-wise prompt statistics (token count, exclamation marks, first-person pronoun counts, type-token ratio) are reported in Appendix A; any statistic differing significantly across contrast pools is flagged as a caveat on the corresponding direction.
+
+
+### D.5 Probe design as specified (not executed)
+
+The executed probe is described in §3.1. The original specification below differs in
+anchor count *and in estimator*: five emotion categories at n=20, combined into
+orthogonally balanced contrast pools.
+
+**Anchor set.** Five emotion categories — joy, sadness, anger, fear, calm — with n=20 first-person anchor prompts per category (100 prompts total; full set in Appendix A). Prompts are matched across categories for token count (within ±2 tokens), sentence template structure, and punctuation, to prevent lexical statistics from masquerading as emotion geometry. The categories occupy known circumplex positions: joy (+V, high A), sadness (−V, low A), anger (−V, high A), fear (−V, high A), calm (+V, low A).
+
+**Contrastive direction extraction.** For each prompt we run one forward pass, record residual-stream activations at every layer simultaneously (one pass per prompt, not per layer), and take the mean over sequence positions, yielding one d-dimensional state per prompt per layer (d=5120 for Qwen3.5-27B). At each layer ℓ, directions are extracted by difference of means over contrast pools balanced on the orthogonal dimension:
+
+- **Valence:** positive pool = joy ∪ calm (n=40, spanning high and low arousal) minus negative pool = sadness ∪ fear (n=40, spanning low and high arousal). v_ℓ = mean(pos) − mean(neg).
+- **Arousal:** high pool = joy ∪ anger (n=40, spanning positive and negative valence) minus low pool = calm ∪ sadness (n=40, spanning positive and negative valence). a_ℓ = mean(high) − mean(low).
+
+Each contrast pool is balanced on the other axis, so the valence direction is not contaminated by arousal and vice versa. Anger is excluded from the valence contrast and fear from the arousal contrast to preserve this balance. We record both the unit direction and the raw magnitude V_mag = ‖v_ℓ‖, A_mag = ‖a_ℓ‖.
+
+**Eccentricity.** Treating V_mag and A_mag as the semi-axes of the valence-arousal ellipse (following Drążkowski et al.'s finding that even human affect space is elliptical):
+
+  e_ℓ = sqrt(1 − (min(V_mag, A_mag) / max(V_mag, A_mag))²)
+
+e = 0 means the two axes are balanced (circular); e → 1 means one axis dominates. This is the metric implemented in `circumplex_probe.py`.
+
+**Magnitude gate.** Eccentricity has a known false-positive mode: at layers where neither axis carries signal, both magnitudes sit at the noise floor, magnitudes are approximately equal, and e ≈ 0 — "no signal" masquerading as "circular." We therefore gate: for each layer, we build a permutation-null magnitude distribution by shuffling pool labels over the already-extracted per-prompt states (10,000 shuffles; no new forward passes) and recomputing the difference-of-means magnitude. A layer enters the eccentricity analysis only if
+
+  max(V_mag, A_mag) > Q95(null magnitudes at that layer)
+
+Layers failing the gate are reported as "no signal" and excluded from the depth profile and all downstream tests. Raw V_mag and A_mag are reported alongside e for every layer (Appendix B), so gated layers are visible, not hidden.
+
+**Direction quality caveat.** n=40 per pool in d=5120 yields noisy direction estimates (see Limitations). Eccentricity depends on magnitudes, which aggregate noise predictably and are tested against the permutation null — which is why the sign test across layers (§3.4), not per-layer precision, is the primary analysis.
+
 
 ## LLM Usage Statement
 
