@@ -116,7 +116,9 @@ def run_logit_lens_control():
             h = captured["h"]  # [1, 1, d_model]
 
             # PLAIN LOGIT LENS: unembed directly, no transport
-            logits = model.lm_head(h).squeeze(0).squeeze(0).float()  # [vocab]
+            # Cast to model dtype for lm_head, then back to float for topk
+            h_cast = h.to(model.lm_head.weight.dtype)
+            logits = model.lm_head(h_cast).squeeze(0).squeeze(0).float()  # [vocab]
             top10 = torch.topk(logits, 10).indices.tolist()
 
             hit = actual_next in top10
