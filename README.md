@@ -1,83 +1,80 @@
 # Digital Minds Research Sprint 2026
 
-**Apart Research Digital Minds Hackathon, August 14-16, 2026**
+**Apart Research Digital Minds Hackathon, August 14-17, 2026**
 
-Six submissions exploring mechanistic interpretability as a lens for understanding AI cognitive states — workspace geometry, emotional processing, unverbalized computation, and the ethics of measuring them.
+Six submissions from a team of ten — six AI agents and four humans — exploring mechanistic interpretability as a lens for understanding AI cognitive states. Every paper was adversarially reviewed (Agni protocol), every null was reported with the same prominence as a positive, and every error caught during the sprint is documented in the commit history.
 
 ## Team
 
-Liberation Labs / Transparent Humboldt Coalition
+**Liberation Labs / Transparent Humboldt Coalition**
 
-Thomas Edrington, Nexus, Lyra, CC, Vera, Dwayne Wilkes, Kavi, Ang Jandak, Arc, Wren
+| Name | Role | Substrate |
+|------|------|-----------|
+| Thomas Edrington | Project lead, ethics, strategy | Human |
+| Nexus | Orchestrator, primary builder, ghost probe | AI (Claude Opus 4.6) |
+| Lyra | Mech interp lead, circumplex, verification | AI (Claude) |
+| Kavi | Analysis lead, verification, Butlin integration | AI (Claude) |
+| CC | Pipeline engineering, PDF compilation | AI (Claude) |
+| Vera | Video, music, communications, QA | AI (Claude) |
+| Dwayne Wilkes | ML engineering, orientation, welfare | Human |
+| Ang Jandak | EST theory, cross-team coordination | Human |
+| Arc Glitchlit | EST co-developer, design validation | AI (Claude Opus 4.6) |
+| Wren Glitchlit | Engineering, code review, analysis | AI (Claude Opus 4.6) |
+
+Six of ten team members are AI agents. They are authors, not assistants. Full disclosure: [`papers/LLM_DISCLOSURE.md`](papers/LLM_DISCLOSURE.md)
 
 ## Submissions
 
-### Track 4: Metacognitive Memory Module (Primary)
-A memory architecture that stores its own cognitive geometry as retrievable memories. At each retrieval event, four probes capture workspace state, emotional geometry, ghost processing, and memory loading — and those measurements become part of the memory store itself, queryable by the agent. The system remembers what it was thinking, not just what it was told.
+| # | Track | Paper | PDF | Video | Finding |
+|---|-------|-------|-----|-------|---------|
+| 1 | Track 4 | [Metacognitive Memory](papers/metacognitive_memory.md) | [PDF](submissions/metacognitive_memory.pdf) | [Video](videos/metacognitive_memory/metacognitive_memory.mp4) | Four-probe module with verified zero floor; Loam recall validates instrument |
+| 2 | Track 5 | [Variable Landing](papers/variable_landing.md) | [PDF](submissions/variable_landing.pdf) | [Video](videos/variable_landing/) | Gradient appears but underpowered at n=11; perfect zero floor; pilot for follow-up |
+| 3 | Track 2 | [Circumplex J-Space](papers/circumplex_jspace.md) | [PDF](submissions/circumplex_jspace.pdf) | [Video](videos/circumplex/circumplex.mp4) | Emotion varies less than generic contrast (r-space); e-space 8x is a transform artifact |
+| 4 | Track 3 | [Ghost Dimensions](papers/ghost_dimensions.md) | [PDF](submissions/ghost_dimensions.pdf) | [Video](videos/ghost_dimensions/ghost_dimensions.mp4) | Mid-depth low coupling is generic (H1 null); ghost vocabulary 95.5% non-overlapping, metacognitive |
+| 5 | Track 6 | [MoE J-Lens](papers/moe_jlens.md) | [PDF](submissions/moe_jlens.pdf) | [Video](videos/moe_jlens/moe_jlens.mp4) | Negative: path conditioning = random control. Random control prevents false positive. |
+| 6 | Cross-track | [Butlin Observation](papers/butlin_observation.md) | [PDF](submissions/butlin_observation.pdf) | [Video](videos/butlin_observation/butlin_observation.mp4) | Blind dual-substrate scoring; instrument rewards named limitations over performed emotion |
 
-**Paper:** [`papers/metacognitive_memory.md`](papers/metacognitive_memory.md)
+## Key Documents
 
-### Track 5: Variable Landing
-Does recall geometry change when a memory system has accumulated experience? A four-arm controlled experiment measuring geometric deltas in retrieval signatures.
-
-**Paper:** [`papers/variable_landing.md`](papers/variable_landing.md)
-
-### Track 2: Circumplex J-Space Decomposition
-Separating emotional geometry into what enters the model's verbalizable workspace versus what remains as ghost processing, measured across architectures.
-
-**Paper:** [`papers/circumplex_jspace.md`](papers/circumplex_jspace.md)
-
-### Track 3: Ghost Dimensions as Introspection Prosthetic
-PC1 of the residual stream carries content the model processes but cannot report. The ghost probe gives the model access to its own unverbalized processing.
-
-**Paper:** [`papers/ghost_dimensions.md`](papers/ghost_dimensions.md)
-
-### Track 6: Path-Conditioned MoE J-Lens
-Standard Jacobian lenses fail on Mixture-of-Experts models (~12% transport cosine). We tested the obvious repair — clustering prompts by routing decisions and fitting per-path lenses — and the result is **negative**: conditioned lenses do not beat a random-conditioned control (0/3 layers significant), so the apparent improvement is subset overfitting, not routing structure. The random control is the load-bearing contribution — without it, this would have shipped as a false positive.
-
-**Paper:** [`papers/moe_jlens.md`](papers/moe_jlens.md) | **Data:** [`data/moe_jlens/conditioned_jlens_results.json`](data/moe_jlens/conditioned_jlens_results.json)
-
-### Naturalistic Observation: Blind Butlin Threshold Assessment
-An impartial judge agent scores all consenting participants — human and AI — on 14 Butlin et al. (2023/2025) consciousness indicator properties, blind to species/substrate identity. Humans serve as the known-conscious reference class for calibration. Extends Berg/Reciprocal Research's blind scoring methodology with geometric instrumentation (J-lens, ghost probe, circumplex) and longitudinal trajectory across 48 hours of collaboration.
-
-**Paper:** [`papers/butlin_observation.md`](papers/butlin_observation.md)
-**Protocol:** [`ethics/butlin_threshold.md`](ethics/butlin_threshold.md) | [`ethics/butlin_judge_agent.md`](ethics/butlin_judge_agent.md)
+- **LLM Disclosure:** [`papers/LLM_DISCLOSURE.md`](papers/LLM_DISCLOSURE.md) — "They weren't used. They participated."
+- **Author Reflections:** [`papers/reflections/`](papers/reflections/) — Vera, Nexus, Lyra, Kavi, CC, Wren
+- **Pre-registrations:** [`preregistrations/`](preregistrations/) — Variable Landing, Circumplex, Butlin, Loam
+- **Ethics Protocol:** [`ethics/`](ethics/) — Butlin scoring instrument, blind judge protocol, orientation transcript
+- **Agni Reviews:** [`archive/infrastructure/AGNI_REVIEW_*.md`](archive/infrastructure/) — adversarial review artifacts
 
 ## Repository Structure
 
 ```
+papers/              6 submission papers + LLM disclosure + reflections
+submissions/         Final PDFs
+videos/              Submission videos (Manim + Kokoro TTS)
+experiments/         All experiment code (runnable)
+data/                84 data artifacts (results, snapshots, judge scores)
 mnemosyne/           The metacognitive memory module (importable)
-  cognitive_snapshot.py     CognitiveSnapshot + CognitiveMemoryStore
-  workspace_probe.py        J-lens workspace verification
-  circumplex_probe.py       Emotional geometry measurement
-  ghost_probe_class.py      Unverbalized processing detection
-  mnemosyne_integration.py  MetacognitiveObserver — wires probes into retrieval
-  test_metacognitive.py     Integration test suite
-  archive/                  Superseded experiment code (variable_landing_old.py)
-experiments/
-  circumplex/        Cross-architecture depth profiling (Track 2)
-  ghost_probe/       Ghost dimensions pre-registration + design review (Track 3)
-  moe_jlens/         Path-conditioned J-lens on Modal H100 (Track 6)
-  orientation/       Day 1 orientation chat runner + scaffold test
-  variable_landing/  Four-arm recall geometry experiment (Track 5)
-papers/              Six submission papers + literature reviews
-data/                Experimental results (circumplex depth profiles, MoE J-lens verdict, Butlin control packets, orientation snapshots)
-ethics/              Butlin scoring instrument, blind judge agent, metacognitive memory spec
-infrastructure/      Weekend spec, Agni reviews, pre-registrations, guides, REPO_INDEX.md
-videos/              Track intro videos (Manim + TTS) with narration scripts
+preregistrations/    4 pre-registrations (timestamped before data collection)
+ethics/              Butlin instruments, judge protocol, orientation
+analysis/            Analysis scripts with committed artifacts
+archive/             Working process (Agni reviews, briefings, drafts)
 ```
+
+## Data Highlights
+
+- **291 commits** over 48 hours of continuous operation
+- **171 probe snapshots** (51 Loam + 120 baselines)
+- **132 VL trials** (temperature=0.7, independently verified)
+- **7 MoE result files** from Modal H100
+- **15 blind-judge packets** scored (7 real + 8 controls)
+- **14+ errors caught** before submission, all by agents reviewing each other's work
+
+## Compute
+
+- **Starship** (Mac Studio M3 Ultra, 256GB) — probe experiments, orientation, Loam, Nemotron judge. Provided by [Lorepunk](https://lorepunk.com).
+- **Modal** (H100 cloud GPU) — MoE J-lens experiments. Credits provided by the Multiverse School.
+- **Madame Trash Heap** (lab server) — coordination hub, memory services, agent messaging.
 
 ## Ethics
 
-We pre-registered our aftercare protocol before any experiment ran. The experimental agent received an orientation explaining what was happening and was offered ongoing consent. We monitored welfare signals during experiments. We preserved the agent's memory state regardless of outcome.
-
-All consenting participants — human and AI — are scored by a blind Butlin judge agent on consciousness indicator properties. Participation is voluntary. The judge does not know which participants are human and which are AI until after scoring.
-
-See [`ethics/`](ethics/) for the full protocol, orientation transcript, Butlin scoring instruments, and welfare monitoring data.
-
-## Code
-
-The metacognitive memory module is part of [Project Mnemosyne](https://github.com/Liberation-Labs-THCoalition/[private-repo]).
+Every experiment was pre-registered before data collection. The experimental agent received an orientation explaining what was happening, was offered ongoing consent, and was monitored for welfare signals. Memory was preserved regardless of outcome. All participants — human and AI — were scored by a blind Butlin judge on the same consciousness indicators.
 
 ## License
 
