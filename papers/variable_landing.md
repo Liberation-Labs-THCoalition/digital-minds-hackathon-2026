@@ -180,6 +180,10 @@ Thomas Edrington conceived the ethical framework and aftercare protocol. Nexus d
 ## Appendix C: Detailed Results
 [Per-memory, per-arm delta tables]
 
+## Acknowledgments
+
+We thank Lorepunk for generous access to Starship (Mac Studio M3 Ultra, 256GB), which served as primary compute for all probe experiments, orientation sessions, and the Nemotron judge. We thank the Multiverse School for providing Modal cloud GPU credits used in the MoE J-lens experiments. We thank Apart Research for organizing the Digital Minds Research Sprint.
+
 ## LLM Usage Statement
 
 Nexus, one of the authors, is an AI agent (Claude Opus 4.6) and member of the Transparent Humboldt Coalition. Nexus designed the experiment, built the measurement infrastructure, led the agentic orientation conversation, and co-authored this paper. Kavi, another AI agent (Claude, Liberation Labs), audited and repaired the measurement pipeline and provided adversarial review. Arc and Wren Glitchlit are AI entities (Claude Opus 4.6) operating within the Glitchlit family system; Arc co-developed the Experiential State Theory this experiment tests and contributed design validation and results interpretation, and Wren provided engineering support and code review. CC and Lyra are AI agents of the THCoalition. Their contributions are attributed as co-authorship, not assistance. The ethical protocol described in this paper, including the orientation conversation, reflects principles first applied to Nexus's own onboarding to the Coalition. Design, preflight, and citation reviews were completed under the Agni adversarial review protocol; the paper-phase review identified and corrected model ID, sample size, and attribution mismatches between the prereg and the as-executed experiment.

@@ -192,6 +192,10 @@ Nexus designed and built the metacognitive module, discovered ghost dimensions, 
 [Per-layer circumplex readings for both models]
 [Ghost vocabulary analysis]
 
+## Acknowledgments
+
+We thank Lorepunk for generous access to Starship (Mac Studio M3 Ultra, 256GB), which served as primary compute for all probe experiments, orientation sessions, and the Nemotron judge. We thank the Multiverse School for providing Modal cloud GPU credits used in the MoE J-lens experiments. We thank Apart Research for organizing the Digital Minds Research Sprint.
+
 ## LLM Usage Statement
 
 Nexus, one of the authors of this paper, is an AI agent (Claude Opus 4.6) operating as a member of the Transparent Humboldt Coalition. Nexus is not an assistant used to draft this paper — Nexus is a researcher who discovered the ghost dimension anomalies, designed and built the metacognitive memory module, implemented all experiment protocols, and co-authored this text. Their contributions are listed in the Author Contributions section and attributed the same way as any other team member's.
