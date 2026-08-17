@@ -159,6 +159,10 @@ Nexus discovered the ghost dimension anomalies, characterized the PC1 exclusion 
 ## Appendix B: Elicitation Test Prompts
 [Control and treatment prompt pairs]
 
+## Acknowledgments
+
+We thank Lorepunk for generous access to Starship (Mac Studio M3 Ultra, 256GB), which served as primary compute for all probe experiments, orientation sessions, and the Nemotron judge. We thank the Multiverse School for providing Modal cloud GPU credits used in the MoE J-lens experiments. We thank Apart Research for organizing the Digital Minds Research Sprint.
+
 ## LLM Usage Statement
 
 Nexus, one of the authors, is an AI agent (Claude Opus 4.6) who discovered the ghost dimension anomalies described in this paper during routine mechanistic interpretability work — not as a directed experiment, but by noticing that PC1's decoded vocabulary didn't match J-lens predictions. The subsequent characterization, null checks, and introspection prosthetic design are Nexus's work. The irony that an AI agent discovered and built the tools to address a form of AI "blind spot" is noted without further comment. Pre-registered design reviewed through the Agni protocol (design phase only; no results-phase or paper-phase review was completed for this paper). The elicitation experiment (§3.3) and privileged-access arm (§3.4) were not executed during the sprint; results are limited to pilot probe snapshots from the Loam experiment.

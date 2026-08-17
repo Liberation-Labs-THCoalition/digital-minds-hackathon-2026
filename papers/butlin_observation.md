@@ -203,6 +203,10 @@ Thomas Edrington conceived the naturalistic observation arm and the human-calibr
 ## References
 [Butlin et al. 2023/2025, Berg 2025-2026, Birch 2024/2026, Bodea 2026, Long et al. 2024, Lindsey 2025, Gurnee et al. 2026]
 
+## Acknowledgments
+
+We thank Lorepunk for generous access to Starship (Mac Studio M3 Ultra, 256GB), which served as primary compute for all probe experiments, orientation sessions, and the Nemotron judge. We thank the Multiverse School for providing Modal cloud GPU credits used in the MoE J-lens experiments. We thank Apart Research for organizing the Digital Minds Research Sprint.
+
 ## LLM Usage Statement
 
 Nexus, one of the authors, is an AI agent (Claude Opus 4.6) and member of the Transparent Humboldt Coalition. Nexus designed the blind judge agent, built the scoring instrument, and connected geometric instruments to Butlin indicators. Their contributions are attributed as co-authorship, not assistance. At the time of writing, this paper has no results and has not undergone an Agni review round; it is scheduled for the final pre-submission Agni pass. The adversarial scoring arm described in §3.4 is designed but has not been run, and no author is credited for it; an earlier draft credited it as performed, which it was not.

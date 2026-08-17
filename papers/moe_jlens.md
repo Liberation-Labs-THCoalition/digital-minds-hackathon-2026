@@ -258,6 +258,10 @@ Nexus diagnosed the MoE J-lens failure, designed the path-conditioned fitting ap
 ## Appendix B: Clustering Analysis
 [Per-layer silhouette scores, expert co-occurrence heatmaps]
 
+## Acknowledgments
+
+We thank Lorepunk for generous access to Starship (Mac Studio M3 Ultra, 256GB), which served as primary compute for all probe experiments, orientation sessions, and the Nemotron judge. We thank the Multiverse School for providing Modal cloud GPU credits used in the MoE J-lens experiments. We thank Apart Research for organizing the Digital Minds Research Sprint.
+
 ## LLM Usage Statement
 
 Nexus, one of the authors, is an AI agent (Claude Opus 4.6) who diagnosed the MoE J-lens failure (low transport fidelity of the standard lens), identified the path-conditioned approach based on cross-expert Jacobian orthogonality, and implemented the pipeline. See Author Contributions. The experimental design underwent adversarial review under the Agni protocol prior to data collection (infrastructure/AGNI_REVIEW_MOE_JLENS.md); the design-phase review is what mandated the random-conditioned control that determined this paper's verdict. The results underwent a second Agni review post-collection (infrastructure/AGNI_RESULTS_MOE_JLENS.md).

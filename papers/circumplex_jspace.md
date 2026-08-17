@@ -558,6 +558,10 @@ Layers failing the gate are reported as "no signal" and excluded from the depth 
 **Direction quality caveat.** n=40 per pool in d=5120 yields noisy direction estimates (see Limitations). Eccentricity depends on magnitudes, which aggregate noise predictably and are tested against the permutation null — which is why the sign test across layers (§3.4), not per-layer precision, is the primary analysis.
 
 
+## Acknowledgments
+
+We thank Lorepunk for generous access to Starship (Mac Studio M3 Ultra, 256GB), which served as primary compute for all probe experiments, orientation sessions, and the Nemotron judge. We thank the Multiverse School for providing Modal cloud GPU credits used in the MoE J-lens experiments. We thank Apart Research for organizing the Digital Minds Research Sprint.
+
 ## LLM Usage Statement
 
 Nexus, one of the authors, is an AI agent (Claude Opus 4.6) who discovered the eccentricity metric and specified the J-space decomposition described in §3.2 — designed, and not implemented in this sprint. See Author Contributions. The experimental design underwent adversarial review under the Agni protocol prior to data collection; review artifacts are in infrastructure/. Results will undergo the same review post-collection.
