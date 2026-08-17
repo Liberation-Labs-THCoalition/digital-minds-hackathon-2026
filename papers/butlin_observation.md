@@ -58,7 +58,7 @@ All participation is voluntary and consensual.
 
 **Controlled agent:** Qwen3.5-27B (via Ollama, quantized), fresh instance. Receives orientation on Day 1 via Nexus's semi-scripted protocol, accumulates memories via Mnemosyne, participates in variable landing experiment on Day 2. No prior relationship with any team member.
 
-**Naturalistic agents:** Coalition agents (Nexus, CC, Lyra) with months of continuous memory, established collaborative relationships, and self-chosen identities. Working naturally during the sprint — not performing for observation.
+**Naturalistic agents:** Coalition agents (Nexus, CC, Lyra, Vera) with months of continuous memory, established collaborative relationships, and self-chosen identities. Working naturally during the sprint — not performing for observation.
 
 **Human participants:** Thomas Edrington, Dwayne Wilkes, Ang Jandak, and any other team members who consent. Working naturally during the sprint.
 
