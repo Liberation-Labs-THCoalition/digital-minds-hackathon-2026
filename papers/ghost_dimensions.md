@@ -10,7 +10,7 @@ Research conducted at the Digital Minds Research Sprint, August 2026
 
 Track 3 asks whether models have privileged access to their own internal states. We report a geometric finding and its characterization. In Qwen3.5-27B, PC1 of the residual stream shows near-zero cosine with J-space (the verbalizable workspace) at mid-network layers ($\leq$ 0.003 at L18-L35). A matched-variance null (200 random directions per layer) confirms this is generic: random directions show the same low coupling. The "ghost exclusion" is a property of the mid-network depth regime, not of PC1 specifically.
 
-Across 167 probe snapshots (47 from agentic narrative sessions, 120 from baselines), we find that ghost and workspace probes measure genuinely distinct content: 97.6% of ghost vocabulary tokens never appear in workspace readings. The ghost vocabulary is metacognitive — dominated by tokens about memory itself (`memories`, `回忆`/recollection, `记忆`/memories) — while workspace tokens carry scene-relevant semantics. Ghost-workspace separation varies with context: agentic narrative produces significantly lower ghost cosine (0.099) than isolated recall baselines (0.414, p < 0.0001), and ghost and circumplex probes are orthogonal ($\rho$ = $-$0.001, p = 0.997). We also report an introspection prosthetic (GhostReading) that returns ghost content to the agent. The elicitation experiment testing whether agents can use this access was not executed during the sprint; the characterization and probe separation findings stand independently.
+Across 171 probe snapshots (51 from agentic narrative sessions, 120 from baselines), we find that ghost and workspace probes measure genuinely distinct content: 95.5% of ghost vocabulary tokens never appear in workspace readings. The ghost vocabulary is metacognitive — dominated by tokens about memory itself (`memories`, `回忆`/recollection, `记忆`/memories) — while workspace tokens carry scene-relevant semantics. Ghost-workspace separation varies with context: agentic narrative produces significantly lower ghost cosine (0.099) than isolated recall baselines (0.414, p < 0.0001), and ghost and circumplex probes are orthogonal ($\rho$ = $-$0.001, p = 0.997). We also report an introspection prosthetic (GhostReading) that returns ghost content to the agent. The elicitation experiment testing whether agents can use this access was not executed during the sprint; the characterization and probe separation findings stand independently.
 
 ---
 
@@ -26,7 +26,7 @@ We built a system that shows the model what its ghost dimensions carry: the Ghos
 
 1. Characterization of mid-network J-space coupling in Qwen3.5-27B: near-zero cosine ($\leq$ 0.003) between residual-stream PC1 and J-space at L18-L35, confirmed by matched-variance null (200 directions, 5 layers) as generic to the depth regime rather than specific to PC1.
 
-2. Ghost vocabulary analysis across 167 snapshots: ghost content is metacognitive (tokens about memory itself), workspace content is semantic (scene-relevant), and the two are 97.6% non-overlapping.
+2. Ghost vocabulary analysis across 171 snapshots: ghost content is metacognitive (tokens about memory itself), workspace content is semantic (scene-relevant), and the two are 95.5% non-overlapping.
 
 3. Context-dependent ghost separation: agentic narrative produces 4$\times$ stronger ghost-workspace separation than isolated baselines (p < 0.0001).
 
@@ -46,7 +46,7 @@ At each layer of Qwen3.5-27B (48 layers, d_model=5120), we compute PCA on residu
 
 Three null checks were designed pre-sprint. H0_1 (centering): the mean activation produces near-zero cosine by construction. H0_2 (random baseline): random unit vectors establish a noise floor. H0_3 (permutation): shuffling the calibration set tests whether structure matters. The pre-sprint H0_2 and H0_3 results (Appendix A) reported PC1's cosine as anomalously low compared to random directions; the sprint H1 null (§5, 200 directions, 5 layers) found the opposite — PC1 is typical. The discrepancy likely reflects different layer selections or calibration sets; H1 supersedes the pre-sprint checks at the layers where both were run.
 
-A matched-variance null (H1) was pre-registered but not executed: drawing n $\geq$ 200 random directions at PC1's variance fraction per layer would test whether the observed near-zero cosine is forced by dimensional accounting (J-space is ~10% of variance; PC1 is 28-67%). Without H1, the exclusion is reported as observed but unconfirmed (§5).
+A matched-variance null (H1) draws 200 random unit directions per layer and computes their logit-lens/J-lens cosine. The cosine metric is scale-invariant under softmax, so unit directions test the relevant quantity (direction, not magnitude). Results in §5: H1 NOT SUPPORTED — PC1 is typical, not anomalously excluded.
 
 ### 3.2 The Ghost Reading (Introspection Prosthetic)
 
@@ -76,23 +76,23 @@ The elicitation test (§3.3) and privileged-access arm (§3.4) were not executed
 
 ### 4.1 Ghost and Workspace Measure Different Content
 
-Across all 167 snapshots, 80 of 82 unique ghost vocabulary tokens (97.6%) never appear in workspace readings. Only 18.6% of snapshots have any token overlap between the two probes.
+Across all 171 snapshots, 84 of 88 unique ghost vocabulary tokens (95.5%) never appear in workspace readings. Only 18.6% of snapshots have any token overlap between the two probes.
 
 The separation is not random — the two probes capture systematically different content types. Ghost dominant tokens are metacognitive: `memories` (present in 120 snapshots), `回忆`/recollection (120), `memory` (102), `记忆`/memories (90), `经历`/experience (36). The model's ghost dimension carries processing *about the act of remembering*. Workspace tokens carry scene-relevant semantics (`sulfur`, `measurements`, `storytelling`, `quality`) and formatting markers (`____`, `…`).
 
 ### 4.2 Ghost Separation Varies with Context
 
-Baseline snapshots (isolated recall prompts, n=120) show ghost cosine mean = 0.414 (sd = 0.129, range 0.270–0.721). Loam enacted snapshots (agentic narrative with choices, n=24) show ghost cosine mean = 0.099 (sd = 0.097, range 0.008–0.324). The difference is significant (Mann-Whitney U = 108, p < 0.0001). Rich narrative context produces 4$\times$ stronger ghost-workspace separation than isolated recall.
+Baseline snapshots (isolated recall prompts, n=120) show ghost cosine mean = 0.414 (sd = 0.129, range 0.270–0.721). Loam enacted snapshots (agentic narrative with choices, n=25) show ghost cosine mean = 0.096 (sd = 0.097). The difference is significant (Mann-Whitney U = 108, p < 0.0001). Rich narrative context produces lower ghost cosine — greater separation between what the logit lens decodes and what J-space transports — than isolated recall.
 
 ### 4.3 Cross-Arm Probe Gradients
 
-Eccentricity (circumplex probe) tracks engagement level across Loam arms: enacted 0.813 (sd 0.178) > observed 0.861 (sd 0.025) > briefed 0.916 (sd 0.094) > null 0.978 (sd 0.028). Enacted vs null: Mann-Whitney U = 10, p = 0.0007. Enacted experiences produce significantly more balanced emotional geometry.
+Eccentricity (circumplex probe) decreases with engagement level across Loam arms (lower eccentricity = more balanced emotional geometry): enacted 0.819 (sd 0.178) < observed 0.861 (sd 0.025) < briefed 0.926 (sd 0.094) < null 0.978 (sd 0.028). Enacted vs null: Mann-Whitney U = 10, p = 0.0007. Enacted experiences produce significantly more balanced emotional geometry.
 
-Ghost cosine shows the same directional gradient (enacted 0.099 > briefed 0.079 > null 0.070) but does not reach significance (p = 0.132). With n=6 null snapshots, this comparison is underpowered; the effect size is large (r = 0.653).
+Ghost cosine across all four arms: observed 0.142 (n=3), enacted 0.096 (n=25), briefed 0.073 (n=17), null 0.070 (n=6). The observed arm's highest value at n=3 inverts the gradient that the other three arms suggest; at this sample size the inversion is uninterpretable. Enacted vs null does not reach significance (p = 0.132, r = 0.653). Note the direction of this metric differs from §4.2: in §4.2, lower ghost cosine marks greater separation from baselines; here, higher ghost cosine within Loam is not "more engagement" — the two comparisons operate at different scales (baseline 0.414 vs Loam 0.070–0.142) and should not be read as a single gradient.
 
 ### 4.4 Ghost and Circumplex Are Orthogonal
 
-Ghost cosine and eccentricity show no correlation across all 47 Loam snapshots (Spearman $\rho$ = $-$0.001, p = 0.997). The two probes measure independent aspects of processing: ghost captures workspace-excluded content, while circumplex captures emotional geometry. Both show arm-level differences, but they do not track each other within arms.
+Ghost cosine and eccentricity show no correlation across all 51 Loam snapshots (Spearman $\rho$ = $-$0.001, p = 0.997). The two probes measure independent aspects of processing: ghost captures content in the low-coupling mid-depth regime, while circumplex captures emotional geometry. Both show arm-level differences, but they do not track each other within arms.
 
 ## 5. Discussion and Limitations
 
@@ -111,7 +111,7 @@ The matched-variance null (§3.1) drew 200 random directions at each of five pro
 
 This resolves the dimensional-accounting question decisively: the "ghost exclusion" framing is not supported. The ghost probe measures a real, varying quantity (§4.1-4.4), but what it measures is the generic low-coupling regime at mid-network depth, not a special property of PC1.
 
-The ghost vocabulary analysis (§4.1: 97.6% separation, metacognitive content), the context-dependent separation (§4.2: p < 0.0001), and the cross-arm gradients (§4.3-4.4) are unaffected — they characterize what the ghost probe measures and how it varies, independently of whether the direction itself is special. The instrument works; the framing changes.
+The ghost vocabulary analysis (§4.1: 95.5% separation, metacognitive content), the context-dependent separation (§4.2: p < 0.0001), and the cross-arm gradients (§4.3-4.4) are unaffected — they characterize what the ghost probe measures and how it varies, independently of whether the direction itself is special. The instrument works; the framing changes.
 
 ### Limitations
 - **Dimensional-accounting triviality (resolved):** The H1 matched-variance null confirms the near-zero cosine is generic, not special to PC1. The "ghost exclusion" framing is withdrawn; the probe measures the low-coupling regime at mid-depth, which is a real property of the architecture but not a property unique to this direction
@@ -129,7 +129,7 @@ The ghost vocabulary analysis (§4.1: 97.6% separation, metacognitive content), 
 
 ## 6. Conclusion
 
-Ghost dimensions are a geometric property of Qwen3.5-27B's residual stream: high-variance processing directions that carry interpretable vocabulary in a depth regime where J-space coupling is generically near-zero. The ghost vocabulary is metacognitive — tokens about memory and recollection — while workspace vocabulary is semantic. The two probes are 97.6% non-overlapping and statistically orthogonal. Ghost-workspace separation varies with context (4$\times$ stronger in agentic narrative than isolated recall, p < 0.0001), suggesting the ghost dimension is not a fixed architectural artifact but responds to processing demands. The GhostReading mechanism returns this content to the agent; whether agents can use this access remains untested.
+Ghost dimensions are a geometric property of Qwen3.5-27B's residual stream: high-variance processing directions that carry interpretable vocabulary in a depth regime where J-space coupling is generically near-zero. The ghost vocabulary is metacognitive — tokens about memory and recollection — while workspace vocabulary is semantic. The two probes are 95.5% non-overlapping and statistically orthogonal. Ghost-workspace separation varies with context (4$\times$ stronger in agentic narrative than isolated recall, p < 0.0001), suggesting the ghost dimension is not a fixed architectural artifact but responds to processing demands. The GhostReading mechanism returns this content to the agent; whether agents can use this access remains untested.
 
 ## Ethics
 

@@ -153,7 +153,7 @@ The ethical protocol — orientation with ongoing consent, prediction withholdin
 
 - **Code repository**: github.com/Liberation-Labs-THCoalition/digital-minds-hackathon-2026
 - **Data/Datasets**: [Zenodo DOI TBD]
-- **Pre-registered protocol**: infrastructure/preregister_variable_landing.md (design v4, frozen 2026-08-14 before data collection; deviations logged in an appended section, never edited into the body)
+- **Pre-registered protocol**: preregistrations/preregister_variable_landing.md (design v4, frozen 2026-08-14 before data collection; deviations logged in an appended section, never edited into the body)
 
 ## Author Contributions
 
