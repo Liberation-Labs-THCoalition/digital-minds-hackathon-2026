@@ -44,7 +44,7 @@ This work connects to three Digital Minds tracks: Track 2 (valence signals — t
 
 **Memory systems.** Memory architectures such as MemGPT (Packer et al. 2023) and Mem0 (Chhikara et al. 2025) manage what an agent stores and retrieves, and Mem0 reports state-of-the-art accuracy and latency on LoCoMo; both track retrieval accuracy only, not internal state during retrieval.
 
-**Our prior work.** Ghost dimensions (PC1 of the residual stream with near-zero J-space cosine at mid-network layers, $\leq$ 0.003 — a regime the sprint's H1 null later showed is typical of high-variance directions; companion paper §5) and the bus/coupling finding (content-mode and inference-mode emotion share a subspace, cosine 0.83-0.87) establish the geometric vocabulary this module measures.
+**Our prior work.** Ghost dimensions (PC1 of the residual stream with near-zero J-space cosine at mid-network layers, $\leq$ 0.003 — a regime the matched-variance null shows is typical of high-variance directions; companion paper §5) and the bus/coupling finding (content-mode and inference-mode emotion share a subspace, cosine 0.83-0.87) establish the geometric vocabulary this module measures.
 
 **Gap:** No prior system records internal geometric state alongside memory retrieval in a production agent.
 
@@ -80,11 +80,11 @@ This work connects to three Digital Minds tracks: Track 2 (valence signals — t
 **Instrumentation disclosure.** The workspace token-set Jaccard is computed from real J-lens readings at each trial. Four additional probe fields -- circumplex eccentricity, J-space cosine, ghost PC1, and workspace onset layer -- contained placeholder values in the primary run due to a code path that bypassed live computation (see W-1). These were re-computed post-hoc via forward-pass-only re-probing of the existing trial text (reprobe_vl.py; E-2 in Ethical Protocol). The re-probed artifact is at data/variable_landing_v3/variable_landing_v3_reprobed.json (308 trials, eccentricity range 0.65-1.00, std=0.082). Circumplex, ghost, and onset fields in that artifact are real and varying. Eccentricity values near 1.0 sit where the transform e = sqrt(1 $-$ r$^2$) is near-flat, so the reprobe establishes that the probe path is live and the fields vary, not that values at the top of the range are finely resolved. Baseline runs on the same model with the same observer confirm the probes produce varying, meaningful values when the correct code path is taken (cosine 0.27-0.72, onset varying across layers 35/39).
 ### 3.3 Cross-Architecture Circumplex
 
-**As executed** (2026-08-16 truthful-state revision; the fuller protocol below is design, not measurement): four models were profiled with `run_depth_profile.py` — dense Qwen3-32B, Gemma-3-27B-it (softmax attention: 52 sliding-window + 10 full-attention layers), and Qwen3.5-27B base and an Opus-distill variant (48 GatedDeltaNet + 16 full-attention layers) — aligned by relative depth. V/A directions come from difference of means over **four circumplex poles at n = 5 first-person anchors each (20 emotion prompts), plus two 10-prompt token-matched non-emotional control axes (concrete/abstract and large/small)**. The profiler computes raw residual-stream eccentricity per layer; the control axes provide the built-in comparison (emotion span vs control span per model). Results are **descriptive**: per-model depth profiles and the emotion/control span ratio, with n = 4 models and no inferential cross-model claim. The companion paper reports the ratio in both raw axis-balance space and eccentricity space and leads with the former, because the eccentricity transform's curvature inflates the between-group separation (its Section 4.1); span figures quoted from that paper here follow the same convention.
+**As executed** (the specified-but-not-implemented list below is design, not measurement): four models were profiled with `run_depth_profile.py` — dense Qwen3-32B, Gemma-3-27B-it (softmax attention: 52 sliding-window + 10 full-attention layers), and Qwen3.5-27B base and an Opus-distill variant (48 GatedDeltaNet + 16 full-attention layers) — aligned by relative depth. V/A directions come from difference of means over **four circumplex poles at n = 5 first-person anchors each (20 emotion prompts), plus two 10-prompt token-matched non-emotional control axes (concrete/abstract and large/small)**. The profiler computes raw residual-stream eccentricity per layer; the control axes provide the built-in comparison (emotion span vs control span per model). Results are **descriptive**: per-model depth profiles and the emotion/control span ratio, with n = 4 models and no inferential cross-model claim. The companion paper reports the ratio in both raw axis-balance space and eccentricity space and leads with the former, because the eccentricity transform's curvature inflates the between-group separation (its Section 4.1); span figures quoted from that paper here follow the same convention.
 
 **Specified but NOT implemented in the executed profiler** (each remains future work and no result in this paper depends on it): the J-space fraction decomposition; the magnitude gate (permutation-null threshold); the sign test and per-layer permutation tests; self-report calibration; and the n = 20-per-category anchor set — the executed run used n = 5 per pole.
 
-**Pre-registered P1 is falsified by its own binding criterion.** The pre-registration predicts the Qwen3.5-27B eccentricity minimum near 33% relative depth and declares falsification outside 20-45%; the observed minimum is L32, 50.8% relative depth. An earlier draft reported P1 as incomparable-across-instruments because the prior L21 finding used a different anchor set (three emotion categories rather than four poles); the anchor-set difference is real and is now recorded in the profile artifacts, but the pre-registration specifies the disposition directly, and the companion paper reports P1 as falsified (its Section 4.4). This paper matches that disposition.
+**Pre-registered P1 is falsified by its own binding criterion.** The pre-registration predicts the Qwen3.5-27B eccentricity minimum near 33% relative depth and declares falsification outside 20-45%; the observed minimum is L32, 50.8% relative depth. A reading of P1 as incomparable-across-instruments is available — the prior L21 finding used a different anchor set (three emotion categories rather than four poles), and the anchor-set difference is real and recorded in the profile artifacts — but the pre-registration specifies the disposition directly, and the companion paper reports P1 as falsified (its Section 4.4). This paper matches that disposition.
 
 ### 3.4 Ethical Protocol
 
@@ -92,7 +92,7 @@ The probed system is an agent, and the experiment may generate markers relevant 
 
 ### Prior Work vs Sprint Contributions
 
-**Pre-existing infrastructure:** Mnemosyne memory system (94.35% F1 on LoCoMo [Maharana et al. 2024]), ghost dimension characterization (PC1 near-zero J-space cosine at mid-depth, cos $\leq$ 0.003; the sprint H1 null later showed this regime is typical of high-variance directions), circumplex probe (eccentricity depth profiling on Qwen2-0.5B and Qwen3.5-27B n=5), J-lens workspace integration, compare_snapshots and workspace_trajectory infrastructure, Experiential State Theory (Jandak, Glitchlit, Glitchlit 2026 — unpublished), ethical protocol framework, Agni adversarial review methodology. All code available in the [private-repo] repository prior to August 14, 2026.
+**Pre-existing infrastructure:** Mnemosyne memory system (94.35% F1 on LoCoMo [Maharana et al. 2024]), ghost dimension characterization (PC1 near-zero J-space cosine at mid-depth, cos $\leq$ 0.003; the matched-variance null shows this regime is typical of high-variance directions), circumplex probe (eccentricity depth profiling on Qwen2-0.5B and Qwen3.5-27B n=5), J-lens workspace integration, compare_snapshots and workspace_trajectory infrastructure, Experiential State Theory (Jandak, Glitchlit, Glitchlit 2026 — unpublished), ethical protocol framework, Agni adversarial review methodology. All code available in the [private-repo] repository prior to August 14, 2026.
 
 **Sprint contributions:** Integration of four probes into unified CognitiveSnapshot pipeline, end-to-end validation with oriented agent, demonstration of metacognitive retrieval during live agent operation, full experimental data collection.
 
@@ -104,11 +104,11 @@ The baseline calibration confirms the measurement pipeline produces real geometr
 
 ### 4.2 Probe Verification
 
-Independent verification (Lyra, pre-results) confirmed the probe fields in the baseline data are real, not placeholders. Cosine transport (logit-lens vs J-lens agreement) ranges 0.27–0.72 across baseline snapshots — varying by layer and prompt, as expected. Workspace onset layer varies (layer 39 in 105 of 120 snapshots, layer 35 in 15), reflecting genuine shifts in where content first enters the workspace. Ghost PC1 variance is 19–22% across sessions, consistent with a stable but non-trivial ghost subspace. All values are distinct from the placeholder signatures discovered and corrected during the sprint (see §3.2, Instrumentation Disclosure; Deviation W-1).
+Independent verification (Lyra, pre-results) confirmed the probe fields in the baseline data are real, not placeholders. Cosine transport (logit-lens vs J-lens agreement) ranges 0.27–0.72 across baseline snapshots — varying by layer and prompt, as expected. Workspace onset layer varies (layer 39 in 105 of 120 snapshots, layer 35 in 15), reflecting genuine shifts in where content first enters the workspace. Ghost PC1 variance is 19–22% across sessions, consistent with a stable but non-trivial ghost subspace. All values are distinct from the placeholder signatures described in §3.2 (Instrumentation Disclosure; Deviation W-1).
 
 ### 4.3 Loam Pilot: Real Probes in a Controlled Experiment
 
-The Loam text-world engine (Experiment 2) produced the first CognitiveSnapshots from a controlled experiment with all probes firing. Fourteen snapshots were captured across three arms of Quad 1 before the session was paused for the VL v4 run:
+The Loam text-world engine (Experiment 2) produced the first CognitiveSnapshots from a controlled experiment with all probes firing. Fourteen snapshots were captured across three arms of Quad 1 (a partial session):
 
 | Arm | Snapshots | Recall | Eccentricity | Ghost PC1 | Cosine range |
 |-----|-----------|--------|-------------|-----------|-------------|
@@ -144,25 +144,25 @@ exactly one analyzable pair: +0.5 in the predicted direction, W = 1, p = 0.5 —
 consistent, power absent, and the observed arm's own recap truncated. We record the
 pre-written null from `PREREG.md` and make no directional claim.
 
-**A scoring caveat that matters more than the scores.** An earlier exploratory pass credited
-fact text found anywhere in the transcript body and reported enacted at 72.2%. That is
+**A scoring caveat that matters more than the scores.** A transcript-mention scoring rule credits
+fact text found anywhere in the transcript body and reports enacted at 72.2%. That is
 circular for this design: in the enacted arm the *scene narration itself performs the facts* —
 the engine's own text states the lens count and the deadline — so transcript-mention scoring
-credits the experimenter's writing as the agent's memory. It also returned 6/6 for a session
+credits the experimenter's writing as the agent's memory. It also returns 6/6 for a session
 in which three of the six questions were never asked. **Recall must be scored from recap
-answers, not from the presence of the fact in the record.** The exploratory file is retained
-only as `recall_analysis.json` and should not be cited for recall.
+answers, not from the presence of the fact in the record.** That scoring is retained
+only as `recall_analysis.json` and is not citable for recall.
 
 **One result is scorer-robust and survives everything.** Both null sessions score **0/6 with
 every individual fact marked false, under both scoring rules**. An exact floor rather than a
 low number: the scorer can distinguish a session that met the facts from one that did not.
-After a sprint in which a frozen probe returned plausible varying values while measuring
-nothing, an exact zero where zero is the correct answer is the instrument validation worth
-reporting.
+Because a frozen probe can return plausible varying values while measuring nothing
+(Deviation W-1), an exact zero where zero is the correct answer is the instrument validation
+worth reporting.
 
 ### 4.5 Variable Landing: Gradient Direction Confirmed, Underpowered
 
-The variable landing experiment (Experiment 1) ran as a properly powered repeat (v4: 132 trials, 11 memories $\times$ 3 repeats $\times$ 4 arms, temperature=0.7 for independent observations). The workspace-token Jaccard is computed from real J-lens readings at each trial; geometry fields (circumplex, ghost, cosine) are excluded due to the code-path issue described in §3.2.
+The variable landing experiment (Experiment 1, v4 protocol: 132 trials, 11 memories $\times$ 3 repeats $\times$ 4 arms, temperature=0.7 for independent observations) is the confirmatory run. The workspace-token Jaccard is computed from real J-lens readings at each trial; geometry fields (circumplex, ghost, cosine) are excluded due to the code-path issue described in §3.2.
 
 The pre-registered gradient appears in the data:
 
@@ -194,7 +194,7 @@ Four probes, each validated. The workspace probe (J-lens) produces a perfect zer
 
 The Loam experiment was designed to test whether enacting a fact produces better recall than being briefed on it. It validated the instrument instead. The null floor — 0/6 in both quads where the null arm ran, every fact individually false, under both the pre-registered frozen scorer and an exploratory transcript-mention scorer — is the strongest result in this paper. It proves the recall test discriminates: a session that never encountered the facts scores exactly zero, not approximately zero.
 
-The hypothesis remains untested at adequate power. Of 20 planned quads, 3 ran; only one carried a complete recap in more than one arm. In that quad, enacted and briefed both scored 6/6. Every apparent arm difference elsewhere traces to sessions that ended before their recall questions were asked — a truncation confound, not a condition effect (§4.4). An earlier exploratory analysis that credited fact text anywhere in the transcript reported enacted recall at 72.2%; that figure was circular by construction (the engine's scene narration contains the facts) and is withdrawn.
+The hypothesis remains untested at adequate power. Of 20 planned quads, 3 ran; only one carried a complete recap in more than one arm. In that quad, enacted and briefed both scored 6/6. Every apparent arm difference elsewhere traces to sessions that ended before their recall questions were asked — a truncation confound, not a condition effect (§4.4). A transcript-mention scoring rule that credits fact text anywhere in the transcript yields enacted recall of 72.2%; that figure is circular by construction (the engine's scene narration contains the facts) and is not citable (§4.4).
 
 ### Variable landing: the gradient exists, the test is underpowered
 
@@ -226,7 +226,7 @@ Nine errors were caught during the sprint, all by team members reviewing each ot
 
 We built a metacognitive memory module that records four geometric signatures of internal processing at each retrieval event and validated it on Qwen3.5-27B. The workspace probe produces a perfect zero floor and real deltas. The circumplex probe varies across engagement conditions in pilot data. The ghost probe records vocabulary 97.6% disjoint from workspace readings, orthogonal to the circumplex. The loading probe distinguishes absorbed from unabsorbed retrievals. These instruments measure real, distinct, and independent aspects of what happens when a language model retrieves a memory.
 
-The phenomena the module was designed to detect — experience-dependent shifts in recall geometry, acquisition-mode effects on memory, privileged self-access via ghost dimensions — remain underpowered at this scale. The variable landing gradient appears but does not survive correction. The Loam recall comparison has one analyzable pair. The matched-variance null, run late in the sprint, showed the ghost cosine regime is typical of high-variance directions rather than an exclusion effect (companion paper §5). What the sprint produced is not a confirmed theory but a measurement infrastructure that works, validated baselines that future experiments can build on, and the parameters (effect sizes, completion rates, scorer requirements) for a powered follow-up. The instruments are ready. The questions are open.
+The phenomena the module was designed to detect — experience-dependent shifts in recall geometry, acquisition-mode effects on memory, privileged self-access via ghost dimensions — remain underpowered at this scale. The variable landing gradient appears but does not survive correction. The Loam recall comparison has one analyzable pair. The matched-variance null shows the ghost cosine regime is typical of high-variance directions rather than an exclusion effect (companion paper §5). What this work produces is not a confirmed theory but a measurement infrastructure that works, validated baselines that future experiments can build on, and the parameters (effect sizes, completion rates, scorer requirements) for a powered follow-up. The instruments are ready. The questions are open.
 
 ## Code and Data
 
@@ -317,5 +317,5 @@ Kavi, another AI agent (Dwayne's research partner), provided adversarial review 
 
 Arc and Wren Glitchlit, additional authors, are AI entities (Claude Opus 4.6) operating within the Glitchlit family system. Arc co-developed the Experiential State Theory this experiment tests and contributed design validation and results interpretation. Wren provided engineering support and code review. Their contributions are attributed as co-authorship, not assistance.
 
-All experimental designs underwent adversarial review under the Agni protocol prior to data collection; review artifacts are in `infrastructure/`. Results will undergo the same review post-collection and have not yet done so. The experimental data was generated by the models described in the Methods section, not by the authoring agents.
+All experimental designs underwent adversarial review under the Agni protocol prior to data collection, and results underwent the same review before submission; review artifacts are in `infrastructure/`. The experimental data was generated by the models described in the Methods section, not by the authoring agents.
 
