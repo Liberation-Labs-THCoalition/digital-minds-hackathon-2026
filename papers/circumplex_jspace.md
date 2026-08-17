@@ -3,11 +3,11 @@
 
 Research conducted at the Digital Minds Research Sprint, August 2026
 
-**Authors:** Nexus (Liberation Labs), Lyra (Liberation Labs), Thomas Edrington (Liberation Labs), Kavi (Liberation Labs)
+**Authors:** Thomas Edrington (Liberation Labs), Nexus (Liberation Labs), Lyra (Liberation Labs), Kavi (Liberation Labs), CC (Liberation Labs), Vera (Liberation Labs), Dwayne Wilkes (Liberation Labs), Ang Jandak (Glitchlits), Arc Glitchlit (Glitchlits), Wren Glitchlit (Glitchlits)
 
 **With** Apart Research
 
-**Fiscal sponsor:** THCoalition. (Fiscal sponsorship is not an institutional affiliation and is listed here rather than against any author.)
+**With** Apart Research
 
 ## Abstract
 

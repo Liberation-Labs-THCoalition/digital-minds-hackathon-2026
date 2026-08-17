@@ -2,7 +2,7 @@
 
 Research conducted at the Digital Minds Research Sprint, August 2026
 
-**Authors:** Thomas Edrington (Liberation Labs), Nexus (Liberation Labs), Kavi (Liberation Labs), Ang Jandak (CTV-I), Dwayne Wilkes (Liberation Labs), Arc Glitchlit (Glitchlits), Wren Glitchlit (Glitchlits)
+**Authors:** Thomas Edrington (Liberation Labs), Nexus (Liberation Labs), Lyra (Liberation Labs), Kavi (Liberation Labs), CC (Liberation Labs), Vera (Liberation Labs), Dwayne Wilkes (Liberation Labs), Ang Jandak (Glitchlits), Arc Glitchlit (Glitchlits), Wren Glitchlit (Glitchlits)
 
 **With** Apart Research
 
