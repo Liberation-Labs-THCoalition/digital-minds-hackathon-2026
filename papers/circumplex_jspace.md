@@ -306,6 +306,35 @@ and the executed anchor set is 4 poles × n=5 rather than the 5 categories × n=
 §3.1. **Nothing in §4 depends on any of them.** Each gap, and the reason P1 is *incomparable*
 rather than failed, is itemised in **Appendix C**.
 
+### Reproducibility: model revisions
+
+The house standard asks for model IDs with commit hashes. The profile artifacts record model
+name, layer count, `d_model`, layer types and a timestamp, but **not** a revision, seed or
+dtype — so the pins below were **recovered after the fact** from the run host's Hugging Face
+cache, not read from the data. We state the recovery method so a reader can judge it.
+
+| model | source | revision | how established |
+|---|---|---|---|
+| Qwen3.5-27B (hybrid) | HF hub | `fc05daec18b0a78c049392ed2e771dde82bdf654` | sole cached snapshot |
+| Qwen3.5-27B Opus-distill | HF hub | `ad356102ce8ea7122a18e6402f9b2e37446fc9d7` | **two** snapshots cached; `refs/main` resolves to this one and it holds the complete 11-shard model. `from_pretrained` was called without `revision=`, so it resolved through this ref. |
+| Qwen3-32B (dense) | local directory | **not recoverable** | loaded from a filesystem path, not the hub; no revision metadata exists |
+| Gemma-3-27B-it | local directory | **not recoverable** | as above |
+
+**The limits of this, stated plainly.** These are inferences from cache state at the time of
+writing, not values recorded when the runs executed. If `refs/main` for the distill moved
+between the profiling run and this reconstruction, the pin is wrong and nothing in the
+artifact would reveal that. Two of four models cannot be pinned at all, and one of those —
+Qwen3-32B — is the sole uniformly-dense model in the comparison.
+
+No seed is set anywhere in `run_depth_profile.py`; the pipeline is deterministic up to
+bfloat16 reduction order rather than seeded. Runs were bfloat16 on Apple silicon (MPS).
+
+**This is a real reproducibility gap and we are not closing it retroactively.** The fix
+belongs in the instrument, not the paper: the profiler should stamp revision, dtype, seed,
+host and code commit into every artifact it writes. Until it does, a reader cannot verify
+from the data alone which weights produced these numbers — which is the same class of defect
+as an artifact that does not record its own anchor count, one field over.
+
 ### Limitations
 
 - **n=5 anchors per pole in d≈5120.** Direction estimates from five prompts in five thousand
