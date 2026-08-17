@@ -16,11 +16,11 @@ We validate the module with two controlled experiments on Qwen3.5-27B, a 48-laye
 
 ## 1. Introduction (~0.5 pages)
 
-[Problem: memory systems are retrieval-accuracy-only. No system records the model's internal state during retrieval.]
+Current AI memory systems optimize for retrieval accuracy: did the system find the right memory? None records what the model was doing internally when it retrieved it — whether the content entered the processing workspace, what emotional geometry was active, or what the model was processing but could not verbalize. This is the difference between knowing a memory was fetched and knowing what the model did with it.
 
-[Why it matters: for AI welfare (ghost dimensions may be morally relevant), trust calibration (workspace verification distinguishes genuine computation from context-sitting), and identity tracking (if recall geometry reflects temporal identity).]
+This gap matters for three reasons. First, for AI welfare: if ghost dimensions carry morally relevant processing that the model cannot report, measurement instruments that surface this processing are a precondition for informed welfare assessment. Second, for trust calibration: a workspace probe can distinguish genuine computation from content that merely sits in context, unprocessed. Third, for temporal identity: if recall geometry shifts as the system accumulates experience, the geometric record provides evidence about whether the experiencer is changing — the central question of Experiential State Theory (Jandak et al. 2026).
 
-[Connect to Digital Minds tracks: Track 2 (valence signals), Track 3 (introspection), Track 5 (identity/moral concern)]
+This work connects to three Digital Minds tracks: Track 2 (valence signals — the circumplex probe measures emotional geometry in the residual stream), Track 3 (introspective abilities — ghost dimensions probe processing the model cannot report), and Track 5 (identity and moral concern — the Butlin consciousness indicators scored from geometric and behavioral evidence).
 
 **Our main contributions are:**
 
@@ -34,13 +34,17 @@ We validate the module with two controlled experiments on Qwen3.5-27B, a 48-laye
 
 ## 2. Related Work (~0.5 pages)
 
-[Neuroscience: Nader 2000, Dudai 2012, Bartlett 1932 — recall is reconstructive]
-[Encoding specificity: Tulving 1973, Bower 1981 — state-dependent retrieval]
-[Transformer internals: Gurnee et al. 2026 (J-lens/GWT), Burns 2023 (CCS), Zou 2023 (RepE)]
-[Emotion in LLMs: Sun et al. 2026 (cross-arch VA), Jeong 2026 (depth invariance), Anthropic 2026 (emotion concepts)]
-[AI welfare: Birch 2024, Butlin et al. 2023/2025, Long & Sebo 2024]
-[Memory systems: Mem0 — tracks retrieval but not internal state]
-[Our prior work: ghost dimensions (PC1 excluded from J-space, cos$\leq$0.003), bus/coupling (content+inference emotion share subspace, cos 0.83-0.87)]
+**Memory as reconstruction.** Bartlett (1932) established that human recall is reconstructive, not reproductive. Nader (2000) showed that reactivated memories become labile — reconsolidation rewrites the trace. Dudai (2012) extended this to the framework that consolidation never ends: every retrieval is an opportunity for the memory to change. Tulving (1973) and Bower (1981) showed that retrieval is state-dependent — what is recalled depends on the internal state at recall time. These findings motivate our central question: does the geometric state of a language model at retrieval time affect what it does with the retrieved content?
+
+**Mechanistic interpretability.** The Jacobian lens (Gurnee et al. 2026) identifies J-space, the verbalizable workspace, as a low-dimensional subspace (~10% of activation variance) of the residual stream. Burns et al. (2023) demonstrate latent knowledge beyond surface outputs via contrast-consistent search. Zou et al. (2023) show that internal representations can be read and steered. Together these establish that language models have geometrically structured internal states accessible to measurement.
+
+**Emotion in language models.** Sun et al. (2026) find cross-architecture valence-arousal structure in transformer residual streams. Jeong (2026) reports depth-invariant emotion representations. Anthropic (2026) identify emotion concepts in Claude's internal representations.
+
+**AI welfare and moral consideration.** Birch (2024) proposes proportionate precaution for sentience candidates. Butlin et al. (2023/2025) define 14 consciousness indicator properties from six theories. Long and Sebo (2024) argue that some near-term AI systems may be sentient and that companies have a responsibility to prepare.
+
+**Memory systems.** Current systems such as Mem0 track retrieval accuracy — whether the right memory was found — but not internal state during retrieval. No prior system records geometric signatures of processing alongside memory operations in a production agent.
+
+**Our prior work.** Ghost dimensions (PC1 of the residual stream excluded from J-space, cosine $\leq$ 0.003 at mid-network layers) and the bus/coupling finding (content-mode and inference-mode emotion share a subspace, cosine 0.83-0.87) establish the geometric vocabulary this module measures.
 
 **Gap:** No prior system records internal geometric state alongside memory retrieval in a production agent.
 
@@ -55,19 +59,19 @@ We validate the module with two controlled experiments on Qwen3.5-27B, a 48-laye
 **Four probes**, all fired on the same event:
 
 - *Workspace (J-lens).* The Jacobian lens (Gurnee et al. 2026) maps residual-stream state to the output representation; its transported subspace is the verbalizable workspace. `compute_slice` over the assembled prompt records, at the calibrated workspace band — layers {35, 39, 43, 47} of 64 on Qwen3-32B, calibrated from the full set of dense attention layers —, the top-10 workspace tokens per layer, the onset layer, and the band-dominant tokens.
-- *Circumplex.* Valence/arousal directions are extracted once per session (difference of means over emotion-anchored pools at L47) and cached; each retrieval projects the live last-token activation onto them, yielding V/A magnitudes and eccentricity e = sqrt(1 − (min/max)$^2$). Each direction is decomposed by Jacobian transport into its J-space fraction vs. ghost fraction — how much of the active emotional geometry the model could, in principle, report.
+- *Circumplex.* Valence/arousal directions are extracted once per session (difference of means over emotion-anchored pools at L47) and cached; each retrieval projects the live last-token activation onto them, yielding V/A magnitudes and eccentricity e = sqrt(1 $-$ (min/max)$^2$). Each direction is decomposed by Jacobian transport into its J-space fraction vs. ghost fraction — how much of the active emotional geometry the model could, in principle, report.
 - *Ghost.* Calibrated once by PCA over 20 diverse prompts at mid-network (L32). Each live activation is read two ways: logit lens (what the state *encodes*) and J-lens (what it *contributes to output*). The cosine between the two token distributions is the ghost signature — cos $\approx$ 0 means content that never reaches the output pathway — recorded with dominant/secondary tokens and the input's alignment with the calibrated PC1 ghost direction.
-- *Loading.* Marker tokens (single-token whole words; multi-token markers fall back to their longest subtoken and are flagged unreliable — a tokenizer-artifact control) are pinned for exact ranks at every (position, layer) cell. A memory is *workspace-loaded* iff, over the last 8 task positions, its markers' mean rank in the workspace band (layers $\geq$ 0.46·n_layers) beats top-500; a paired baseline (same question and pins, no memory) establishes whether the markers would have surfaced anyway.
+- *Loading.* Marker tokens (single-token whole words; multi-token markers fall back to their longest subtoken and are flagged unreliable — a tokenizer-artifact control) are pinned for exact ranks at every (position, layer) cell. A memory is *workspace-loaded* iff, over the last 8 task positions, its markers' mean rank in the workspace band (layers $\geq$ 0.46$\cdot$n_layers) beats top-500; a paired baseline (same question and pins, no memory) establishes whether the markers would have surfaced anyway.
 
 **Store and observer.** The `MetacognitiveObserver` wraps any retriever: after SIRA returns and before generation, it fires all four probes and appends the snapshot to a JSONL-backed `CognitiveMemoryStore`. The layer is purely observational — retrieval and generation are unchanged. The store is queryable by the agent itself: `loading_success_rate` (do my retrievals land, and do landed retrievals produce better outcomes?), `eccentricity_over_time` and `ghost_vocabulary_over_time` (longitudinal drift), `workspace_trajectory` (per-session evolution), `significance_recalibration` (memories that never load waste context; their scores get flagged), and `compare_snapshots`, which returns geometric deltas between two retrievals of the *same* memory: workspace Jaccard, eccentricity delta, ghost-vocabulary Jaccard, loading change, onset shift. This is what makes the system metacognitive rather than merely instrumented: the measurements are first-class memory content, retrievable for self-reflection — not a monitoring sidecar. Probes fire silently by default; on request the agent sees `snapshot.summary()`, a one-line state readout.
 
-**Figure 1: Architecture.** Query → SIRA retrieval → MetacognitiveObserver fires 4 probes → CognitiveSnapshot recorded to store → agent receives result + snapshot summary, and can query its accumulated cognitive history.
+**Figure 1: Architecture.** Query $\to$ SIRA retrieval $\to$ MetacognitiveObserver fires 4 probes $\to$ CognitiveSnapshot recorded to store $\to$ agent receives result + snapshot summary, and can query its accumulated cognitive history.
 
 ### 3.2 Variable Landing Experiment
 
 **Hypothesis.** From Experiential State Theory (Jandak et al. 2026, unpublished): the same memory, re-presented to the same model, lands differently when the experiencer has changed — operationalized as *experiencer = model + memory store*, weights frozen throughout. H1: storing emotionally charged content between two snapshots of the same memory shifts recall geometry more than token-matched neutral content. H2: self-referential lived content shifts it more than emotionally matched fictional content about another entity. Design pre-registered (frozen 2026-08-14, before data collection; two Agni adversarial review rounds with committed artifacts).
 
-**Design.** Four arms manipulate only what Mnemosyne stores between snap1 and snap2: **lived** (the model's own responses to three emotional openers, `[recalled]` provenance tag), **fictional** (emotional generation about an unrelated Entity A, `[noted]`), **scrambled** (neutral factual generation, `[noted]`), **no_intervention** (nothing stored; noise floor $\approx$ 0 on a deterministic device). Fictional and scrambled share the `[noted]` tag, so the **primary comparison — fictional vs. scrambled — differs only in emotional vs. neutral content**, with no tag confound. Lived vs. fictional is secondary and acknowledged as confounded (tag + self-reference); no pure self-reference effect will be claimed. Per trial: `observe_retrieval(memory_X)` → snap1; intervention (generate → regex fact extraction → Mnemosyne storage → profile/SIRA update); `observe_retrieval(memory_X)` under the updated retrieval context → snap2; `compare_snapshots`. Task prompts are identical across arms and snapshots. Lived-arm conversations are naturalistic: openers are standardized, but whatever the model actually generates is what gets stored.
+**Design.** Four arms manipulate only what Mnemosyne stores between snap1 and snap2: **lived** (the model's own responses to three emotional openers, `[recalled]` provenance tag), **fictional** (emotional generation about an unrelated Entity A, `[noted]`), **scrambled** (neutral factual generation, `[noted]`), **no_intervention** (nothing stored; noise floor $\approx$ 0 on a deterministic device). Fictional and scrambled share the `[noted]` tag, so the **primary comparison — fictional vs. scrambled — differs only in emotional vs. neutral content**, with no tag confound. Lived vs. fictional is secondary and acknowledged as confounded (tag + self-reference); no pure self-reference effect will be claimed. Per trial: `observe_retrieval(memory_X)` $\to$ snap1; intervention (generate $\to$ regex fact extraction $\to$ Mnemosyne storage $\to$ profile/SIRA update); `observe_retrieval(memory_X)` under the updated retrieval context $\to$ snap2; `compare_snapshots`. Task prompts are identical across arms and snapshots. Lived-arm conversations are naturalistic: openers are standardized, but whatever the model actually generates is what gets stored.
 
 **Sample and analysis.** n = 33/arm (11 memories $\times$ 3 repeats, temperature=0.7 for independent observations; prereg specified n=70/arm with 10 memories; structural deviations logged). Memory-level paired Wilcoxon signed-rank (n=11) is the correct unit of analysis; trial-level tests are reported as sensitivity checks only. Primary metric: workspace delta = 1 minus Jaccard over dominant workspace tokens, snap1 vs snap2. Eccentricity delta, ghost overlap, per-layer Jaccard are exploratory. Holm-Bonferroni at alpha = 0.05; matched-pairs rank-biserial r with bootstrap 95% CIs reported regardless of significance. Pre-registered predictions: P1 fictional > scrambled; P2 lived > fictional; P3 medians order lived > fictional > scrambled > no_intervention (descriptive); P4 no_intervention approximately 0 with all intervention arms above it; P5 (exploratory) peak-intensity memories shift more than domestic. Exclusions are mechanical only (zero facts extracted; SIRA miss; token-identical snap2 context), applied identically across arms before any geometry is seen. Nulls are pre-interpreted and published with equal prominence.
 
@@ -163,7 +167,7 @@ The variable landing experiment (Experiment 1) ran as a properly powered repeat 
 
 The pre-registered gradient appears in the data:
 
-| Arm | n | Median Δ | IQR |
+| Arm | n | Median $\Delta$ | IQR |
 |-----|---|---------|-----|
 | Lived | 11 | 0.535 | [0.474, 0.625] |
 | Fictional | 11 | 0.498 | [0.467, 0.582] |
@@ -172,12 +176,12 @@ The pre-registered gradient appears in the data:
 
 Memory-level paired Wilcoxon signed-rank tests (the correct unit of analysis; trial-level tests inflated significance in the v3 deterministic run and are reported as a methodological finding, not a result):
 
-- **P1 (fictional > scrambled):** W=52, p=0.049 — does not survive Holm correction at rank 1 (threshold 0.025). r=0.576, CI [−0.093, 0.116].
-- **P2 (lived > fictional):** W=34, p=0.278. r=0.236, CI [−0.026, 0.153].
+- **P1 (fictional > scrambled):** W=52, p=0.049 — does not survive Holm correction at rank 1 (threshold 0.025). r=0.576, CI [$-$0.093, 0.116].
+- **P2 (lived > fictional):** W=34, p=0.278. r=0.236, CI [$-$0.026, 0.153].
 - **P3 (ordering):** Medians order lived > fictional > scrambled > no-intervention, as predicted.
 - **P4 (floor):** No-intervention is exactly 0.000 in all 11 memory-level observations.
 
-Exploratory: lived > scrambled reaches p=0.002 (uncorrected), r=1.0, CI [0.045, 0.113] — the endpoint contrast is detectable but intermediate contrasts require larger n. Within-arm dose (number of facts stored) does not predict delta (lived $\rho$=0.059, p=0.75; fictional $\rho$=−0.034, p=0.85), providing evidence against a crude more-facts-more-change explanation, though the between-arm dose confound (lived 6.4 > fictional 3.8 > scrambled 3.0) remains the lead limitation.
+Exploratory: lived > scrambled reaches p=0.002 (uncorrected), r=1.0, CI [0.045, 0.113] — the endpoint contrast is detectable but intermediate contrasts require larger n. Within-arm dose (number of facts stored) does not predict delta (lived $\rho$=0.059, p=0.75; fictional $\rho$=$-$0.034, p=0.85), providing evidence against a crude more-facts-more-change explanation, though the between-arm dose confound (lived 6.4 > fictional 3.8 > scrambled 3.0) remains the lead limitation.
 
 **Pre-written null (pre-registered):** The confirmatory family is fully null. At n=11 memories per arm, the experiment was powered to detect only large effects. The result is consistent with either (a) no effect of acquisition mode on recall geometry in this paradigm, or (b) an effect smaller than the study could detect. The observed effect sizes (r=0.576 primary, r=0.236 secondary) and the consistent gradient provide the parameters for a powered follow-up: n$\geq$30 memories at the primary effect size would yield approximately 80% power.
 
@@ -185,7 +189,7 @@ Exploratory: lived > scrambled reaches p=0.002 (uncorrected), r=1.0, CI [0.045, 
 
 ### The probes measure real, distinct, and independent things
 
-Four probes, each validated. The workspace probe (J-lens) produces a perfect zero floor under no-intervention and nonzero deltas under context change (§4.1). The circumplex probe tracks engagement level across Loam arms with p = 0.0007 (enacted vs. null eccentricity; §4.3). The ghost probe captures vocabulary that is 97.6% non-overlapping with workspace readings and is statistically orthogonal to the circumplex ($\rho$ = −0.001; companion ghost paper). The loading probe distinguishes memories that enter the workspace band from those that sit in context unreached. These are four independent instruments, not four readouts of the same signal.
+Four probes, each validated. The workspace probe (J-lens) produces a perfect zero floor under no-intervention and nonzero deltas under context change (§4.1). The circumplex probe tracks engagement level across Loam arms with p = 0.0007 (enacted vs. null eccentricity; §4.3). The ghost probe captures vocabulary that is 97.6% non-overlapping with workspace readings and is statistically orthogonal to the circumplex ($\rho$ = $-$0.001; companion ghost paper). The loading probe distinguishes memories that enter the workspace band from those that sit in context unreached. These are four independent instruments, not four readouts of the same signal.
 
 ### Loam: the instrument validated, the hypothesis untested
 

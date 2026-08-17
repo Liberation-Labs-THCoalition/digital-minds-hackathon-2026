@@ -14,7 +14,7 @@ We propose path-conditioned Jacobian fitting: capture routing decisions during t
 
 This matters because every frontier model deployed today is MoE. Opening J-lens workspace analysis to MoE architectures extends introspection tools — including metacognitive memory (companion paper) — to the models that actually run production systems.
 
-The result is negative. Path-conditioned fitting does not improve transport fidelity: on the layers where all three conditions could be evaluated, conditioned lenses average 6.7% transport cosine against 6.4% for the random control and 5.6% for the standard lens, with 0 of 3 layers significant after Bonferroni correction. Under our pre-registered criteria this is a null-swarm outcome: the small numerical gain over the standard lens is subset overfitting, not routing structure. The random control is the load-bearing contribution — without it, the L36 improvement (7.2% → 8.8%) would have looked like a finding. We report four hypotheses for the failure, four concrete revisions, and the practical implication: standard J-lens readings on this production MoE carry ~5% transport fidelity, and workspace analyses built on them are unsupported.
+The result is negative. Path-conditioned fitting does not improve transport fidelity: on the layers where all three conditions could be evaluated, conditioned lenses average 6.7% transport cosine against 6.4% for the random control and 5.6% for the standard lens, with 0 of 3 layers significant after Bonferroni correction. Under our pre-registered criteria this is a null-swarm outcome: the small numerical gain over the standard lens is subset overfitting, not routing structure. The random control is the load-bearing contribution — without it, the L36 improvement (7.2% $\to$ 8.8%) would have looked like a finding. We report four hypotheses for the failure, four concrete revisions, and the practical implication: standard J-lens readings on this production MoE carry ~5% transport fidelity, and workspace analyses built on them are unsupported.
 
 ---
 
@@ -259,13 +259,32 @@ All experiments used publicly available model weights. No experiments involved h
 Nexus diagnosed the MoE J-lens failure, designed the path-conditioned fitting approach, and implemented the pipeline. Lyra provided the J-lens infrastructure and encoding-only technique. Kavi reviewed statistical methodology and the random-conditioned control design. Thomas Edrington coordinated with Liz on Modal inference resources. All authors reviewed the final manuscript.
 
 ## References
-[Citations from MOE_JLENS_REFERENCES.md]
+
+Belrose, N., Furman, H., Smith, B., Halawi, D., Ostrovsky, I., McKinney, L., Biderman, S., & Steinhardt, J. (2023). Eliciting latent predictions from transformers with the tuned lens. arXiv:2303.08112.
+
+Chaudhari, M., et al. (2026). MoE Lens — An Expert Is All You Need. arXiv:2603.05806.
+
+Gurnee, W., et al. (2026). The Jacobian lens: identifying what transformers can verbalize. [J-lens reference].
+
+Lu, Y., Modarressi, A., Liu, Y., & Schutze, H. (2026). Expert-Aware Causal Tracing of Factual Recall in Sparse MoE Language Models. arXiv:2606.03780.
+
+nostalgebraist. (2020). interpreting GPT: the logit lens. LessWrong.
+
+Ternovtsii, D., & Bilak, V. (2026a). Geometric Routing Enables Causal Expert Control in Mixture of Experts. arXiv:2604.14434.
+
+Ternovtsii, D., & Bilak, V. (2026b). Equifinality in Mixture of Experts: Routing Topology Does Not Determine Language Modeling Quality. arXiv:2604.14419.
+
+Wang, S., Xu, Z., Shen, Y., Su, J., Huang, L., & Zhu, W. (2026). The Illusion of Specialization: Unveiling the Domain-Invariant 'Standing Committee' in Mixture-of-Experts Models. arXiv:2601.03425.
+
+Ye, B., Yuan, Z., & Sharkey, L. (2026). Polysemantic Experts, Monosemantic Paths: Routing as Control in MoEs. arXiv:2604.17837.
 
 ## Appendix A: Router Hook Implementation
-[Code listing]
+
+The routing capture hook registers on each `Qwen3MoeTopKRouter` module via `register_forward_hook`. For each token position, it records the top-8 expert indices and their softmax scores. Per target layer, prompts are represented as 128-dimensional routing frequency vectors (fraction of tokens sent to each expert), which serve as the clustering input for path-conditioned fitting. Implementation: `experiments/moe_jlens/modal_onset_sweep.py`.
 
 ## Appendix B: Clustering Analysis
-[Per-layer silhouette scores, expert co-occurrence heatmaps]
+
+Silhouette scores and cluster counts are reported in the conditioned J-lens results (`data/moe_jlens/conditioned_jlens_results.json`). Expert co-occurrence patterns are available in the routing capture data. At 672 prompts with k capped at $\lfloor n/50 \rfloor$, clustering is deliberately coarse; the random-conditioned control ($\S$3.5) guards against artifacts from this granularity.
 
 ## Acknowledgments
 
