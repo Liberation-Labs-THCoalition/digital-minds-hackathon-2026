@@ -222,11 +222,20 @@ Our output-cosine gate is a metric the J-lens was never designed to optimize (Gu
 
 Standard J-lens readings on this MoE carry ~5% transport fidelity in-domain, dropping to 1% on code and 0.2% on dialogue — yet the tool still returns confident numbers. Any workspace analysis built on unconditioned J-lens outputs from an MoE model is producing readings with no demonstrated connection to the model's computation. Consumers should treat transport cosine as a gating prerequisite, not a footnote.
 
+### Deviations from the pre-registered pipeline
+
+The outcome criteria for this study were pre-registered in the pipeline code (§3.6) rather than in a standalone document. Execution deviated from them in three ways; each is a deviation, not a limitation, because in each case the registered plan said one thing and the run did another:
+
+| # | Pre-registered | As executed | Consequence |
+|---|----------------|-------------|-------------|
+| M1 | Conditioned and random conditions evaluated at L12, L24, L36 | L12 recorded n=0 for both conditions | Unresolved pipeline failure; no root-cause artifact exists and we do not speculate. The §5.4 verdict is evaluated on the two layers with data |
+| M2 | Conditioned-lens OOD evaluation at L24 on code and dialogue domains | Only the standard lens was evaluated OOD | The conditioned lenses' generalization bound is unmeasured; Table 2 characterizes the standard lens only |
+| M3 | Success bar of mean conditioned cosine > 0.5, registered by reference to a believed "0.7 (Gurnee et al. 2026)" threshold | The cited source contains no such threshold; the bar is this lab's own choice with incorrect provenance, caught in review and disclosed | Bar retained as a lab-set operational threshold; moot in practice, since every condition sat at 4-9% |
+
 ### Limitations
 
-- **Single model, incomplete conditions.** Only Qwen3-30B-A3B tested; low-cardinality MoE (§5.4.4) may differ. L12 recorded n=0 for conditioned/random (cause unrecoverable). Conditioned OOD evaluation was pre-registered but absent from results. The 200-vs-672 fitting-corpus asymmetry favors conditioned lenses and cannot rescue them.
+- **Single model.** Only Qwen3-30B-A3B tested; low-cardinality MoE (§5.4.4) may differ. The 200-vs-672 fitting-corpus asymmetry favors conditioned lenses and cannot rescue them. (Missing L12 and conditioned-OOD data are deviations, logged above.)
 - **Clustering instrument.** Euclidean k-means on 128-d vectors with silhouettes 0.115–0.209; 672 prompts split into clusters may be insufficient for stable 2048×2048 Jacobian estimation.
-- **Uncalibrated threshold.** The 0.5 success bar was pre-registered by reference to a believed "0.7 (Gurnee et al. 2026)" that does not exist in that source. Moot since nothing approached it.
 - **No dense transport-cosine comparison.** No published figure exists; our two attempts to generate one on Qwen3-32B both failed (mmap thrash and memory pressure). The 4–9% regime is uncalibrated against dense models for this metric. Table 0 provides a dense comparison on the separate question of linear readability (logit lens), where the onset is architecture-independent.
 - WikiText-only fitting; OOD data shows in-domain figures are the optimistic case.
 - **RMSNorm omitted in logit-lens and late-depth evaluations.** Both the onset sweep and the late-depth refit apply the unembedding matrix (`lm_head`) directly to mid-layer residuals without the final RMSNorm. Absolute accuracy figures may be depressed; relative comparisons (J-lens vs logit lens at each layer, and the onset curve's shape across depths) are unaffected since both methods skip the same normalization.
