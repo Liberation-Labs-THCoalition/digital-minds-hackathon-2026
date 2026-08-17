@@ -1,0 +1,125 @@
+{
+ "analysis": "axis dominance (exploratory, post hoc, not pre-registered)",
+ "models": [
+  {
+   "model": "Qwen3-32B",
+   "architecture": "softmax attention (uniform)",
+   "n_layers": 64,
+   "layers_arousal_dominant": 64,
+   "layers_valence_dominant": 0,
+   "dominance_crossings": 0,
+   "crossing_depths_pct": [],
+   "emotion_AV_ratio": {
+    "median_of_per_layer_ratios": 1.232,
+    "mean_of_per_layer_ratios": 1.321,
+    "ratio_of_medians": 1.23,
+    "range": [
+     1.034,
+     1.973
+    ]
+   },
+   "control_axis_ratio": {
+    "median_of_per_layer_ratios": 5.57,
+    "mean_of_per_layer_ratios": 4.798,
+    "ratio_of_medians": 5.642,
+    "range": [
+     1.528,
+     7.074
+    ]
+   }
+  },
+  {
+   "model": "Gemma-3-27B-it",
+   "architecture": "softmax attention (52 sliding + 10 full)",
+   "n_layers": 62,
+   "layers_arousal_dominant": 45,
+   "layers_valence_dominant": 17,
+   "dominance_crossings": 11,
+   "crossing_depths_pct": [
+    7,
+    13,
+    28,
+    30,
+    31,
+    54,
+    56,
+    59,
+    61,
+    62,
+    64
+   ],
+   "emotion_AV_ratio": {
+    "median_of_per_layer_ratios": 1.207,
+    "mean_of_per_layer_ratios": 1.203,
+    "ratio_of_medians": 1.143,
+    "range": [
+     0.689,
+     1.894
+    ]
+   },
+   "control_axis_ratio": {
+    "median_of_per_layer_ratios": 3.958,
+    "mean_of_per_layer_ratios": 3.75,
+    "ratio_of_medians": 5.101,
+    "range": [
+     1.576,
+     6.135
+    ]
+   }
+  },
+  {
+   "model": "Qwen3.5-27B",
+   "architecture": "GatedDeltaNet 48 + full 16",
+   "n_layers": 64,
+   "layers_arousal_dominant": 64,
+   "layers_valence_dominant": 0,
+   "dominance_crossings": 0,
+   "crossing_depths_pct": [],
+   "emotion_AV_ratio": {
+    "median_of_per_layer_ratios": 1.615,
+    "mean_of_per_layer_ratios": 1.656,
+    "ratio_of_medians": 1.451,
+    "range": [
+     1.431,
+     2.189
+    ]
+   },
+   "control_axis_ratio": {
+    "median_of_per_layer_ratios": 1.422,
+    "mean_of_per_layer_ratios": 1.437,
+    "ratio_of_medians": 1.4,
+    "range": [
+     1.039,
+     1.813
+    ]
+   }
+  },
+  {
+   "model": "Qwen3.5-27B distill",
+   "architecture": "GatedDeltaNet 48 + full 16",
+   "n_layers": 64,
+   "layers_arousal_dominant": 64,
+   "layers_valence_dominant": 0,
+   "dominance_crossings": 0,
+   "crossing_depths_pct": [],
+   "emotion_AV_ratio": {
+    "median_of_per_layer_ratios": 1.609,
+    "mean_of_per_layer_ratios": 1.655,
+    "ratio_of_medians": 1.455,
+    "range": [
+     1.437,
+     2.189
+    ]
+   },
+   "control_axis_ratio": {
+    "median_of_per_layer_ratios": 1.424,
+    "mean_of_per_layer_ratios": 1.433,
+    "ratio_of_medians": 1.4,
+    "range": [
+     1.048,
+     1.797
+    ]
+   }
+  }
+ ]
+}
