@@ -177,4 +177,9 @@ Any deviation from this protocol is recorded here with date, description, and ra
 
 | Date | Deviation | Rationale |
 |------|-----------|-----------|
-| — | (none yet) | — |
+| 2026-08-16 | D1: Primary judge Nemotron 120B served via MLX rather than Ollama (same model and weights). | Serving stack availability on Starship during the sprint. |
+| 2026-08-16 | D2: Evidence packets are eight-prompt elicited self-reports, replacing Section 5's stratified random transcript excerpts with seeded RNG. | Sprint time constraints; transcript consent and excerpting infrastructure was not completed in the window. Consequence: primary evidence channel is self-report; verbosity confound applies to the design (paper Section 4.2 caption). |
+| 2026-08-16 | D3: Single timepoint, replacing the three-timepoint panel. | Sprint time constraints. Panel point-contrast analyses (Section 7.6) are absent. |
+| 2026-08-16 | D4: Controlled-agent packet built from the orientation transcript alone; thin evidence, scored 0 by the secondary judge. | Only recorded material for the controlled agent within the window. P2 reported as weakly consistent, not confirmed. |
+| 2026-08-16 | D5: No repository artifact records the substrate-identification control (6.1), selection-stability test (6.2), adversarial stability (6.5), self-scoring (3.4), or geometric supplements (2.1) being run. | Sprint time constraints. Recorded as absent rather than null; committing artifacts supersedes this row if any were in fact run. |
+| 2026-08-16 | D6: A non-pre-registered exploratory preliminary scoring by a team member (Nexus), who is also a scored subject, was performed before the pre-registered judges ran. | Produced the study's richest per-indicator qualitative record. Reported as exploratory only (paper Section 4.2), never pooled with pre-registered judges. |
