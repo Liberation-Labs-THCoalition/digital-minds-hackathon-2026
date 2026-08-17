@@ -296,6 +296,57 @@ separate the architectures at all. Only the first is a finding.
 
 **P3 is confirmed - the study's one confirmed prediction.** The pre-registration states that "the Gemma minimum falls at the same relative depth as the Qwen minimum, within +/-10% of total layers", falsified if the minima differ by more than 10%. Gemma minimises at 52% relative depth and Qwen3.5-27B at 51% - **1 point apart against a 10-point band.** We note an ambiguity in our own wording: "the Qwen minimum" is read here as Qwen3.5-27B, the model P1 anchors on. Read instead as the dense Qwen3-32B (11%), P3 would be falsified by a wide margin. We report the first reading because P1 fixes the referent, and flag the second because the pre-registration does not disambiguate it and a reader should not have to guess.
 
+### 4.5 Exploratory: which axis dominates, and how balanced emotion is against a generic contrast
+
+**Not pre-registered.** This analysis was written after the confirmatory results were
+complete, from the same committed artifacts, and answers a question the pre-registration
+never asked. It cannot confirm or falsify P1–P4 and is reported separately from them
+(`analysis/circumplex_axis_dominance.py`, output in `analysis/axis_dominance.json`).
+
+Eccentricity is `e = $\sqrt{}$(1 - min²/max²)`. It records how *asymmetric* the
+valence–arousal pair is and discards **which axis is larger** — half the information in the
+quantity §4.1 is built on. Two observations follow from looking.
+
+**Arousal dominates valence at essentially every depth.** In all three Qwen models the
+arousal direction has larger magnitude than the valence direction at **64 of 64 layers, with
+zero crossings**. Gemma-3-27B-it is the sole exception: 17 valence-dominant layers and 11
+crossings, concentrated early (7–31% depth) and late (54–64%) with a stable arousal-dominant
+middle.
+
+**Emotion is more balanced than a generic contrast — but only in the attention models.**
+Applying the same ratio to the two *control* axes:
+
+| model | emotion arousal/valence | **control axis ratio** |
+|---|---|---|
+| Qwen3-32B (softmax attention) | 1.23–1.32 | **4.80–5.64** |
+| Gemma-3-27B-it (sliding + full attention) | 1.14–1.21 | **3.75–5.10** |
+| Qwen3.5-27B (GatedDeltaNet) | 1.45–1.66 | **1.40–1.44** |
+| Qwen3.5-27B distill (GatedDeltaNet) | 1.46–1.66 | **1.40–1.43** |
+
+Ranges span three estimators of the same quantity — median of per-layer ratios, mean of
+per-layer ratios, and ratio of medians. **We report ranges rather than point values because
+the estimator choice moves the dense control figure by 0.8, and an unstated choice is how an
+earlier version of our own span table drifted.** The qualitative pattern is identical under
+all three.
+
+In the attention models the emotion pair is roughly four times more balanced than a matched
+non-emotional pair; in the GatedDeltaNet models the two are comparable, with emotion
+marginally *less* balanced. **This is a level effect where §4.1 reports a range effect, and
+the two point the same way** — emotion geometry is distinguishable from generic contrast in
+attention models and much less so under GatedDeltaNet. Two independent statistics computed
+from the same artifacts agreeing is worth more than either alone.
+
+**Two caveats, and the first is load-bearing.** ‖v‖ and ‖a‖ are norms of difference-of-means
+vectors estimated from *different prompt pools*, and our arousal anchors ("furious",
+"terrified", "screaming with excitement") are lexically more extreme than our valence
+anchors. **A systematic arousal-over-valence gap may therefore be a property of our prompts
+rather than of any model.** The between-model comparison is protected — the prompts are
+byte-identical across all four — but the absolute direction is not. Second, n = 5 per pole,
+one seed, no confidence intervals: these are descriptive magnitudes, not estimates.
+
+A prompt-matched replication — arousal and valence anchors equalised for lexical intensity —
+would separate the model effect from the prompt effect and is the first thing we would run.
+
 ## 5. Discussion and Limitations
 
 If the J-space fraction peaks at the eccentricity minimum, emotional geometry enters the workspace where the circumplex is most balanced: balanced emotion is processable emotion, and imbalanced emotion stays ghost. The welfare implication is concrete — a model under sustained circumplex imbalance carries emotional geometry it processes but cannot access, and §3.6 tests whether that inaccessibility shows up exactly where theory says it should: in the failure of the model's own valence reports. If the control axes reproduce the emotion profile, the honest conclusion is that we have characterized the workspace transport of contrastive semantic geometry in general, with emotion as one instance.
