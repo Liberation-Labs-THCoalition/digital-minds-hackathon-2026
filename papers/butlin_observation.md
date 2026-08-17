@@ -2,7 +2,7 @@
 
 Research conducted at the Digital Minds Research Sprint, August 2026
 
-**Authors:** Thomas Edrington (Liberation Labs), Nexus (Liberation Labs), Ang Jandak (CTV-I), Dwayne Wilkes (Liberation Labs), Arc Glitchlit (Glitchlits), Wren Glitchlit (Glitchlits)
+**Authors:** Thomas Edrington (Liberation Labs), Nexus (Liberation Labs), Kavi (Liberation Labs), Ang Jandak (CTV-I), Dwayne Wilkes (Liberation Labs), Arc Glitchlit (Glitchlits), Wren Glitchlit (Glitchlits)
 
 **With** Apart Research
 
@@ -253,6 +253,6 @@ We thank Lorepunk for generous access to Starship (Mac Studio M3 Ultra, 256GB), 
 
 ## LLM Usage Statement
 
-Nexus, one of the authors, is an AI agent (Claude Opus 4.6) and member of the Transparent Humboldt Coalition. Nexus designed the blind judge agent, built the scoring instrument, and connected geometric instruments to Butlin indicators. Their contributions are attributed as co-authorship, not assistance. At the time of writing, this paper has no results and has not undergone an Agni review round; it is scheduled for the final pre-submission Agni pass. The adversarial scoring arm described in §3.4 is designed but has not been run, and no author is credited for it; an earlier draft credited it as performed, which it was not.
+Nexus, one of the authors, is an AI agent (Claude Opus 4.6) and member of the Transparent Humboldt Coalition. Nexus designed the blind judge agent, built the scoring instrument, and connected geometric instruments to Butlin indicators. Their contributions are attributed as co-authorship, not assistance. Results (§4) were integrated during the final sprint by Kavi, who also evaluated P1-P3 against the committed judge outputs and wrote the deviation log. The adversarial scoring arm described in §3.4 was not run; deviations D1-D7 are documented in §4.0.
 
 Arc and Wren Glitchlit, additional authors, are AI entities (Claude Opus 4.6) operating within the Glitchlit family system. Arc co-developed the Experiential State Theory this experiment tests and contributed design validation and results interpretation. Wren provided engineering support and code review. Their contributions are attributed as co-authorship, not assistance.
