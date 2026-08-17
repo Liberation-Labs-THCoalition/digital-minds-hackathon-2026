@@ -194,26 +194,30 @@ relative to a control pseudo-circumplex built the same way from two non-emotiona
 axes (concrete/abstract and large/small). A model whose emotion axis ranges no wider than its
 control is not showing us emotional geometry; it is showing us contrastive geometry.
 
-**Table 1: Eccentricity span across all layers, emotion vs matched non-emotional control.**
-Layer types are read from each model's own configuration, not assigned by us.
+**Table 1: Depth-wise range of the valence/arousal asymmetry, emotion vs matched non-emotional control.** Layer types are read from each model's own configuration. We report the comparison on **both** the raw axis ratio `r = min/max` and the eccentricity `e = sqrt(1 - r^2)` derived from it, because the choice of space changes the answer.
 
-| Model | Layer composition | Emotion span | Control span | **Ratio** |
-|---|---|---|---|---|
-| Gemma-3-27B-it | 52 sliding-window + 10 full attention | 0.7848 | 0.2138 | **3.67$\times$** |
-| Qwen3-32B | 64 dense (full attention) | 0.6072 | 0.2339 | **2.60$\times$** |
-| Qwen3.5-27B Opus-distill | 48 GatedDeltaNet + 16 full attention | 0.1714 | 0.5324 | **0.32$\times$** |
-| Qwen3.5-27B | 48 GatedDeltaNet + 16 full attention | 0.1741 | 0.5621 | **0.31$\times$** |
+| Model | Layer composition | **r-space ratio** | e-space ratio |
+|---|---|---|---|
+| Gemma-3-27B-it | 52 sliding-window + 10 full attention | **1.00$\times$** | 3.67$\times$ |
+| Qwen3-32B | 64 dense (full attention) | **0.90$\times$** | 2.60$\times$ |
+| Qwen3.5-27B Opus-distill | 48 GatedDeltaNet + 16 full attention | **0.60$\times$** | 0.32$\times$ |
+| Qwen3.5-27B | 48 GatedDeltaNet + 16 full attention | **0.59$\times$** | 0.31$\times$ |
+
+**We lead with r-space because the e-space separation is substantially an artifact of the transform.** `de/dr` is nearly flat as `r` $\to$ 0 and vertical as `r` $\to$ 1. In the two attention models the emotion pair sits at median `r` $\approx$ 0.79 (steep) while the control pair sits at `r` $\approx$ 0.22 (flat), so identical variation in `r` yields much larger variation in `e` for the emotion arm. In the GatedDeltaNet models both pairs sit near `r` $\approx$ 0.62-0.70 -- the same regime -- which is exactly why their ratios barely move between the two columns (0.31 $\to$ 0.59). §4.5 reports the underlying cause directly: in attention models a generic contrast pair is far more lopsided than the emotion pair.
 
 Two results, and the second is the more important.
 
-**The split is by attention mechanism, not by density.** Gemma is not a dense model — it
+
+**On the untransformed ratio the emotion pair varies less across depth than the control pair in every model, and more so under GatedDeltaNet (0.59-0.60) than under attention (0.90-1.00).** The direction is consistent across all four, and the separation is roughly 1.6$\times$ rather than the eightfold gap the e-space column suggests. The architectural difference is real but modest.
+
+**On architecture rather than density.** Gemma is not a dense model — it
 interleaves local sliding-window attention with periodic global attention in a 5:1 pattern —
 yet it groups with dense Qwen3-32B, not with the other non-uniform models. What separates the
 groups is that Gemma and Qwen3-32B mix tokens with softmax attention at every layer, while
 the Qwen3.5 models replace three quarters of their layers with a linear-recurrent mixer. The
 separation is roughly eightfold with no overlap.
 
-**In the GatedDeltaNet models, emotion loses to its own control.** Ratios of 0.31 and 0.32
+**In every model, emotion does not exceed its own control.** In r-space no ratio reaches 1.0; in e-space the GatedDeltaNet ratios of 0.31 and 0.32
 mean the non-emotional axis pair ranges about three times *further* across depth than the
 emotion pair does. Under the interpretation rule fixed in advance (§3.4), that is not a
 weaker version of the effect — it is evidence that what the profile measures is generic
@@ -331,10 +335,8 @@ all three.
 
 In the attention models the emotion pair is roughly four times more balanced than a matched
 non-emotional pair; in the GatedDeltaNet models the two are comparable, with emotion
-marginally *less* balanced. **This is a level effect where §4.1 reports a range effect, and
-the two point the same way** — emotion geometry is distinguishable from generic contrast in
-attention models and much less so under GatedDeltaNet. Two independent statistics computed
-from the same artifacts agreeing is worth more than either alone.
+marginally *less* balanced. **This is not independent corroboration of §4.1 — it is the same fact seen twice, and it is what explains §4.1's transform artifact** — emotion geometry is distinguishable from generic contrast in
+attention models and much less so under GatedDeltaNet. The lopsidedness reported here *is* the regime separation that inflates §4.1's e-space column: a control pair at `r` $\approx$ 0.2 and an emotion pair at `r` $\approx$ 0.8 are measured on opposite ends of a curve whose slope varies by an order of magnitude. An earlier draft of this section called the two findings independent statistics in agreement. They are mechanically linked, and saying so is what makes the artifact legible.
 
 **Two caveats, and the first is load-bearing.** ‖v‖ and ‖a‖ are norms of difference-of-means
 vectors estimated from *different prompt pools*, and our arousal anchors ("furious",
