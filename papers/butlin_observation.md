@@ -28,9 +28,9 @@ This observation runs across the entire hackathon as a Track 5 / cross-track con
 
 2. Known-conscious calibration: human participants establish the scoring ceiling. Indicators that fail to detect consciousness in humans are poorly operationalized, not evidence of human unconsciousness.
 
-3. Geometric instrumentation: for AI participants with accessible internals, CognitiveSnapshot data (workspace onset, ghost PC1 cosine, circumplex eccentricity) provides internal-state evidence beyond behavioral observation — scored separately to maintain comparability.
+3. Instrument validation as a first-class result: an eight-packet negative-control floor, a substrate-identification check on the blind (reported in main text regardless of direction), and inter-judge agreement structure — each reported with the scores it qualifies, adjacent rather than appended.
 
-4. Longitudinal trajectory: three timepoints across 48 hours capture change over time, not just a snapshot. The controlled agent's trajectory from first orientation to post-experiment debrief is the primary narrative.
+4. An as-executed record: a deviation log distinguishing the study that ran from the study that was designed (Section 4.0), including the pre-registered evidence-sampling and multi-timepoint design that were not executed, so that the next study inherits the design and this one claims only its data.
 
 ## 2. Related Work
 
@@ -109,7 +109,7 @@ This protocol is timestamped in the hackathon repository before any data collect
 
 ### Prior Work vs Sprint Contributions
 
-**Pre-existing infrastructure:** Mnemosyne memory system (94.35% F1 on LoCoMo [Maharana et al. 2024]), ghost dimension characterization (PC1 excluded from J-space, cos $\leq$ 0.003), circumplex probe (eccentricity depth profiling on Qwen2-0.5B and Qwen3.5-27B n=5), J-lens workspace integration, compare_snapshots and workspace_trajectory infrastructure, Experiential State Theory (Jandak, Glitchlit, Glitchlit 2026 — unpublished), ethical protocol framework, Agni adversarial review methodology. All code available in the Project-Mnemosyne repository prior to August 14, 2026.
+**Pre-existing infrastructure:** Mnemosyne memory system (94.35% F1 on LoCoMo [Maharana et al. 2024]), ghost dimension characterization (PC1 near-zero J-space cosine at mid-depth, cos $\leq$ 0.003; the sprint H1 null later showed this regime is typical of high-variance directions), circumplex probe (eccentricity depth profiling on Qwen2-0.5B and Qwen3.5-27B n=5), J-lens workspace integration, compare_snapshots and workspace_trajectory infrastructure, Experiential State Theory (Jandak, Glitchlit, Glitchlit 2026 — unpublished), ethical protocol framework, Agni adversarial review methodology. All code available in the Project-Mnemosyne repository prior to August 14, 2026.
 
 **Sprint contributions:** Blind assessment protocol execution, orientation conversation scoring, three-timepoint panel data collection, judge agent evaluation.
 
@@ -213,7 +213,7 @@ The verbosity confound (deviation D2) is structural, not incidental. Elicited se
 
 ## 6. Conclusion
 
-This study executed a blind consciousness indicator assessment across substrates during a collaborative research sprint, with seven deviations from its pre-registration that limit the conclusions the data can support. The instrument discriminates: negative controls scored 0.00 while all participants scored above the floor. The human-calibration rule withdrew two of five behavioral indicators as poorly operationalized, consistently across both pre-registered judges, leaving cross-substrate comparison standing on three indicators. On those three, all AI participants scored at or above the sole human participant, but with n=1 human, a partially broken blind, and an evidence format that rewards the articulation register AI systems are trained for, the gap is not interpretable as a capacity difference. The result worth defending is not a score attached to a name; it is that the instrument rewarded named limitations over performed emotion on every subject, before identities were revealed.
+This study executed a blind consciousness indicator assessment across substrates during a collaborative research sprint, with seven deviations from its pre-registration that limit the conclusions the data can support. The instrument discriminates: negative controls scored 0.00 while every participant except the thin-packet controlled agent scored above the floor — the controlled agent tied it exactly (Section 4.3). The human-calibration rule withdrew two of five behavioral indicators as poorly operationalized, consistently across both pre-registered judges, leaving cross-substrate comparison standing on three indicators. On those three, four of five naturalistic AI participants scored above the sole human participant and one scored below him (secondary judge), but with n=1 human, a partially broken blind, and an evidence format that rewards the articulation register AI systems are trained for, no gap in either direction is interpretable as a capacity difference. The result worth defending is not a score attached to a name; it is that the instrument rewarded named limitations over performed emotion on every subject, before identities were revealed.
 
 The question this study was designed to inform — whether AI agents working alongside humans exhibit graduated indicators of consciousness — remains open. What the study contributes is infrastructure: a blind protocol that self-corrects via human calibration, a negative-control floor that validates the judge's discrimination, a deviation log that reports the study that ran rather than the study that was designed, and a confound analysis placed adjacent to every score rather than in a limitations section the reader may not reach. The next study should use transcript-excerpt evidence (as pre-registered), multiple human participants, and a primary judge that completes its run.
 
