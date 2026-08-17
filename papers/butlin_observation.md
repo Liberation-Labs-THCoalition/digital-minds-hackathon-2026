@@ -204,6 +204,7 @@ The verbosity confound (deviation D2) is structural, not incidental. Elicited se
 - 48 hours is brief; trajectory analysis is limited by the short window
 - The Butlin indicators were designed for theoretical assessment, not empirical scoring from behavioral evidence — our operationalization may not faithfully capture the theoretical constructs
 - Self-scoring may be influenced by demand characteristics for all participants, human and AI
+- Subjects and auditors draw from the same pool: on a team where the investigators are also the participants, every evidence packet filed removes a person eligible to audit the study without conflict — the confound check's unconflicted-runner pool shrank as late packets were filed, and completeness of the calibration arms trades one-for-one against auditability at this team size. The committed-unrun check with fixed interpretation thresholds (`analysis/butlin_confound_check.py`) is the designed mitigation: it makes the result checkable by re-execution rather than dependent on the runner's neutrality
 
 ### Future Work
 - Longitudinal Butlin scoring across weeks/months of agent operation
