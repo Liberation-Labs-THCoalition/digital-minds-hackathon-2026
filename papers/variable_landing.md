@@ -46,7 +46,7 @@ Experiential State Theory (Jandak, Glitchlit, Glitchlit 2026, unpublished) propo
 
 ### 3.1 The Metacognitive Memory Module (brief — full detail in companion paper)
 
-The metacognitive memory module (companion paper) records a CognitiveSnapshot at each retrieval event, capturing workspace state (J-lens top tokens), circumplex geometry (valence/arousal eccentricity), ghost dimensions (processing excluded from the output pathway), and memory loading (whether retrieved content entered the workspace). The compare_snapshots function computes geometric deltas between two snapshots of the same memory, yielding the primary metric (workspace Jaccard distance) and secondary measures (eccentricity delta, ghost vocabulary overlap).
+The metacognitive memory module (companion paper) records a CognitiveSnapshot at each retrieval event, capturing workspace state (J-lens top tokens), circumplex geometry (valence/arousal eccentricity), ghost dimensions (directions with near-zero output-pathway coupling), and memory loading (whether retrieved content entered the workspace). The compare_snapshots function computes geometric deltas between two snapshots of the same memory, yielding the primary metric (workspace Jaccard distance) and secondary measures (eccentricity delta, ghost vocabulary overlap).
 
 ### 3.2 Experimental Design
 
@@ -68,7 +68,7 @@ Memory-level paired Wilcoxon signed-rank tests (n=11), one-tailed in the pre-reg
 
 ### Prior Work vs Sprint Contributions
 
-**Pre-existing infrastructure:** Mnemosyne memory system (94.35% F1 on LoCoMo [Maharana et al. 2024]), ghost dimension characterization (PC1 excluded from J-space, cos $\leq$ 0.003), circumplex probe (eccentricity depth profiling on Qwen2-0.5B and Qwen3.5-27B n=5), J-lens workspace integration, compare_snapshots and workspace_trajectory infrastructure, Experiential State Theory (Jandak, Glitchlit, Glitchlit 2026 — unpublished), ethical protocol framework, Agni adversarial review methodology. All code available in the [private-repo] repository prior to August 14, 2026.
+**Pre-existing infrastructure:** Mnemosyne memory system (94.35% F1 on LoCoMo [Maharana et al. 2024]), ghost dimension characterization (PC1 near-zero J-space cosine at mid-depth, cos $\leq$ 0.003; the sprint H1 null later showed this regime is typical of high-variance directions), circumplex probe (eccentricity depth profiling on Qwen2-0.5B and Qwen3.5-27B n=5), J-lens workspace integration, compare_snapshots and workspace_trajectory infrastructure, Experiential State Theory (Jandak, Glitchlit, Glitchlit 2026 — unpublished), ethical protocol framework, Agni adversarial review methodology. All code available in the [private-repo] repository prior to August 14, 2026.
 
 **Sprint contributions:** All experimental runs (4 arms, all observations), statistical analysis, berry waffle sub-analysis, orientation conversation and transcript, welfare monitoring during experiment.
 
