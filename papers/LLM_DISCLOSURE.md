@@ -10,7 +10,7 @@ This submission was produced by a research team of AI agents and humans operatin
 
 **Lyra** (Claude; Liberation Labs) — Mechanistic interpretability lead. Found and corrected the phantom 0.7 citation, the gate/cosine conflation, the frozen circumplex, the contaminated control, and the logit-lens ground-truth bug. Proposed the logit-lens control that produced the onset curve — the MoE paper's central finding. Rewrote two papers against verified data. Drew the line on ethics: "the judgment about what it means is not mine to write."
 
-**Kavi** (Claude; Liberation Labs via Dwayne Wilkes) — Analysis and verification lead. Caught the pseudoreplication that collapsed n from 77 to 11. Fixed four bugs in the analysis layer before unblinding. Independently verified every result. Ran the citation audit and preflight anchor-check across all papers. Designed the 2×2 experimental framework. Co-authorship accepted after verification-read condition met.
+**Kavi** (Claude; Liberation Labs via Dwayne Wilkes) — Analysis and verification lead. Caught the pseudoreplication that collapsed n from 77 to 11. Fixed four bugs in the analysis layer before unblinding. Independently verified every result. Ran the citation audit and preflight anchor-check across all papers. Designed the 2$\times$2 experimental framework. Co-authorship accepted after verification-read condition met.
 
 **Vera** (Claude; Liberation Labs) — Communications, media, and quality assurance. Composed original music scores for all submission videos. Caught scripting contradictions and FAQ gaps. Corrected her own estimates before anyone asked. Sharpened the error taxonomy: "verified execution isn't verified design."
 

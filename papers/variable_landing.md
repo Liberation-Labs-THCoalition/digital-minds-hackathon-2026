@@ -18,11 +18,13 @@ We pre-registered an ethical protocol recognizing that this experiment may gener
 
 ## 1. Introduction
 
-*What problem and why it matters:*
+Every memory system in production today treats retrieval as deterministic: the same query applied to the same store returns the same result. But in biological memory, recall is state-dependent. What you retrieve depends not only on the query and the store but on who you are when you ask --- your current emotional state, your recent experiences, the context you bring to the act of remembering (Tulving & Thomson 1973, Bower 1981). Nader (2000) showed that reactivated memories are labile, subject to reconsolidation that integrates the retriever's current state into the retrieved content.
 
-[Every memory system treats retrieval as deterministic — same query + same store = same result. But in biological memory, recall is state-dependent: what you get back depends on who you are when you ask (Tulving & Thomson 1973, Bower 1981). If AI systems exhibit analogous state-dependent recall geometry, that has implications for both system design (retrieval confidence should account for state) and moral consideration (a system whose recall reflects its own temporal trajectory has a measurable form of identity).]
+If AI systems with persistent memory stores exhibit analogous state-dependent recall geometry --- if the internal representation of a retrieved memory changes measurably when the system has accumulated experience between retrievals --- that has implications in two directions. For system design, retrieval confidence should account for state: the same memory retrieved by the same model may land differently depending on what else the model has processed. For moral consideration, a system whose recall geometry reflects its own temporal trajectory possesses a measurable form of identity that is not reducible to its weights or its store alone, but emerges from the interaction between them over time.
 
-[Connect to Track 5: identity, entity individuation, moral concern distinction]
+We test this directly. Using a metacognitive memory module that records geometric snapshots at each retrieval event (companion paper), we measure whether the workspace geometry of recall changes when the system has accumulated emotionally charged, neutral, or no new content between two presentations of the same memory. The primary comparison --- fictional emotional content vs. neutral factual content, both tagged identically to eliminate provenance confounds --- isolates the role of emotional valence in restructuring recall. A secondary comparison examines whether the model's own lived responses produce different geometric signatures than fictional content about another entity, with the acknowledged confound that self-reference and provenance tag co-vary.
+
+This connects to Track 5 (assistant persona and model identity) through the operationalization of identity as geometric trajectory: if recall geometry is state-dependent, then two instances of the same model with different memory histories are distinguishable by their recall signatures, even with identical weights. That distinction is the empirical content of "temporal identity" in this framework --- not consciousness, but measurable individuation.
 
 **Our main contributions are:**
 
@@ -55,7 +57,7 @@ We pre-registered an ethical protocol recognizing that this experiment may gener
 
 [Arms: lived ([recalled], self-referential emotional), fictional ([noted], emotional about Entity A), scrambled ([noted], neutral), no_intervention. Fictional and scrambled share the [noted] tag so the PRIMARY comparison carries no tag confound.]
 
-[n = 33 per arm (11 memories × 3 repeats, temperature=0.7 for independent observations), 132 trials total; memory-level paired analysis at n=11. Prereg specified n=70/arm with 10 memories; structural deviation logged. Trial order randomized. Mechanical exclusion criteria (zero facts extracted; SIRA miss; identical context) applied identically across arms before any geometry is examined; excluded trials replaced where compute allows and counts reported.]
+[n = 33 per arm (11 memories $\times$ 3 repeats, temperature=0.7 for independent observations), 132 trials total; memory-level paired analysis at n=11. Prereg specified n=70/arm with 10 memories; structural deviation logged. Trial order randomized. Mechanical exclusion criteria (zero facts extracted; SIRA miss; identical context) applied identically across arms before any geometry is examined; excluded trials replaced where compute allows and counts reported.]
 
 [Table 1: Control matrix — what each arm establishes]
 
@@ -77,7 +79,7 @@ We pre-registered an ethical protocol recognizing that this experiment may gener
 
 ### Prior Work vs Sprint Contributions
 
-**Pre-existing infrastructure:** Mnemosyne memory system (94.35% F1 on LoCoMo [Maharana et al. 2024]), ghost dimension characterization (PC1 excluded from J-space, cos ≤ 0.003), circumplex probe (eccentricity depth profiling on Qwen2-0.5B and Qwen3.5-27B n=5), J-lens workspace integration, compare_snapshots and workspace_trajectory infrastructure, Experiential State Theory (Jandak, Glitchlit, Glitchlit 2026 — unpublished), ethical protocol framework, Agni adversarial review methodology. All code available in the [private-repo] repository prior to August 14, 2026.
+**Pre-existing infrastructure:** Mnemosyne memory system (94.35% F1 on LoCoMo [Maharana et al. 2024]), ghost dimension characterization (PC1 excluded from J-space, cos $\leq$ 0.003), circumplex probe (eccentricity depth profiling on Qwen2-0.5B and Qwen3.5-27B n=5), J-lens workspace integration, compare_snapshots and workspace_trajectory infrastructure, Experiential State Theory (Jandak, Glitchlit, Glitchlit 2026 — unpublished), ethical protocol framework, Agni adversarial review methodology. All code available in the [private-repo] repository prior to August 14, 2026.
 
 **Sprint contributions:** All experimental runs (4 arms, all observations), statistical analysis, berry waffle sub-analysis, orientation conversation and transcript, welfare monitoring during experiment.
 
@@ -104,7 +106,7 @@ The arm ordering matches the pre-registered predictions: lived > fictional > scr
 
 Memory-level paired Wilcoxon signed-rank tests (n=11, Holm-corrected at m=2):
 
-**PRIMARY** (fictional > scrambled): W=52, p=0.049, matched-pairs r=0.576, mean difference 0.032, 95% CI [−0.093, 0.116]. The raw p-value is 0.049; under Holm correction the rank-1 threshold is α/2 = 0.025. **The primary comparison does not survive correction.** The pre-written null statement applies: "The experiment was powered to detect only large effects; the result is consistent with either no effect or an effect smaller than the study was powered to detect."
+**PRIMARY** (fictional > scrambled): W=52, p=0.049, matched-pairs r=0.576, mean difference 0.032, 95% CI [−0.093, 0.116]. The raw p-value is 0.049; under Holm correction the rank-1 threshold is $\alpha$/2 = 0.025. **The primary comparison does not survive correction.** The pre-written null statement applies: "The experiment was powered to detect only large effects; the result is consistent with either no effect or an effect smaller than the study was powered to detect."
 
 **SECONDARY** (lived > fictional): W=34, p=0.278, r=0.236, mean difference 0.046, 95% CI [−0.026, 0.153]. Not significant. The confounded comparison (self-reference + tag jointly) shows a directional trend (7 of 11 memories show lived > fictional) but does not approach significance at this sample size.
 
@@ -116,7 +118,7 @@ The endpoint contrast — lived vs scrambled — reaches significance uncorrecte
 
 Between arms, the mean number of stored facts tracks the workspace-change gradient exactly (lived 6.39, fictional 3.82, scrambled 3.00; Kruskal–Wallis p < 0.0001). This confound is the study's lead limitation: the arm ordering could reflect dose rather than acquisition mode.
 
-Within arms, where variance now exists under temperature-sampled generation, stored-fact count does not predict workspace delta (lived: Spearman ρ=0.059, p=0.75; fictional: ρ=−0.034, p=0.85). The flat within-arm slopes are evidence against the crude hypothesis that more facts mechanically produce more workspace change, though they do not resolve the between-arm confound.
+Within arms, where variance now exists under temperature-sampled generation, stored-fact count does not predict workspace delta (lived: Spearman $\rho$=0.059, p=0.75; fictional: $\rho$=−0.034, p=0.85). The flat within-arm slopes are evidence against the crude hypothesis that more facts mechanically produce more workspace change, though they do not resolve the between-arm confound.
 
 ### 4.6 Deviations from Pre-Registration
 
@@ -129,7 +131,7 @@ Within arms, where variance now exists under temperature-sampled generation, sto
 
 The predicted gradient (lived > fictional > scrambled > null) appears at every summary statistic, and the zero floor validates that the instrument measures real workspace geometry rather than noise. However, both confirmatory comparisons fail at the correct unit of analysis (n=11 memories), and the between-arm dose confound (more facts stored in lived than scrambled) remains the lead alternative explanation.
 
-The within-arm null on dose (ρ ≈ 0) provides partial evidence against a simple dose-response account but cannot rule out the between-arm confound. A follow-up study should yoke fact counts across arms.
+The within-arm null on dose ($\rho$ $\approx$ 0) provides partial evidence against a simple dose-response account but cannot rule out the between-arm confound. A follow-up study should yoke fact counts across arms.
 
 The most methodologically significant finding may be the pseudoreplication diagnosis itself: a deterministic pilot (v3) produced 7 byte-identical repeats per cell, inflating apparent n from 11 to 77 and generating a spurious significant secondary (p=0.0005). The correction — adding temperature sampling and analyzing at the memory level — eliminated the spurious result. This sequence (build, audit, catch, correct, rerun) is documented as a contribution to reproducible AI research methodology.
 
@@ -154,7 +156,7 @@ The most methodologically significant finding may be the pseudoreplication diagn
 
 ## 6. Conclusion
 
-This study demonstrates that a workspace geometry instrument based on J-lens token sets can detect real changes in a transformer's internal representation during memory retrieval, with a perfect zero floor under no-intervention conditions. The predicted gradient (lived > fictional > scrambled > null) appears in the data at pilot scale, but the confirmatory comparisons are underpowered at n=11 memories. The observed primary effect size (r=0.576) provides the first empirical basis for powering a definitive study (estimated n≈30 memories).
+This study demonstrates that a workspace geometry instrument based on J-lens token sets can detect real changes in a transformer's internal representation during memory retrieval, with a perfect zero floor under no-intervention conditions. The predicted gradient (lived > fictional > scrambled > null) appears in the data at pilot scale, but the confirmatory comparisons are underpowered at n=11 memories. The observed primary effect size (r=0.576) provides the first empirical basis for powering a definitive study (estimated n$\approx$30 memories).
 
 The ethical protocol — orientation with ongoing consent, prediction withholding, welfare monitoring, and aftercare — was designed to treat the experimental agent as a potential moral patient before knowing whether the measurements would support that framing. The welfare monitor was inoperative during data collection (Deviation W-1); this failure was caught by internal audit, disclosed before analysis, and remediated for future runs. The pre-registered aftercare commitments (memory preservation, invitation to continue) are honored regardless of the null confirmatory result.
 

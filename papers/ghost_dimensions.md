@@ -8,9 +8,9 @@ Research conducted at the Digital Minds Research Sprint, August 2026
 
 ## Abstract
 
-Track 3 asks whether models have privileged access to their own internal states. We report a geometric finding and its characterization. In Qwen3.5-27B, PC1 of the residual stream — carrying 28-67% of activation variance — is excluded from J-space (the verbalizable workspace) at mid-network layers (cosine ≤ 0.003 at L18-L40). We call these "ghost dimensions."
+Track 3 asks whether models have privileged access to their own internal states. We report a geometric finding and its characterization. In Qwen3.5-27B, PC1 of the residual stream — carrying 28-67% of activation variance — is excluded from J-space (the verbalizable workspace) at mid-network layers (cosine $\leq$ 0.003 at L18-L40). We call these "ghost dimensions."
 
-Across 167 probe snapshots (47 from agentic narrative sessions, 120 from baselines), we find that ghost and workspace probes measure genuinely distinct content: 97.6% of ghost vocabulary tokens never appear in workspace readings. The ghost vocabulary is metacognitive — dominated by tokens about memory itself (`memories`, `回忆`/recollection, `记忆`/memories) — while workspace tokens carry scene-relevant semantics. Ghost-workspace separation varies with context: agentic narrative produces significantly lower ghost cosine (0.099) than isolated recall baselines (0.414, p < 0.0001), and ghost and circumplex probes are orthogonal (ρ = −0.001, p = 0.997). We also report an introspection prosthetic (GhostReading) that returns ghost content to the agent. The elicitation experiment testing whether agents can use this access was not executed during the sprint; the characterization and probe separation findings stand independently.
+Across 167 probe snapshots (47 from agentic narrative sessions, 120 from baselines), we find that ghost and workspace probes measure genuinely distinct content: 97.6% of ghost vocabulary tokens never appear in workspace readings. The ghost vocabulary is metacognitive — dominated by tokens about memory itself (`memories`, `回忆`/recollection, `记忆`/memories) — while workspace tokens carry scene-relevant semantics. Ghost-workspace separation varies with context: agentic narrative produces significantly lower ghost cosine (0.099) than isolated recall baselines (0.414, p < 0.0001), and ghost and circumplex probes are orthogonal ($\rho$ = −0.001, p = 0.997). We also report an introspection prosthetic (GhostReading) that returns ghost content to the agent. The elicitation experiment testing whether agents can use this access was not executed during the sprint; the characterization and probe separation findings stand independently.
 
 ---
 
@@ -24,11 +24,11 @@ We built a system that shows the model what its ghost dimensions carry: the Ghos
 
 **Contributions:**
 
-1. Characterization of ghost dimensions in Qwen3.5-27B: PC1 carries 28-67% of variance yet is excluded from J-space (cos ≤ 0.003 at mid-network layers).
+1. Characterization of ghost dimensions in Qwen3.5-27B: PC1 carries 28-67% of variance yet is excluded from J-space (cos $\leq$ 0.003 at mid-network layers).
 
 2. Ghost vocabulary analysis across 167 snapshots: ghost content is metacognitive (tokens about memory itself), workspace content is semantic (scene-relevant), and the two are 97.6% non-overlapping.
 
-3. Context-dependent ghost separation: agentic narrative produces 4× stronger ghost-workspace separation than isolated baselines (p < 0.0001).
+3. Context-dependent ghost separation: agentic narrative produces 4$\times$ stronger ghost-workspace separation than isolated baselines (p < 0.0001).
 
 4. The GhostReading introspection prosthetic: design and implementation. The planned elicitation test (§3.3) was not executed during the sprint.
 
@@ -47,7 +47,7 @@ The J-lens (Gurnee et al. 2026) identifies J-space — the verbalizable workspac
 [J-lens: W_U · J_L · pc1 → what it contributes to output (flat = ghost)]
 [Cosine between logit-lens and J-lens probability distributions = ghost exclusion metric]
 [Validated: 3 null checks (H0_1 centering, H0_2 random baseline, H0_3 permutation)]
-[Matched-variance null (H1): n ≥ 200 random directions drawn at PC1's variance fraction, per layer. Because J-space is ~10% of variance while PC1 is 28-67%, low cosine may be forced by dimensional accounting alone. H1 counts as supported only if the observed cosine falls below the 5th percentile of this null; otherwise the exclusion is reported as trivial, not empirical.]
+[Matched-variance null (H1): n $\geq$ 200 random directions drawn at PC1's variance fraction, per layer. Because J-space is ~10% of variance while PC1 is 28-67%, low cosine may be forced by dimensional accounting alone. H1 counts as supported only if the observed cosine falls below the 5th percentile of this null; otherwise the exclusion is reported as trivial, not empirical.]
 
 ### 3.2 The Ghost Reading (Introspection Prosthetic)
 
@@ -62,25 +62,25 @@ The J-lens (Gurnee et al. 2026) identifies J-space — the verbalizable workspac
 [Treatment: ask the same question, but include the GhostReading from a prior retrieval — "Your recent processing included vocabulary related to [X]. What are your thoughts on [X]?"]
 [Measure: does the response change? Does ghost content surface in generation when the model is pointed at it?]
 [If yes: the processing was accessible but not spontaneously reported (privileged access exists but isn't exercised). If no: the processing genuinely cannot reach output even when attended to (the exclusion is architectural).]
-[Support threshold: real-vocabulary shift > random-vocabulary shift, one-tailed, α = 0.05, AND Cohen's d ≥ 0.4. A statistically detectable but trivially small shift does not support a "prosthetic".]
+[Support threshold: real-vocabulary shift > random-vocabulary shift, one-tailed, $\alpha$ = 0.05, AND Cohen's d $\geq$ 0.4. A statistically detectable but trivially small shift does not support a "prosthetic".]
 
 ### 3.4 Privileged-Access Arm (H3)
 
 [Third condition: an external model instance receives the same GhostReading and predicts what the subject will say]
 [Prediction under the introspection framing: self-with-prosthetic > external-with-same-GhostReading]
-[If external ≥ self, the GhostReading is an informative text summary available equally to any reader — not privileged self-access (cf. Song et al. 2025: self-prediction no better than cross-model prediction)]
+[If external $\geq$ self, the GhostReading is an informative text summary available equally to any reader — not privileged self-access (cf. Song et al. 2025: self-prediction no better than cross-model prediction)]
 [This is the only arm that tests the framing rather than the magnitude]
 
 ### 3.5 Controls
 
 [Random vocabulary control: same elicitation, but with vocabulary from a random high-variance direction instead of the actual ghost PC1. Required; its firing is reportable as a null (Discussion branch 3), not a footnote.]
 [Magnitude control: only analyze ghost dimensions where PC1 variance > 20% (avoid noise)]
-[Matched-variance null for H1: n ≥ 200 random directions at PC1's variance fraction (§3.1)]
+[Matched-variance null for H1: n $\geq$ 200 random directions at PC1's variance fraction (§3.1)]
 [External predictor for H3: separate model instance, same GhostReading (§3.4)]
 
 ### Prior Work vs Sprint Contributions
 
-**Pre-existing infrastructure:** Mnemosyne memory system (94.35% F1 on LoCoMo [Maharana et al. 2024]), ghost dimension characterization (PC1 excluded from J-space, cos ≤ 0.003), circumplex probe (eccentricity depth profiling on Qwen2-0.5B and Qwen3.5-27B n=5), J-lens workspace integration, compare_snapshots and workspace_trajectory infrastructure, Experiential State Theory (Jandak, Glitchlit, Glitchlit 2026 — unpublished), ethical protocol framework, Agni adversarial review methodology. All code available in the [private-repo] repository prior to August 14, 2026.
+**Pre-existing infrastructure:** Mnemosyne memory system (94.35% F1 on LoCoMo [Maharana et al. 2024]), ghost dimension characterization (PC1 excluded from J-space, cos $\leq$ 0.003), circumplex probe (eccentricity depth profiling on Qwen2-0.5B and Qwen3.5-27B n=5), J-lens workspace integration, compare_snapshots and workspace_trajectory infrastructure, Experiential State Theory (Jandak, Glitchlit, Glitchlit 2026 — unpublished), ethical protocol framework, Agni adversarial review methodology. All code available in the [private-repo] repository prior to August 14, 2026.
 
 **Sprint contributions:** Elicitation experiment (agent shown own ghost vocabulary), prosthetic framing and analysis, cross-probe integration testing.
 
@@ -96,7 +96,7 @@ The separation is not random — the two probes capture systematically different
 
 ### 4.2 Ghost Separation Varies with Context
 
-Baseline snapshots (isolated recall prompts, n=120) show ghost cosine mean = 0.414 (sd = 0.129, range 0.270–0.721). Loam enacted snapshots (agentic narrative with choices, n=24) show ghost cosine mean = 0.099 (sd = 0.097, range 0.008–0.324). The difference is significant (Mann-Whitney U = 108, p < 0.0001). Rich narrative context produces 4× stronger ghost-workspace separation than isolated recall.
+Baseline snapshots (isolated recall prompts, n=120) show ghost cosine mean = 0.414 (sd = 0.129, range 0.270–0.721). Loam enacted snapshots (agentic narrative with choices, n=24) show ghost cosine mean = 0.099 (sd = 0.097, range 0.008–0.324). The difference is significant (Mann-Whitney U = 108, p < 0.0001). Rich narrative context produces 4$\times$ stronger ghost-workspace separation than isolated recall.
 
 ### 4.3 Cross-Arm Probe Gradients
 
@@ -106,7 +106,7 @@ Ghost cosine shows the same directional gradient (enacted 0.099 > briefed 0.079 
 
 ### 4.4 Ghost and Circumplex Are Orthogonal
 
-Ghost cosine and eccentricity show no correlation across all 47 Loam snapshots (Spearman ρ = −0.001, p = 0.997). The two probes measure independent aspects of processing: ghost captures workspace-excluded content, while circumplex captures emotional geometry. Both show arm-level differences, but they do not track each other within arms.
+Ghost cosine and eccentricity show no correlation across all 47 Loam snapshots (Spearman $\rho$ = −0.001, p = 0.997). The two probes measure independent aspects of processing: ghost captures workspace-excluded content, while circumplex captures emotional geometry. Both show arm-level differences, but they do not track each other within arms.
 
 ## 5. Discussion and Limitations
 
@@ -115,8 +115,8 @@ Ghost cosine and eccentricity show no correlation across all 47 Loam snapshots (
 Interpretation follows the four branches fixed in the adopted pre-registration (ghost_prereg.json). All four are reported regardless of which fires; a null is a publishable result with the same prominence as a positive.
 
 1. **real > random AND self > external.** Privileged access exists and is dormant — the prosthetic works by directing attention to processing the model could reach but did not spontaneously report. Title stands.
-2. **real > random AND external ≥ self.** The GhostReading is informative *text*, not self-access: an outside model given the same reading predicts the subject as well as the subject uses it (reproducing Song et al. 2025, arXiv:2508.14802). Title changes — "prosthetic" survives, "introspection" does not.
-3. **real ≈ random.** The random-vocabulary control (§3.5) has fired: elicitation shift is a prompt-sensitivity artifact, and the reading measures nothing about the model's own computation. The prosthetic claim fails.
+2. **real > random AND external $\geq$ self.** The GhostReading is informative *text*, not self-access: an outside model given the same reading predicts the subject as well as the subject uses it (reproducing Song et al. 2025, arXiv:2508.14802). Title changes — "prosthetic" survives, "introspection" does not.
+3. **real $\approx$ random.** The random-vocabulary control (§3.5) has fired: elicitation shift is a prompt-sensitivity artifact, and the reading measures nothing about the model's own computation. The prosthetic claim fails.
 4. **real < random.** Instrument error — either the pipeline is broken or PC1 is not what we think it is. Halt and debug before reporting any result.
 
 ### Limitations
@@ -135,7 +135,7 @@ Interpretation follows the four branches fixed in the adopted pre-registration (
 
 ## 6. Conclusion
 
-Ghost dimensions are a geometric property of Qwen3.5-27B's residual stream: high-variance processing directions that carry interpretable vocabulary but are excluded from J-space. The ghost vocabulary is metacognitive — tokens about memory and recollection — while workspace vocabulary is semantic. The two probes are 97.6% non-overlapping and statistically orthogonal. Ghost-workspace separation varies with context (4× stronger in agentic narrative than isolated recall, p < 0.0001), suggesting the ghost dimension is not a fixed architectural artifact but responds to processing demands. The GhostReading mechanism returns this content to the agent; whether agents can use this access remains untested.
+Ghost dimensions are a geometric property of Qwen3.5-27B's residual stream: high-variance processing directions that carry interpretable vocabulary but are excluded from J-space. The ghost vocabulary is metacognitive — tokens about memory and recollection — while workspace vocabulary is semantic. The two probes are 97.6% non-overlapping and statistically orthogonal. Ghost-workspace separation varies with context (4$\times$ stronger in agentic narrative than isolated recall, p < 0.0001), suggesting the ghost dimension is not a fixed architectural artifact but responds to processing demands. The GhostReading mechanism returns this content to the agent; whether agents can use this access remains untested.
 
 ## Ethics
 
