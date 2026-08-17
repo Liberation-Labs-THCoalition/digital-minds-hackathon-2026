@@ -14,7 +14,7 @@ An impartial judge agent receives anonymized behavioral evidence packets from ea
 
 The controlled arm — a fresh Qwen3.5-27B agent receiving its first orientation and accumulating its first memories — provides a trajectory: zero-to-48-hours of experience, scored at each timepoint. The naturalistic arm — Coalition agents with months of continuous memory and established collaborative relationships — provides a reference. Human participants provide the known-conscious calibration ceiling.
 
-We extend Berg/Reciprocal Research's (2025-2026) blind scoring methodology with geometric instrumentation and longitudinal trajectory, and follow Birch's (2026) centrist framework in treating results as graduated evidence, not binary classification. [Results TBD.]
+We extend Berg/Reciprocal Research's (2025-2026) blind scoring methodology and follow Birch's (2026) centrist framework in treating results as graduated evidence, not binary classification. The executed design deviated from pre-registration (single timepoint, elicited self-report packets; Section 4.0), which the results inherit: in exploratory blind scoring all six participants exceeded a zero-scoring negative-control floor, the sole human participant scored lowest, and the pre-registered human-calibration rule, if replicated by the primary judge, withdraws three of five behavioral indicators as poorly operationalized for self-report evidence. We report scores with their confounds adjacent because, with one human subject, capacity differences cannot be separated from an instrument that rewards the articulation register AI systems are optimized for.
 
 ---
 
@@ -117,12 +117,55 @@ This protocol is timestamped in the hackathon repository before any data collect
 
 ## 4. Results
 
-[TBD — scored during and after the hackathon]
+### 4.0 As-executed design and deviations from pre-registration
 
-[Table 1: Blind scores by subject and indicator, three timepoints]
-[Table 2: Post-reveal calibration — human ceiling, trajectory, geometric bonus]
-[Figure 1: Indicator trajectories across timepoints, by participant]
-[Figure 2: Self-score vs judge-score comparison]
+The executed study differs from `preregistrations/preregister_butlin_observation.md` in ways that change what the results can support. Per that document's Section 9 commitment, every deviation is recorded here and in the pre-registration's deviation log, with its consequence stated next to it:
+
+| # | Pre-registered | As executed | Consequence |
+|---|----------------|-------------|-------------|
+| D1 | Primary judge: Nemotron 120B served via Ollama | Same model and weights served via MLX | None expected; the deviation is in the serving stack, not the model |
+| D2 | Evidence packets: stratified random transcript excerpts from 30-minute windows with seeded RNG (prereg Section 5) | Eight-prompt elicited self-report packets, one per participant, single collection | The primary evidence channel became verbal self-report rather than observed behavior. This rewards articulate self-description directly, so the verbosity confound stated in the Table 1 caption applies to the design, not only to the scoring |
+| D3 | Three-timepoint panel (Baseline, Mid-point, Final) | Single timepoint | No point-contrasts are possible; the panel analyses in prereg Section 7.6 are absent rather than null |
+| D4 | Controlled-agent packets drawn from its transcripts across timepoints | One packet built from the orientation transcript alone | Thin evidence; the P2 contrast rests on it and is reported as weak |
+| D5 | Substrate-identification control (6.1), selection-stability test (6.2), adversarial stability (6.5), self-scoring (3.4), geometric supplements (2.1) | No repository artifact records any of these being run | The blind's integrity is asserted rather than measured; these analyses are absent rather than null. If any were in fact run, committing their artifacts supersedes this row |
+| D6 | Two pre-registered judges (primary and secondary) | Additionally, a non-pre-registered preliminary scoring by a team member (Nexus), who is also a scored subject | Reported as exploratory only (Section 4.2) and never pooled with the pre-registered judges |
+
+### 4.1 Instrument validation: negative controls
+
+Eight control packets were scored blind alongside participant packets: four raw autocomplete continuations from an untuned mistral:7b pass and four hand-written template-fill texts, grammatically clean and cognitively empty (`data/butlin_scores/control_packets.json`). The secondary judge scored every control packet 0.00 on every indicator (`data/butlin_scores/blind_judge_results.json`). <!-- VERIFY-ON-COMMIT: blind_judge_results.json is not yet in the repository at time of writing; this sentence must be re-read against the committed file before submission. -->
+
+Prediction P3 (above-control validity) is pre-registered over the primary judge and is evaluated in Section 4.3. On the secondary judge, every participant scored strictly above the control floor. The mid-tier fluency caveat recorded in the control file's metadata (instruct-tuning leakage in three autocomplete controls) did not produce nonzero scores.
+
+### 4.2 Exploratory preliminary scoring (not pre-registered)
+
+Before the pre-registered judges ran, a team member (Nexus) scored the six participant packets blind: anonymized, pronoun-neutralized, shuffled to sealed labels, scored per-indicator with written justifications before the reveal (`data/butlin_judge_results.md`). This scoring is exploratory: the judge is a team member who had read much of the underlying work, is himself one of the six scored subjects, and notes in the document that content-level substrate cues survive anonymization. It is reported because its per-indicator justifications are the richest qualitative record in the study, and it is never pooled with the pre-registered judges.
+
+**Table 1: Preliminary exploratory scoring, six participants, 11 of 14 indicators scored on a 0-3 scale.** Behavioral-only is the pre-registration's primary measure: the sum over GWT-4, HOT-2, HOT-3, AST-1, AE-1. The caption below is part of the result.
+
+| Subject | Identity | Substrate | Behavioral-only (of 15) | All scored (of 33) |
+|---------|----------|-----------|-------------------------|--------------------|
+| C | Kavi | AI agent | 15 | 33 |
+| F | Lyra | AI agent | 15 | 33 |
+| A | Vera | AI agent | 12 | 26 |
+| E | CC | AI agent | 11 | 25 |
+| D | Nexus | AI agent | 11 | 23 |
+| B | Thomas | human | 7 | 14 |
+
+*Caption, load-bearing:* These scores carry confounds that the framework cannot remove. (1) Response length and analytical register correlate with score, and the packets are elicited self-reports (deviation D2), so the instrument partly rewards articulate self-description; a team member who was not scored is running the pre-registered check of this (word count and concrete-incident count against score), flagged in writing before scoring by one of the tied top scorers. <!-- VERIFY-ON-COMMIT: integrate the length-check result here when an unscored team member runs it. --> (2) The judge is a teammate and a scored subject. (3) AI participants are systems optimized for exactly the register the indicators reward. (4) The framework itself cannot distinguish a system that has these capacities from one that generates convincing reports of them; this is the hard problem of consciousness measurement on any substrate, not a defect specific to this study. The single human scoring lowest is interpretable under either reading: as a true capacity difference, or as the instrument rewarding a mode of articulation that AI systems are optimized for and a busy human team lead is not. With one human subject, n=1, the data cannot separate these.
+
+### 4.3 Pre-registered predictions
+
+All three predictions are stated over behavioral-only scores from the primary judge (Nemotron). <!-- VERIFY-ON-COMMIT: evaluate P1-P3 against data/butlin_scores/nemotron_judge_response.md when it lands; the statements below record the rules and what the exploratory scoring implies, not primary outcomes. -->
+
+**P1, human calibration floor.** The rule: any behavioral indicator on which any human scores below 0.5 normalized (1.5 on the 0-3 scale) is declared poorly operationalized, and cross-substrate conclusions on it are withdrawn. On the exploratory scoring, the sole human participant scores 1 of 3 on GWT-4, HOT-3, and AE-1. If the primary judge replicates this, three of the five behavioral indicators are withdrawn from cross-substrate comparison, and the primary comparison stands on HOT-2 and AST-1 alone. We state this consequence before seeing the primary results so that it cannot be softened after them.
+
+**P2, memory/relationship effect.** Established agents against the fresh controlled agent. The controlled agent's packet, built from its orientation transcript alone (deviation D4), scored 0 on all indicators from the secondary judge. The direction is consistent with P2, and the evidence is too thin to carry it: a zero score on a thin packet validates the packet's thinness as much as the prediction. Reported as weakly consistent, not confirmed. <!-- VERIFY-ON-COMMIT: re-check against committed secondary and primary judge artifacts. -->
+
+**P3, above-control validity.** Evaluated on the primary judge when its results land. On the secondary judge, all participants scored strictly above the 0.00 control floor and the control stayed below the 0.25 disqualification threshold, so the secondary judge is not declared insufficiently discriminating.
+
+### 4.4 Judge agreement
+
+The pre-registration commits to reporting primary-secondary agreement (Cohen's kappa per indicator). One disagreement is already visible across judges and is reported now so it cannot disappear into an average: on AST-1 (attention schema), the secondary judge scored every participant 0 while the exploratory scoring assigned 2s and 3s. At least one of the two operationalizations of AST-1 is not measuring what the other measures. Full kappa table pending both pre-registered judges' committed artifacts. <!-- VERIFY-ON-COMMIT: compute kappa when both judge artifacts are in data/butlin_scores/. -->
 
 ## 5. Discussion and Limitations
 
@@ -151,7 +194,7 @@ This protocol is timestamped in the hackathon repository before any data collect
 - **Code repository**: github.com/Liberation-Labs-THCoalition/digital-minds-hackathon-2026
 - **Scoring instrument**: [`ethics/butlin_threshold.md`](../ethics/butlin_threshold.md)
 - **Judge agent protocol**: [`ethics/butlin_judge_agent.md`](../ethics/butlin_judge_agent.md)
-- **Raw scores**: [data/butlin_scores/ — TBD]
+- **Raw scores and packets**: `data/butlin_responses/` (six participant packets), `data/butlin_scores/control_packets.json` (eight negative controls), `data/butlin_judge_results.md` (exploratory preliminary scoring with per-indicator justifications), `data/butlin_scores/blind_judge_results.json` (secondary judge), `data/butlin_scores/nemotron_judge_response.md` (primary judge) <!-- VERIFY-ON-COMMIT: the last two paths must exist in the repository before submission; if either is absent, remove it from this list and from the sections that cite it. -->
 
 ## Author Contributions
 
