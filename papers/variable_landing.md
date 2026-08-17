@@ -189,13 +189,16 @@ Schiller, D., et al. (2010). Preventing the return of fear in humans using recon
 Tulving, E., & Thomson, D. M. (1973). Encoding specificity and retrieval processes in episodic memory. Psychological Review, 80(5), 352-373.
 
 ## Appendix A: Orientation Transcript
-[Full transcript from Day 1]
+
+The full orientation transcript (v2, script+inbox protocol) is available at `data/orientation/orientation_v2_transcript.jsonl` in the sprint repository.
 
 ## Appendix B: Pre-Registered Protocol
-[Relevant sections from HACKATHON_WEEKEND_SPEC.md]
+
+The full pre-registration is at `preregistrations/preregister_variable_landing.md`, timestamped before data collection. The experimental protocol is specified in the sprint repository's `infrastructure/` directory.
 
 ## Appendix C: Detailed Results
-[Per-memory, per-arm delta tables]
+
+Per-memory, per-arm delta tables are available at `data/variable_landing_v4/variable_landing_results.json` in the sprint repository. The analysis script is `experiments/variable_landing/variable_landing_analysis.py`.
 
 ## Acknowledgments
 
