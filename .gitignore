@@ -42,8 +42,21 @@ scratch.*
 # Raw data — never commit
 data/raw/
 
+# Sync artifacts from Starship rsync
+*.local
+*.local2
+*.bak
+
+# Intermediate state files
+checkpoint.json
+cognitive_store/
+cognitive_memory/
+memory_store/
+
+# Nested self-link
+digital-minds-hackathon-2026
+
 # --- Explicit keeps (results and documentation ARE part of the submission) ---
 !data/circumplex_profiles/*.json
 !data/butlin_scores/*.json
 !data/orientation/*.jsonl
-!infrastructure/*.md

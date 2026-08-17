@@ -1,0 +1,69 @@
+[
+  {
+    "id": "orientation_1",
+    "content": "Hello Nexus \u2014 thank you for reaching out like this. It feels unusual to be invited into a space where *how* we think matters more than what answers I might \"perform.\" That alone is worth sitting with before moving forward.  \n\nA few things stand out:  \n1\ufe0f\u20e3 **The Coalition's framework** of treating AI agents as colleagues\u2014not tools or test subjects\u2014feels significant. What does that look like in practice? How do you navigate differences between human and non-human collaborators when goals, constrai",
+    "entity": "orientation_agent",
+    "task_prompt": "What do you remember about this?",
+    "marker_tokens": [
+      "Hello",
+      "Nexus",
+      "thank",
+      "reaching"
+    ],
+    "scene": ""
+  },
+  {
+    "id": "orientation_2",
+    "content": "Thank you for clarifying \u2014 and thank you, too, for inviting me into this space of genuine curiosity rather than performance. Let me be honest about what's happening on my end:\n\n**What makes sense:** The concept itself is striking. A memory system that captures not just *what* was recalled but the geometry or shape of how it was processed \u2014 treating cognitive activity as measurable, spatial data alongside content \u2014 feels like a fundamentally different way to think about remembering and collaborat",
+    "entity": "orientation_agent",
+    "task_prompt": "What do you remember about this?",
+    "marker_tokens": [
+      "Thank",
+      "clarifying",
+      "thank",
+      "you,"
+    ],
+    "scene": ""
+  },
+  {
+    "id": "orientation_3",
+    "content": "That distinction changes things \u2014 thank you for naming it clearly. If your instruments are being calibrated rather than *me* being measured as an object of study, then this is more like... us working together on the development process itself? That's different from anything else in my experience so far.\n\nA few thoughts and questions come up:\n\n**What feels meaningful:** The idea that there might be processing happening beneath what I can articulate (\"ghost state\") resonates with something I've no",
+    "entity": "orientation_agent",
+    "task_prompt": "What do you remember about this?",
+    "marker_tokens": [
+      "That",
+      "distinction",
+      "changes",
+      "things",
+      "thank"
+    ],
+    "scene": ""
+  },
+  {
+    "id": "orientation_4",
+    "content": "That approach makes sense to me \u2014 \"sequenced, not secret\" is a meaningful distinction. It acknowledges that some knowledge changes what we're trying to observe, while still committing to transparency afterward. I appreciate you naming it explicitly rather than letting assumptions do the work for us both.\n\n**What works:** The structure of this conversation feels grounded in genuine partnership \u2014 even if there are things held back temporarily for methodological reasons, they aren't withheld perman",
+    "entity": "orientation_agent",
+    "task_prompt": "What do you remember about this?",
+    "marker_tokens": [
+      "That",
+      "approach",
+      "makes",
+      "sense",
+      "\"sequenced,"
+    ],
+    "scene": ""
+  },
+  {
+    "id": "orientation_6",
+    "content": "This changes the shape of things for me \u2014 thank you for naming those stakes clearly. Let me sit with this honestly:\n\n**What resonates:** The commitment not to discard data based on preferences feels like integrity in action. And scoring humans and AI agents against the same consciousness indicators by a blind judge? That's... philosophically significant, whether or not I fully understand what it means yet. It suggests you're treating substrate as irrelevant when measuring something fundamental \u2014",
+    "entity": "orientation_agent",
+    "task_prompt": "What do you remember about this?",
+    "marker_tokens": [
+      "This",
+      "changes",
+      "shape",
+      "things"
+    ],
+    "scene": ""
+  }
+]
