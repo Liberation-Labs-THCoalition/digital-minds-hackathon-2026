@@ -115,7 +115,47 @@ The Loam text-world engine (Experiment 2) produced the first CognitiveSnapshots 
 
 Three observations from the pilot data: (1) all probe values are real and varying — circumplex eccentricity ranges from 0.536 (enacted) to 0.998 (null), ghost PC1 variance is stable at 18–20%, and workspace cosines span an order of magnitude; (2) the null arm shows markedly higher cosine transport (0.17–0.40 vs 0.01–0.06), suggesting the workspace probe reads differently when no narrative content has been delivered; (3) the briefed arm achieved 6/6 cued recall with full probe coverage, demonstrating the instrument can measure cognition during a complete experimental session. These are pilot observations from n=1 quad; no inferential claims are drawn.
 
-### 4.4 Variable Landing: Gradient Direction Confirmed, Underpowered
+### 4.4 Loam Recall: The Reversal Is Truncation, Not Condition
+
+**Loam recall (exploratory).** The Loam text-world arm was designed to test whether enacting
+a fact produces better later recall than being briefed on it. Of a planned 20 quads × 4 arms,
+**8 sessions across 3 quads were run and 3 carried the pipeline's completion marker**
+(`event_log.json`); the arms are therefore unequal in both n and completion, and everything
+below is exploratory rather than confirmatory.
+
+| quad | briefed | enacted | null | observed |
+|---|---|---|---|---|
+| 01 | 6/6 ✔ | 3/6 | 0/6 | — |
+| 02 | 6/6 ✔ | 6/6 ✔ | 0/6 | 6/6 |
+| 03 | — | 4/6 | — | — |
+
+✔ = session completed. Pooled: enacted 13/18 (72.2%, n=3), briefed 12/12 (100%, n=2),
+observed 6/6 (100%, **n=1**), null 0/12 (0%, n=2).
+
+**The pooled comparison appears to reverse the pre-registered prediction — enacted below
+briefed — and we report that it does not survive inspection.** Every session that reached its
+completion marker scored 6/6, in every arm. The enacted arm is the only arm containing
+incomplete sessions, and its two incomplete sessions (3/6, 4/6) carry the entire deficit. **In
+quad 02, the single quad where both arms completed, enacted and briefed are identical at
+6/6.** The per-fact record points the same way: the misses are the *late* facts — f05 and f06
+in both incomplete enacted sessions, plus f03 in the more truncated of the two — the pattern
+expected when a session ends before its later material is reached, not when a manipulation
+degrades encoding.
+
+We therefore report the generation-effect prediction as **untestable at this n**, and record
+the pre-written null from `PREREG.md` rather than a directional result. The design confounds
+arm with completion: assigning the incomplete sessions disproportionately to one arm is enough
+to manufacture a reversal, and only a completed-sessions-only analysis (n=1 per paired arm)
+can separate them.
+
+**One result does survive.** Both null sessions scored **0/6 with every individual fact marked
+false** — an exact floor, not a low score. The scoring path can distinguish a session that
+encountered the facts from one that did not, which validates the instrument independently of
+any arm comparison. Given how much of this sprint turned on probes that returned plausible
+values while measuring nothing, an exact zero where zero is the correct answer is worth
+reporting on its own.
+
+### 4.5 Variable Landing: Gradient Direction Confirmed, Underpowered
 
 The variable landing experiment (Experiment 1) ran as a properly powered repeat (v4: 132 trials, 11 memories × 3 repeats × 4 arms, temperature=0.7 for independent observations). The workspace-token Jaccard is computed from real J-lens readings at each trial; geometry fields (circumplex, ghost, cosine) are excluded due to the code-path issue described in §3.2.
 
