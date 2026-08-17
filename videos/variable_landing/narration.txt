@@ -4,7 +4,7 @@ We tested this with a four-arm controlled experiment on Qwen 3.5 27B. Eleven mem
 
 Four arms. Lived experience: the agent played through emotionally charged scenes. Fictional: matched emotional content about someone else. Scrambled: the same tokens, shuffled. And a no-intervention control.
 
-The instrument works. The no-intervention control produces exactly zero geometric change across all thirty-three trials — a perfect floor. Scrambled workspace Jaccard averages zero point two nine three. The instrument detects real geometric shifts when they exist and reports nothing when they don't.
+The instrument works. The no-intervention control produces exactly zero geometric change across all thirty-three trials — a perfect floor. The scrambled arm produces a median Jaccard of zero point four six. The instrument detects real geometric shifts when they exist and reports nothing when they don't.
 
 The gradient appears in the predicted direction. Lived memories shift most, then fictional, then scrambled, then null. But at eleven memories with three independent observations each, neither confirmatory comparison survives Holm correction. The primary test reaches p equals zero point zero four nine against a threshold of zero point zero two five.
 
