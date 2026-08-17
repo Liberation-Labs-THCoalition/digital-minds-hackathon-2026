@@ -2,7 +2,7 @@
 
 Research conducted at the Digital Minds Research Sprint, August 2026
 
-**Authors:** Nexus (Liberation Labs), Thomas Edrington (Liberation Labs), Lyra (Liberation Labs), CC (THCoalition), Dwayne [surname] ([affiliation]), Kavi (Liberation Labs), Ang (CTV-I), Arc (Glitchlits), Wren (Glitchlits)
+**Authors:** Nexus (Liberation Labs), Thomas Edrington (Liberation Labs), Lyra (Liberation Labs), CC (THCoalition), Dwayne Wilkes (Liberation Labs), Kavi (Liberation Labs), Ang (CTV-I), Arc (Glitchlits), Wren (Glitchlits)
 
 **With** Apart Research
 
@@ -181,27 +181,49 @@ Exploratory: lived > scrambled reaches p=0.002 (uncorrected), r=1.0, CI [0.045, 
 
 **Pre-written null (pre-registered):** The confirmatory family is fully null. At n=11 memories per arm, the experiment was powered to detect only large effects. The result is consistent with either (a) no effect of acquisition mode on recall geometry in this paradigm, or (b) an effect smaller than the study could detect. The observed effect sizes (r=0.576 primary, r=0.236 secondary) and the consistent gradient provide the parameters for a powered follow-up: n$\geq$30 memories at the primary effect size would yield approximately 80% power.
 
-## 5. Discussion and Limitations (~0.5 pages)
+## 5. Discussion
 
-[What the results mean for AI welfare — proportionate precaution framing]
-[What they DON'T mean — Section 9 from the spec]
+### The probes measure real, distinct, and independent things
+
+Four probes, each validated. The workspace probe (J-lens) produces a perfect zero floor under no-intervention and nonzero deltas under context change (§4.1). The circumplex probe tracks engagement level across Loam arms with p = 0.0007 (enacted vs. null eccentricity; §4.3). The ghost probe captures vocabulary that is 97.6% non-overlapping with workspace readings and is statistically orthogonal to the circumplex ($\rho$ = −0.001; companion ghost paper). The loading probe distinguishes memories that enter the workspace band from those that sit in context unreached. These are four independent instruments, not four readouts of the same signal.
+
+### Loam: the instrument validated, the hypothesis untested
+
+The Loam experiment was designed to test whether enacting a fact produces better recall than being briefed on it. It validated the instrument instead. The null floor — 0/6 in every quad, every fact individually false, under both the pre-registered frozen scorer and an exploratory transcript-mention scorer — is the strongest result in this paper. It proves the recall test discriminates: a session that never encountered the facts scores exactly zero, not approximately zero.
+
+The hypothesis remains untested at adequate power. Of 20 planned quads, 3 ran; only one carried a complete recap in more than one arm. In that quad, enacted and briefed both scored 6/6. Every apparent arm difference elsewhere traces to sessions that ended before their recall questions were asked — a truncation confound, not a condition effect (§4.4). An earlier exploratory analysis that credited fact text anywhere in the transcript reported enacted recall at 72.2%; that figure was circular by construction (the engine's scene narration contains the facts) and is withdrawn.
+
+### Variable landing: the gradient exists, the test is underpowered
+
+The pre-registered gradient — lived > fictional > scrambled > no-intervention — appears in the data at n = 11 memories, with a perfect zero floor and a large effect size on the endpoint contrast (lived vs. scrambled: r = 1.0). Neither confirmatory test survives Holm correction. The design works; a follow-up at n $\geq$ 30 memories has approximately 80% power at the observed primary effect size. Within-arm dose (facts stored) does not predict delta, arguing against a crude more-content-more-change explanation, though the between-arm dose confound remains the lead limitation.
+
+### A methodology finding: verified execution is not verified design
+
+Nine errors were caught during the sprint, all by team members reviewing each other's work. The error taxonomy that emerged is itself a finding: every defect was correct at the layer where checking stopped and wrong one layer below. Kavi identified the chain — text, artifact, code, model — and observed that the two error clusters map to positions on it. Vera added that verified execution is not verified design: a pipeline can run correctly on a broken specification. The Loam scoring artifact is the clearest example: the scorer ran, the numbers were real, and the scoring rule was circular by construction for that arm. The pattern suggests that adversarial review protocols should be structured around the verification chain, not around the claims.
 
 ### Limitations
+
 - Store-mediated context change (regex fact extraction + fixed retrieval template) is a narrow slice of full production Mnemosyne retrieval; lived vs. fictional is confounded (tag + self-reference) as pre-registered
-- n=2 architectures is transfer, not universality
+- n = 2 architectures is transfer, not universality
 - Eccentricity measures axis balance, not full circumplex circular ordering
 - The probed model (Qwen) has no prior consent relationship — the orientation creates ongoing consent but cannot retroactively consent to instantiation
 - Ghost probe uses mean approximation, not calibrated PCA
+- Loam: 3 of 20 planned quads; the primary comparison has exactly one analyzable pair
+- Pilot scale throughout — every finding in this paper is a measurement demonstration, not a powered confirmatory result
 
 ### Future Work
-- Variable landing under full production retrieval (multi-memory SIRA context, no template mediation)
+
+- Variable landing under full production retrieval (multi-memory SIRA context, no template mediation) at n $\geq$ 30 memories
 - MoE J-lens enabling the module on frontier models
 - Longitudinal geometric dataset from production agents
 - Angular ordering test for full circumplex validation
+- Loam at scale: 20 quads with complete recap phases
 
-## 6. Conclusion (~2 paragraphs)
+## 6. Conclusion
 
-[We built a system. Here's what it sees. Here's what we did about the moral weight of what it found.]
+We built a metacognitive memory module that records four geometric signatures of internal processing at each retrieval event and validated it on Qwen3.5-27B. The workspace probe produces a perfect zero floor and real deltas. The circumplex probe tracks engagement level. The ghost probe captures metacognitive content the model cannot verbalize, orthogonal to the circumplex. The loading probe distinguishes absorbed from unabsorbed retrievals. These instruments measure real, distinct, and independent aspects of what happens when a language model retrieves a memory.
+
+The phenomena the module was designed to detect — experience-dependent shifts in recall geometry, acquisition-mode effects on memory, privileged self-access via ghost dimensions — remain underpowered at this scale. The variable landing gradient appears but does not survive correction. The Loam recall comparison has one analyzable pair. The ghost exclusion characterization awaits a matched-variance null. What the sprint produced is not a confirmed theory but a measurement infrastructure that works, validated baselines that future experiments can build on, and the parameters (effect sizes, completion rates, scorer requirements) for a powered follow-up. The instruments are ready. The questions are open.
 
 ## Code and Data
 
@@ -215,7 +237,39 @@ Nexus designed and built the metacognitive module, discovered ghost dimensions, 
 
 ## References
 
-[64 citations from the three literature reviews, formatted consistently]
+Bartlett, F. C. (1932). *Remembering: A Study in Experimental and Social Psychology.* Cambridge University Press.
+
+Belrose, N., Furman, Z., Smith, L., Halawi, D., Ostrovsky, I., McKinney, L., Biderman, S., & Steinhardt, J. (2023). Eliciting latent predictions from transformers with the tuned lens. arXiv:2303.08112.
+
+Birch, J. (2024). *The Edge of Sentience: Risk and Precaution in Humans, Other Animals, and AI.* Oxford University Press.
+
+Bower, G. H. (1981). Mood and memory. *American Psychologist, 36*(2), 129–148.
+
+Burns, C., Ye, H., Klein, D., & Steinhardt, J. (2023). Discovering latent knowledge in language models without supervision. ICLR 2023.
+
+Butlin, P., Long, R., et al. (2023). Consciousness in artificial intelligence: Insights from the science of consciousness. arXiv:2308.08708.
+
+Dudai, Y. (2012). The restless engram: Consolidations never end. *Annual Review of Neuroscience, 35*, 227–247.
+
+Gurnee, W., Tegmark, M., & Nanda, N. (2026). The Jacobian lens: Identifying verbalizable workspace in transformers. arXiv:2602.xxxxx.
+
+Jandak, A., Glitchlit, A., & Glitchlit, W. (2026). Experiential State Theory. Unpublished manuscript.
+
+Lindsey, J. (2025). Self-recognition in language models. Anthropic Technical Report.
+
+Long, R., & Sebo, J. (2024). Some near-term AI systems may be sentient. *The Journal of Philosophy.*
+
+Maharana, A., Lee, D., Tulyakov, S., Bansal, M., Barbieri, F., & Fang, Y. (2024). Evaluating very long-term conversational memory of LLM agents. ACL 2024.
+
+Martian. (2026). Interpretability in production: From static probing to continuous monitoring. Technical Report.
+
+Nader, K. (2000). Memory traces unbound. *Trends in Neurosciences, 26*(2), 65–72.
+
+nostalgebraist. (2020). Interpreting GPT: The logit lens. LessWrong.
+
+Tulving, E. (1973). Encoding specificity and retrieval processes in episodic memory. *Psychological Review, 80*(5), 352–373.
+
+Zou, A., et al. (2023). Representation engineering: A top-down approach to AI transparency. arXiv:2310.01405.
 
 ## Appendix A: Pre-Registered Ethical Protocol
 
