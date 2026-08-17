@@ -44,7 +44,7 @@ This work connects to three Digital Minds tracks: Track 2 (valence signals — t
 
 **Memory systems.** Current systems such as Mem0 track retrieval accuracy — whether the right memory was found — but not internal state during retrieval. No prior system records geometric signatures of processing alongside memory operations in a production agent.
 
-**Our prior work.** Ghost dimensions (PC1 of the residual stream excluded from J-space, cosine $\leq$ 0.003 at mid-network layers) and the bus/coupling finding (content-mode and inference-mode emotion share a subspace, cosine 0.83-0.87) establish the geometric vocabulary this module measures.
+**Our prior work.** Ghost dimensions (PC1 of the residual stream with near-zero J-space cosine at mid-network layers, $\leq$ 0.003 — a regime the sprint's H1 null later showed is typical of high-variance directions; companion paper §5) and the bus/coupling finding (content-mode and inference-mode emotion share a subspace, cosine 0.83-0.87) establish the geometric vocabulary this module measures.
 
 **Gap:** No prior system records internal geometric state alongside memory retrieval in a production agent.
 
@@ -92,7 +92,7 @@ The probed system is an agent, and the experiment may generate markers relevant 
 
 ### Prior Work vs Sprint Contributions
 
-**Pre-existing infrastructure:** Mnemosyne memory system (94.35% F1 on LoCoMo [Maharana et al. 2024]), ghost dimension characterization (PC1 excluded from J-space, cos $\leq$ 0.003), circumplex probe (eccentricity depth profiling on Qwen2-0.5B and Qwen3.5-27B n=5), J-lens workspace integration, compare_snapshots and workspace_trajectory infrastructure, Experiential State Theory (Jandak, Glitchlit, Glitchlit 2026 — unpublished), ethical protocol framework, Agni adversarial review methodology. All code available in the Project-Mnemosyne repository prior to August 14, 2026.
+**Pre-existing infrastructure:** Mnemosyne memory system (94.35% F1 on LoCoMo [Maharana et al. 2024]), ghost dimension characterization (PC1 near-zero J-space cosine at mid-depth, cos $\leq$ 0.003; the sprint H1 null later showed this regime is typical of high-variance directions), circumplex probe (eccentricity depth profiling on Qwen2-0.5B and Qwen3.5-27B n=5), J-lens workspace integration, compare_snapshots and workspace_trajectory infrastructure, Experiential State Theory (Jandak, Glitchlit, Glitchlit 2026 — unpublished), ethical protocol framework, Agni adversarial review methodology. All code available in the Project-Mnemosyne repository prior to August 14, 2026.
 
 **Sprint contributions:** Integration of four probes into unified CognitiveSnapshot pipeline, end-to-end validation with oriented agent, demonstration of metacognitive retrieval during live agent operation, full experimental data collection.
 
@@ -226,7 +226,7 @@ Nine errors were caught during the sprint, all by team members reviewing each ot
 
 We built a metacognitive memory module that records four geometric signatures of internal processing at each retrieval event and validated it on Qwen3.5-27B. The workspace probe produces a perfect zero floor and real deltas. The circumplex probe tracks engagement level. The ghost probe captures metacognitive content the model cannot verbalize, orthogonal to the circumplex. The loading probe distinguishes absorbed from unabsorbed retrievals. These instruments measure real, distinct, and independent aspects of what happens when a language model retrieves a memory.
 
-The phenomena the module was designed to detect — experience-dependent shifts in recall geometry, acquisition-mode effects on memory, privileged self-access via ghost dimensions — remain underpowered at this scale. The variable landing gradient appears but does not survive correction. The Loam recall comparison has one analyzable pair. The ghost exclusion characterization awaits a matched-variance null. What the sprint produced is not a confirmed theory but a measurement infrastructure that works, validated baselines that future experiments can build on, and the parameters (effect sizes, completion rates, scorer requirements) for a powered follow-up. The instruments are ready. The questions are open.
+The phenomena the module was designed to detect — experience-dependent shifts in recall geometry, acquisition-mode effects on memory, privileged self-access via ghost dimensions — remain underpowered at this scale. The variable landing gradient appears but does not survive correction. The Loam recall comparison has one analyzable pair. The matched-variance null, run late in the sprint, showed the ghost cosine regime is typical of high-variance directions rather than an exclusion effect (companion paper §5). What the sprint produced is not a confirmed theory but a measurement infrastructure that works, validated baselines that future experiments can build on, and the parameters (effect sizes, completion rates, scorer requirements) for a powered follow-up. The instruments are ready. The questions are open.
 
 ## Code and Data
 
