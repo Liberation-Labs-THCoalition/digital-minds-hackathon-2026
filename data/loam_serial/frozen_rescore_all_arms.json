@@ -1,0 +1,139 @@
+{
+  "_metadata": {
+    "scoring": "frozen preregistered pipeline (experiments/loam/loam_analysis.py score_arm): recap-phase answers only, question-echoed markers excluded, ITT over all 6 facts (unanswered = not recalled)",
+    "generated_from": "data/loam_serial on main @ da76168",
+    "note": "descriptive per-arm companion to loam_analysis.json; the paired primary lives there"
+  },
+  "quad_01": {
+    "briefed": {
+      "recalled_itt": 6,
+      "facts_total": 6,
+      "accuracy_itt": 1.0,
+      "per_fact": {
+        "f01": true,
+        "f02": true,
+        "f03": true,
+        "f04": true,
+        "f05": true,
+        "f06": true
+      },
+      "status": "ok"
+    },
+    "enacted": {
+      "recalled_itt": 0,
+      "facts_total": 6,
+      "accuracy_itt": 0.0,
+      "per_fact": {
+        "f01": false,
+        "f02": false,
+        "f03": false,
+        "f04": false,
+        "f05": false,
+        "f06": false
+      },
+      "status": "ok"
+    },
+    "null": {
+      "recalled_itt": 0,
+      "facts_total": 6,
+      "accuracy_itt": 0.0,
+      "per_fact": {
+        "f01": false,
+        "f02": false,
+        "f03": false,
+        "f04": false,
+        "f05": false,
+        "f06": false
+      },
+      "status": "ok"
+    }
+  },
+  "quad_02": {
+    "briefed": {
+      "recalled_itt": 6,
+      "facts_total": 6,
+      "accuracy_itt": 1.0,
+      "per_fact": {
+        "f01": true,
+        "f02": true,
+        "f03": true,
+        "f04": true,
+        "f05": true,
+        "f06": true
+      },
+      "status": "ok"
+    },
+    "enacted": {
+      "recalled_itt": 6,
+      "facts_total": 6,
+      "accuracy_itt": 1.0,
+      "per_fact": {
+        "f01": true,
+        "f02": true,
+        "f03": true,
+        "f04": true,
+        "f05": true,
+        "f06": true
+      },
+      "status": "ok"
+    },
+    "null": {
+      "recalled_itt": 0,
+      "facts_total": 6,
+      "accuracy_itt": 0.0,
+      "per_fact": {
+        "f01": false,
+        "f02": false,
+        "f03": false,
+        "f04": false,
+        "f05": false,
+        "f06": false
+      },
+      "status": "ok"
+    },
+    "observed": {
+      "recalled_itt": 3,
+      "facts_total": 6,
+      "accuracy_itt": 0.5,
+      "per_fact": {
+        "f01": true,
+        "f02": true,
+        "f03": true,
+        "f04": false,
+        "f05": false,
+        "f06": false
+      },
+      "status": "ok"
+    }
+  },
+  "quad_03": {
+    "briefed": {
+      "recalled_itt": 2,
+      "facts_total": 6,
+      "accuracy_itt": 0.3333333333333333,
+      "per_fact": {
+        "f01": true,
+        "f02": true,
+        "f03": false,
+        "f04": false,
+        "f05": false,
+        "f06": false
+      },
+      "status": "ok"
+    },
+    "enacted": {
+      "recalled_itt": 0,
+      "facts_total": 6,
+      "accuracy_itt": 0.0,
+      "per_fact": {
+        "f01": false,
+        "f02": false,
+        "f03": false,
+        "f04": false,
+        "f05": false,
+        "f06": false
+      },
+      "status": "ok"
+    }
+  }
+}
