@@ -264,7 +264,7 @@ Belrose, N., Furman, H., Smith, B., Halawi, D., Ostrovsky, I., McKinney, L., Bid
 
 Chaudhari, M., et al. (2026). MoE Lens — An Expert Is All You Need. arXiv:2603.05806.
 
-Gurnee, W., et al. (2026). The Jacobian lens: identifying what transformers can verbalize. [J-lens reference].
+Gurnee, W., et al. (2026). The Jacobian lens: identifying what transformers can verbalize. Manuscript in preparation.
 
 Lu, Y., Modarressi, A., Liu, Y., & Schutze, H. (2026). Expert-Aware Causal Tracing of Factual Recall in Sparse MoE Language Models. arXiv:2606.03780.
 

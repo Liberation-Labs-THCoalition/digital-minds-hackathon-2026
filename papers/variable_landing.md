@@ -6,7 +6,7 @@ Research conducted at the Digital Minds Research Sprint, August 2026
 
 **With** Apart Research
 
-## Abstract (~200 words)
+## Abstract
 
 Neuroscience has established that memories are reconstructed, not replayed — the subject's state at retrieval modulates what is retrieved (Nader 2000, Tulving 1973). We test whether this principle extends to AI systems: does the geometric signature of recalling the same memory change when the system has accumulated experience between encoding and retrieval?
 
@@ -152,7 +152,7 @@ The ethical protocol — orientation with ongoing consent, prediction withholdin
 ## Code and Data
 
 - **Code repository**: github.com/Liberation-Labs-THCoalition/digital-minds-hackathon-2026
-- **Data/Datasets**: [Zenodo DOI TBD]
+- **Data/Datasets**: Available at the project repository
 - **Pre-registered protocol**: preregistrations/preregister_variable_landing.md (design v4, frozen 2026-08-14 before data collection; deviations logged in an appended section, never edited into the body)
 
 ## Author Contributions

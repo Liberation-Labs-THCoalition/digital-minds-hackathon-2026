@@ -9,7 +9,7 @@ Research conducted at the Digital Minds Research Sprint, August 2026
 
 **Fiscal sponsor:** THCoalition. (Fiscal sponsorship is not an institutional affiliation and is listed here rather than against any author.)
 
-## Abstract (~200 words)
+## Abstract
 
 Transformer language models learn valence–arousal geometry consistent with Russell's
 circumplex. We ask a narrower question with a control the prior work lacks: **how much of a
@@ -65,7 +65,7 @@ removing them would hide what this study set out to do — but nothing in §4 re
 
 **Introspection and self-report reliability:** arXiv:2603.18893 (numeric self-reports vs probe-defined internal directions — the methodological precedent for §3.6), arXiv:2512.12411 (models detect internal perturbations unreliably and incompletely), arXiv:2509.07961 (verbal preference reports vs choice behavior as welfare proxies)
 
-**Our novel angle:** Eccentricity as metric (axis balance, not just presence), J-space decomposition (workspace vs ghost fraction), bus/coupling finding (content + inference emotion share subspace, cos 0.83-0.87)
+**Our novel angle:** Eccentricity as metric (axis balance, not just presence), J-space decomposition (workspace vs ghost fraction), bus/coupling finding (content and inference emotion directions share subspace structure; pre-sprint measurement, not replicated in this study)
 
 **Cross-architecture:** Huh et al. 2024 (Platonic Representation Hypothesis), Huang et al. 2025 (linear cross-model transfer), Agarwal 2026 (cross-architecture steering transfer validates above 1.7B)
 
@@ -439,7 +439,7 @@ Prior work shows valence directions exist and transfer. We add a control those s
 - **Analysis** (every number in §4): `analysis/circumplex_summary.py`, this repository. Run from the repo root; reads only the four committed profiles.
 - **Data**: `data/circumplex_profiles/*.json` (four files, committed).
 - **Upstream probe**: github.com/Liberation-Labs-THCoalition/[private-repo] (`circumplex_probe.py`) — prior infrastructure, not the code path used here.
-- **Archival DOI**: [Zenodo DOI TBD]
+- **Archival DOI**: Available at the project repository
 
 ## Author Contributions
 

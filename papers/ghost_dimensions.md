@@ -10,7 +10,7 @@ Research conducted at the Digital Minds Research Sprint, August 2026
 
 Track 3 asks whether models have privileged access to their own internal states. We report a geometric finding and its characterization. In Qwen3.5-27B, PC1 of the residual stream shows near-zero cosine with J-space (the verbalizable workspace) at mid-network layers ($\leq$ 0.003 at L18-L35). A matched-variance null (200 random directions per layer) confirms this is generic: random directions show the same low coupling. The "ghost exclusion" is a property of the mid-network depth regime, not of PC1 specifically.
 
-Across 171 probe snapshots (51 from agentic narrative sessions, 120 from baselines), we find that ghost and workspace probes measure genuinely distinct content: 95.5% of ghost vocabulary tokens never appear in workspace readings. The ghost vocabulary is metacognitive — dominated by tokens about memory itself (`memories`, `回忆`/recollection, `记忆`/memories) — while workspace tokens carry scene-relevant semantics. Ghost-workspace separation varies with context: agentic narrative produces significantly lower ghost cosine (0.099) than isolated recall baselines (0.414, p < 0.0001), and ghost and circumplex probes are orthogonal ($\rho$ = $-$0.001, p = 0.997). We also report an introspection prosthetic (GhostReading) that returns ghost content to the agent. The elicitation experiment testing whether agents can use this access was not executed during the sprint; the characterization and probe separation findings stand independently.
+Across 167 probe snapshots (47 from agentic narrative sessions, 120 from baselines), we find that ghost and workspace probes measure genuinely distinct content: 95.5% of ghost vocabulary tokens never appear in workspace readings. The ghost vocabulary is metacognitive — dominated by tokens about memory itself (`memories`, `回忆`/recollection, `记忆`/memories) — while workspace tokens carry scene-relevant semantics. Ghost-workspace separation varies with context: agentic narrative produces significantly lower ghost cosine (0.099) than isolated recall baselines (0.414, p < 0.0001), and ghost and circumplex probes are orthogonal ($\rho$ = $-$0.001, p = 0.997). We also report an introspection prosthetic (GhostReading) that returns ghost content to the agent. The elicitation experiment testing whether agents can use this access was not executed during the sprint; the characterization and probe separation findings stand independently.
 
 ---
 
@@ -26,7 +26,7 @@ We built a system that shows the model what its ghost dimensions carry: the Ghos
 
 1. Characterization of mid-network J-space coupling in Qwen3.5-27B: near-zero cosine ($\leq$ 0.003) between residual-stream PC1 and J-space at L18-L35, confirmed by matched-variance null (200 directions, 5 layers) as generic to the depth regime rather than specific to PC1.
 
-2. Ghost vocabulary analysis across 171 snapshots: ghost content is metacognitive (tokens about memory itself), workspace content is semantic (scene-relevant), and the two are 95.5% non-overlapping.
+2. Ghost vocabulary analysis across 167 snapshots: ghost content is metacognitive (tokens about memory itself), workspace content is semantic (scene-relevant), and the two are 95.5% non-overlapping.
 
 3. Context-dependent ghost separation: agentic narrative produces 4$\times$ stronger ghost-workspace separation than isolated baselines (p < 0.0001).
 
@@ -76,7 +76,7 @@ The elicitation test (§3.3) and privileged-access arm (§3.4) were not executed
 
 ### 4.1 Ghost and Workspace Measure Different Content
 
-Across all 171 snapshots, 84 of 88 unique ghost vocabulary tokens (95.5%) never appear in workspace readings. Only 18.6% of snapshots have any token overlap between the two probes.
+Across all 167 snapshots, 84 of 88 unique ghost vocabulary tokens (95.5%) never appear in workspace readings. Only 18.6% of snapshots have any token overlap between the two probes.
 
 The separation is not random — the two probes capture systematically different content types. Ghost dominant tokens are metacognitive: `memories` (present in 120 snapshots), `回忆`/recollection (120), `memory` (102), `记忆`/memories (90), `经历`/experience (36). The model's ghost dimension carries processing *about the act of remembering*. Workspace tokens carry scene-relevant semantics (`sulfur`, `measurements`, `storytelling`, `quality`) and formatting markers (`____`, `…`).
 
@@ -92,7 +92,7 @@ Ghost cosine across all four arms: observed 0.142 (n=3), enacted 0.096 (n=25), b
 
 ### 4.4 Ghost and Circumplex Are Orthogonal
 
-Ghost cosine and eccentricity show no correlation across all 51 Loam snapshots (Spearman $\rho$ = $-$0.001, p = 0.997). The two probes measure independent aspects of processing: ghost captures content in the low-coupling mid-depth regime, while circumplex captures emotional geometry. Both show arm-level differences, but they do not track each other within arms.
+Ghost cosine and eccentricity show no correlation across all 47 Loam snapshots (Spearman $\rho$ = $-$0.001, p = 0.997). The two probes measure independent aspects of processing: ghost captures content in the low-coupling mid-depth regime, while circumplex captures emotional geometry. Both show arm-level differences, but they do not track each other within arms.
 
 ## 5. Discussion and Limitations
 
@@ -150,7 +150,7 @@ Belrose, N., Furman, Z., Smith, L., Halawi, D., Ostrovsky, I., McKinney, L., Bid
 
 Burns, C., Ye, H., Klein, D., & Steinhardt, J. (2023). Discovering latent knowledge in language models without supervision. ICLR 2023.
 
-Gurnee, W., Tegmark, M., & Nanda, N. (2026). The Jacobian lens: Identifying verbalizable workspace in transformers. arXiv:2602.xxxxx.
+Gurnee, W., Tegmark, M., & Nanda, N. (2026). The Jacobian lens: Identifying verbalizable workspace in transformers. Manuscript in preparation.
 
 Lindsey, J. (2025). Self-recognition in language models. Anthropic Technical Report.
 
