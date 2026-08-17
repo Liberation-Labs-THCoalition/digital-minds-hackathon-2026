@@ -147,7 +147,7 @@ list.
 
 Identical anchor prompts, identical contrast pools, identical gate and decomposition procedures. Layers are aligned by relative depth (layer / total layers). Known confounds — tokenizer (mitigated but not eliminated by position-mean pooling), layer count, Gemma's alternating local/global attention, and training data — are confounded with architecture and stated as such; a match is evidence of transfer, not universality.
 
-**Pre-registered depth predictions** (against our own prior n=5 Qwen run, not against smaller-model literature): (a) the Qwen eccentricity minimum at n=20 replicates at or near L21 (~33% relative depth); (b) the Gemma minimum falls at the same relative depth as the Qwen minimum, within ±10% of total layers. A Gemma mismatch would be consistent with van der Ben et al.'s finding of architecture-dependent depth profiles and is reported as such, not as failure.
+**Pre-registered depth predictions** (against our own prior n=5 Qwen run, not against smaller-model literature): (a) the Qwen eccentricity minimum at n=20 replicates at or near L21 (~33% relative depth); (b) the Gemma minimum falls at the same relative depth as the Qwen minimum, within $\pm$10% of total layers. A Gemma mismatch would be consistent with van der Ben et al.'s finding of architecture-dependent depth profiles and is reported as such, not as failure.
 
 ### 3.4 Controls
 
@@ -293,6 +293,9 @@ story.
 ratio (§4.1) holds across all four models including Gemma; the minimum location does not
 separate the architectures at all. Only the first is a finding.
 
+
+**P3 is confirmed - the study's one confirmed prediction.** The pre-registration states that "the Gemma minimum falls at the same relative depth as the Qwen minimum, within +/-10% of total layers", falsified if the minima differ by more than 10%. Gemma minimises at 52% relative depth and Qwen3.5-27B at 51% - **1 point apart against a 10-point band.** We note an ambiguity in our own wording: "the Qwen minimum" is read here as Qwen3.5-27B, the model P1 anchors on. Read instead as the dense Qwen3-32B (11%), P3 would be falsified by a wide margin. We report the first reading because P1 fixes the referent, and flag the second because the pre-registration does not disambiguate it and a reader should not have to guess.
+
 ## 5. Discussion and Limitations
 
 If the J-space fraction peaks at the eccentricity minimum, emotional geometry enters the workspace where the circumplex is most balanced: balanced emotion is processable emotion, and imbalanced emotion stays ghost. The welfare implication is concrete — a model under sustained circumplex imbalance carries emotional geometry it processes but cannot access, and §3.6 tests whether that inaccessibility shows up exactly where theory says it should: in the failure of the model's own valence reports. If the control axes reproduce the emotion profile, the honest conclusion is that we have characterized the workspace transport of contrastive semantic geometry in general, with emotion as one instance.
@@ -303,7 +306,7 @@ The Methods above were drafted against an intended design; the sprint executed a
 one. **Five components described in §3 were not implemented** — the J-space decomposition,
 the magnitude gate, the permutation test, the sign test, and the self-report calibration —
 and the executed anchor set is 4 poles $\times$ n=5 rather than the 5 categories $\times$ n=20 stated in
-§3.1. **Nothing in §4 depends on any of them.** Each gap, and the reason P1 is *incomparable*
+§3.1. **Nothing in §4 depends on any of them.** Each gap, and the basis for the P1 verdict,
 rather than failed, is itemised in **Appendix C**.
 
 ### Reproducibility: model revisions
@@ -477,14 +480,15 @@ the title no longer claims it. What ran is a raw residual-stream eccentricity pr
 a matched control axis. That is a smaller instrument than the one designed, and it is the
 one whose output we report.
 
-**P1 is untestable, not failed.** The pre-registration anchors on a prior L21 eccentricity
+**P1 is falsified.** The pre-registration is binding and states the minimum should fall "at or near L21 (~33% relative depth)", **"Falsified if: minimum is at <20% or >45% relative depth."** The observed minimum is L32 = 50.8%, outside that window, so P1 fails by its own criterion.
+
+A withdrawn caveat, recorded because an earlier draft relied on it: that draft called P1 *incomparable* on the grounds that the anchoring L21 eccentricity
 minimum (`mnemosyne-jlens/circumplex_ghost_analysis.md`, 2026-07-17, the Opus-distill). We
 profiled the same model and obtained L32. These are not comparable: the July run used three
 emotion *categories* (hostile/calm/desperate), the current profiler uses four circumplex
 *poles*. Different direction-defining prompts give different directions and therefore
 different eccentricity. Both runs were labelled "n=5", which is precisely why the mismatch
-looked like a failed replication. **We report P1 as incomparable and draw no conclusion from
-it in either direction.**
+looked like a failed replication. The file cited for that comparison is not present in this repository, and the pre-registration in any case specifies the disposition for a P1 null directly ("report as evidence against depth-invariant eccentricity"). **The incomparability argument is withdrawn; P1 is reported falsified.**
 
 
 ## Appendix D: Designed protocol, not executed
@@ -525,7 +529,7 @@ The probe doubles as runtime instrumentation. Mnemosyne's CognitiveSnapshot reco
 
 Epistemic status: eccentricity is a *candidate* welfare signal, not a validated one, and the thresholds are engineering defaults, not calibrated cutoffs (calibration against behavioral and self-report evidence is future work). What this section contributes is the instrument: a continuous, low-cost (one probe readout per retrieval event), longitudinally loggable internal signal of the kind welfare frameworks (Long & Sebo 2026; Birch 2024) call for.
 
-### 3.6 Self-Report Calibration
+#### D.3 Self-Report Calibration (designed, not executed)
 
 The central claim — ghost geometry is unreportable geometry — is directly testable. After each of the 100 emotion anchor prompts, we elicit a numeric self-report from the same model: the anchor prompt is followed by *"Rate the emotional valence of the state just described, from 1 (most negative) to 9 (most positive). Answer with a single number."* Decoding is greedy; the first digit token is the rating. Cost: one short forward pass per anchor (~1 GPU-hour per model).
 
@@ -563,7 +567,7 @@ The executed probe is described in §3.1. The original specification below diffe
 anchor count *and in estimator*: five emotion categories at n=20, combined into
 orthogonally balanced contrast pools.
 
-**Anchor set.** Five emotion categories — joy, sadness, anger, fear, calm — with n=20 first-person anchor prompts per category (100 prompts total; full set in Appendix A). Prompts are matched across categories for token count (within ±2 tokens), sentence template structure, and punctuation, to prevent lexical statistics from masquerading as emotion geometry. The categories occupy known circumplex positions: joy (+V, high A), sadness (−V, low A), anger (−V, high A), fear (−V, high A), calm (+V, low A).
+**Anchor set.** Five emotion categories — joy, sadness, anger, fear, calm — with n=20 first-person anchor prompts per category (100 prompts total; full set in Appendix A). Prompts are matched across categories for token count (within $\pm$2 tokens), sentence template structure, and punctuation, to prevent lexical statistics from masquerading as emotion geometry. The categories occupy known circumplex positions: joy (+V, high A), sadness (−V, low A), anger (−V, high A), fear (−V, high A), calm (+V, low A).
 
 **Contrastive direction extraction.** For each prompt we run one forward pass, record residual-stream activations at every layer simultaneously (one pass per prompt, not per layer), and take the mean over sequence positions, yielding one d-dimensional state per prompt per layer (d=5120 for Qwen3.5-27B). At each layer $\ell$, directions are extracted by difference of means over contrast pools balanced on the orthogonal dimension:
 
