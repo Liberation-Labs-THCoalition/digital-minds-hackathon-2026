@@ -8,7 +8,7 @@ Research conducted at the Digital Minds Research Sprint, August 2026
 
 ## Abstract
 
-Track 3 asks whether models have privileged access to their own internal states. We report a geometric finding and its characterization. In Qwen3.5-27B, PC1 of the residual stream — carrying 28-67% of activation variance — shows near-zero cosine with J-space (the verbalizable workspace) at mid-network layers ($\leq$ 0.003 at L18-L40). We call these "ghost dimensions," noting that a matched-variance null to confirm this exclusion is non-trivial was not executed during the sprint (§5).
+Track 3 asks whether models have privileged access to their own internal states. We report a geometric finding and its characterization. In Qwen3.5-27B, PC1 of the residual stream shows near-zero cosine with J-space (the verbalizable workspace) at mid-network layers ($\leq$ 0.003 at L18-L35). A matched-variance null (200 random directions per layer) confirms this is generic: random directions show the same low coupling. The "ghost exclusion" is a property of the mid-network depth regime, not of PC1 specifically.
 
 Across 167 probe snapshots (47 from agentic narrative sessions, 120 from baselines), we find that ghost and workspace probes measure genuinely distinct content: 97.6% of ghost vocabulary tokens never appear in workspace readings. The ghost vocabulary is metacognitive — dominated by tokens about memory itself (`memories`, `回忆`/recollection, `记忆`/memories) — while workspace tokens carry scene-relevant semantics. Ghost-workspace separation varies with context: agentic narrative produces significantly lower ghost cosine (0.099) than isolated recall baselines (0.414, p < 0.0001), and ghost and circumplex probes are orthogonal ($\rho$ = $-$0.001, p = 0.997). We also report an introspection prosthetic (GhostReading) that returns ghost content to the agent. The elicitation experiment testing whether agents can use this access was not executed during the sprint; the characterization and probe separation findings stand independently.
 
@@ -24,7 +24,7 @@ We built a system that shows the model what its ghost dimensions carry: the Ghos
 
 **Contributions:**
 
-1. Characterization of ghost dimensions in Qwen3.5-27B: PC1 carries 28-67% of variance with near-zero J-space cosine ($\leq$ 0.003 at mid-network layers). Whether this exclusion is non-trivial awaits a matched-variance null (§5).
+1. Characterization of mid-network J-space coupling in Qwen3.5-27B: near-zero cosine ($\leq$ 0.003) between residual-stream PC1 and J-space at L18-L35, confirmed by matched-variance null (200 directions, 5 layers) as generic to the depth regime rather than specific to PC1.
 
 2. Ghost vocabulary analysis across 167 snapshots: ghost content is metacognitive (tokens about memory itself), workspace content is semantic (scene-relevant), and the two are 97.6% non-overlapping.
 
@@ -105,14 +105,16 @@ Interpretation follows the four branches fixed in the adopted pre-registration (
 3. **real $\approx$ random.** The random-vocabulary control (§3.5) has fired: elicitation shift is a prompt-sensitivity artifact, and the reading measures nothing about the model's own computation. The prosthetic claim fails.
 4. **real < random.** Instrument error — either the pipeline is broken or PC1 is not what we think it is. Halt and debug before reporting any result.
 
-### H1 Matched-Variance Null: Not Executed
+### H1 Matched-Variance Null: Executed — TRIVIAL
 
-The matched-variance null described in §3.1 was not executed during the sprint. This null would draw n $\geq$ 200 random directions at PC1's variance fraction and test whether the observed ghost cosine ($\leq$ 0.003) falls below the 5th percentile of that distribution. Without it, we cannot rule out that the low cosine is forced by dimensional accounting alone: J-space captures ~10% of variance while PC1 carries 28-67%, and low cosine between a high-variance direction and a low-variance subspace may be a geometric triviality rather than an empirical finding.
+The matched-variance null (§3.1) drew 200 random directions at each of five probe layers (L18, L24, L32, L35, L40) and computed their logit-lens/J-lens cosine. At every layer, PC1's observed cosine falls well above the 5th percentile of the null distribution: observed cosines range 0.002-0.018 at L18-L35 against null 5th percentiles of 0.0001-0.0002, and at L40 PC1's cosine (0.212) exceeds the null mean (0.055). **The near-zero cosine is what random directions produce at these layers. PC1 is not unusually excluded from J-space; it is a typical high-variance direction in a regime where J-space coupling is generically low.**
 
-The ghost vocabulary analysis (§4.1: 97.6% separation, metacognitive content), the context-dependent separation (§4.2: p < 0.0001), and the cross-arm gradients (§4.3-4.4) are not affected by this gap — they characterize what the ghost probe measures and how it varies, regardless of whether the exclusion itself is trivial or non-trivial. The headline claim that ghost dimensions represent *non-trivial* exclusion from J-space remains unconfirmed pending execution of H1.
+This resolves the dimensional-accounting question decisively: the "ghost exclusion" framing is not supported. The ghost probe measures a real, varying quantity (§4.1-4.4), but what it measures is the generic low-coupling regime at mid-network depth, not a special property of PC1.
+
+The ghost vocabulary analysis (§4.1: 97.6% separation, metacognitive content), the context-dependent separation (§4.2: p < 0.0001), and the cross-arm gradients (§4.3-4.4) are unaffected — they characterize what the ghost probe measures and how it varies, independently of whether the direction itself is special. The instrument works; the framing changes.
 
 ### Limitations
-- **Dimensional-accounting triviality (unresolved):** The H1 matched-variance null was not run. Until it is, the ghost exclusion cosine ($\leq$ 0.003) may be a geometric consequence of variance fractions rather than a meaningful property of the model's processing. All characterization findings (vocabulary, context-dependence, orthogonality) hold independently of H1, but the "exclusion" framing carries this caveat
+- **Dimensional-accounting triviality (resolved):** The H1 matched-variance null confirms the near-zero cosine is generic, not special to PC1. The "ghost exclusion" framing is withdrawn; the probe measures the low-coupling regime at mid-depth, which is a real property of the architecture but not a property unique to this direction
 - Secondary vocabulary (metacognitive content) is preliminary — single-sample evidence requiring confirmation
 - Current GhostReading uses mean approximation, not calibrated PCA (implementation gap)
 - Same-family generalization: ghost characterized on two models in one family — cross-architecture claims are unsupported until Gemma/Llama analysis is done

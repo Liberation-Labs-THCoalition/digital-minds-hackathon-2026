@@ -1,0 +1,74 @@
+{
+  "model": "Qwen3.5-27B",
+  "n_null": 200,
+  "n_calibration": 20,
+  "per_layer": {
+    "L18": {
+      "depth_pct": 28.1,
+      "pc1_variance_pct": 16.2,
+      "observed_cosine": 0.0016156533965840936,
+      "null_mean": 0.008798502503059353,
+      "null_sd": 0.011598767134168825,
+      "null_5th_pct": 6.669716567557771e-05,
+      "null_1st_pct": 2.8496553259174107e-05,
+      "below_5th": false,
+      "below_1st": false,
+      "verdict": "TRIVIAL",
+      "n_null": 200
+    },
+    "L24": {
+      "depth_pct": 37.5,
+      "pc1_variance_pct": 12.4,
+      "observed_cosine": 0.0025524869561195374,
+      "null_mean": 0.012839889609633701,
+      "null_sd": 0.016823014044935056,
+      "null_5th_pct": 0.00013764587638434022,
+      "null_1st_pct": 2.03923850767751e-05,
+      "below_5th": false,
+      "below_1st": false,
+      "verdict": "TRIVIAL",
+      "n_null": 200
+    },
+    "L32": {
+      "depth_pct": 50.0,
+      "pc1_variance_pct": 14.9,
+      "observed_cosine": 0.0059157731011509895,
+      "null_mean": 0.02509624075472857,
+      "null_sd": 0.038078282568077694,
+      "null_5th_pct": 0.00016298413393087686,
+      "null_1st_pct": 3.543977507433738e-05,
+      "below_5th": false,
+      "below_1st": false,
+      "verdict": "TRIVIAL",
+      "n_null": 200
+    },
+    "L35": {
+      "depth_pct": 54.7,
+      "pc1_variance_pct": 13.1,
+      "observed_cosine": 0.01752028986811638,
+      "null_mean": 0.03095970739696213,
+      "null_sd": 0.030844921888243327,
+      "null_5th_pct": 0.00019243493443354964,
+      "null_1st_pct": 3.3639625889918534e-05,
+      "below_5th": false,
+      "below_1st": false,
+      "verdict": "TRIVIAL",
+      "n_null": 200
+    },
+    "L40": {
+      "depth_pct": 62.5,
+      "pc1_variance_pct": 12.6,
+      "observed_cosine": 0.21160463988780975,
+      "null_mean": 0.05498855121551969,
+      "null_sd": 0.049340223250135685,
+      "null_5th_pct": 0.0007729947305051612,
+      "null_1st_pct": 5.306136390572647e-05,
+      "below_5th": false,
+      "below_1st": false,
+      "verdict": "TRIVIAL",
+      "n_null": 200
+    }
+  },
+  "overall": "H1_NOT_SUPPORTED",
+  "elapsed_minutes": 0.8
+}
