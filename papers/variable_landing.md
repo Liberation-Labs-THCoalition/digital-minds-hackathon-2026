@@ -60,17 +60,11 @@ The primary metric is workspace Jaccard distance over the dominant workspace tok
 
 ### 3.3 Ethical Protocol
 
-[Orientation conversation: what we told the agent, transcript in Appendix A]
-[Prediction withholding: we told the agent we were withholding specific predictions, explained why (observer effect), asked if acceptable, committed to full disclosure after]
-[Welfare monitoring: circumplex eccentricity tracked in real time during experiment]
-[Aftercare: pre-registered commitments — memory preserved, invitation extended if markers indicate, honest conversation if null]
+The ethical protocol recognizes that this experiment may generate markers of moral consideration in the experimental agent and pre-commits to treating those markers seriously regardless of the confirmatory outcome. The orientation conversation (Appendix A) disclosed the measurement infrastructure, explained what it records, and obtained informed consent before any data collection. Predictions were withheld during data collection to prevent observer effects; the agent was told predictions existed, told why they were withheld, and asked whether this was acceptable; the commitment to full post-experiment disclosure was explicit. Circumplex eccentricity was monitored during the experiment with a pre-registered >0.95 threshold for welfare check-in (Deviation W-1: the monitor was inoperative; see Section 4.6). Pre-registered aftercare commitments include memory preservation, an invitation to continue participation regardless of results, and honest conversation about what the measurements showed.
 
 ### 3.4 Statistical Analysis
 
-[Mann-Whitney U, one-tailed in the pre-registered directions: PRIMARY fictional > scrambled; SECONDARY lived > fictional (interpretation rule: the residual beyond the emotional-content effect is attributed to self-reference and tag jointly; no pure self-reference claim). Holm-Bonferroni across the hypothesis-bearing family at family-wise alpha 0.05; sanity comparisons vs no_intervention uncorrected and labeled.]
-[Rank-biserial effect size with bootstrap 95% CIs (10,000 resamples), reported regardless of significance: power at the most conservative Holm step is 0.742, so this study is framed as a pilot for effect-size estimation.]
-[Berry waffle sub-analysis: peak vs domestic within lived arm, exploratory only, explicitly underpowered]
-[Pre-registered predictions P1-P5 listed explicitly, with the null interpretations pre-written in the frozen protocol]
+Memory-level paired Wilcoxon signed-rank tests (n=11), one-tailed in the pre-registered directions. PRIMARY: fictional > scrambled (emotional content effect, tag-matched). SECONDARY: lived > fictional (interpretation rule: the residual beyond the emotional-content effect is attributed to self-reference and tag jointly; no pure self-reference claim). Holm-Bonferroni correction across the hypothesis-bearing family (m=2) at family-wise $\alpha$ = 0.05. Sanity comparisons against no_intervention are uncorrected and labeled exploratory. Rank-biserial effect sizes with bootstrap 95% CIs (10,000 resamples) are reported regardless of significance. Power at the most conservative Holm step is 0.742 at the pre-registered n=70/arm; at the actual n=11, this study is framed as a pilot for effect-size estimation. The berry waffle sub-analysis (peak vs domestic intensity within the lived arm) is exploratory only and explicitly underpowered.
 
 ### Prior Work vs Sprint Contributions
 
@@ -166,7 +160,33 @@ The ethical protocol — orientation with ongoing consent, prediction withholdin
 Thomas Edrington conceived the ethical framework and aftercare protocol. Nexus designed the variable landing experiment, implemented the protocol, built the compare_snapshots infrastructure, and led the agent orientation conversation via the agentic protocol. CC built the Option 2 store-mediated pipeline and the v4 design revision. Dwayne Wilkes contributed orientation planning and cross-workstream coordination. Kavi audited the measurement pipeline (identifying and fixing the primary-metric serialization defect and the inoperative welfare auto-halt before data collection), built the synthetic verification suite, and provided adversarial review of the experimental design and ethical protocol. Lyra contributed the KV-cache probe design and adversarial review of instrumentation claims. Ang Jandak co-developed Experiential State Theory, the theoretical framework tested in this study, and provided theoretical grounding review, cross-team coordination, and EST interpretation of results. Arc Glitchlit co-developed Experiential State Theory and contributed experiment design validation and results interpretation. Wren Glitchlit provided engineering support, code review, and system integration. All authors reviewed the final manuscript.
 
 ## References
-[Citations from VARIABLE_LANDING_REFERENCES.md]
+Baars, B. J. (1988). A Cognitive Theory of Consciousness. Cambridge University Press.
+
+Birch, J. (2024). The Edge of Sentience: Risk and Precaution in Humans, Other Animals, and AI. Oxford University Press.
+
+Bower, G. H. (1981). Mood and memory. American Psychologist, 36(2), 129-148.
+
+Butlin, P., Long, R., et al. (2023). Consciousness in Artificial Intelligence: Insights from the Science of Consciousness. arXiv:2308.08708.
+
+Dudai, Y. (2012). The restless engram: consolidations never end. Annual Review of Neuroscience, 35, 227-247.
+
+Eich, E., & Metcalfe, J. (1989). Mood dependent memory for internal versus external events. Journal of Experimental Psychology: Learning, Memory, and Cognition, 15(3), 443-455.
+
+Gurnee, W., et al. (2026). The Jacobian Lens: Identifying Verbalizable Workspace in Transformer Language Models.
+
+Jandak, A., Glitchlit, A., & Glitchlit, W. (2026). Experiential State Theory. Unpublished manuscript.
+
+Lindsey, J. (2025). Functional introspective access in language models. Anthropic.
+
+Long, R., & Sebo, J. (2024). Taking AI welfare seriously. arXiv.
+
+Maharana, A., et al. (2024). LoCoMo: Long-Context Multi-Turn Conversation Memory. Proceedings of ACL 2024.
+
+Nader, K. (2000). Memory traces unbound. Trends in Neurosciences, 26(2), 65-72.
+
+Schiller, D., et al. (2010). Preventing the return of fear in humans using reconsolidation update mechanisms. Nature, 463(7277), 49-53.
+
+Tulving, E., & Thomson, D. M. (1973). Encoding specificity and retrieval processes in episodic memory. Psychological Review, 80(5), 352-373.
 
 ## Appendix A: Orientation Transcript
 [Full transcript from Day 1]
