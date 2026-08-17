@@ -369,10 +369,12 @@ cache, not read from the data. We state the recovery method so a reader can judg
 
 | model | source | revision | how established |
 |---|---|---|---|
-| Qwen3.5-27B (hybrid) | HF hub | `fc05daec18b0a78c049392ed2e771dde82bdf654` | sole cached snapshot |
-| Qwen3.5-27B Opus-distill | HF hub | `ad356102ce8ea7122a18e6402f9b2e37446fc9d7` | **two** snapshots cached; `refs/main` resolves to this one and it holds the complete 11-shard model. `from_pretrained` was called without `revision=`, so it resolved through this ref. |
-| Qwen3-32B (dense) | local directory | **not recoverable** | loaded from a filesystem path, not the hub; no revision metadata exists |
-| Gemma-3-27B-it | local directory | **not recoverable** | as above |
+| Qwen3.5-27B (hybrid) | HF hub | `fc05da...82bdf654` | sole cached snapshot |
+| Qwen3.5-27B Opus-distill | HF hub | `ad3561...46fc9d7` | two snapshots cached; `refs/main` resolves here |
+| Qwen3-32B (dense) | local dir | not recoverable | loaded from filesystem, no hub metadata |
+| Gemma-3-27B-it | local dir | not recoverable | as above |
+
+Full revision hashes: Qwen3.5-27B `fc05daec18b0a78c049392ed2e771dde82bdf654`, Opus-distill `ad356102ce8ea7122a18e6402f9b2e37446fc9d7`. The distill had two cached snapshots; `from_pretrained` was called without `revision=`, so it resolved through `refs/main` to the 11-shard snapshot.
 
 **The limits of this, stated plainly.** These are inferences from cache state at the time of
 writing, not values recorded when the runs executed. If `refs/main` for the distill moved
