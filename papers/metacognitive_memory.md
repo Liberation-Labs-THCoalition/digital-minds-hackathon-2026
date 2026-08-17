@@ -115,45 +115,47 @@ The Loam text-world engine (Experiment 2) produced the first CognitiveSnapshots 
 
 Three observations from the pilot data: (1) all probe values are real and varying — circumplex eccentricity ranges from 0.536 (enacted) to 0.998 (null), ghost PC1 variance is stable at 18–20%, and workspace cosines span an order of magnitude; (2) the null arm shows markedly higher cosine transport (0.17–0.40 vs 0.01–0.06), suggesting the workspace probe reads differently when no narrative content has been delivered; (3) the briefed arm achieved 6/6 cued recall with full probe coverage, demonstrating the instrument can measure cognition during a complete experimental session. These are pilot observations from n=1 quad; no inferential claims are drawn.
 
-### 4.4 Loam Recall: The Reversal Is Truncation, Not Condition
+### 4.4 Loam Recall: Sessions That Never Reached Their Recall Questions
 
 **Loam recall (exploratory).** The Loam text-world arm was designed to test whether enacting
-a fact produces better later recall than being briefed on it. Of a planned 20 quads × 4 arms,
-**8 sessions across 3 quads were run and 3 carried the pipeline's completion marker**
-(`event_log.json`); the arms are therefore unequal in both n and completion, and everything
-below is exploratory rather than confirmatory.
+a fact produces better later recall than being briefed on it or observing it. Of a planned 20
+quads × 4 arms, **9 sessions across 3 quads were run**. Scoring follows the pre-registered
+rule: recap-phase answers only, question-echoed markers excluded, intention-to-treat over all
+six facts (`experiments/loam/loam_analysis.py`, unmodified).
 
-| quad | briefed | enacted | null | observed |
+| quad | briefed | enacted | observed | null |
 |---|---|---|---|---|
-| 01 | 6/6 ✔ | 3/6 | 0/6 | — |
-| 02 | 6/6 ✔ | 6/6 ✔ | 0/6 | 6/6 |
-| 03 | — | 4/6 | — | — |
+| 01 | 6/6 | **0/6** ‡ | — | 0/6 |
+| 02 | 6/6 | 6/6 | **3/6** † | 0/6 |
+| 03 | 2/6 | **0/6** ‡ | — | — |
 
-✔ = session completed. Pooled: enacted 13/18 (72.2%, n=3), briefed 12/12 (100%, n=2),
-observed 6/6 (100%, **n=1**), null 0/12 (0%, n=2).
+‡ **no recap phase exists in the transcript** — the session ended mid-scene, so there are no
+recall answers to score. † recap truncated after f01–f03; **f04–f06 were never asked**, so
+3/6 is the ceiling, not the performance.
 
-**The pooled comparison appears to reverse the pre-registered prediction — enacted below
-briefed — and we report that it does not survive inspection.** Every session that reached its
-completion marker scored 6/6, in every arm. The enacted arm is the only arm containing
-incomplete sessions, and its two incomplete sessions (3/6, 4/6) carry the entire deficit. **In
-quad 02, the single quad where both arms completed, enacted and briefed are identical at
-6/6.** The per-fact record points the same way: the misses are the *late* facts — f05 and f06
-in both incomplete enacted sessions, plus f03 in the more truncated of the two — the pattern
-expected when a session ends before its later material is reached, not when a manipulation
-degrades encoding.
+**The instrument is what this run measures, not the hypothesis.** Only one quad (02) carried
+a complete recap for more than one arm, and there **enacted equals briefed exactly, 6/6 and
+6/6**. Every apparent difference elsewhere is a session that stopped before its recall
+questions were asked. The pre-registered primary contrast (enacted > observed, paired) has
+exactly one analyzable pair: +0.5 in the predicted direction, W = 1, p = 0.5 — direction
+consistent, power absent, and the observed arm's own recap truncated. We record the
+pre-written null from `PREREG.md` and make no directional claim.
 
-We therefore report the generation-effect prediction as **untestable at this n**, and record
-the pre-written null from `PREREG.md` rather than a directional result. The design confounds
-arm with completion: assigning the incomplete sessions disproportionately to one arm is enough
-to manufacture a reversal, and only a completed-sessions-only analysis (n=1 per paired arm)
-can separate them.
+**A scoring caveat that matters more than the scores.** An earlier exploratory pass credited
+fact text found anywhere in the transcript body and reported enacted at 72.2%. That is
+circular for this design: in the enacted arm the *scene narration itself performs the facts* —
+the engine's own text states the lens count and the deadline — so transcript-mention scoring
+credits the experimenter's writing as the agent's memory. It also returned 6/6 for a session
+in which three of the six questions were never asked. **Recall must be scored from recap
+answers, not from the presence of the fact in the record.** The exploratory file is retained
+only as `recall_analysis.json` and should not be cited for recall.
 
-**One result does survive.** Both null sessions scored **0/6 with every individual fact marked
-false** — an exact floor, not a low score. The scoring path can distinguish a session that
-encountered the facts from one that did not, which validates the instrument independently of
-any arm comparison. Given how much of this sprint turned on probes that returned plausible
-values while measuring nothing, an exact zero where zero is the correct answer is worth
-reporting on its own.
+**One result is scorer-robust and survives everything.** Both null sessions score **0/6 with
+every individual fact marked false, under both scoring rules**. An exact floor rather than a
+low number: the scorer can distinguish a session that met the facts from one that did not.
+After a sprint in which a frozen probe returned plausible varying values while measuring
+nothing, an exact zero where zero is the correct answer is the instrument validation worth
+reporting.
 
 ### 4.5 Variable Landing: Gradient Direction Confirmed, Underpowered
 
