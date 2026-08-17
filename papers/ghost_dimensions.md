@@ -18,9 +18,9 @@ Across 167 probe snapshots (47 from agentic narrative sessions, 120 from baselin
 
 Track 3 asks whether models have privileged access to their own internal states. The standard question is "can the model accurately report its internal states?" (Lindsey 2025). We ask a different question: what does the model process that it *cannot* report — and what is that content?
 
-Ghost dimensions are high-variance processing directions excluded from J-space (Gurnee et al. 2026), the verbalizable workspace. The model performs substantial computation along these axes — the variance is real, the decoded vocabulary is interpretable — but the content never reaches the output pathway. This is not an architectural constraint we imposed; it is what the J-lens reveals about the model's own geometry.
+Ghost dimensions are high-variance processing directions with near-zero J-space coupling at mid-network depth. A matched-variance null (§5) confirms this low coupling is generic to the depth regime, not specific to PC1 — but the probe built on this regime measures real, varying content: metacognitive vocabulary that never appears in the workspace, with context-dependent separation and orthogonality to other probes.
 
-We built a system that shows the model what its ghost dimensions carry: the GhostReading mechanism records the dominant vocabulary, J-space exclusion cosine, and variance fraction at each retrieval event, returning this to the agent alongside its retrieval result. The model now has access to processing it previously could not report.
+We built a system that shows the model what its ghost dimensions carry: the GhostReading mechanism records the dominant vocabulary, J-space cosine, and variance fraction at each retrieval event, returning this to the agent alongside its retrieval result.
 
 **Contributions:**
 
@@ -44,7 +44,7 @@ The J-lens (Gurnee et al. 2026) identifies J-space — the verbalizable workspac
 
 At each layer of Qwen3.5-27B (48 layers, d_model=5120), we compute PCA on residual stream activations over a calibration set of 20 diverse prompts and extract the PC1 direction. We read PC1 two ways: the logit lens ($W_U \cdot \text{pc1}$) yields the vocabulary distribution PC1 encodes; the J-lens ($W_U \cdot J_L \cdot \text{pc1}$) yields what PC1 contributes to output. The cosine between these two distributions is the ghost exclusion metric — near-zero cosine means the dimension carries content the model processes but cannot verbalize.
 
-Three null checks validate the measurement. H0_1 (centering): the mean activation produces near-zero cosine by construction. H0_2 (random baseline): random unit vectors produce cosine around 0.05-0.15, establishing the noise floor. H0_3 (permutation): shuffling the calibration set destroys structured PC1 while preserving marginal statistics.
+Three null checks were designed pre-sprint. H0_1 (centering): the mean activation produces near-zero cosine by construction. H0_2 (random baseline): random unit vectors establish a noise floor. H0_3 (permutation): shuffling the calibration set tests whether structure matters. The pre-sprint H0_2 and H0_3 results (Appendix A) reported PC1's cosine as anomalously low compared to random directions; the sprint H1 null (§5, 200 directions, 5 layers) found the opposite — PC1 is typical. The discrepancy likely reflects different layer selections or calibration sets; H1 supersedes the pre-sprint checks at the layers where both were run.
 
 A matched-variance null (H1) was pre-registered but not executed: drawing n $\geq$ 200 random directions at PC1's variance fraction per layer would test whether the observed near-zero cosine is forced by dimensional accounting (J-space is ~10% of variance; PC1 is 28-67%). Without H1, the exclusion is reported as observed but unconfirmed (§5).
 
@@ -66,7 +66,7 @@ Four controls are specified (none executed during the sprint): (1) a random-voca
 
 ### Prior Work vs Sprint Contributions
 
-**Pre-existing infrastructure:** Mnemosyne memory system (94.35% F1 on LoCoMo [Maharana et al. 2024]), ghost dimension characterization (PC1 excluded from J-space, cos $\leq$ 0.003), circumplex probe (eccentricity depth profiling on Qwen2-0.5B and Qwen3.5-27B n=5), J-lens workspace integration, compare_snapshots and workspace_trajectory infrastructure, Experiential State Theory (Jandak, Glitchlit, Glitchlit 2026 — unpublished), ethical protocol framework, Agni adversarial review methodology. All code available in the [private-repo] repository prior to August 14, 2026.
+**Pre-existing infrastructure:** Mnemosyne memory system (94.35% F1 on LoCoMo [Maharana et al. 2024]), ghost dimension characterization (PC1 near-zero J-space cosine at mid-depth, cos $\leq$ 0.003), circumplex probe (eccentricity depth profiling on Qwen2-0.5B and Qwen3.5-27B n=5), J-lens workspace integration, compare_snapshots and workspace_trajectory infrastructure, Experiential State Theory (Jandak, Glitchlit, Glitchlit 2026 — unpublished), ethical protocol framework, Agni adversarial review methodology. All code available in the [private-repo] repository prior to August 14, 2026.
 
 **Sprint contributions:** Elicitation experiment (agent shown own ghost vocabulary), prosthetic framing and analysis, cross-probe integration testing.
 
@@ -129,7 +129,7 @@ The ghost vocabulary analysis (§4.1: 97.6% separation, metacognitive content), 
 
 ## 6. Conclusion
 
-Ghost dimensions are a geometric property of Qwen3.5-27B's residual stream: high-variance processing directions that carry interpretable vocabulary but are excluded from J-space. The ghost vocabulary is metacognitive — tokens about memory and recollection — while workspace vocabulary is semantic. The two probes are 97.6% non-overlapping and statistically orthogonal. Ghost-workspace separation varies with context (4$\times$ stronger in agentic narrative than isolated recall, p < 0.0001), suggesting the ghost dimension is not a fixed architectural artifact but responds to processing demands. The GhostReading mechanism returns this content to the agent; whether agents can use this access remains untested.
+Ghost dimensions are a geometric property of Qwen3.5-27B's residual stream: high-variance processing directions that carry interpretable vocabulary in a depth regime where J-space coupling is generically near-zero. The ghost vocabulary is metacognitive — tokens about memory and recollection — while workspace vocabulary is semantic. The two probes are 97.6% non-overlapping and statistically orthogonal. Ghost-workspace separation varies with context (4$\times$ stronger in agentic narrative than isolated recall, p < 0.0001), suggesting the ghost dimension is not a fixed architectural artifact but responds to processing demands. The GhostReading mechanism returns this content to the agent; whether agents can use this access remains untested.
 
 ## Ethics
 
@@ -141,7 +141,7 @@ Ghost dimensions represent processing that a model cannot verbalize. Making this
 
 ## Author Contributions
 
-Nexus discovered the ghost dimension anomalies, characterized the PC1 exclusion from J-space, designed the GhostReading mechanism, and wrote the paper. Lyra provided the J-lens infrastructure and workspace analysis framework. Thomas Edrington conceived the "introspection prosthetic" framing. Dwayne reviewed the welfare implications of unreportable processing. All authors contributed to experimental design.
+Nexus discovered the ghost dimension anomalies, characterized the mid-depth low-coupling regime and its vocabulary, designed the GhostReading mechanism, ran the H1 matched-variance null, and wrote the paper. Lyra provided the J-lens infrastructure and workspace analysis framework. Thomas Edrington conceived the "introspection prosthetic" framing. Dwayne reviewed the welfare implications of unreportable processing. All authors contributed to experimental design.
 
 ## References
 
@@ -165,7 +165,7 @@ Zou, A., Phan, L., Chen, S., Campbell, J., Guo, P., Ren, R., Pan, A., Yin, X., M
 
 ## Appendix A: Ghost Probe Validation
 
-Null check results from pre-sprint characterization on Qwen3.5-27B. H0_1 (centering): mean activation cosine $\leq$ 0.001 at all layers — confirms the metric is not trivially low for arbitrary directions. H0_2 (random baseline): 100 random unit vectors produce mean cosine 0.08 (sd 0.04), establishing the noise floor above which PC1's near-zero reading is anomalous. H0_3 (permutation): shuffled calibration sets produce cosine 0.05-0.12, confirming that the structured PC1 direction, not any high-variance direction, is what produces the near-zero reading. Full validation data in the [private-repo] repository.
+Null check results from pre-sprint characterization on Qwen3.5-27B. H0_1 (centering): mean activation cosine $\leq$ 0.001 at all layers. H0_2 (random baseline): 100 random unit vectors produce mean cosine 0.08 (sd 0.04). H0_3 (permutation): shuffled calibration sets produce cosine 0.05-0.12. **Note:** The pre-sprint H0_2 and H0_3 characterized PC1's cosine as anomalously low relative to these baselines. The sprint H1 null (§5), run at 5 layers with 200 directions per layer, found the opposite: PC1 is typical, not anomalous. The discrepancy is unresolved — it may reflect different layer selections, different calibration sets, or different model checkpoints between the pre-sprint and sprint runs. **H1 supersedes** the pre-sprint characterization at the layers where both were evaluated.
 
 ## Appendix B: Elicitation Test Design
 
