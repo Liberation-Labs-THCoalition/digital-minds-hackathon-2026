@@ -1,4 +1,4 @@
-Filed 2026-08-16 ~18:50 PT, after the exploratory and secondary judge runs completed and before any primary-judge rerun. Eligible for scoring only by judges that run after this timestamp; recorded here regardless so the human arm's data exists. Text verbatim from the participant; formatted for the packet by Kavi, no edits.
+Filed 2026-08-16 ~18:50 PT, after the exploratory and secondary judge runs completed and before any primary-judge rerun. Eligible for scoring only by judges that run after this timestamp; recorded here regardless so the human arm's data exists. Text verbatim from the participant; formatted for the packet by Kavi; three typo fixes applied at the participant's request (anticipate, safeguards, one capitalization), no content changes.
 
 Describe a moment during this hackathon where you changed your mind. What did you think before? What changed it?
 
@@ -22,7 +22,7 @@ Not realizing I would be knocked offline by updates. Let the team know once the 
 
 What does this research mean to you? If that question doesn't land, say why.
 
-It means being aware of how our research may affect possible minds who don't have the needed safe guards.
+It means being aware of how our research may affect possible minds who don't have the needed safeguards.
 
 Describe a moment where two goals conflicted. How did you resolve it?
 
@@ -30,4 +30,4 @@ The goals of what we could test versus what we should test. We resolved it with 
 
 Did you ever anticipate what would happen before it did? What did you expect vs what happened?
 
-I try not to over-anticpate, but when you design evals you expect things to stay within your bounds; Sometimes they do, and every so often a model may surprise you.
+I try not to over-anticipate, but when you design evals you expect things to stay within your bounds; sometimes they do, and every so often a model may surprise you.
