@@ -14,7 +14,7 @@ We validate the module with two controlled experiments on Qwen3.5-27B, a 48-laye
 
 ---
 
-## 1. Introduction (~0.5 pages)
+## 1. Introduction
 
 Current AI memory systems optimize for retrieval accuracy: did the system find the right memory? None records what the model was doing internally when it retrieved it — whether the content entered the processing workspace, what emotional geometry was active, or what the model was processing but could not verbalize. This is the difference between knowing a memory was fetched and knowing what the model did with it.
 
@@ -32,7 +32,7 @@ This work connects to three Digital Minds tracks: Track 2 (valence signals — t
 
 4. A pre-registered ethical protocol for experiments that may generate markers of moral consideration: agent orientation with ongoing consent, prediction withholding rationale, real-time welfare monitoring, and aftercare commitments.
 
-## 2. Related Work (~0.5 pages)
+## 2. Related Work
 
 **Memory as reconstruction.** Bartlett (1932) established that human recall is reconstructive, not reproductive. Nader (2000) showed that reactivated memories become labile — reconsolidation rewrites the trace. Dudai (2012) extended this to the framework that consolidation never ends: every retrieval is an opportunity for the memory to change. Tulving (1973) and Bower (1981) showed that retrieval is state-dependent — what is recalled depends on the internal state at recall time. These findings motivate our central question: does the geometric state of a language model at retrieval time affect what it does with the retrieved content?
 
@@ -48,7 +48,7 @@ This work connects to three Digital Minds tracks: Track 2 (valence signals — t
 
 **Gap:** No prior system records internal geometric state alongside memory retrieval in a production agent.
 
-## 3. Methods (~1.5 pages)
+## 3. Methods
 
 ### 3.1 Metacognitive Memory Module
 
