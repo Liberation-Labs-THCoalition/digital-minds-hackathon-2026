@@ -56,7 +56,7 @@ A standard J-lens fitted on 200 WikiText prompts (smaller than the 672-prompt co
 
 ### 3.2–3.4 Routing Capture, Clustering, and Conditioned Fitting
 
-Forward hooks on each layer's `Qwen3MoeTopKRouter` capture top-8 expert indices per token (Appendix A). Per target layer, prompts are summarized as 128-d routing frequency vectors and clustered with k-means (k selected by silhouette, capped at ⌊n/50⌋). Per-cluster Jacobians are fitted via `jlens.fit` at a single source layer, reducing per-fit compute by ~47× vs the standard multi-layer protocol. Clusters under 20 prompts are excluded. With C(128,8) ≈ 1.4 × 10¹² possible paths per layer and 672 prompts, this clustering is deliberately coarse — the random-conditioned control (§3.5) guards against artifacts. Full implementation details in Appendix A.
+Forward hooks on each layer's `Qwen3MoeTopKRouter` capture top-8 expert indices per token (Appendix A). Per target layer, prompts are summarized as 128-d routing frequency vectors and clustered with k-means (k selected by silhouette, capped at $\lfloor n/50 \rfloor$). Per-cluster Jacobians are fitted via `jlens.fit` at a single source layer, reducing per-fit compute by ~$47\times$ vs the standard multi-layer protocol. Clusters under 20 prompts are excluded. With C(128,8) $\approx$ $1.4 \times 10^{12}$ possible paths per layer and 672 prompts, this clustering is deliberately coarse — the random-conditioned control (§3.5) guards against artifacts. Full implementation details in Appendix A.
 
 ### 3.5 Random-Conditioned Control
 
@@ -68,7 +68,7 @@ The critical control: identical protocol, shuffled labels. For each target layer
 
 **Transport cosine.** For each test prompt we record the residual stream at the source layer and at the final layer, transport the source activation through the lens under evaluation, unembed both, and compute the cosine similarity between the softmaxed predicted and actual next-token distributions at the final token position. Note this metric is distinct from the top-10 next-token accuracy of §4.0, which scores against the model's greedy continuation rather than measuring distributional similarity.
 
-**Statistics.** Per target layer, a one-sided Mann-Whitney U test of conditioned > random-conditioned on per-prompt transport cosines (sample sizes matched by truncation to the smaller condition), with Bonferroni correction across the three layers. Outcome criteria are pre-registered in the pipeline code: *success* requires conditioned > random and conditioned > standard with at least one Bonferroni-significant layer (and mean conditioned cosine > 0.5 for the full claim); conditioned > standard but ≈ random is classified as a null-swarm outcome (subset overfitting); conditioned > standard without significance is inconclusive.
+**Statistics.** Per target layer, a one-sided Mann-Whitney U test of conditioned > random-conditioned on per-prompt transport cosines (sample sizes matched by truncation to the smaller condition), with Bonferroni correction across the three layers. Outcome criteria are pre-registered in the pipeline code: *success* requires conditioned > random and conditioned > standard with at least one Bonferroni-significant layer (and mean conditioned cosine > 0.5 for the full claim); conditioned > standard but $\approx$ random is classified as a null-swarm outcome (subset overfitting); conditioned > standard without significance is inconclusive.
 
 **Cross-domain.** WikiText is both fitting and primary evaluation domain, so as an out-of-domain check we additionally evaluate at the middle target layer (L24) on two held-out domains: code prompts (Python, JavaScript, SQL completion contexts) and dialogue prompts (User/Assistant exchanges). Routing-cluster assignment for OOD prompts follows the same §3.3 pipeline; degradation here bounds how far the conditioned lenses generalize beyond the fitting distribution.
 
@@ -78,7 +78,7 @@ The critical control: identical protocol, shuffled labels. For each target layer
 
 ## 4. Results
 
-**Headline: path-conditioned fitting does not improve transport fidelity, and does not beat the random control.** The pipeline's pre-registered classifier returned NEGATIVE. Zero of three layers reached significance under the one-sided Mann-Whitney U test after Bonferroni correction (threshold α = 0.05/3 ≈ 0.0167).
+**Headline: path-conditioned fitting does not improve transport fidelity, and does not beat the random control.** The pipeline's pre-registered classifier returned NEGATIVE. Zero of three layers reached significance under the one-sided Mann-Whitney U test after Bonferroni correction (threshold α = 0.05/3 $\approx$ 0.0167).
 
 ### 4.0 Readability onset: a depth phenomenon, not a routing phenomenon
 
@@ -158,7 +158,7 @@ here only to locate the depth at which linear readability appears.
 
 L12 produced n=0 for conditioned/random conditions (cause unrecoverable; see Limitations). On the two evaluable layers: at L24, random beats conditioned (5.2% vs 4.7%); at L36, conditioned exceeds standard (8.8% vs 7.2%) but random reaches 7.7% (p=0.317) — the gain is subset overfitting.
 
-**Verdict against pre-registered criteria (§3.6).** *Success* required conditioned > random and conditioned > standard with at least one Bonferroni-significant layer; the full claim additionally required mean conditioned cosine > 0.5. None of these obtained: 0/3 significant layers, conditioned ≈ random throughout, and all conditions sit between 4% and 9% — an order of magnitude below our own pre-registered 0.5 bar. (That bar was set by this lab; it is not drawn from Gurnee et al., who report no such threshold.) Conditioned numerically exceeds standard on the evaluable layers but not the random control: this is exactly the outcome the criteria pre-classify as **null-swarm (subset overfitting)**, i.e., a negative result for the routing-structure hypothesis.
+**Verdict against pre-registered criteria (§3.6).** *Success* required conditioned > random and conditioned > standard with at least one Bonferroni-significant layer; the full claim additionally required mean conditioned cosine > 0.5. None of these obtained: 0/3 significant layers, conditioned $\approx$ random throughout, and all conditions sit between 4% and 9% — an order of magnitude below our own pre-registered 0.5 bar. (That bar was set by this lab; it is not drawn from Gurnee et al., who report no such threshold.) Conditioned numerically exceeds standard on the evaluable layers but not the random control: this is exactly the outcome the criteria pre-classify as **null-swarm (subset overfitting)**, i.e., a negative result for the routing-structure hypothesis.
 
 **Cross-domain (Table 2).** OOD transport cosines for the standard lens at L24 (conditioned OOD was pre-registered but absent from results — see Limitations):
 
@@ -178,7 +178,7 @@ Path-conditioned Jacobian fitting, implemented as per-layer k-means clustering o
 
 ### 5.2 Why it failed: four hypotheses
 
-**H1:** 672 prompts cannot tile C(128,8) ≈ 1.4 × 10¹² paths; silhouettes 0.115–0.209 confirm weak clustering. Each "cluster" still averages near-orthogonal per-path Jacobians. **H2:** Single-layer conditioning misses cross-layer routing divergence through 48 subsequent MoE layers. **H3:** Standing-committee experts (~70% mass, Wang et al. 2026) dominate; routing-specific components contribute too little variance — conditioned stays within 1.5 points of standard. **H4:** MoE forward passes are piecewise functions with token-level switching; a prompt-level linear map cannot capture this, conditioned or not. The uniform 4–9% ceiling across all conditions, including random, is consistent with linearity as the binding constraint. These are not exclusive (H1–H2: clustering too coarse; H3: signal too small; H4: model class wrong). The data cannot separate them.
+**H1:** 672 prompts cannot tile C(128,8) $\approx$ $1.4 \times 10^{12}$ paths; silhouettes 0.115–0.209 confirm weak clustering. Each "cluster" still averages near-orthogonal per-path Jacobians. **H2:** Single-layer conditioning misses cross-layer routing divergence through 48 subsequent MoE layers. **H3:** Standing-committee experts (~70% mass, Wang et al. 2026) dominate; routing-specific components contribute too little variance — conditioned stays within 1.5 points of standard. **H4:** MoE forward passes are piecewise functions with token-level switching; a prompt-level linear map cannot capture this, conditioned or not. The uniform 4–9% ceiling across all conditions, including random, is consistent with linearity as the binding constraint. These are not exclusive (H1–H2: clustering too coarse; H3: signal too small; H4: model class wrong). The data cannot separate them.
 
 ### 5.3 What the random control bought us
 
@@ -188,9 +188,9 @@ Without the random-conditioned arm, this paper would likely have shipped a false
 
 Each targets one hypothesis from §5.2, and each has a concrete falsifier. We state these as open problems, not as reasons to discount the negative result: the method as proposed failed, and these are different methods.
 
-1. **Per-expert Jacobians composed at inference (targets H4, H1).** Instead of clustering prompts, fit a Jacobian per expert per layer and compose at inference using the observed gates: J ≈ Σₑ gate_weightₑ · J_expertₑ. This respects token-level switching exactly rather than approximating it at the prompt level. Cost: 128 per-expert fits per layer; feasibility depends on isolating per-expert contributions during fitting.
+1. **Per-expert Jacobians composed at inference (targets H4, H1).** Instead of clustering prompts, fit a Jacobian per expert per layer and compose at inference using the observed gates: $J \approx \sum_e \mathrm{gate\_weight}_e \cdot J_{\mathrm{expert}_e}$. This respects token-level switching exactly rather than approximating it at the prompt level. Cost: 128 per-expert fits per layer; feasibility depends on isolating per-expert contributions during fitting.
 
-2. **Full-trajectory clustering (targets H2).** Cluster on the complete 48 × 8 routing matrix per prompt (or per token) rather than a single layer's frequency vector, so that cluster membership constrains the entire transport path, not one waypoint.
+2. **Full-trajectory clustering (targets H2).** Cluster on the complete 48 $\times$ 8 routing matrix per prompt (or per token) rather than a single layer's frequency vector, so that cluster membership constrains the entire transport path, not one waypoint.
 
 3. **Shared-expert subtraction (targets H3).** Identify the standing committee per layer, project out its contribution to the routing representation, and condition on the residual routing-specific components — clustering on what actually varies instead of what dominates.
 
