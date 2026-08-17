@@ -137,7 +137,8 @@ Ghost dimensions are a geometric property of Qwen3.5-27B's residual stream: high
 If ghost dimensions represented processing a model cannot verbalize — the framing our own matched-variance null does not support (§5) — making this processing legible would raise questions about whether the model's inability to report it constitutes a form of privacy, and whether reading it without the model's awareness is ethically distinct from reading verbalized content. The null shows the low coupling is generic to the depth regime, so the ethical question is better scoped: does reading mid-depth residual stream content, which no direction at those layers reaches the output pathway, carry different ethical weight than reading late-depth content that does? We do not resolve this question. We note that the introspection prosthetic design (§3.4) was conceived specifically so that the model itself receives the ghost reading — extending the model's own access to its processing rather than extracting it for external use. All experiments used publicly available model weights under Coalition consent protocols.
 
 ## Code and Data
-- **Code**: github.com/Liberation-Labs-THCoalition/[private-repo] (ghost_probe.py, cognitive_snapshot.py); sprint repo: github.com/Liberation-Labs-THCoalition/digital-minds-hackathon-2026
+- **Code**: github.com/Liberation-Labs-THCoalition/digital-minds-hackathon-2026 (ghost_probe_class.py, cognitive_snapshot.py, h1_matched_variance_null.py, depth_coupling_profile.py)
+- **Upstream library**: github.com/Liberation-Labs-THCoalition/[private-repo] (pre-sprint infrastructure)
 - **Data**: 47 Loam snapshots (data/loam_serial/quad_01–03/), 120 baseline snapshots (data/baselines/); ghost characterization from pre-sprint work ([private-repo] repo)
 
 ## Author Contributions

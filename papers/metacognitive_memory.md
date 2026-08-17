@@ -230,7 +230,8 @@ The phenomena the module was designed to detect — experience-dependent shifts 
 
 ## Code and Data
 
-- **Code repository**: github.com/Liberation-Labs-THCoalition/[private-repo]
+- **Code repository**: github.com/Liberation-Labs-THCoalition/digital-minds-hackathon-2026
+- **Upstream library**: github.com/Liberation-Labs-THCoalition/[private-repo] (pre-sprint infrastructure)
 - **Data/Datasets**: Available at the project repository
 - **Other artifacts**: Demo video, pre-registered protocol document
 
