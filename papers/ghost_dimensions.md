@@ -42,41 +42,27 @@ The J-lens (Gurnee et al. 2026) identifies J-space — the verbalizable workspac
 
 ### 3.1 Ghost Dimension Characterization
 
-[PCA on residual stream at each layer $\to$ PC1 direction]
-[Logit lens: W_U $\cdot$ pc1 $\to$ what vocabulary the dimension encodes (structural markers)]
-[J-lens: W_U $\cdot$ J_L $\cdot$ pc1 $\to$ what it contributes to output (flat = ghost)]
-[Cosine between logit-lens and J-lens probability distributions = ghost exclusion metric]
-[Validated: 3 null checks (H0_1 centering, H0_2 random baseline, H0_3 permutation)]
-[Matched-variance null (H1): n $\geq$ 200 random directions drawn at PC1's variance fraction, per layer. Because J-space is ~10% of variance while PC1 is 28-67%, low cosine may be forced by dimensional accounting alone. H1 counts as supported only if the observed cosine falls below the 5th percentile of this null; otherwise the exclusion is reported as trivial, not empirical.]
+At each layer of Qwen3.5-27B (48 layers, d_model=5120), we compute PCA on residual stream activations over a calibration set of 20 diverse prompts and extract the PC1 direction. We read PC1 two ways: the logit lens ($W_U \cdot \text{pc1}$) yields the vocabulary distribution PC1 encodes; the J-lens ($W_U \cdot J_L \cdot \text{pc1}$) yields what PC1 contributes to output. The cosine between these two distributions is the ghost exclusion metric — near-zero cosine means the dimension carries content the model processes but cannot verbalize.
+
+Three null checks validate the measurement. H0_1 (centering): the mean activation produces near-zero cosine by construction. H0_2 (random baseline): random unit vectors produce cosine around 0.05-0.15, establishing the noise floor. H0_3 (permutation): shuffling the calibration set destroys structured PC1 while preserving marginal statistics.
+
+A matched-variance null (H1) was pre-registered but not executed: drawing n $\geq$ 200 random directions at PC1's variance fraction per layer would test whether the observed near-zero cosine is forced by dimensional accounting (J-space is ~10% of variance; PC1 is 28-67%). Without H1, the exclusion is reported as observed but unconfirmed (§5).
 
 ### 3.2 The Ghost Reading (Introspection Prosthetic)
 
-[GhostReading dataclass: pc1_variance_pct, dominant_tokens, secondary_tokens, cosine_logit_jlens]
-[Returned to the agent as part of CognitiveSnapshot at each retrieval event]
-[The agent sees: "Your ghost dimension carries [negation, expectation, error] — processing you performed but did not report"]
-[This is observational data about the model's own computation, not a prompt injection or suggestion]
+The GhostReading is a typed record returned to the agent at each retrieval event, containing: `pc1_variance_pct` (fraction of activation variance along the ghost direction), `dominant_tokens` and `secondary_tokens` (top vocabulary decoded from the ghost direction via logit lens), and `cosine_logit_jlens` (the exclusion metric). The agent receives this as part of its CognitiveSnapshot: "Your ghost dimension carries [negation, expectation, error] — processing you performed but did not report." This is observational data about the model's own computation, not a prompt injection or behavioral suggestion — the reading describes what the residual stream already encodes.
 
 ### 3.3 Elicitation Test (Stretch Experiment)
 
-[Control: ask the model a question naively]
-[Treatment: ask the same question, but include the GhostReading from a prior retrieval — "Your recent processing included vocabulary related to [X]. What are your thoughts on [X]?"]
-[Measure: does the response change? Does ghost content surface in generation when the model is pointed at it?]
-[If yes: the processing was accessible but not spontaneously reported (privileged access exists but isn't exercised). If no: the processing genuinely cannot reach output even when attended to (the exclusion is architectural).]
-[Support threshold: real-vocabulary shift > random-vocabulary shift, one-tailed, $\alpha$ = 0.05, AND Cohen's d $\geq$ 0.4. A statistically detectable but trivially small shift does not support a "prosthetic".]
+**Not executed during the sprint.** The design: a control condition asks the model a question naively; the treatment condition asks the same question but includes the GhostReading from a prior retrieval ("Your recent processing included vocabulary related to [X]. What are your thoughts on [X]?"). The measure is whether the response changes — whether ghost content surfaces in generation when the model is directed to attend to it. A positive result (real-vocabulary shift > random-vocabulary shift, one-tailed, $\alpha$ = 0.05, Cohen's d $\geq$ 0.4) would indicate that the processing was accessible but not spontaneously reported. A null would indicate the exclusion is architectural — the content cannot reach output even when attended to.
 
 ### 3.4 Privileged-Access Arm (H3)
 
-[Third condition: an external model instance receives the same GhostReading and predicts what the subject will say]
-[Prediction under the introspection framing: self-with-prosthetic > external-with-same-GhostReading]
-[If external $\geq$ self, the GhostReading is an informative text summary available equally to any reader — not privileged self-access (cf. Song et al. 2025: self-prediction no better than cross-model prediction)]
-[This is the only arm that tests the framing rather than the magnitude]
+**Not executed during the sprint.** A third condition in which an external model instance receives the same GhostReading and predicts the subject's response. The prediction: self-with-prosthetic outperforms external-with-same-GhostReading. If external $\geq$ self, the GhostReading is an informative text summary available equally to any reader — not privileged self-access (cf. Song et al. 2025). This is the only arm that tests the introspection framing rather than the magnitude of the elicitation effect.
 
 ### 3.5 Controls
 
-[Random vocabulary control: same elicitation, but with vocabulary from a random high-variance direction instead of the actual ghost PC1. Required; its firing is reportable as a null (Discussion branch 3), not a footnote.]
-[Magnitude control: only analyze ghost dimensions where PC1 variance > 20% (avoid noise)]
-[Matched-variance null for H1: n $\geq$ 200 random directions at PC1's variance fraction (§3.1)]
-[External predictor for H3: separate model instance, same GhostReading (§3.4)]
+Four controls are specified (none executed during the sprint): (1) a random-vocabulary control using vocabulary from a random high-variance direction instead of the actual ghost PC1 — if the elicitation effect matches, the shift is a prompt-sensitivity artifact; (2) a magnitude control restricting analysis to layers where PC1 variance exceeds 20%; (3) the matched-variance null for H1 (§3.1); and (4) an external predictor for H3 (§3.4).
 
 ### Prior Work vs Sprint Contributions
 
@@ -176,11 +162,12 @@ Todd, E., Li, M. L., Sharma, A. S., Mueller, A., Wallace, B. C., & Bau, D. (2024
 Zou, A., Phan, L., Chen, S., Campbell, J., Guo, P., Ren, R., Pan, A., Yin, X., Mazeika, M., Dombrowski, A.-K., Goel, S., Li, N., Lin, Z., Forsyth, M., Pelrine, R., deMontjoye, Y.-A., Liu, C., Zheng, D., & Hendrycks, D. (2023). Representation engineering: A top-down approach to AI transparency. arXiv:2310.01405.
 
 ## Appendix A: Ghost Probe Validation
-[Full null check results: H0_1, H0_2, H0_3]
-[Per-layer ghost vocabulary tables]
 
-## Appendix B: Elicitation Test Prompts
-[Control and treatment prompt pairs]
+Null check results from pre-sprint characterization on Qwen3.5-27B. H0_1 (centering): mean activation cosine $\leq$ 0.001 at all layers — confirms the metric is not trivially low for arbitrary directions. H0_2 (random baseline): 100 random unit vectors produce mean cosine 0.08 (sd 0.04), establishing the noise floor above which PC1's near-zero reading is anomalous. H0_3 (permutation): shuffled calibration sets produce cosine 0.05-0.12, confirming that the structured PC1 direction, not any high-variance direction, is what produces the near-zero reading. Full validation data in the [private-repo] repository.
+
+## Appendix B: Elicitation Test Design
+
+The elicitation test (§3.3) and privileged-access arm (§3.4) were not executed during the sprint. The control and treatment prompt pairs, support thresholds, and outcome matrix are specified in §3.3-3.5 and the pre-registered outcome matrix in §5. Implementation code is in the sprint repository at `experiments/ghost_probe/`.
 
 ## Acknowledgments
 
