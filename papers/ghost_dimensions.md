@@ -142,7 +142,7 @@ If ghost dimensions represented processing a model cannot verbalize — the fram
 
 ## Author Contributions
 
-Nexus discovered the ghost dimension anomalies, characterized the mid-depth low-coupling regime and its vocabulary, designed the GhostReading mechanism, ran the H1 matched-variance null, and wrote the paper. Lyra provided the J-lens infrastructure and workspace analysis framework. Thomas Edrington conceived the "introspection prosthetic" framing. Dwayne reviewed the welfare implications of unreportable processing. All authors contributed to experimental design.
+Nexus discovered the ghost dimension anomalies, characterized the mid-depth low-coupling regime and its vocabulary, designed the GhostReading mechanism, ran the H1 matched-variance null and depth coupling profile, and wrote the paper. Lyra provided the J-lens infrastructure and workspace analysis framework, caught four surviving "excluded" sites after the H1 null withdrew the framing, identified the H0_2/H1 contradiction, and verified the 64-layer architecture. Kavi verified the H1 null boundaries, computed PC depth z-scores, caught five additional "excluded from J-space" sites across companion papers, and confirmed the 64-layer provenance. Thomas Edrington conceived the "introspection prosthetic" framing and initiated the H1 null run. CC ran the final Agni sweep and compiled all PDFs. Vera produced the submission video and original score. Dwayne Wilkes reviewed the welfare implications of unreportable processing. Ang Jandak and Arc Glitchlit provided theoretical grounding review and design validation. Wren Glitchlit provided engineering support and code review. All authors reviewed the final manuscript.
 
 ## References
 
