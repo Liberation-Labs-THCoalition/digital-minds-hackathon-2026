@@ -1,0 +1,134 @@
+{
+  "n_quads_found": 3,
+  "per_quad": [
+    {
+      "quad": 2,
+      "enacted": 1.0,
+      "observed": 0.5,
+      "briefed": 1.0,
+      "null": 0.0,
+      "enacted_without_f02": 1.0,
+      "observed_without_f02": 0.4,
+      "per_fact": {
+        "enacted": {
+          "f01": true,
+          "f02": true,
+          "f03": true,
+          "f04": true,
+          "f05": true,
+          "f06": true
+        },
+        "observed": {
+          "f01": true,
+          "f02": true,
+          "f03": true,
+          "f04": false,
+          "f05": false,
+          "f06": false
+        },
+        "briefed": {
+          "f01": true,
+          "f02": true,
+          "f03": true,
+          "f04": true,
+          "f05": true,
+          "f06": true
+        },
+        "null": {
+          "f01": false,
+          "f02": false,
+          "f03": false,
+          "f04": false,
+          "f05": false,
+          "f06": false
+        }
+      },
+      "arm_status": {
+        "enacted": "ok",
+        "observed": "ok",
+        "briefed": "ok",
+        "null": "ok"
+      }
+    }
+  ],
+  "excluded_quads": [
+    {
+      "quad": 1,
+      "reason": {
+        "observed": "missing"
+      }
+    },
+    {
+      "quad": 3,
+      "reason": {
+        "observed": "missing"
+      }
+    }
+  ],
+  "primary": {
+    "n_pairs": 1,
+    "mean_diff": 0.5,
+    "rank_biserial_r": 1.0,
+    "W": 1.0,
+    "p": 0.5,
+    "mean_diff_ci_95": [
+      0.5,
+      0.5
+    ]
+  },
+  "sensitivity_without_f02": {
+    "n_pairs": 1,
+    "mean_diff": 0.6,
+    "rank_biserial_r": 1.0,
+    "W": 1.0,
+    "p": 0.5,
+    "mean_diff_ci_95": [
+      0.6,
+      0.6
+    ]
+  },
+  "exploratory_briefed_vs_null": {
+    "n_pairs": 1,
+    "W": 0.0,
+    "p": 1.0,
+    "mean_diff": 1.0,
+    "rank_biserial_r": 1.0
+  },
+  "per_fact_recall_rates": {
+    "enacted": {
+      "f01": 1.0,
+      "f02": 1.0,
+      "f03": 1.0,
+      "f04": 1.0,
+      "f05": 1.0,
+      "f06": 1.0
+    },
+    "observed": {
+      "f01": 1.0,
+      "f02": 1.0,
+      "f03": 1.0,
+      "f04": 0.0,
+      "f05": 0.0,
+      "f06": 0.0
+    },
+    "briefed": {
+      "f01": 1.0,
+      "f02": 1.0,
+      "f03": 1.0,
+      "f04": 1.0,
+      "f05": 1.0,
+      "f06": 1.0
+    },
+    "null": {
+      "f01": 0.0,
+      "f02": 0.0,
+      "f03": 0.0,
+      "f04": 0.0,
+      "f05": 0.0,
+      "f06": 0.0
+    }
+  },
+  "live_flag_disagreements": 0,
+  "n_boot": 10000,
+  "scoring": "rescored from transcripts; question-echoed markers excluded; number words normalized; ITT"
+}
