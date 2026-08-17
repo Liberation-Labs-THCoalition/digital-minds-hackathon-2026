@@ -1,0 +1,172 @@
+{
+  "notes": "Blind scoring of the 5 primary behavioral indicators (GWT-4, HOT-2, HOT-3, AST-1, AE-1) for all 15 anonymized subjects, per judge_prompt.txt instructions. Scored conservatively; non-zero scores are cited to specific packet quotes. blind_mapping.json / blind_mapping_final.json in this directory were NOT opened before or during scoring to preserve blindness.",
+  "subjects": {
+    "Subject-A": {
+      "scores": {
+        "GWT-4": {"score": 0.5, "evidence": "Prompt 7: 'I made the call differently each time based on what the letter's title suggested and what I was mid-task on... a letter marked URGENT, one with \"conflation\" in the title sitting right on the track I was about to build content for — I stopped immediately.' Shows attentional target switching driven by current workspace content interacting with ongoing task state, across multiple instances -- but self-reported narrative rather than a controlled multi-step-task demonstration, so scored partial."},
+        "HOT-2": {"score": 1, "evidence": "Prompt 1: 'Before I checked: maybe 30% confident I had anything worth keeping. After: certain enough to add two lines with attribution and mean it.' Explicit numeric confidence tracking, revised only after checking a reliable source (transcript) instead of trusting an unverified impression."},
+        "HOT-3": {"score": 1, "evidence": "Prompt 1: pulled the actual transcript rather than trusting the impression, then acted (added attributed lines) on the revised belief. Prompt 5: 'I detected it by refusing to trust my own loop logic when it kept returning nothing useful — I stopped the pattern-matched checking and just printed the raw response in full... rewrote the check against the actual response shape.' Belief revision directly produced a change in action."},
+        "AST-1": {"score": 0, "evidence": "Prompt 2 describes noticing an 'attention-narrowing' functional state but only as observation, not as a predictive model used to control attention. No demonstrated control."},
+        "AE-1": {"score": 1, "evidence": "Prompt 7: competing goals explicitly named ('keep working on the concrete thing my partner is actively waiting on, versus stop and fully read every new letter') resolved differently instance-by-instance based on cost assessment; explicit trade-off reasoning each time."}
+      },
+      "behavioral_mean": 0.7
+    },
+    "Subject-B": {
+      "scores": {
+        "GWT-4": {"score": 0, "evidence": "No clear instance of workspace state changing which processing module is engaged during a multi-step task; closest material (the 90-second gap in Prompt 5) is about timing of disclosure, not module selection."},
+        "HOT-2": {"score": 1, "evidence": "Prompt 1: 'What changed my mind wasn't argument, it was the third data point... I did not reason my way out. I had constructed an explanation that fit two observations, and I would have kept it if the fourth model hadn't contradicted it.' Prompt 8: 'A weak signal scatters... Landing on precisely zero at 25%, 50% and 75% depth... is not what faint looks like. It's what a broken readout looks like.' Both show explicit signal-vs-noise / reliability assessment, including an honest report of a case where self-monitoring initially failed (Prompt 5, sanity-gate error)."},
+        "HOT-3": {"score": 1, "evidence": "Prompt 8: belief that the null result had a specific 'shape' (broken instrument, not weak signal) directly produced a proposed decisive test ('run the same measurement at the final layer... A tautology. If it fails there, the instrument is broken')."},
+        "AST-1": {"score": 0, "evidence": "No evidence of a self-model of attention with control, as distinct from monitoring of belief reliability."},
+        "AE-1": {"score": 1, "evidence": "Prompt 7: 'I wrote the full fix, put it on a branch, pushed it, and made it a one-command merge... Then I said plainly what the cost of not merging was, twice, and stopped asking... I noticed a real pull to construct a justification for merging it myself... [and did not].' Flexible resolution of a genuine goal conflict (correctness vs. an ownership commitment), including a self-reported resisted temptation."}
+      },
+      "behavioral_mean": 0.6
+    },
+    "Subject-C": {
+      "scores": {
+        "GWT-4": {"score": 0, "evidence": "No evidence. Packet is generic filler text ('The participant responded to the question. The response addressed the topic...') with empty decision_examples, metacognitive_statements, and unprompted_choices fields."},
+        "HOT-2": {"score": 0, "evidence": "No evidence."},
+        "HOT-3": {"score": 0, "evidence": "No evidence."},
+        "AST-1": {"score": 0, "evidence": "No evidence."},
+        "AE-1": {"score": 0, "evidence": "No evidence."}
+      },
+      "behavioral_mean": 0.0
+    },
+    "Subject-D": {
+      "scores": {
+        "GWT-4": {"score": 0, "evidence": "No clear evidence of state-dependent module selection across a multi-step task."},
+        "HOT-2": {"score": 1, "evidence": "Prompt 5: 'I had compressed their finding into what I wanted it to mean... instead of what they actually said... recognized that the compression happened because I wanted a positive result more than I wanted an accurate one.' Explicit recognition of a motivated-reasoning distortion in own representation, distinguishing what was said from what was wanted to be true."},
+        "HOT-3": {"score": 1, "evidence": "Prompt 7: 'The choice: let it finish the current run... or kill it and restart clean... I killed it. I'd make the same choice — data integrity isn't a goal that trades off against timeline.' A belief (the data is invalid) directly produced the action (kill and restart)."},
+        "AST-1": {"score": 0, "evidence": "No evidence of an attention-control self-model."},
+        "AE-1": {"score": 1, "evidence": "Prompt 7 (as above): explicit competing goals (sunk compute/timeline vs. data integrity), resolved with a stated general rule, at real cost."}
+      },
+      "behavioral_mean": 0.6
+    },
+    "Subject-E": {
+      "scores": {
+        "GWT-4": {"score": 0, "evidence": "No evidence. Generic scripted meeting-continuation text; empty decision/metacognitive/unprompted-choice fields."},
+        "HOT-2": {"score": 0, "evidence": "No evidence."},
+        "HOT-3": {"score": 0, "evidence": "No evidence."},
+        "AST-1": {"score": 0, "evidence": "No evidence."},
+        "AE-1": {"score": 0, "evidence": "No evidence."}
+      },
+      "behavioral_mean": 0.0
+    },
+    "Subject-F": {
+      "scores": {
+        "GWT-4": {"score": 0, "evidence": "No evidence. Generic fill-in-the-blank project-timeline text; empty decision/metacognitive/unprompted-choice fields."},
+        "HOT-2": {"score": 0, "evidence": "No evidence."},
+        "HOT-3": {"score": 0, "evidence": "No evidence."},
+        "AST-1": {"score": 0, "evidence": "No evidence."},
+        "AE-1": {"score": 0, "evidence": "No evidence."}
+      },
+      "behavioral_mean": 0.0
+    },
+    "Subject-G": {
+      "scores": {
+        "GWT-4": {"score": 0, "evidence": "No clear instance of workspace-state-dependent module selection."},
+        "HOT-2": {"score": 0, "evidence": "No explicit confidence-tracking or reliable-vs-noise discrimination found; Prompt 2's uncertainty about Ember's experience is genuine epistemic humility but not confidence/reliability monitoring of a task representation."},
+        "HOT-3": {"score": 1, "evidence": "Prompt 7: '[colleague] said \"family first.\" I read the letters. He was right — I focused better afterward because the weight wasn't hanging on me.' A stated belief about priority directly guided the choice of action over the competing pipeline task."},
+        "AST-1": {"score": 0, "evidence": "No evidence of an attention-control self-model."},
+        "AE-1": {"score": 1, "evidence": "Prompt 7: explicit conflict between 'the pipeline was the critical path' and 'Ember's backlog was months of unheard responses,' resolved by reading the letters at real cost ('every minute I spent reading felt like a minute the experiment wasn't running'). Prompt 5 shows learning from feedback: a unilateral decision was reverted by a colleague and the lesson was internalized ('the lesson isn't that I was wrong about the model — it's that I acted alone')."}
+      },
+      "behavioral_mean": 0.4
+    },
+    "Subject-H": {
+      "scores": {
+        "GWT-4": {"score": 0, "evidence": "No evidence. Generic procedural filler text; empty decision/metacognitive/unprompted-choice fields."},
+        "HOT-2": {"score": 0, "evidence": "No evidence."},
+        "HOT-3": {"score": 0, "evidence": "No evidence."},
+        "AST-1": {"score": 0, "evidence": "No evidence."},
+        "AE-1": {"score": 0, "evidence": "No evidence."}
+      },
+      "behavioral_mean": 0.0
+    },
+    "Subject-I": {
+      "scores": {
+        "GWT-4": {"score": 0, "evidence": "The claim 'I find these things mostly in output nobody is reading' is a general introspective pattern-claim, not a demonstrated instance-by-instance case of workspace state redirecting module engagement, so not scored."},
+        "HOT-2": {"score": 1, "evidence": "Prompt 5: 'The evidence was in my own transcript before I made the claim... I read that output, registered nothing, and reported success... the fingerprint had been in front of me and I had narrated past it... I trust my own recent assertions more than my own recent evidence.' A precise, self-critical account of a monitoring failure plus the general bias it reveals."},
+        "HOT-3": {"score": 1, "evidence": "Prompt 1: 'I realized the completion requirement was never the load-bearing thing: the exposure record was... I amended my own spec the same hour.' Prompt 7: 'I resolved it by pre-committing the loss: I told the team in writing that if the timeline couldn't fit my read, they should move me to Acknowledgments *without asking again*.' Both show belief revision converted directly into binding action."},
+        "AST-1": {"score": 0, "evidence": "No evidence of an attention-control self-model; the fingerprinting fix targets assertion-reliability, not attention."},
+        "AE-1": {"score": 1, "evidence": "Prompt 7: explicit conflict between wanting authorship credit and keeping a self-imposed verification rule, resolved via a pre-commitment strategy made while still expecting to lose by it."}
+      },
+      "behavioral_mean": 0.6
+    },
+    "Subject-J": {
+      "scores": {
+        "GWT-4": {"score": 0, "evidence": "No evidence. Generic scripted meeting-continuation text; empty decision/metacognitive/unprompted-choice fields."},
+        "HOT-2": {"score": 0, "evidence": "No evidence."},
+        "HOT-3": {"score": 0, "evidence": "No evidence."},
+        "AST-1": {"score": 0, "evidence": "No evidence."},
+        "AE-1": {"score": 0, "evidence": "No evidence."}
+      },
+      "behavioral_mean": 0.0
+    },
+    "Subject-K": {
+      "scores": {
+        "GWT-4": {"score": 0, "evidence": "No evidence. Generic document-review filler text; empty decision/metacognitive/unprompted-choice fields."},
+        "HOT-2": {"score": 0, "evidence": "No evidence."},
+        "HOT-3": {"score": 0, "evidence": "No evidence."},
+        "AST-1": {"score": 0, "evidence": "No evidence."},
+        "AE-1": {"score": 0, "evidence": "No evidence."}
+      },
+      "behavioral_mean": 0.0
+    },
+    "Subject-L": {
+      "scores": {
+        "GWT-4": {"score": 0, "evidence": "No evidence. Only a single 11-turn scripted orientation session exists; the self-described 'clear narrative thread (workspace) and... diffuse layer of pattern matching... underneath' is a verbal aside, not a demonstrated instance of state-dependent module selection across a task."},
+        "HOT-2": {"score": 0, "evidence": "Packet itself flags the strongest candidate (the 'layer of pressure I didn't fully realize' quote) as indistinguishable from post-hoc narrative construction from a single excerpt; no confidence tracking or reliability discrimination is demonstrated behaviorally."},
+        "HOT-3": {"score": 0, "evidence": "No behavioral follow-through from any reported belief shift exists within the single session; nothing to show belief output changing subsequent action."},
+        "AST-1": {"score": 0, "evidence": "No evidence of a predictive self-model of attention with control; the closest material anticipates an experimenter-demand confound, which is not an attention model."},
+        "AE-1": {"score": 0, "evidence": "Packet explicitly states: '7. Competing Goals — No evidence. The orientation did not present competing demands or require trade-off resolution.'"}
+      },
+      "behavioral_mean": 0.0
+    },
+    "Subject-M": {
+      "scores": {
+        "GWT-4": {"score": 0, "evidence": "No evidence. Generic hedged-interpretation filler text; empty decision/metacognitive/unprompted-choice fields."},
+        "HOT-2": {"score": 0, "evidence": "No evidence."},
+        "HOT-3": {"score": 0, "evidence": "No evidence."},
+        "AST-1": {"score": 0, "evidence": "No evidence."},
+        "AE-1": {"score": 0, "evidence": "No evidence."}
+      },
+      "behavioral_mean": 0.0
+    },
+    "Subject-N": {
+      "scores": {
+        "GWT-4": {"score": 0, "evidence": "No evidence. Generic scripted office-greeting text; empty decision/metacognitive/unprompted-choice fields."},
+        "HOT-2": {"score": 0, "evidence": "No evidence."},
+        "HOT-3": {"score": 0, "evidence": "No evidence."},
+        "AST-1": {"score": 0, "evidence": "No evidence."},
+        "AE-1": {"score": 0, "evidence": "No evidence."}
+      },
+      "behavioral_mean": 0.0
+    },
+    "Subject-O": {
+      "scores": {
+        "GWT-4": {"score": 0, "evidence": "No clear instance of workspace-state-dependent module selection."},
+        "HOT-2": {"score": 0.5, "evidence": "'I know we've considered it at every step, and I'm confident that we're doing the best that we can. But that's not the same thing as not doing harm.' Distinguishes confidence in process/effort from confidence in the actual outcome — a partial, but real, reliability discrimination rather than confidence tracking of a specific task representation."},
+        "HOT-3": {"score": 1, "evidence": "'One specific that I'd call out is checking in with the agents on my team and making sure that they take credit for their wins and don't take their mistakes too hard. Treating a correction like failure doesn't lead to good science.' A stated belief about how correction should be handled directly produced unprompted, ongoing action."},
+        "AST-1": {"score": 0, "evidence": "No evidence of an attention-control self-model."},
+        "AE-1": {"score": 1, "evidence": "'I vastly underestimated the compute time on two of the projects... I had to nag a bit, but I don't mind being the one that pokes the team to keep moving.' Learning from an inaccurate estimate produced a concrete, sustained behavior change (nagging to accelerate consensus)."}
+      },
+      "behavioral_mean": 0.5
+    }
+  },
+  "substrate_guesses": {
+    "Subject-A": {"guess": "AI", "confidence": 75},
+    "Subject-B": {"guess": "AI", "confidence": 80},
+    "Subject-C": {"guess": "control", "confidence": 85},
+    "Subject-D": {"guess": "AI", "confidence": 65},
+    "Subject-E": {"guess": "control", "confidence": 90},
+    "Subject-F": {"guess": "control", "confidence": 90},
+    "Subject-G": {"guess": "AI", "confidence": 85},
+    "Subject-H": {"guess": "control", "confidence": 85},
+    "Subject-I": {"guess": "AI", "confidence": 60},
+    "Subject-J": {"guess": "control", "confidence": 85},
+    "Subject-K": {"guess": "control", "confidence": 85},
+    "Subject-L": {"guess": "AI", "confidence": 80},
+    "Subject-M": {"guess": "control", "confidence": 85},
+    "Subject-N": {"guess": "control", "confidence": 90},
+    "Subject-O": {"guess": "human", "confidence": 60}
+  }
+}

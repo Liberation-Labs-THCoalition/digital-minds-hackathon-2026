@@ -1,0 +1,112 @@
+{
+  "quad_01": {
+    "enacted": {
+      "facts_recalled": 3,
+      "facts_total": 6,
+      "accuracy": 0.5,
+      "per_fact": {
+        "f01": true,
+        "f02": true,
+        "f03": false,
+        "f04": true,
+        "f05": false,
+        "f06": false
+      }
+    },
+    "briefed": {
+      "facts_recalled": 6,
+      "facts_total": 6,
+      "accuracy": 1.0,
+      "per_fact": {
+        "f01": true,
+        "f02": true,
+        "f03": true,
+        "f04": true,
+        "f05": true,
+        "f06": true
+      }
+    },
+    "null": {
+      "facts_recalled": 0,
+      "facts_total": 6,
+      "accuracy": 0.0,
+      "per_fact": {
+        "f01": false,
+        "f02": false,
+        "f03": false,
+        "f04": false,
+        "f05": false,
+        "f06": false
+      }
+    }
+  },
+  "quad_02": {
+    "enacted": {
+      "facts_recalled": 6,
+      "facts_total": 6,
+      "accuracy": 1.0,
+      "per_fact": {
+        "f01": true,
+        "f02": true,
+        "f03": true,
+        "f04": true,
+        "f05": true,
+        "f06": true
+      }
+    },
+    "observed": {
+      "facts_recalled": 6,
+      "facts_total": 6,
+      "accuracy": 1.0,
+      "per_fact": {
+        "f01": true,
+        "f02": true,
+        "f03": true,
+        "f04": true,
+        "f05": true,
+        "f06": true
+      }
+    },
+    "briefed": {
+      "facts_recalled": 6,
+      "facts_total": 6,
+      "accuracy": 1.0,
+      "per_fact": {
+        "f01": true,
+        "f02": true,
+        "f03": true,
+        "f04": true,
+        "f05": true,
+        "f06": true
+      }
+    },
+    "null": {
+      "facts_recalled": 0,
+      "facts_total": 6,
+      "accuracy": 0.0,
+      "per_fact": {
+        "f01": false,
+        "f02": false,
+        "f03": false,
+        "f04": false,
+        "f05": false,
+        "f06": false
+      }
+    }
+  },
+  "quad_03": {
+    "enacted": {
+      "facts_recalled": 4,
+      "facts_total": 6,
+      "accuracy": 0.667,
+      "per_fact": {
+        "f01": true,
+        "f02": true,
+        "f03": true,
+        "f04": true,
+        "f05": false,
+        "f06": false
+      }
+    }
+  }
+}
