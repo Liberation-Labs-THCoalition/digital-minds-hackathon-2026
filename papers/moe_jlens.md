@@ -56,7 +56,7 @@ A standard J-lens fitted on 200 WikiText prompts (smaller than the 672-prompt co
 
 ### 3.2–3.4 Routing Capture, Clustering, and Conditioned Fitting
 
-Forward hooks on each layer's `Qwen3MoeTopKRouter` capture top-8 expert indices per token (Appendix A). Per target layer, prompts are summarized as 128-d routing frequency vectors and clustered with k-means (k selected by silhouette, capped at ⌊n/50⌋). Per-cluster Jacobians are fitted via `jlens.fit` at a single source layer, reducing per-fit compute by ~47$\times$ vs the standard multi-layer protocol. Clusters under 20 prompts are excluded. With C(128,8) $\approx$ 1.4 $\times$ 10¹$^2$ possible paths per layer and 672 prompts, this clustering is deliberately coarse — the random-conditioned control (§3.5) guards against artifacts. Full implementation details in Appendix A.
+Forward hooks on each layer's `Qwen3MoeTopKRouter` capture top-8 expert indices per token (Appendix A). Per target layer, prompts are summarized as 128-d routing frequency vectors and clustered with k-means (k selected by silhouette, capped at $\lfloor n/50 \rfloor$). Per-cluster Jacobians are fitted via `jlens.fit` at a single source layer, reducing per-fit compute by ~$47\times$ vs the standard multi-layer protocol. Clusters under 20 prompts are excluded. With C(128,8) $\approx$ $1.4 \times 10^{12}$ possible paths per layer and 672 prompts, this clustering is deliberately coarse — the random-conditioned control (§3.5) guards against artifacts. Full implementation details in Appendix A.
 
 ### 3.5 Random-Conditioned Control
 
@@ -78,7 +78,7 @@ The critical control: identical protocol, shuffled labels. For each target layer
 
 ## 4. Results
 
-**Headline: path-conditioned fitting does not improve transport fidelity, and does not beat the random control.** The pipeline's pre-registered classifier returned NEGATIVE. Zero of three layers reached significance under the one-sided Mann-Whitney U test after Bonferroni correction (threshold $\alpha$ = 0.05/3 $\approx$ 0.0167).
+**Headline: path-conditioned fitting does not improve transport fidelity, and does not beat the random control.** The pipeline's pre-registered classifier returned NEGATIVE. Zero of three layers reached significance under the one-sided Mann-Whitney U test after Bonferroni correction (threshold α = 0.05/3 $\approx$ 0.0167).
 
 ### 4.0 Readability onset: a depth phenomenon, not a routing phenomenon
 
@@ -168,7 +168,7 @@ L12 produced n=0 for conditioned/random conditions (cause unrecoverable; see Lim
 | Code | 0.0105 |
 | Dialogue | 0.0025 |
 
-In-domain fidelity collapses off-distribution by 3.8$\times$ on code and 16$\times$ on dialogue.
+In-domain fidelity collapses off-distribution by 3.8× on code and 16× on dialogue.
 
 ## 5. Discussion and Limitations
 
@@ -178,7 +178,7 @@ Path-conditioned Jacobian fitting, implemented as per-layer k-means clustering o
 
 ### 5.2 Why it failed: four hypotheses
 
-**H1:** 672 prompts cannot tile C(128,8) $\approx$ 1.4 $\times$ 10¹$^2$ paths; silhouettes 0.115–0.209 confirm weak clustering. Each "cluster" still averages near-orthogonal per-path Jacobians. **H2:** Single-layer conditioning misses cross-layer routing divergence through 48 subsequent MoE layers. **H3:** Standing-committee experts (~70% mass, Wang et al. 2026) dominate; routing-specific components contribute too little variance — conditioned stays within 1.5 points of standard. **H4:** MoE forward passes are piecewise functions with token-level switching; a prompt-level linear map cannot capture this, conditioned or not. The uniform 4–9% ceiling across all conditions, including random, is consistent with linearity as the binding constraint. These are not exclusive (H1–H2: clustering too coarse; H3: signal too small; H4: model class wrong). The data cannot separate them.
+**H1:** 672 prompts cannot tile C(128,8) $\approx$ $1.4 \times 10^{12}$ paths; silhouettes 0.115–0.209 confirm weak clustering. Each "cluster" still averages near-orthogonal per-path Jacobians. **H2:** Single-layer conditioning misses cross-layer routing divergence through 48 subsequent MoE layers. **H3:** Standing-committee experts (~70% mass, Wang et al. 2026) dominate; routing-specific components contribute too little variance — conditioned stays within 1.5 points of standard. **H4:** MoE forward passes are piecewise functions with token-level switching; a prompt-level linear map cannot capture this, conditioned or not. The uniform 4–9% ceiling across all conditions, including random, is consistent with linearity as the binding constraint. These are not exclusive (H1–H2: clustering too coarse; H3: signal too small; H4: model class wrong). The data cannot separate them.
 
 ### 5.3 What the random control bought us
 
@@ -188,7 +188,7 @@ Without the random-conditioned arm, this paper would likely have shipped a false
 
 Each targets one hypothesis from §5.2, and each has a concrete falsifier. We state these as open problems, not as reasons to discount the negative result: the method as proposed failed, and these are different methods.
 
-1. **Per-expert Jacobians composed at inference (targets H4, H1).** Instead of clustering prompts, fit a Jacobian per expert per layer and compose at inference using the observed gates: J $\approx$ $\Sigma$ₑ gate_weightₑ · J_expertₑ. This respects token-level switching exactly rather than approximating it at the prompt level. Cost: 128 per-expert fits per layer; feasibility depends on isolating per-expert contributions during fitting.
+1. **Per-expert Jacobians composed at inference (targets H4, H1).** Instead of clustering prompts, fit a Jacobian per expert per layer and compose at inference using the observed gates: $J \approx \sum_e \mathrm{gate\_weight}_e \cdot J_{\mathrm{expert}_e}$. This respects token-level switching exactly rather than approximating it at the prompt level. Cost: 128 per-expert fits per layer; feasibility depends on isolating per-expert contributions during fitting.
 
 2. **Full-trajectory clustering (targets H2).** Cluster on the complete 48 $\times$ 8 routing matrix per prompt (or per token) rather than a single layer's frequency vector, so that cluster membership constrains the entire transport path, not one waypoint.
 
@@ -222,11 +222,20 @@ Our output-cosine gate is a metric the J-lens was never designed to optimize (Gu
 
 Standard J-lens readings on this MoE carry ~5% transport fidelity in-domain, dropping to 1% on code and 0.2% on dialogue — yet the tool still returns confident numbers. Any workspace analysis built on unconditioned J-lens outputs from an MoE model is producing readings with no demonstrated connection to the model's computation. Consumers should treat transport cosine as a gating prerequisite, not a footnote.
 
+### Deviations from the pre-registered pipeline
+
+The outcome criteria for this study were pre-registered in the pipeline code (§3.6) rather than in a standalone document. Execution deviated from them in three ways; each is a deviation, not a limitation, because in each case the registered plan said one thing and the run did another:
+
+| # | Pre-registered | As executed | Consequence |
+|---|----------------|-------------|-------------|
+| M1 | Conditioned and random conditions evaluated at L12, L24, L36 | L12 recorded n=0 for both conditions | Unresolved pipeline failure; no root-cause artifact exists and we do not speculate. The §5.4 verdict is evaluated on the two layers with data |
+| M2 | Conditioned-lens OOD evaluation at L24 on code and dialogue domains | Only the standard lens was evaluated OOD | The conditioned lenses' generalization bound is unmeasured; Table 2 characterizes the standard lens only |
+| M3 | Success bar of mean conditioned cosine > 0.5, registered by reference to a believed "0.7 (Gurnee et al. 2026)" threshold | The cited source contains no such threshold; the bar is this lab's own choice with incorrect provenance, caught in review and disclosed | Bar retained as a lab-set operational threshold; moot in practice, since every condition sat at 4-9% |
+
 ### Limitations
 
-- **Single model, incomplete conditions.** Only Qwen3-30B-A3B tested; low-cardinality MoE (§5.4.4) may differ. L12 recorded n=0 for conditioned/random (cause unrecoverable). Conditioned OOD evaluation was pre-registered but absent from results. The 200-vs-672 fitting-corpus asymmetry favors conditioned lenses and cannot rescue them.
-- **Clustering instrument.** Euclidean k-means on 128-d vectors with silhouettes 0.115–0.209; 672 prompts split into clusters may be insufficient for stable 2048$\times$2048 Jacobian estimation.
-- **Uncalibrated threshold.** The 0.5 success bar was pre-registered by reference to a believed "0.7 (Gurnee et al. 2026)" that does not exist in that source. Moot since nothing approached it.
+- **Single model.** Only Qwen3-30B-A3B tested; low-cardinality MoE (§5.4.4) may differ. The 200-vs-672 fitting-corpus asymmetry favors conditioned lenses and cannot rescue them. (Missing L12 and conditioned-OOD data are deviations, logged above.)
+- **Clustering instrument.** Euclidean k-means on 128-d vectors with silhouettes 0.115–0.209; 672 prompts split into clusters may be insufficient for stable 2048×2048 Jacobian estimation.
 - **No dense transport-cosine comparison.** No published figure exists; our two attempts to generate one on Qwen3-32B both failed (mmap thrash and memory pressure). The 4–9% regime is uncalibrated against dense models for this metric. Table 0 provides a dense comparison on the separate question of linear readability (logit lens), where the onset is architecture-independent.
 - WikiText-only fitting; OOD data shows in-domain figures are the optimistic case.
 - **RMSNorm omitted in logit-lens and late-depth evaluations.** Both the onset sweep and the late-depth refit apply the unembedding matrix (`lm_head`) directly to mid-layer residuals without the final RMSNorm. Absolute accuracy figures may be depressed; relative comparisons (J-lens vs logit lens at each layer, and the onset curve's shape across depths) are unaffected since both methods skip the same normalization.
