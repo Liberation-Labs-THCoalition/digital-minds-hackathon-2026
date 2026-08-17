@@ -21,12 +21,12 @@ valence–arousal pair — the imbalance between the two axes — against a **no
 pseudo-circumplex** built from two control axes (concrete/abstract and large/small) by the
 identical estimator. No emotion quantity enters the control.
 
-The emotion-to-control span ratio splits by attention mechanism, not by density: **3.67$\times$ and
+On the untransformed axis ratio the emotion pair varies *less* across depth than a matched non-emotional pair in every model, modestly more so under GatedDeltaNet (0.59-0.60) than under attention (0.90-1.00). The eccentricity transform saturates, and reporting the same comparison in eccentricity space inflates this to **3.67$\times$ and
 2.60$\times$ in two softmax-attention models** (Gemma-3-27B-it, which interleaves 52 sliding-window
 with 10 full-attention layers, and dense Qwen3-32B) against **0.32$\times$ and 0.31$\times$ in two models
 that replace 48 of 64 layers with GatedDeltaNet** (Qwen3.5-27B and its Opus-reasoning
-distill). The base/distill pair is a controlled comparison — same architecture, substantially
-different training — and agrees to within 0.01.
+distill) — a separation shown in §4.1 to be substantially an artifact of that saturation rather than a difference in depth-variability. The base/distill pair is a controlled comparison — same architecture, substantially
+different training — and agrees to within 0.013.
 
 **Two of four ratios fall below 1.0: in the GatedDeltaNet models the non-emotional control
 ranges roughly three times more widely across depth than the emotion axis.** The
@@ -86,8 +86,7 @@ removing them would hide what this study set out to do — but nothing in §4 re
 **Anchor set.** Four circumplex poles — valence-positive, valence-negative, arousal-high,
 arousal-low — with **n = 5** first-person anchor prompts per pole (20 emotion prompts; the
 verbatim set is in `experiments/circumplex/run_depth_profile.py` and Appendix A). Prompts
-are matched across poles for length and template structure so that lexical statistics do not
-masquerade as emotion geometry.
+are matched across poles for **length** (13.8-15.2 words). **They are not matched for template structure**, and §4.5 shows this is load-bearing: the two valence poles are near-minimal pairs (paired lexical overlap 0.59) while the two arousal poles share almost nothing (0.13).
 
 **Direction extraction.** For each prompt we run one forward pass, record residual-stream
 activations at every layer simultaneously, and take the mean over sequence positions, giving
@@ -172,7 +171,7 @@ only if the emotion profile differs from the control. This rule is why §4 repor
 correction, the sign test that was to be the pre-registered primary analysis, and the
 lexical confound check are specified in Appendix D and were not run. **There is therefore no
 significance test anywhere in this paper**; §4 reports descriptive magnitudes only. The
-secondary large/small control axis was also not run.
+**The large/small control axis was run** and forms the second arm of the control pseudo-circumplex (`run_depth_profile.py:223`); an earlier draft of this section, written before it was added, stated otherwise. The executed control is therefore 4 poles $\times$ n=5 = **20 control prompts**, not 10. This is a deviation from the pre-registration, which specified a single concrete/abstract pair; it is recorded in the Deviations table.
 
 ### Prior Work vs Sprint Contributions
 
@@ -205,6 +204,8 @@ control is not showing us emotional geometry; it is showing us contrastive geome
 
 **We lead with r-space because the e-space separation is substantially an artifact of the transform.** `de/dr` is nearly flat as `r` $\to$ 0 and vertical as `r` $\to$ 1. In the two attention models the emotion pair sits at median `r` $\approx$ 0.79 (steep) while the control pair sits at `r` $\approx$ 0.22 (flat), so identical variation in `r` yields much larger variation in `e` for the emotion arm. In the GatedDeltaNet models both pairs sit near `r` $\approx$ 0.62-0.70 -- the same regime -- which is exactly why their ratios barely move between the two columns (0.31 $\to$ 0.59). §4.5 reports the underlying cause directly: in attention models a generic contrast pair is far more lopsided than the emotion pair.
 
+Two checks establish that the e-space separation is about *level* rather than *spread*. **Level-matching**: rescaling each control sequence so its median equals the emotion median, preserving multiplicative spread exactly, drops the ratio from 2.60$\times$ to 0.79$\times$ (Qwen3-32B) and 3.67$\times$ to 0.90$\times$ (Gemma) while barely moving the GatedDeltaNet pair (0.31$\to$0.51, 0.32$\to$0.51). **Log-spread**, a scale-free measure of how far each ratio travels with no saturating transform, gives 0.42, 0.47, 0.76 and 0.78 - **below 1.0 in all four models, meaning the control pair travels further across depth than the emotion pair everywhere**, and reversing the attention/GatedDeltaNet ordering. Table 1's e-space column should be read as a joint statement about level and spread, not as a range effect.
+
 Two results, and the second is the more important.
 
 
@@ -215,7 +216,7 @@ interleaves local sliding-window attention with periodic global attention in a 5
 yet it groups with dense Qwen3-32B, not with the other non-uniform models. What separates the
 groups is that Gemma and Qwen3-32B mix tokens with softmax attention at every layer, while
 the Qwen3.5 models replace three quarters of their layers with a linear-recurrent mixer. The
-separation is roughly eightfold with no overlap.
+separation is roughly eightfold in eccentricity space and roughly 1.6$\times$ on the untransformed ratio; the difference between those two figures is the saturation artifact described above, not a finding.
 
 **In every model, emotion does not exceed its own control.** In r-space no ratio reaches 1.0; in e-space the GatedDeltaNet ratios of 0.31 and 0.32
 mean the non-emotional axis pair ranges about three times *further* across depth than the
@@ -243,7 +244,7 @@ separate. They do not:
 | Per-layer eccentricity | — | — | max 0.0041, mean 0.0016 |
 
 Across all 64 layers the two models' eccentricity curves never diverge by more than 0.0041,
-against an emotion span of 0.174. The two ratios differ by 0.012, an order of magnitude inside the ~8x separation between the attention and GatedDeltaNet groups.
+against an emotion span of 0.174. The two ratios differ by 0.012, well inside the between-group separation on either scale.
 Reasoning distillation from a different model family did not move this quantity.
 
 ### 4.3 The pre-registered substrate test returns negative
@@ -271,7 +272,7 @@ The depth at which the circumplex is most balanced does **not** split the way Ta
 
 | Model | Architecture | Eccentricity minimum |
 |---|---|---|
-| Gemma-3-27B-it | dense | L32 — 52% depth |
+| Gemma-3-27B-it | sliding + full attention | L32 — 52% depth |
 | Qwen3.5-27B | hybrid | L32 — 51% depth |
 | Qwen3.5-27B Opus-distill | hybrid | L32 — 51% depth |
 | Qwen3-32B | dense | L7 — 11% depth |
@@ -432,7 +433,7 @@ as an artifact that does not record its own anchor count, one field over.
 
 ## 6. Conclusion
 
-Prior work shows valence directions exist and transfer. We add a control those studies lack — a non-emotional pseudo-circumplex built from two control axes by the identical estimator — and find two things. Depth-wise eccentricity range differs by roughly eightfold between softmax-attention models (3.67x, 2.60x) and models built largely from GatedDeltaNet layers (0.32x, 0.31x), holding across a base model and its distill to within 0.012. And in the GatedDeltaNet models the ratio falls **below 1.0**: the non-emotional control ranges further across depth than the emotion axis, which under our pre-registered interpretation rule is evidence that the profile measures generic contrastive geometry rather than anything emotion-specific. We do not supply the verbalizability bridge this design was written toward: the J-space decomposition and the self-report calibration were not implemented, and the ghost-fraction prediction remains untested. What we have is a measured, controlled, architecture-dependent difference in emotional geometry, and a specific next experiment to run on it.
+Prior work shows valence directions exist and transfer. We add a control those studies lack — a non-emotional pseudo-circumplex built from two control axes by the identical estimator — and find two things. On the untransformed axis ratio the emotion pair varies **less** across depth than a matched non-emotional pair in all four models (0.90, 1.00, 0.59, 0.60), modestly more so under GatedDeltaNet than under attention. Reported in eccentricity space the same comparison inflates to roughly eightfold, which §4.1 shows to be an artifact of that transform's saturation rather than a difference in depth-variability.67x, 2.60x) and models built largely from GatedDeltaNet layers (0.32x, 0.31x), holding across a base model and its distill to within 0.012. And in the GatedDeltaNet models the ratio falls **below 1.0**: the non-emotional control ranges further across depth than the emotion axis, which under our pre-registered interpretation rule is evidence that the profile measures generic contrastive geometry rather than anything emotion-specific. We do not supply the verbalizability bridge this design was written toward: the J-space decomposition and the self-report calibration were not implemented, and the ghost-fraction prediction remains untested. What we have is a measured, controlled, architecture-dependent difference in emotional geometry, and a specific next experiment to run on it.
 
 ## Code and Data
 - **Profiler** (produced all four artifacts in this paper): `experiments/circumplex/run_depth_profile.py`, this repository.
@@ -478,7 +479,7 @@ No J-space table exists and no layers are gated: the J-space decomposition and t
 | Qwen3.5-27B | +0.933 | +0.858 | +0.793 | **+0.712** | +0.627 |
 | Qwen3.5-27B Opus-distill | +0.931 | +0.861 | +0.803 | **+0.724** | +0.644 |
 | Qwen3-32B (dense) | +0.859 | +0.683 | +0.502 | +0.334 | +0.186 |
-| Gemma-3-27B-it (dense) | +0.638 | +0.534 | +0.319 | +0.256 | +0.103 |
+| Gemma-3-27B-it (sliding + full attention) | +0.638 | +0.534 | +0.319 | +0.256 | +0.103 |
 
 
 ## Appendix C: Contributions and Deviations, itemised
