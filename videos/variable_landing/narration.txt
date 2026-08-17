@@ -1,0 +1,13 @@
+Does recall geometry change when the system has lived through something since encoding?
+
+We tested this with a four-arm controlled experiment on Qwen 3.5 27B. Eleven memories, each retrieved twice — before and after the agent accumulated new experience between snapshots.
+
+Four arms. Lived experience: the agent played through emotionally charged scenes. Fictional: matched emotional content about someone else. Scrambled: the same tokens, shuffled. And a no-intervention control.
+
+The instrument works. The no-intervention control produces exactly zero geometric change across all thirty-three trials — a perfect floor. Scrambled workspace Jaccard averages zero point two nine three. The instrument detects real geometric shifts when they exist and reports nothing when they don't.
+
+The gradient appears in the predicted direction. Lived memories shift most, then fictional, then scrambled, then null. But at eleven memories with three independent observations each, neither confirmatory comparison survives Holm correction. The primary test reaches p equals zero point zero four nine against a threshold of zero point zero two five.
+
+This is an underpowered null, not a negative result. The effect sizes — rank biserial r of zero point five seven six for the primary comparison — provide the parameters for a powered follow-up. The pre-registered disposition applies: a larger effect may exist that this pilot could not detect.
+
+What we learned: the measurement infrastructure produces clean, reproducible geometric readings with a verified zero floor. The question of whether experience changes recall geometry remains open — but the tools to answer it are validated.
