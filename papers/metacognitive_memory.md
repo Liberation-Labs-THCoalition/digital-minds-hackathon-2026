@@ -230,7 +230,8 @@ The phenomena the module was designed to detect — experience-dependent shifts 
 
 ## Code and Data
 
-- **Code repository**: github.com/Liberation-Labs-THCoalition/Project-Mnemosyne
+- **Code repository**: github.com/Liberation-Labs-THCoalition/digital-minds-hackathon-2026
+- **Upstream library**: github.com/Liberation-Labs-THCoalition/Project-Mnemosyne (pre-sprint infrastructure)
 - **Data/Datasets**: Available at the project repository
 - **Other artifacts**: Demo video, pre-registered protocol document
 
