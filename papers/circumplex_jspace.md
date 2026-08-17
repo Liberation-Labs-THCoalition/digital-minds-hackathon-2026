@@ -342,10 +342,7 @@ marginally *less* balanced. **This is not independent corroboration of §4.1 —
 attention models and much less so under GatedDeltaNet. The lopsidedness reported here *is* the regime separation that inflates §4.1's e-space column: a control pair at `r` $\approx$ 0.2 and an emotion pair at `r` $\approx$ 0.8 are measured on opposite ends of a curve whose slope varies by an order of magnitude. An earlier draft of this section called the two findings independent statistics in agreement. They are mechanically linked, and saying so is what makes the artifact legible.
 
 **Two caveats, and the first is load-bearing.** ‖v‖ and ‖a‖ are norms of difference-of-means
-vectors estimated from *different prompt pools*, and our arousal anchors ("furious",
-"terrified", "screaming with excitement") are lexically more extreme than our valence
-anchors. **A systematic arousal-over-valence gap may therefore be a property of our prompts
-rather than of any model.** The between-model comparison is protected — the prompts are
+vectors estimated from *different prompt pools*, and those pools are not template-matched to one another. Measured paired lexical overlap between the two poles of each axis is **0.593 for valence** — near-minimal pairs, e.g. "This is the *best/worst* news I have ever received in my entire life" — against **0.125 for arousal**, five largely unrelated sentences against five others. A difference-of-means over matched templates cancels the shared content and is systematically smaller than one over unmatched templates. **Arousal-over-valence dominance is therefore expected from the prompt construction alone, before any model property is invoked, and we do not claim it as one.** (Lexical *intensity* is not the mechanism: the valence anchors are equally extreme — "the worst news I have ever received", "grief and despair".) The between-model comparison is protected — the prompts are
 byte-identical across all four — but the absolute direction is not. Second, n = 5 per pole,
 one seed, no confidence intervals: these are descriptive magnitudes, not estimates.
 
