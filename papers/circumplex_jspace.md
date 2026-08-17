@@ -7,8 +7,6 @@ Research conducted at the Digital Minds Research Sprint, August 2026
 
 **With** Apart Research
 
-**With** Apart Research
-
 ## Abstract
 
 Transformer language models learn valence–arousal geometry consistent with Russell's
