@@ -10,7 +10,7 @@ Research conducted at the Digital Minds Research Sprint, August 2026
 
 Track 3 asks whether models have privileged access to their own internal states. We report a geometric finding and its characterization. In Qwen3.5-27B, PC1 of the residual stream — carrying 28-67% of activation variance — shows near-zero cosine with J-space (the verbalizable workspace) at mid-network layers ($\leq$ 0.003 at L18-L40). We call these "ghost dimensions," noting that a matched-variance null to confirm this exclusion is non-trivial was not executed during the sprint (§5).
 
-Across 167 probe snapshots (47 from agentic narrative sessions, 120 from baselines), we find that ghost and workspace probes measure genuinely distinct content: 97.6% of ghost vocabulary tokens never appear in workspace readings. The ghost vocabulary is metacognitive — dominated by tokens about memory itself (`memories`, `回忆`/recollection, `记忆`/memories) — while workspace tokens carry scene-relevant semantics. Ghost-workspace separation varies with context: agentic narrative produces significantly lower ghost cosine (0.099) than isolated recall baselines (0.414, p < 0.0001), and ghost and circumplex probes are orthogonal ($\rho$ = −0.001, p = 0.997). We also report an introspection prosthetic (GhostReading) that returns ghost content to the agent. The elicitation experiment testing whether agents can use this access was not executed during the sprint; the characterization and probe separation findings stand independently.
+Across 167 probe snapshots (47 from agentic narrative sessions, 120 from baselines), we find that ghost and workspace probes measure genuinely distinct content: 97.6% of ghost vocabulary tokens never appear in workspace readings. The ghost vocabulary is metacognitive — dominated by tokens about memory itself (`memories`, `回忆`/recollection, `记忆`/memories) — while workspace tokens carry scene-relevant semantics. Ghost-workspace separation varies with context: agentic narrative produces significantly lower ghost cosine (0.099) than isolated recall baselines (0.414, p < 0.0001), and ghost and circumplex probes are orthogonal ($\rho$ = $-$0.001, p = 0.997). We also report an introspection prosthetic (GhostReading) that returns ghost content to the agent. The elicitation experiment testing whether agents can use this access was not executed during the sprint; the characterization and probe separation findings stand independently.
 
 ---
 
@@ -42,9 +42,9 @@ The J-lens (Gurnee et al. 2026) identifies J-space — the verbalizable workspac
 
 ### 3.1 Ghost Dimension Characterization
 
-[PCA on residual stream at each layer → PC1 direction]
-[Logit lens: W_U · pc1 → what vocabulary the dimension encodes (structural markers)]
-[J-lens: W_U · J_L · pc1 → what it contributes to output (flat = ghost)]
+[PCA on residual stream at each layer $\to$ PC1 direction]
+[Logit lens: W_U $\cdot$ pc1 $\to$ what vocabulary the dimension encodes (structural markers)]
+[J-lens: W_U $\cdot$ J_L $\cdot$ pc1 $\to$ what it contributes to output (flat = ghost)]
 [Cosine between logit-lens and J-lens probability distributions = ghost exclusion metric]
 [Validated: 3 null checks (H0_1 centering, H0_2 random baseline, H0_3 permutation)]
 [Matched-variance null (H1): n $\geq$ 200 random directions drawn at PC1's variance fraction, per layer. Because J-space is ~10% of variance while PC1 is 28-67%, low cosine may be forced by dimensional accounting alone. H1 counts as supported only if the observed cosine falls below the 5th percentile of this null; otherwise the exclusion is reported as trivial, not empirical.]
@@ -106,7 +106,7 @@ Ghost cosine shows the same directional gradient (enacted 0.099 > briefed 0.079 
 
 ### 4.4 Ghost and Circumplex Are Orthogonal
 
-Ghost cosine and eccentricity show no correlation across all 47 Loam snapshots (Spearman $\rho$ = −0.001, p = 0.997). The two probes measure independent aspects of processing: ghost captures workspace-excluded content, while circumplex captures emotional geometry. Both show arm-level differences, but they do not track each other within arms.
+Ghost cosine and eccentricity show no correlation across all 47 Loam snapshots (Spearman $\rho$ = $-$0.001, p = 0.997). The two probes measure independent aspects of processing: ghost captures workspace-excluded content, while circumplex captures emotional geometry. Both show arm-level differences, but they do not track each other within arms.
 
 ## 5. Discussion and Limitations
 

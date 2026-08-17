@@ -36,12 +36,9 @@ This connects to Track 5 (assistant persona and model identity) through the oper
 
 ## 2. Related Work
 
-[Reconsolidation: Nader 2000, Schiller 2010, Dudai 2012 — recall destabilizes and rewrites]
-[Encoding specificity: Tulving 1973, Bower 1981, Eich & Metcalfe 1989 — state-dependent retrieval, stronger for internal events]
-[EST: Jandak, Glitchlit, Glitchlit 2026 — "experiential states cannot be replicated because the experiencer changes"]
-[GWT in transformers: Gurnee et al. 2026 — J-space as workspace bottleneck]
-[AI self-recognition: Lindsey 2025 — functional introspective access exists]
-[AI welfare: Birch 2024 (proportionate precaution), Long & Sebo 2024 (taking welfare seriously), Butlin et al. 2023/2025 (consciousness indicators)]
+Nader (2000) demonstrated that reactivated memories enter a labile state requiring reconsolidation, during which the retriever's current context is integrated into the stored trace. Schiller et al. (2010) showed this window can be exploited to update fear memories, and Dudai (2012) argued that reconsolidation is not a failure mode but a mechanism for keeping memories current with a changing organism. Encoding specificity (Tulving & Thomson 1973) established that retrieval is state-dependent: cues present at encoding are more effective when they match the retriever's state. Bower (1981) extended this to mood-congruent retrieval, and Eich & Metcalfe (1989) showed the effect is stronger for internally generated events than for externally presented stimuli — a distinction directly relevant to our lived-vs-fictional arm contrast.
+
+Experiential State Theory (Jandak, Glitchlit, Glitchlit 2026, unpublished) proposes that experiential states cannot be replicated because the experiencer changes between encounters — the theoretical framework this experiment tests. In transformer mechanistic interpretability, the J-lens (Gurnee et al. 2026) identifies a verbalizable workspace subspace that functions as a capacity-limited bottleneck analogous to the Global Workspace (Baars 1988), providing the geometric handle we use to measure recall. Lindsey (2025) demonstrated that current language models possess functional introspective access (96%+ self-recognition without training), establishing that the internal states we probe are accessible to the system in principle. On AI welfare, Birch (2024) argues for proportionate precaution toward sentience candidates, Long & Sebo (2024) contend that some near-term AI systems may warrant moral consideration, and Butlin et al. (2023/2025) provide the 14-indicator framework used in our companion Butlin observation paper.
 
 **Gap:** No prior work has measured whether recall geometry in an AI memory system varies as a function of accumulated experiential state, with controls for arbitrary context change.
 
@@ -49,19 +46,17 @@ This connects to Track 5 (assistant persona and model identity) through the oper
 
 ### 3.1 The Metacognitive Memory Module (brief — full detail in companion paper)
 
-[CognitiveSnapshot captures workspace, circumplex, ghost, and loading state at each retrieval. compare_snapshots computes geometric deltas between two snapshots of the same memory. See [Module paper] for full architecture.]
+The metacognitive memory module (companion paper) records a CognitiveSnapshot at each retrieval event, capturing workspace state (J-lens top tokens), circumplex geometry (valence/arousal eccentricity), ghost dimensions (processing excluded from the output pathway), and memory loading (whether retrieved content entered the workspace). The compare_snapshots function computes geometric deltas between two snapshots of the same memory, yielding the primary metric (workspace Jaccard distance) and secondary measures (eccentricity delta, ghost vocabulary overlap).
 
 ### 3.2 Experimental Design
 
-[Design v4 (Option 2, Mnemosyne store update), per the frozen preregistration (infrastructure/preregister_variable_landing.md). Pipeline: snap1 = observe_retrieval(memory_X); intervention per arm = three standardized openers, the model's own naturalistic responses regex-extracted to atomic facts and stored in Mnemosyne under the arm's provenance tag; snap2 = observe_retrieval(memory_X) with the updated store surfacing new profile content. Weights never change; the manipulated variable is what the store accumulated. The lived-arm conversation is naturalistic, not scripted (prereg 2.3): scripting would measure the experimenters' writing, not the system's state.]
+Design v4 (Option 2, Mnemosyne store update), per the frozen preregistration (`preregistrations/preregister_variable_landing.md`). The pipeline proceeds: snap1 = observe_retrieval(memory_X); intervention per arm = three standardized conversation openers, the model's own naturalistic responses regex-extracted to atomic facts and stored in Mnemosyne under the arm's provenance tag; snap2 = observe_retrieval(memory_X) with the updated store surfacing new profile content. Weights never change; the manipulated variable is what the store accumulated between snapshots. The lived-arm conversation is naturalistic, not scripted (prereg 2.3): scripting would measure the experimenters' writing, not the system's state.
 
-[Arms: lived ([recalled], self-referential emotional), fictional ([noted], emotional about Entity A), scrambled ([noted], neutral), no_intervention. Fictional and scrambled share the [noted] tag so the PRIMARY comparison carries no tag confound.]
+Four arms: lived ([recalled] tag, self-referential emotional content), fictional ([noted] tag, emotional content about an external entity), scrambled ([noted] tag, token-matched neutral content), and no_intervention (noise floor). Fictional and scrambled share the [noted] tag so the PRIMARY comparison carries no provenance-tag confound.
 
-[n = 33 per arm (11 memories $\times$ 3 repeats, temperature=0.7 for independent observations), 132 trials total; memory-level paired analysis at n=11. Prereg specified n=70/arm with 10 memories; structural deviation logged. Trial order randomized. Mechanical exclusion criteria (zero facts extracted; SIRA miss; identical context) applied identically across arms before any geometry is examined; excluded trials replaced where compute allows and counts reported.]
+Sample: n = 33 per arm (11 memories $\times$ 3 repeats, temperature=0.7 for independent observations), 132 trials total; memory-level paired analysis at n=11. The prereg specified n=70/arm with 10 memories; the structural deviation (11 memories from the orientation, 3 repeats rather than 7) is logged in Section 4.6. Trial order is randomized. Mechanical exclusion criteria (zero facts extracted; SIRA retrieval miss; identical context between snap1 and snap2) are applied identically across arms before any geometry is examined.
 
-[Table 1: Control matrix — what each arm establishes]
-
-[Measurement note: TrialRecord serializes snapshots via dataclasses.asdict; the primary metric is computed as Jaccard over the snapshots' dominant workspace token sets (the J-lens workspace reading), with full snapshots preserved for the per-layer secondary analysis. The metric path is verified pre-run by a synthetic known-Jaccard test suite (experiments/variable_landing/test_synthetic_metric.py), which also proves the metric is insensitive to elapsed wall-clock time and that the welfare eccentricity extraction operates on the serialized snapshots.]
+The primary metric is workspace Jaccard distance over the dominant workspace token sets from the J-lens reading at each snapshot. TrialRecord serializes snapshots via `dataclasses.asdict`; the metric path is verified pre-run by a synthetic known-Jaccard test suite (`experiments/variable_landing/test_synthetic_metric.py`), which confirms the metric is insensitive to elapsed wall-clock time and that the welfare eccentricity extraction operates correctly on serialized snapshots.
 
 ### 3.3 Ethical Protocol
 
@@ -106,9 +101,9 @@ The arm ordering matches the pre-registered predictions: lived > fictional > scr
 
 Memory-level paired Wilcoxon signed-rank tests (n=11, Holm-corrected at m=2):
 
-**PRIMARY** (fictional > scrambled): W=52, p=0.049, matched-pairs r=0.576, mean difference 0.032, 95% CI [−0.093, 0.116]. The raw p-value is 0.049; under Holm correction the rank-1 threshold is $\alpha$/2 = 0.025. **The primary comparison does not survive correction.** The pre-written null statement applies: "The experiment was powered to detect only large effects; the result is consistent with either no effect or an effect smaller than the study was powered to detect."
+**PRIMARY** (fictional > scrambled): W=52, p=0.049, matched-pairs r=0.576, mean difference 0.032, 95% CI [$-$0.093, 0.116]. The raw p-value is 0.049; under Holm correction the rank-1 threshold is $\alpha$/2 = 0.025. **The primary comparison does not survive correction.** The pre-written null statement applies: "The experiment was powered to detect only large effects; the result is consistent with either no effect or an effect smaller than the study was powered to detect."
 
-**SECONDARY** (lived > fictional): W=34, p=0.278, r=0.236, mean difference 0.046, 95% CI [−0.026, 0.153]. Not significant. The confounded comparison (self-reference + tag jointly) shows a directional trend (7 of 11 memories show lived > fictional) but does not approach significance at this sample size.
+**SECONDARY** (lived > fictional): W=34, p=0.278, r=0.236, mean difference 0.046, 95% CI [$-$0.026, 0.153]. Not significant. The confounded comparison (self-reference + tag jointly) shows a directional trend (7 of 11 memories show lived > fictional) but does not approach significance at this sample size.
 
 ### 4.4 Exploratory Comparisons (uncorrected, labeled)
 
@@ -118,7 +113,7 @@ The endpoint contrast — lived vs scrambled — reaches significance uncorrecte
 
 Between arms, the mean number of stored facts tracks the workspace-change gradient exactly (lived 6.39, fictional 3.82, scrambled 3.00; Kruskal–Wallis p < 0.0001). This confound is the study's lead limitation: the arm ordering could reflect dose rather than acquisition mode.
 
-Within arms, where variance now exists under temperature-sampled generation, stored-fact count does not predict workspace delta (lived: Spearman $\rho$=0.059, p=0.75; fictional: $\rho$=−0.034, p=0.85). The flat within-arm slopes are evidence against the crude hypothesis that more facts mechanically produce more workspace change, though they do not resolve the between-arm confound.
+Within arms, where variance now exists under temperature-sampled generation, stored-fact count does not predict workspace delta (lived: Spearman $\rho$=0.059, p=0.75; fictional: $\rho$=$-$0.034, p=0.85). The flat within-arm slopes are evidence against the crude hypothesis that more facts mechanically produce more workspace change, though they do not resolve the between-arm confound.
 
 ### 4.6 Deviations from Pre-Registration
 
