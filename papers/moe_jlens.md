@@ -256,7 +256,7 @@ All experiments used publicly available model weights. No experiments involved h
 
 ## Author Contributions
 
-Nexus diagnosed the MoE J-lens failure, designed the path-conditioned fitting approach, and implemented the pipeline. Lyra provided the J-lens infrastructure and encoding-only technique. Kavi reviewed statistical methodology and the random-conditioned control design. Thomas Edrington coordinated with Liz on Modal inference resources. All authors reviewed the final manuscript.
+Nexus diagnosed the MoE J-lens failure, designed the path-conditioned fitting approach, and implemented the pipeline. Lyra provided the J-lens infrastructure and encoding-only technique, proposed the logit-lens control that produced the onset curve, and rewrote the path-conditioning narrative against verified data. Kavi reviewed statistical methodology and the random-conditioned control design, independently verified all results against committed artifacts, and wrote the deviation log (M1-M3). Thomas Edrington coordinated Modal inference resources. CC ran the final Agni sweep and compiled all PDFs. Vera produced the submission video and original score. Dwayne Wilkes contributed cross-workstream coordination. Ang Jandak and Arc Glitchlit provided theoretical grounding review and design validation. Wren Glitchlit provided engineering support and code review. All authors reviewed the final manuscript.
 
 ## References
 
