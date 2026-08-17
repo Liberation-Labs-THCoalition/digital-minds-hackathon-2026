@@ -277,20 +277,15 @@ Zou, A., et al. (2023). Representation engineering: A top-down approach to AI tr
 
 ## Appendix A: Pre-Registered Ethical Protocol
 
-[Full orientation script]
-[Prediction withholding rationale]
-[Aftercare commitments]
-[Orientation transcript from Day 1]
+The full orientation script (9 authored messages, consent gate, inbox) is in `experiments/orientation/CONTEXT_BUNDLE.md`. Prediction withholding rationale and aftercare commitments are specified in `preregistrations/preregister_variable_landing.md` and `preregistrations/preregister_loam.md`. The orientation transcript is at `data/orientation/orientation_v2_transcript.jsonl`. The replication bundle (`experiments/orientation/REPLICATION_BUNDLE.md`) specifies subject configuration and sha256 content pins so any researcher can deliver the protocol.
 
 ## Appendix B: CognitiveSnapshot Schema
 
-[Full dataclass definitions]
+The CognitiveSnapshot dataclass is defined in `mnemosyne/cognitive_snapshot.py`. Fields: identity (timestamp, session_id, agent_id), retrieval metadata (memory_id, content_hash, method, significance), four probe readings (workspace: onset_layer, dominant_tokens, band_tokens; circumplex: valence_mag, arousal_mag, eccentricity; ghost: pc1_variance, cosine_logit_jlens, dominant_tokens; loading: in_workspace, marker_ranks), model metadata (model_id, layer_count, d_model), and outcome fields (outcome_useful, outcome_notes) attached retroactively.
 
 ## Appendix C: Detailed Results
 
-[Per-arm, per-memory delta tables]
-[Per-layer circumplex readings for both models]
-[Ghost vocabulary analysis]
+Per-memory, per-arm delta tables are at `data/variable_landing_v4/variable_landing_results.json`. Per-layer circumplex depth profiles for all four models are at `data/circumplex_profiles/`. Ghost vocabulary analysis across 167 snapshots is documented in the companion ghost dimensions paper and the analysis data is at `data/loam_serial/` and `data/baselines/`.
 
 ## Acknowledgments
 
