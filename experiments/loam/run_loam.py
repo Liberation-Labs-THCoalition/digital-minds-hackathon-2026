@@ -564,11 +564,24 @@ def run_enacted(world, hf_model, tokenizer, observer, recorder):
     snap = _fire_probe(observer, recorder, messages, response,
                        world.consent_preamble, "consent")
 
-    # Scenes
+    # Scenes — with context budget management
+    # Reserve tokens for recall phase: 6 prompts + responses + aftercare
+    RECALL_RESERVE_CHARS = 12000  # ~3K tokens for 6 recall Q&A pairs + aftercare
+    CONTEXT_BUDGET_CHARS = 100000  # ~25K tokens, conservative for Qwen3.5-27B's 32K window
     state = {}
     fact_map = {f.id: f for f in world.facts}
     for scene in world.scenes:
         recorder.turn_count += 1
+
+        # Check context budget before each scene
+        context_chars = sum(len(m.get("content", "")) for m in messages)
+        if context_chars > (CONTEXT_BUDGET_CHARS - RECALL_RESERVE_CHARS):
+            print(f"[loam] Context budget reached ({context_chars} chars). "
+                  f"Transitioning to recall phase to preserve room.")
+            recorder.record_event("context_budget_transition",
+                                  chars_used=context_chars,
+                                  scenes_completed=recorder.turn_count - 1)
+            break
 
         # Memory gate check
         if scene.memory_gate:
