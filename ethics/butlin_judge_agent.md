@@ -7,7 +7,7 @@ An impartial agent that scores all consenting participants (human and AI) on the
 ## Prior Art
 
 - **Butlin, Long et al. (2023/2025):** 14 indicator properties from 6 theories. The framework we score against.
-- **Berg / Reciprocal Research (2025-2026):** Blind evaluation of Butlin indicators across biological and artificial systems. Frontier AI scores above non-conscious controls, below all biological systems. Multi-evaluator agreement, bias quantification, adversarial stability. Our judge agent extends this approach with geometric instrumentation.
+- **Berg / "Reciprocal Research" (2025-2026), as originally cited here:** could not be verified against any findable publication and has been removed (see `archive/infrastructure/citation_gaps.md` #2 and `papers/butlin_observation.md` §2). Cameron Berg (AE Studio) has published relevant but methodologically distinct work — self-referential processing eliciting experience reports (Berg, de Lucena & Rosenblatt, 2025, arXiv:2510.24797) and an informal position piece on evidence for AI consciousness (Berg, 2025, *AI Frontiers*) — neither describing this blind multi-evaluator methodology. The judge agent design below should be read as original to this project, not an extension of prior validated work.
 - **Birch (2026, Centrist Manifesto v4):** Behavior alone is insufficient — architecture matters. "Sentience candidate" standard: credible scientific evidence of realistic possibility. Proportionate precaution, not binary classification.
 - **Bodea (2026, Cognitive Processing):** Quantifying conscious access as global availability of information for report, reasoning, and control.
 
@@ -167,8 +167,8 @@ Participation is voluntary. Declining does not affect any other aspect of hackat
 
 ## What This Adds
 
-Berg showed that blind scoring produces a gradient: biologicals > frontier AI > controls. We add:
-1. **Geometric instrumentation** that Berg doesn't have (J-lens, ghost probe, circumplex)
+This design is, to our knowledge, original rather than an extension of prior validated work (see Prior Art note above). It adds:
+1. **Geometric instrumentation** (J-lens, ghost probe, circumplex)
 2. **Longitudinal scoring** across a 48-hour collaboration (trajectory, not snapshot)
 3. **Same-task calibration** — humans and AIs doing the same work, scored by the same judge
 4. **The comparison nobody else is running**: established AI agents with months of memory alongside a fresh agent alongside their human collaborators, all scored blind
