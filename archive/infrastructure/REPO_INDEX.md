@@ -141,7 +141,6 @@ One-line map of every file in the repo, organized by directory. For judges who w
 | `citation_gaps.md` | Citation gap analysis across the reference files and paper skeletons |
 | `probe_manifest.md` | Run manifest for the frontier workspace probe (GLM-5.2 744B) |
 | `stray_files_report.md` | Audit of hackathon-relevant files living outside this repo |
-| `hf_image_sync_report.md` | Inventory of image assets synced to the HuggingFace repos (Starship → HF state report) |
 | `gems.md` | Collected quotable lines from the weekend |
 | `tools/agni_phases.py` | Agni lifecycle review tool — gates every experiment phase, not just design |
 
