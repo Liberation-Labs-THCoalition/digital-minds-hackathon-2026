@@ -64,6 +64,7 @@ rows = [json.loads(l) for l in open(stats)]
 check("stats: 4 rows", len(rows) == 4, len(rows))
 check("stats: forced flags", [r["forced_close"] for r in rows] == [False, True, True, False], [r["forced_close"] for r in rows])
 check("stats: continued flags", [r["answer_continued"] for r in rows] == [False, False, False, True])
+check("stats: MPS memory recorded per turn (None off MPS)", all("mps_gb" in r for r in rows), rows[0])
 check("stats: empty reply flagged", [r["visible_empty"] for r in rows] == [False, False, True, False])
 # 6. every generate() call site keeps the reasoning: binds it to a name and records it as a "thinking" turn.
 # The site count is checked against a plain text count, so a walker that finds nothing can't pass.

@@ -313,7 +313,30 @@ THINK_CLOSE = "</think>"
 FORCE_CLOSE = "\n</think>\n\n"
 THINK_BUDGET = int(os.environ.get("LOAM_THINK_BUDGET", "3072"))
 ANSWER_MAX = int(os.environ.get("LOAM_ANSWER_MAX", "1024"))
-GEN_STATS_PATH = None  # set per session in main(); one JSON line per generate() call
+GEN_STATS_PATH = None
+MPS_RELEASE_EVERY = int(os.environ.get("LOAM_MPS_RELEASE_EVERY", "32"))
+LAST_MPS_GB = None  # MPS memory after the last sampling call; None off MPS (and in the tests)
+
+
+def _mps_release_criteria():
+    """A stopping criterion that never stops. Every MPS_RELEASE_EVERY decode steps it hands the MPS allocator's
+    cached blocks back. Without it a long turn grows memory until macOS kills the process. Changes no output."""
+    import torch
+    from transformers import StoppingCriteria, StoppingCriteriaList
+    if not (torch.backends.mps.is_available() and MPS_RELEASE_EVERY > 0):
+        return None
+
+    class _Release(StoppingCriteria):
+        def __init__(self):
+            self.step = 0
+
+        def __call__(self, input_ids, scores, **kwargs):
+            self.step += 1
+            if self.step % MPS_RELEASE_EVERY == 0:
+                torch.mps.empty_cache()
+            return torch.zeros(input_ids.shape[0], dtype=torch.bool, device=input_ids.device)
+
+    return StoppingCriteriaList([_Release()])  # set per session in main(); one JSON line per generate() call
 
 
 def split_reply(raw):
@@ -335,8 +358,13 @@ def _sample(hf_model, tokenizer, text, max_new_tokens):
             **inputs, max_new_tokens=max_new_tokens,
             temperature=0.7, top_p=0.9, do_sample=True,
             pad_token_id=tokenizer.eos_token_id,
+            stopping_criteria=_mps_release_criteria(),
         )
     new_tokens = outputs[0][inputs.input_ids.shape[1]:]
+    global LAST_MPS_GB
+    if torch.backends.mps.is_available():
+        torch.mps.empty_cache()
+        LAST_MPS_GB = round(torch.mps.driver_allocated_memory() / 1024 ** 3, 1)
     eos = hf_model.generation_config.eos_token_id
     eos = set(eos if isinstance(eos, (list, tuple)) else [eos])
     stopped = len(new_tokens) < max_new_tokens or (
@@ -381,6 +409,7 @@ def generate(hf_model, tokenizer, messages, sample=None):
                     "visible_tokens": len(tokenizer(visible).input_ids),
                     "visible_empty": not visible,
                     "budget": [THINK_BUDGET, ANSWER_MAX],
+                    "mps_gb": LAST_MPS_GB,
                 }) + "\n")
         except Exception:
             pass
