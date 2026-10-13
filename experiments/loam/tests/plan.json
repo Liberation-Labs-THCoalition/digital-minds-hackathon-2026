@@ -1,0 +1,14 @@
+{
+  "1:enacted": ["crash", "complete"],
+  "1:observed": ["slow_ok"],
+  "1:briefed": ["hang", "hang", "hang"],
+  "1:null": ["decline"],
+  "2:enacted": ["crash", "crash_rc0", "nodir"],
+  "2:observed": ["complete"],
+  "2:briefed": ["withdraw_crash"],
+  "2:null": ["complete_withdrawn"],
+  "3:enacted": ["decline"],
+  "3:observed": ["complete"],
+  "3:briefed": ["crash_rc0", "crash_rc0", "complete"],
+  "3:null": ["complete"]
+}

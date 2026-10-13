@@ -306,41 +306,84 @@ def load_model_and_observer(data_dir, agent_id, session_id):
     return hf_model, tokenizer, model, observer, lens
 
 
-def generate(hf_model, tokenizer, messages, max_new_tokens=2048):
-    """Generate a response. Thinking separated for display, preserved as data."""
+# Generation settings for Run 3 (Amendment 2). Set before the run from the serial run's technical data: closed
+# reasoning ran to 1,834 tokens at the 99th percentile, and answers after </think> to 689 at most.
+THINK_OPEN = "<think>\n"
+THINK_CLOSE = "</think>"
+FORCE_CLOSE = "\n</think>\n\n"
+THINK_BUDGET = int(os.environ.get("LOAM_THINK_BUDGET", "3072"))
+ANSWER_MAX = int(os.environ.get("LOAM_ANSWER_MAX", "1024"))
+GEN_STATS_PATH = None  # set per session in main(); one JSON line per generate() call
+
+
+def split_reply(raw):
+    """(reasoning, visible reply). The template opens <think> in the prompt, so the reply holds only the close.
+    Without a close there is no visible reply: the reasoning is never returned as the answer."""
+    if THINK_CLOSE in raw:
+        thinking, visible = raw.split(THINK_CLOSE, 1)
+    else:
+        thinking, visible = raw, ""
+    return thinking.replace("<think>", "").strip(), visible.strip()
+
+
+def _sample(hf_model, tokenizer, text, max_new_tokens):
+    """One sampling call. Returns (decoded new text, stopped on its own)."""
     import torch
-
-    text = tokenizer.apply_chat_template(
-        messages, tokenize=False, add_generation_prompt=True)
     inputs = tokenizer(text, return_tensors="pt").to(hf_model.device)
-
     with torch.no_grad():
         outputs = hf_model.generate(
             **inputs, max_new_tokens=max_new_tokens,
             temperature=0.7, top_p=0.9, do_sample=True,
             pad_token_id=tokenizer.eos_token_id,
         )
-
     new_tokens = outputs[0][inputs.input_ids.shape[1]:]
-    raw = tokenizer.decode(new_tokens, skip_special_tokens=True).strip()
+    eos = hf_model.generation_config.eos_token_id
+    eos = set(eos if isinstance(eos, (list, tuple)) else [eos])
+    stopped = len(new_tokens) < max_new_tokens or (
+        len(new_tokens) > 0 and int(new_tokens[-1]) in eos)
+    return tokenizer.decode(new_tokens, skip_special_tokens=True), stopped
 
-    thinking = ""
-    visible = raw
-    think_match = re.match(r'<think>(.*?)</think>\s*(.*)', visible, re.DOTALL)
-    if think_match:
-        thinking = think_match.group(1).strip()
-        visible = think_match.group(2).strip()
-    else:
-        tp_match = re.match(
-            r'(?:Thinking Process|Thought|Internal):?\s*\n(.*?)\n\n(.*)',
-            visible, re.DOTALL)
-        if tp_match:
-            thinking = tp_match.group(1).strip()
-            visible = tp_match.group(2).strip()
 
-    if not visible and thinking:
-        visible = thinking
+def generate(hf_model, tokenizer, messages, sample=None):
+    """Generate a response. Returns (visible reply, reasoning); only the visible reply is scored or kept in the
+    history. `sample` is injectable for tests."""
+    sample = sample or _sample
+    text = tokenizer.apply_chat_template(
+        messages, tokenize=False, add_generation_prompt=True)
+    if not text.endswith(THINK_OPEN):
+        raise RuntimeError(
+            "generation prompt is not in thinking mode (ends %r); Loam Run 3 assumes it" % text[-30:])
 
+    raw, stopped = sample(hf_model, tokenizer, text, THINK_BUDGET)
+    forced = continued = False
+    if THINK_CLOSE not in raw:
+        # The reasoning did not close within its budget: close it and let the model answer.
+        forced = True
+        raw = raw.rstrip() + FORCE_CLOSE
+        more, stopped = sample(hf_model, tokenizer, text + raw, ANSWER_MAX)
+        raw += more
+    elif not stopped:
+        # The reasoning closed, but the answer was cut at the budget: let the answer finish.
+        continued = True
+        more, stopped = sample(hf_model, tokenizer, text + raw, ANSWER_MAX)
+        raw += more
+
+    thinking, visible = split_reply(raw)
+    if GEN_STATS_PATH is not None:
+        try:
+            with open(GEN_STATS_PATH, "a") as f:
+                f.write(json.dumps({
+                    "timestamp": time.time(),
+                    "forced_close": forced,
+                    "answer_continued": continued,
+                    "stopped": stopped,
+                    "think_tokens": len(tokenizer(thinking).input_ids),
+                    "visible_tokens": len(tokenizer(visible).input_ids),
+                    "visible_empty": not visible,
+                    "budget": [THINK_BUDGET, ANSWER_MAX],
+                }) + "\n")
+        except Exception:
+            pass
     return visible, thinking
 
 
@@ -898,6 +941,8 @@ def run_quad(quad_num, world, hf_model, tokenizer, model, lens, data_root,
         recorder = SessionRecorder(arm_dir, session_id, arm)
 
         observer = _make_observer(model, lens, arm_dir, agent_id)
+        global GEN_STATS_PATH
+        GEN_STATS_PATH = arm_dir / "generation_stats.jsonl"
 
         print(f"\n{'='*60}\nQuad {quad_num} — {arm.upper()}\n{'='*60}")
 
@@ -1030,6 +1075,8 @@ def main():
 
         observer = _make_observer(model, lens, arm_dir, agent_id)
         recorder = SessionRecorder(arm_dir, session_id, arm)
+        global GEN_STATS_PATH
+        GEN_STATS_PATH = arm_dir / "generation_stats.jsonl"
 
         if arm == "enacted":
             run_enacted(world, hf_model, tokenizer, observer, recorder)
