@@ -65,5 +65,22 @@ check("stats: 4 rows", len(rows) == 4, len(rows))
 check("stats: forced flags", [r["forced_close"] for r in rows] == [False, True, True, False], [r["forced_close"] for r in rows])
 check("stats: continued flags", [r["answer_continued"] for r in rows] == [False, False, False, True])
 check("stats: empty reply flagged", [r["visible_empty"] for r in rows] == [False, False, True, False])
+# 6. every generate() call site keeps the reasoning: binds it to a name and records it as a "thinking" turn.
+# The site count is checked against a plain text count, so a walker that finds nothing can't pass.
+import ast
+src = open(sys.argv[1]).read()
+sites = {}
+for fn in ast.walk(ast.parse(src)):
+    if not isinstance(fn, (ast.FunctionDef, ast.AsyncFunctionDef)): continue
+    kept = {c.args[1].id for c in ast.walk(fn) if isinstance(c, ast.Call) and getattr(c.func, "attr", "") == "record_turn"
+            and len(c.args) == 2 and isinstance(c.args[0], ast.Constant) and c.args[0].value == "thinking"
+            and isinstance(c.args[1], ast.Name)}
+    for a in ast.walk(fn):
+        if isinstance(a, ast.Assign) and isinstance(a.value, ast.Call) and getattr(a.value.func, "id", "") == "generate":
+            tg = a.targets[0]
+            name = tg.elts[1].id if isinstance(tg, ast.Tuple) and len(tg.elts) == 2 and isinstance(tg.elts[1], ast.Name) else None
+            sites[a.lineno] = sites.get(a.lineno, False) or (name not in (None, "_") and name in kept)
+check("call sites found", len(sites) == src.count("= generate(hf_model") > 0, (len(sites), src.count("= generate(hf_model")))
+check("reasoning kept at every call site", all(sites.values()), sorted(l for l, g in sites.items() if not g))
 print("ALL OK" if ok else "SOME FAILED")
 sys.exit(0 if ok else 1)

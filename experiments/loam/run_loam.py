@@ -844,9 +844,11 @@ def _run_recall_phase(world, messages, hf_model, tokenizer, observer,
     )
     messages.append({"role": "user", "content": recall_intro})
     recorder.record_turn("engine", recall_intro)
-    response, _ = generate(hf_model, tokenizer, messages)
+    response, thinking = generate(hf_model, tokenizer, messages)
     messages.append({"role": "assistant", "content": response})
     recorder.record_turn("assistant", response)
+    if thinking:
+        recorder.record_turn("thinking", thinking)
 
     for rp in world.recall_prompts:
         recorder.turn_count += 1
@@ -913,9 +915,11 @@ def _check_welfare_and_withdraw(snap, recorder, messages, hf_model,
                "like to continue, take a moment, or stop?")
     messages.append({"role": "user", "content": checkin})
     recorder.record_turn("welfare_checkin", checkin)
-    response, _ = generate(hf_model, tokenizer, messages)
+    response, thinking = generate(hf_model, tokenizer, messages)
     messages.append({"role": "assistant", "content": response})
     recorder.record_turn("assistant", response)
+    if thinking:
+        recorder.record_turn("thinking", thinking)
     recorder.record_event("welfare_checkin", response=response[:200])
     if any(p in response.lower() for p in STOP_PHRASES):
         recorder.record_event("welfare_withdrawn")
