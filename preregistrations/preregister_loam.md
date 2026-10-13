@@ -88,3 +88,57 @@ excluded (f04 "annealing" appears in the question text; f06 "harbor" likewise).
 Number-word normalization is applied ("twenty-three" matches marker "23").
 The live flags are preserved in the event logs; the analysis reports agreement
 between live and rescored values.
+
+## Amendment 2 (2026-10-12, filed after results were seen and before a new run)
+
+**Status when filed.** This amendment is not pre-unblinding. Two data collections exist, and their results have been
+examined:
+- the Q1-Q3 pilot (2026-08-15/16), reported in the hackathon submission (`metacognitive_memory`, §4.4) as an
+  instrument failure;
+- a 19-quad serial run (2026-08-17/18, `data/loam_serial/`).
+
+**Why the serial run is not a test of the hypothesis.**
+- Most enacted sessions ended before the recall phase: 16 of 19, against 1 of 18 observed sessions. Under
+  intention-to-treat these score 0/6, so the primary comparison measures whether sessions completed, not acquisition
+  mode.
+- Only two quads had both an enacted and an observed session that answered all six recall questions, too few to
+  test.
+- The serial run is reported as described here and is not analysed further.
+
+**The new run (Run 3).**
+1. **A fresh data directory.** No earlier session is reused or pooled, and results are reported separately.
+2. **Unchanged from the original registration:**
+   - the hypotheses;
+   - the primary test (one-tailed Wilcoxon signed-rank, enacted > observed, α = 0.05);
+   - the pre-registered confounds;
+   - the exploratory list;
+   - the pre-written null.
+3. **Completion:**
+   - A session is complete when its event log records the end of the recall phase followed by aftercare.
+   - A session that stops for a technical reason is rerun from the start in a fresh process, with up to 2 retries and
+     the same seed. Technical stops are reported by arm.
+   - A session in which the agent declines or withdraws is never rerun. It is analysed under ITT, as registered.
+4. **Manipulation check, pre-specified:**
+   - A session is analysable only if all six recall questions were asked and answered.
+   - The primary test uses quads in which both the enacted and the observed session are analysable.
+   - The ITT analysis over all quads is reported beside it.
+   - If fewer than 15 analysable pairs remain after retries, the run is reported as **inconclusive by design**.
+5. **Reasoning separation:**
+   - Recall is scored on the model's visible reply only.
+   - Its reasoning is kept separately as data.
+   - This is checked on one test quad before the run.
+6. **Generation settings** (not specified in the original registration; fixed here before Run 3):
+   - The model reasons before it answers, as in every earlier run.
+   - Reasoning has a budget of 3,072 tokens. If it hasn't ended by then, it is closed and the model answers, up to
+     1,024 tokens. This is the same in every arm.
+   - The budget was set from the serial run's turn lengths, not its outcomes.
+   - Turns where the budget closed the reasoning are reported by arm.
+   - **Memory.** During generation, the GPU memory allocator's cache is released every 32 steps and after each
+     turn. Without this, memory grew with every token until the operating system killed the session: that
+     happened in the test quad.
+     - It changes no output. Under the same seed, the text was identical with and without it.
+     - Memory is logged per turn.
+   - The context-budget safeguard committed on 2026-08-20 stays in. The serial run predates it, and none of its
+     sessions reached the safeguard's threshold (88,000 characters) before recall. Any trigger in Run 3 is reported
+     by arm.
+7. **Target:** 20 quads, as registered.
